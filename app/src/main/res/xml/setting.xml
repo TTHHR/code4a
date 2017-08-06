@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/setting" >
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:summary="这是一个复选框"
+            android:title="复选框设置" />
+        <ListPreference
+            android:key="language"
+            android:title="@string/setting_language"
+            android:dialogTitle="@string/setting_language_select"
+            android:entries="@array/language_list_key"
+            android:entryValues="@array/language_list_value"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_about" >
+        <PreferenceScreen
+            android:summary="@string/setting_tieba_summary"
+            android:title="@string/setting_tieba" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.baidu.com" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

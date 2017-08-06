@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">c4droid代码手册</string>
+    <string name="setting">设置</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_tieba">贴吧</string>
+    <string name="setting_tieba_summary">访问c4droid贴吧</string>
+    <string name="setting_language">语言</string>
+    <string name="setting_language_select">选择一个语言</string>
+    <string-array name="language_list_key">
+        <item>中文</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_list_value">
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
 </resources>
