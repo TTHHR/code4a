@@ -1,11 +1,13 @@
 <resources>
-    <string name="app_name">c4droidcode</string>
+    <string name="app_name">code4droid</string>
     <string name="setting">Setting</string>
     <string name="setting_about">About</string>
     <string name="setting_tieba">Tieba</string>
     <string name="setting_tieba_summary">goto c4droid Tieba</string>
     <string name="setting_language">Language</string>
     <string name="setting_language_select">Select A Language</string>
+    <string name="setting_auth">TTHHR</string>
+    <string name="setting_auth_summary">Donate to authors</string>
     <string-array name="language_list_key">
         <item>中文</item>
         <item>English</item>

@@ -15,6 +15,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_about" >
+
         <PreferenceScreen
             android:summary="@string/setting_tieba_summary"
             android:title="@string/setting_tieba" >
@@ -22,7 +23,9 @@
                 android:action="android.intent.action.VIEW"
                 android:data="http://www.baidu.com" />
         </PreferenceScreen>
-
+        <PreferenceScreen
+            android:summary="@string/setting_auth_summary"
+            android:title="@string/setting_auth"></PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>

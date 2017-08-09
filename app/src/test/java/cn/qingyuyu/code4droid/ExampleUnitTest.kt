@@ -1,4 +1,4 @@
-package cn.qingyuyu.c4droidcode
+package cn.qingyuyu.code4droid
 
 import org.junit.Test
 

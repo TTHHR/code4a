@@ -6,6 +6,8 @@
     <string name="setting_tieba_summary">访问c4droid贴吧</string>
     <string name="setting_language">语言</string>
     <string name="setting_language_select">选择一个语言</string>
+    <string name="setting_auth">TTHHR</string>
+    <string name="setting_auth_summary">向作者捐赠</string>
     <string-array name="language_list_key">
         <item>中文</item>
         <item>English</item>
@@ -14,4 +16,10 @@
         <item>zh</item>
         <item>en</item>
     </string-array>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

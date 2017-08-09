@@ -1,9 +1,8 @@
-package cn.qingyuyu.c4droidcode
+package cn.qingyuyu.code4droid
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
-import android.content.Intent
 import android.os.Handler
 import android.widget.Toast
 
