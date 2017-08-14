@@ -34,4 +34,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     implementation files('libs/baidu-android-openapi-sdk.jar')
     implementation files('libs/fastjson-1.2.2.jar')
+    compile 'com.beardedhen:androidbootstrap:2.0.1'
 }

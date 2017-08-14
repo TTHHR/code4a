@@ -52,10 +52,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         head_iv!!.setOnClickListener {
             baidu = Baidu(SomeValue.clientId, this@MainActivity)
             if (User.instance.isLogind) {
-                Log.e("logout", "success")
-                baidu!!.clearAccessToken()
-                User.instance.logout()
-                Toast.makeText(this@MainActivity, "已退出登录", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -81,12 +77,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         if (User.instance.isLogind) {
-            uname!!.text = User.instance.userName
+            uname!!.text = User.instance.getUserName()
             head_iv!!.setImageURI(User.instance.imgUri)
+        } else {
+            uname!!.text = this.getText(R.string.username)
+            head_iv!!.setImageResource(R.mipmap.ic_launcher)
         }
     }
 
@@ -125,7 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_feedback -> {
-
+                startActivity(Intent(this@MainActivity, FeedbackActivity::class.java))
             }
         }
 

@@ -12,6 +12,11 @@
     <string name="nav_share">Share</string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
+    <string name="setting_loginout">login out</string>
+    <string name="username">Not logged in</string>
+    <string name="feedback_title">Feedback your suggests</string>
+    <string name="feedback_hide">Please input(limit:600)!</string>
+    <string name="feedback_send">Send</string>
     <string-array name="language_list_key">
         <item>中文</item>
         <item>English</item>
