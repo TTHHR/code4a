@@ -8,6 +8,10 @@
     <string name="setting_language_select">Select A Language</string>
     <string name="setting_auth">TTHHR</string>
     <string name="setting_auth_summary">Donate to authors</string>
+    <string name="setting_update">update</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="nav_tool">Tool</string>
     <string-array name="language_list_key">
         <item>中文</item>
         <item>English</item>

@@ -25,7 +25,14 @@
         </PreferenceScreen>
         <PreferenceScreen
             android:summary="@string/setting_auth_summary"
-            android:title="@string/setting_auth"></PreferenceScreen>
+            android:title="@string/setting_auth">
+
+        </PreferenceScreen>
+        <PreferenceScreen android:title="@string/setting_update">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.baidu.com" />
+        </PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>

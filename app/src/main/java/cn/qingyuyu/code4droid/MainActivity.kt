@@ -28,7 +28,6 @@ import cn.qingyuyu.code4droid.model.User
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var baidu: Baidu? = null
-    private val clientId = "MTV80CzqzpGjCniGXilKVyji"//客户端ID
     val url = Baidu.LoggedInUser_URL
     //是否每次授权都强制登陆
     private val isForceLogin = false
@@ -51,11 +50,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
-            baidu = Baidu(clientId, this@MainActivity)
-            if (User.getInstance().isLogind) {
+            baidu = Baidu(SomeValue.clientId, this@MainActivity)
+            if (User.instance.isLogind) {
                 Log.e("logout", "success")
                 baidu!!.clearAccessToken()
-                User.getInstance().logout()
+                User.instance.logout()
                 Toast.makeText(this@MainActivity, "已退出登录", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -85,9 +84,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStart() {
         super.onStart()
 
-        if (User.getInstance().isLogind) {
-            uname!!.text = User.getInstance().userName
-            head_iv!!.setImageURI(User.getInstance().imgUri)
+        if (User.instance.isLogind) {
+            uname!!.text = User.instance.userName
+            head_iv!!.setImageURI(User.instance.imgUri)
         }
     }
 
@@ -119,22 +118,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
+            R.id.nav_tool -> {
 
             }
             R.id.nav_share -> {
 
             }
-            R.id.nav_send -> {
+            R.id.nav_feedback -> {
 
             }
         }

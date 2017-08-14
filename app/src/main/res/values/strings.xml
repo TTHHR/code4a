@@ -8,6 +8,10 @@
     <string name="setting_language_select">选择一个语言</string>
     <string name="setting_auth">TTHHR</string>
     <string name="setting_auth_summary">向作者捐赠</string>
+    <string name="setting_update">检查更新</string>
+    <string name="nav_share">分享</string>
+    <string name="nav_feedback">反馈</string>
+    <string name="nav_tool">工具</string>
     <string-array name="language_list_key">
         <item>中文</item>
         <item>English</item>
@@ -16,10 +20,7 @@
         <item>zh</item>
         <item>en</item>
     </string-array>
-    <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
 </resources>
