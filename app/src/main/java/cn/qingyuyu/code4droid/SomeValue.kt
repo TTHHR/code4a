@@ -9,4 +9,6 @@ object SomeValue {
     val dirPath = "/data/data/cn.qingyuyu.code4droid/"
     val userData = "/data/data/cn.qingyuyu.code4droid/user.data"
     val clientId = "MTV80CzqzpGjCniGXilKVyji"//客户端ID
+    val shareUrl = "http://blog.qingyuyu.cn/"//分享连接
+    val shareImg = "http://blog.qingyuyu.cn/conf/profile.png"//分享头像
 }

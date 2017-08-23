@@ -36,9 +36,11 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:gravity="center"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/feedbacakbutton"

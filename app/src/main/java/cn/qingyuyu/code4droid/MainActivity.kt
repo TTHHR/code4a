@@ -24,6 +24,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import cn.qingyuyu.code4droid.model.User
+import com.xyzlf.share.library.interfaces.ShareConstant
+import com.xyzlf.share.library.util.ShareUtil
+import com.xyzlf.share.library.bean.ShareEntity
+
+
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -98,6 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+
     //创建菜单
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
@@ -121,6 +127,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_share -> {
+                val testBean = ShareEntity(getString(R.string.app_name), getString(R.string.share_content))
+                testBean.url = SomeValue.shareUrl //分享链接
+                testBean.imgUrl = SomeValue.shareImg
+                ShareUtil.showShareDialog(this, testBean, ShareConstant.REQUEST_CODE)
 
             }
             R.id.nav_feedback -> {

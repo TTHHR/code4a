@@ -19,7 +19,7 @@
             <item
                 android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_menu_feedback"
-                android:title="Send" />
+                android:title="@string/nav_feedback" />
         </menu>
     </item>
 

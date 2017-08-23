@@ -17,6 +17,7 @@
     <string name="feedback_title">Feedback your suggests</string>
     <string name="feedback_hide">Please input(limit:600)!</string>
     <string name="feedback_send">Send</string>
+    <string name="share_content">I am using the code sharing platform, and you will try it </string>
     <string-array name="language_list_key">
         <item>中文</item>
         <item>English</item>
