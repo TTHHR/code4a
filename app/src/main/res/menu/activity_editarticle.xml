@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/undo"
+        android:icon="@mipmap/ic_action_undo"
+        android:title="撤销"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/redo"
+        android:icon="@mipmap/ic_action_redo"
+        android:title="恢复"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/export"
+        android:title="发送"
+        app:showAsAction="ifRoom" />
+
+</menu>

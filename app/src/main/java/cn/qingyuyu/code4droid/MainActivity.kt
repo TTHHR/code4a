@@ -2,6 +2,7 @@ package cn.qingyuyu.code4droid
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -43,6 +44,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        initView()
+    }
+
+    fun initView() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -80,8 +85,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             })
         }
+        val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
+        newarticle.setOnClickListener(View.OnClickListener { view ->
+            val i = Intent(this@MainActivity, EditArticleActivity::class.java)
+            startActivity(i)
+        })
     }
-
     override fun onResume() {
         super.onResume()
 
