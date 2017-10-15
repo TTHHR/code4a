@@ -7,10 +7,17 @@ import android.content.Intent
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import cn.qingyuyu.code4droid.library.fileselect.FileList
+import cn.qingyuyu.code4droid.library.fileselect.FileSelectActivity
 import com.scrat.app.richtext.RichEditText
+import es.dmoral.toasty.Toasty
+import android.widget.AdapterView.OnItemClickListener
+import cn.carbs.android.library.MDDialog
 
 
 /**
@@ -18,6 +25,8 @@ import com.scrat.app.richtext.RichEditText
  */
 class EditArticleActivity : AppCompatActivity() {
     private val REQUEST_CODE_GET_CONTENT = 666
+    private val SELECTFILE = 555
+    private val SELECTFILE_CANCLE = 0
     private val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444
     private var richEditText: RichEditText? = null
 
@@ -26,7 +35,7 @@ class EditArticleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editarticle)
         richEditText = findViewById<RichEditText>(R.id.rich_text)
         richEditText!!.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
-                "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,超链接,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n" +
+                "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n" +
                 "<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">" +
                 "<img src=\"http://blog.qingyuyu.cn/storage/a5124910.jpg\">")
     }
@@ -51,10 +60,9 @@ class EditArticleActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data == null || data.data == null || requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
+        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE||data==null||data!!.data==null)
             return
-
-        val uri = data.data
+        val uri = data!!.data
         val width = richEditText!!.measuredWidth - richEditText!!.paddingLeft - richEditText!!.paddingRight
         richEditText!!.image(uri, width)
     }
@@ -120,6 +128,29 @@ class EditArticleActivity : AppCompatActivity() {
      * 添加附件
      */
     fun insertFile(v: View) {
+        val files = FileList.fileList.toArray(arrayOfNulls<String>(FileList.fileList.size))
+        MDDialog.Builder(this@EditArticleActivity)
+                .setMessages(files)
+                .setTitle(R.string.title_showfile)
+                .setNegativeButton(R.string.button_add,View.OnClickListener {
+                    Toasty.info(this@EditArticleActivity, getString(R.string.select_file_info) , Toast.LENGTH_LONG, true).show()
+                    var i=Intent(this@EditArticleActivity,FileSelectActivity::class.java)
+                    startActivityForResult(i,SELECTFILE)
+                })
+                .setPositiveButton(R.string.button_ok,View.OnClickListener { Toasty.success(this@EditArticleActivity, getString(R.string.button_ok ), Toast.LENGTH_SHORT, true).show() })
+                .setOnItemClickListener(object:MDDialog.OnItemClickListener {
+                    override fun onItemClicked(index: Int) {
+                        Toasty.warning(this@EditArticleActivity, getString(R.string.click_file_remove)+FileList.fileList.get(index) , Toast.LENGTH_SHORT, true).show()
+                        FileList.fileList.removeAt(index)
+                    }
+                } )
+                .setWidthMaxDp(600)
+                .setShowTitle(true)
+                .setShowButtons(true)
+                .create()
+                .show()
+
+
 
     }
 

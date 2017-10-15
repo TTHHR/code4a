@@ -22,7 +22,6 @@ class SettingActivity : AppCompatActivity() {
         super.onStop()
         if (language != PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao"))//语言已经改变
         {
-            Toast.makeText(this, "The language has changed,App will exit!", Toast.LENGTH_LONG).show()
             android.os.Process.killProcess(android.os.Process.myPid())//退出程序
         }
     }

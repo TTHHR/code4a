@@ -97,7 +97,7 @@ public class FileItemBinder extends ItemViewBinder<FileData, FileItemBinder.File
                         EventBus.getDefault().post(
                                 new ViewEvent(ViewEvent.EvenType.gotoFileClickPosition, bundle));
                     } else {
-                        Toasty.success(context, "你选中了" + fileData.getName(), Toast.LENGTH_SHORT, true).show();
+                        Toasty.success(context, R.string.button_ok + fileData.getName(), Toast.LENGTH_SHORT, true).show();
                         FileList.fileList.add(fileData.getPath());
                     }
 

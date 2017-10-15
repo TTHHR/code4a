@@ -26,10 +26,16 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FeedbackActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".library.fileselect.FileSelectActivity"></activity>
+        <activity android:name=".FeedbackActivity"
+            android:label="@string/app_name"
+            ></activity>
+        <activity android:name=".SettingActivity"
+            android:label="@string/setting"/>
         <activity android:name=".ViewArticleActivity"></activity>
-        <activity android:name=".EditArticleActivity"></activity>
+        <activity android:name=".EditArticleActivity"
+            android:label="@string/editarticle_name"
+            ></activity>
     </application>
 
 </manifest>

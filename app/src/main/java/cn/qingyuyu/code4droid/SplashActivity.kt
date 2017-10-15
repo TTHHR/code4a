@@ -6,11 +6,13 @@ import android.content.Intent
 import android.os.Handler
 
 
+
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
         Handler().postDelayed(Runnable {
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             //跳转到主界面
@@ -18,4 +20,6 @@ class SplashActivity : AppCompatActivity() {
             this@SplashActivity.finish()
         }, 1000)//1000毫秒后执行上面的跳转主界面语句
     }
+
+
 }

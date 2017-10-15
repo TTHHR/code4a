@@ -40,4 +40,13 @@ dependencies {
     }//分享sdk
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'//加载图片
     compile 'com.github.huzhenjie:RichTextEditor:1.0.2'//富文本编辑
+    compile 'com.jakewharton:butterknife:8.5.1'//文件
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'//文件
+    compile 'com.orhanobut:logger:1.15'//文件
+    compile 'org.greenrobot:eventbus:3.0.0'//文件
+    compile 'com.github.GrenderG:Toasty:1.2.0'//文件
+    compile('me.drakeet.multitype:multitype:2.5.0') {
+        exclude group: 'com.android.support'
+    }//文件
+    compile 'cn.carbs.android:MDDialog:1.0.0'//弹窗
 }

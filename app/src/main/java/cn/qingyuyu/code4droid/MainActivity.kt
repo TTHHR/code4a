@@ -1,6 +1,10 @@
 package cn.qingyuyu.code4droid
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
@@ -28,8 +32,7 @@ import cn.qingyuyu.code4droid.model.User
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
 import com.xyzlf.share.library.bean.ShareEntity
-
-
+import es.dmoral.toasty.Toasty
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -40,11 +43,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val isConfirmLogin = true
     var head_iv: ImageView? = null
     var uname: TextView? = null
+    private var isPermissionRequested = false//权限
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         initView()
+        requestPermission();//请求权限
     }
 
     fun initView() {
@@ -90,6 +95,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val i = Intent(this@MainActivity, EditArticleActivity::class.java)
             startActivity(i)
         })
+    }
+    @SuppressLint("NewApi")
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT >= 23 && !isPermissionRequested) {
+
+            isPermissionRequested = true
+
+            val permissions = ArrayList<String>()
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+
+            if (permissions.size === 0) {
+                return
+            } else {
+                requestPermissions(permissions.toArray(arrayOfNulls<String>(permissions.size)), 0)
+            }
+        }
     }
     override fun onResume() {
         super.onResume()
@@ -159,7 +183,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun onComplete(value: String) {
             User.getInstance(value)
-            Toast.makeText(applicationContext, "登陆成功", Toast.LENGTH_LONG).show()
+            Toasty.success(this@MainActivity, "登陆成功" , Toast.LENGTH_SHORT, true).show()
         }
 
         override fun onIOException(arg0: IOException) {

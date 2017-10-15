@@ -3,4 +3,33 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="status_bar_bg_dark">#000000</color>
+    <color name="app_bar_bg_dark">#064F51</color>
+    <color name="blue">#1d97f5</color>
+    <color name="btn_enable">#61c8e5</color>
+    <color name="btn_unable">#b8b8b8</color>
+    <color name="white">#ffffff</color>
+    <color name="tab_selected_color">#FFFFFF</color>
+    <color name="tab_normal_white">#b9bab9</color>
+    <color name="fab_bg">#5CC87B</color>
+    <color name="txt">#25696B</color>
+    <color name="item">#243A4F</color>
+    <color name="item_selected">#000000</color>
+    <color name="menu_press_night_new">#464d5a</color>
+    <color name="store_advance_bg">#fdad4f</color>
+    <color name="thumb_cir_bg">#8c8b8b</color>
+    <color name="table_border">#DEE8E8</color>
+    <color name="table_text_color">#4C5764</color>
+    <color name="table_head_text_color">#949B9E</color>
+    <color name="table_head_bg">#f5f7f6</color>
+    <color name="label_grey">#a5a5a7</color>
+    <color name="dialog_text_color1">#424242</color>
+    <color name="dialog_text_color2">#757575</color>
+    <color name="dialog_text_color3">#202020</color>
+    <color name="dlg_pressed_bg_color">#cfD4D4D4</color>
+    <color name="maintxt">#4c5763</color>
+    <color name="fastscroll">#5CC87B</color>
+
+    <drawable name="menu_press_night">#f0f0f2</drawable>
+    <color name="item_driver_bg_light">#f0f0f2</color>
 </resources>
