@@ -34,5 +34,21 @@
     <string name="title_showfile">view file </string>
     <string name="button_add">Add</string>
     <string name="button_ok">Ok</string>
+    <string name="title_article">upload article</string>
+    <string name="title_articleproperty">property article</string>
+    <string name="title_upfile">upload files</string>
+    <string name="action_packfile">packing files</string>
+    <string name="action_upfinish">upload finished</string>
     <string name="select_file_info"> You can choose multiple files, but it is recommended to choose a zip file</string>
+    <string-array name="class_list_key">
+    <item>c4droid</item>
+    <item>aide</item>
+    </string-array>
+    <string name="info_selectclass"> classify</string>
+    <string name="info_selectpower">select power</string>
+    <string-array name="power_list_key">
+        <item>public</item>
+        <item>sign</item>
+        <item>password</item>
+    </string-array>
 </resources>

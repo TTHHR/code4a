@@ -37,5 +37,21 @@
     <string name="title_showfile">查看文件 </string>
     <string name="button_add">添加</string>
     <string name="button_ok">确定</string>
+    <string name="title_article">上传文章</string>
+    <string name="title_articleproperty">文章属性</string>
+    <string name="title_upfile">上传文件</string>
+    <string name="action_packfile">打包文件</string>
+    <string name="action_upfinish">上传完成</string>
     <string name="select_file_info"> 可以选择多个文件，但是建议选择一个zip文件</string>
+    <string-array name="class_list_key">
+        <item>c4droid</item>
+        <item>aide</item>
+    </string-array>
+    <string name="info_selectclass">分类：</string>
+    <string name="info_selectpower">选择权限：</string>
+    <string-array name="power_list_key">
+        <item>公开</item>
+        <item>登陆</item>
+        <item>密码</item>
+    </string-array>
 </resources>
