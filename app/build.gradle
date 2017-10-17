@@ -32,22 +32,37 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
-    implementation files('libs/baidu-android-openapi-sdk.jar')//百度登陆
-    implementation files('libs/fastjson-1.2.2.jar')//json
-    implementation files('libs/atd-proxy-1.0.jar')// proxy call
-    compile 'com.beardedhen:androidbootstrap:2.0.1'  //bootstrap
+    //百度登陆
+    implementation files('libs/baidu-android-openapi-sdk.jar')
+    //json
+    implementation files('libs/fastjson-1.2.2.jar')
+    // proxy call
+    implementation files('libs/atd-proxy-1.0.jar')
+    //bootstrap
+    compile 'com.beardedhen:androidbootstrap:2.0.1' 
     compile('com.xyzlf.share:sharesdk:0.0.9') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
-    }//分享sdk
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'//加载图片
-    compile 'com.github.huzhenjie:RichTextEditor:1.0.2'//富文本编辑
-    compile 'com.jakewharton:butterknife:8.5.1'//文件
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'//文件
-    compile 'com.orhanobut:logger:1.15'//文件
-    compile 'org.greenrobot:eventbus:3.0.0'//文件
-    compile 'com.github.GrenderG:Toasty:1.2.0'//文件
+    }
+    //分享sdk
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    //加载图片
+    compile 'com.github.huzhenjie:RichTextEditor:1.0.2'
+    //富文本编辑
+    compile 'com.jakewharton:butterknife:8.5.1'
+    //文件
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    //文件
+    compile 'com.orhanobut:logger:1.15'
+    //文件
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //文件
+    compile 'com.github.GrenderG:Toasty:1.2.0'
+    //文件
     compile('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'
-    }//文件
-    compile 'cn.carbs.android:MDDialog:1.0.0'//弹窗
+    }
+    //文件
+    compile 'cn.carbs.android:MDDialog:1.0.0'
+    //弹窗
+    implementation files('libs/zip.jar')
 }

@@ -6,17 +6,20 @@ import android.support.v7.app.AppCompatActivity
 import android.content.Intent
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Message
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Spinner
 import android.widget.Toast
 import cn.qingyuyu.code4droid.library.fileselect.FileList
 import cn.qingyuyu.code4droid.library.fileselect.FileSelectActivity
 import com.scrat.app.richtext.RichEditText
 import es.dmoral.toasty.Toasty
-import android.widget.AdapterView.OnItemClickListener
+import android.widget.TextView
 import cn.carbs.android.library.MDDialog
 
 
@@ -33,11 +36,36 @@ class EditArticleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editarticle)
+        initView()
+    }
+    fun initView()
+    {
         richEditText = findViewById<RichEditText>(R.id.rich_text)
-        richEditText!!.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
-                "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n" +
-                "<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">" +
-                "<img src=\"http://blog.qingyuyu.cn/storage/a5124910.jpg\">")
+        var i=intent
+        if (i.getStringExtra("html") == null) {
+            val inflater = getLayoutInflater()
+            val dialoglayout = inflater.inflate(R.layout.dialog_articleproperty, null)
+
+            val classSpinner= dialoglayout.findViewById<Spinner>(R.id.classspinner)
+
+            val md=MDDialog.Builder(this@EditArticleActivity)
+                    .setTitle(R.string.title_articleproperty)
+                    .setContentView(dialoglayout)
+                    .setWidthMaxDp(600)
+                    .setShowTitle(true)
+                    .setShowButtons(true)
+                    .setCancelable(true)
+                    .create()
+            md .show()
+            richEditText!!.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
+                    "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n" +
+                    "<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">" +
+                    "<img src=\"http://blog.qingyuyu.cn/storage/a5124910.jpg\">")
+        }
+        else
+        {
+            richEditText!!.fromHtml(i.getStringExtra("html"))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,9 +78,54 @@ class EditArticleActivity : AppCompatActivity() {
             R.id.undo -> richEditText!!.undo()
             R.id.redo -> richEditText!!.redo()
             else -> {
-                var i = Intent(this@EditArticleActivity, ViewArticleActivity::class.java)
-                i.putExtra("html", richEditText!!.toHtml())
-                startActivity(i)
+               val inflater = getLayoutInflater()
+                val dialoglayout = inflater.inflate(R.layout.dialog_uploadarticle, null)
+                val message= dialoglayout.findViewById<TextView>(R.id.message)
+                val md=MDDialog.Builder(this@EditArticleActivity)
+                        .setTitle(R.string.title_article)
+                        .setContentView(dialoglayout)
+                        .setWidthMaxDp(600)
+                        .setShowTitle(true)
+                        .setShowButtons(false)
+                        .setCancelable(true)
+                        .create()
+                md .show()
+                val hd=object:Handler(){
+                    override fun handleMessage(msg: Message) {
+                        val s = msg.what as Int
+                        Log.e("what",""+s)
+                        when(s)
+                        {
+                            1-> message.text=getString(R.string.action_packfile)
+                            2-> message.text=getString(R.string.title_upfile)
+                            3->message.text=getString(R.string.action_upfinish)
+                            4->md.cancel()
+                        }
+
+                            super.handleMessage(msg)
+                    }
+                }
+
+                Thread(Runnable {
+                    var message = Message()
+                    message.what=1
+                    hd!!.sendMessage(message)
+                    Thread.sleep(1000)
+                    message = Message()
+                    message.what=2
+                    hd!!.sendMessage(message)
+                    Thread.sleep(1000)
+                    message = Message()
+                    message.what=3
+                    hd!!.sendMessage(message)
+                    Thread.sleep(1000)
+                    message = Message()
+                    message.what=4
+                    hd!!.sendMessage(message)
+                }).start()
+
+
+
             }
         }
 
