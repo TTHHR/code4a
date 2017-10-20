@@ -32,12 +32,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
-    implementation files('libs/baidu-android-openapi-sdk.jar')
     //百度登陆
-    implementation files('libs/fastjson-1.2.2.jar')
+    implementation files('libs/baidu-android-openapi-sdk.jar')
     //json
-    compile 'com.beardedhen:androidbootstrap:2.0.1'
+    implementation files('libs/fastjson-1.2.2.jar')
+    // proxy call
+    implementation files('libs/atd-proxy-1.0.jar')
     //bootstrap
+    compile 'com.beardedhen:androidbootstrap:2.0.1' 
     compile('com.xyzlf.share:sharesdk:0.0.9') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
