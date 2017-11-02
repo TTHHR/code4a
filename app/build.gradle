@@ -37,8 +37,6 @@ dependencies {
     implementation files('libs/baidu-android-openapi-sdk.jar')
     //json
     implementation files('libs/fastjson-1.2.2.jar')
-    // proxy call
-    implementation files('libs/atd-proxy-1.1-full.jar')
     //bootstrap
     compile 'com.beardedhen:androidbootstrap:2.0.1' 
     compile('com.xyzlf.share:sharesdk:0.0.9') {

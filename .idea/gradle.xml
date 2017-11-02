@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/atd3proxy" />
             <option value="$PROJECT_DIR$/baidusign" />
             <option value="$PROJECT_DIR$/fungamerefresh" />
           </set>
