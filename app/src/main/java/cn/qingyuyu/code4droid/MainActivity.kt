@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_tool -> {
-
+//                startActivity(Intent(this@MainActivity,BaiduSignActivity::class.java));
             }
             R.id.nav_share -> {
                 val testBean = ShareEntity(getString(R.string.app_name), getString(R.string.share_content))
