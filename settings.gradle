@@ -1,1 +1,1 @@
-include ':app', ':baiduoauth',':fungamerefresh'
+include ':app',':fungamerefresh'
