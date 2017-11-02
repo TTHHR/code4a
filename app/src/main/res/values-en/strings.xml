@@ -51,4 +51,9 @@
         <item>sign</item>
         <item>password</item>
     </string-array>
+    <string name="info_loadingtext">have a game</string>
+    <string name="info_gaveover">game over</string>
+    <string name="info_loadingfinish">loading finished</string>
+    <string name="info_pulltorefresh">Pull to refresh</string>
+    <string name="info_howtogame">Up and down sliding control game</string>
 </resources>

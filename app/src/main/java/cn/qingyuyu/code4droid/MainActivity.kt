@@ -6,15 +6,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import com.hitomi.refresh.view.FunGameRefreshView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import com.baidu.api.BaiduDialogError
@@ -25,9 +27,6 @@ import com.baidu.api.Util
 import com.baidu.api.AsyncBaiduRunner.RequestListener
 import java.io.IOException
 import com.baidu.api.AsyncBaiduRunner
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import cn.qingyuyu.code4droid.model.User
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
@@ -43,14 +42,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val isConfirmLogin = true
     var head_iv: ImageView? = null
     var uname: TextView? = null
+     var  listView: ListView?=null
+    var refreshView: FunGameRefreshView?=null
     private var isPermissionRequested = false//权限
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         initView()
-        requestPermission();//请求权限
+        requestPermission()//请求权限
     }
+
+
 
     fun initView() {
         val toggle = ActionBarDrawerToggle(
@@ -89,6 +92,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Util.logd("cancle", "I am back")
                 }
             })
+
+//
+
+
+
+
+
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
         newarticle.setOnClickListener(View.OnClickListener { view ->
