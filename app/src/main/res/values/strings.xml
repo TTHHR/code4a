@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">c4droid代码手册</string>
+    <string name="app_name">code4a</string>
     <string name="editarticle_name">编辑文章</string>
     <string name="setting">设置</string>
     <string name="setting_about">关于</string>
@@ -54,4 +54,12 @@
         <item>登陆</item>
         <item>密码</item>
     </string-array>
+    <string name="info_loadingtext">玩个游戏</string>
+    <string name="info_gaveover">游戏结束</string>
+    <string name="info_loadingfinish">加载完成</string>
+    <string name="info_pulltorefresh">下拉刷新</string>
+    <string name="info_howtogame">上下滑动控制游戏</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

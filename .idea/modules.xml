@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Code4A.iml" filepath="$PROJECT_DIR$/Code4A.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/baiduoauth/baiduoauth.iml" filepath="$PROJECT_DIR$/baiduoauth/baiduoauth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fungamerefresh/fungamerefresh.iml" filepath="$PROJECT_DIR$/fungamerefresh/fungamerefresh.iml" />
     </modules>
   </component>
 </project>
