@@ -9,6 +9,7 @@ import java.io.InputStream
  * Created by DXkite on 2017/11/2 0002.
  */
 class Controller : ProxyController {
+
     override fun getCookies(): String {
         return "";
     }

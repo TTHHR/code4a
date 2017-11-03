@@ -1,1 +1,1 @@
-include ':app',':fungamerefresh', ':baidusign', ':atd3proxy'
+include ':app',':fungamerefresh', ':baidusign', ':common-proxy', ':common'

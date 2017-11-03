@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        
+
         //获取头像点击事件
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
