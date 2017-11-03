@@ -1,4 +1,4 @@
-package cn.dxkite.atd3proxy;
+package cn.dxkite.rpc;
 
 import org.junit.Test;
 
