@@ -2,6 +2,7 @@ package cn.qingyuyu.code4droid.model
 
 import android.net.Uri
 import android.util.Log
+import cn.qingyuyu.commom.SomeValue
 
 import com.alibaba.fastjson.JSONObject
 
@@ -11,8 +12,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.net.URL
-
-import cn.qingyuyu.code4droid.SomeValue
 
 /**
  *

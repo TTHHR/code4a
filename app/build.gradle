@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "cn.qingyuyu.code4droid"
         minSdkVersion 15
@@ -26,6 +26,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':common')
+    //百度登陆
     implementation project(path: ':baidusign')
     implementation project(path: ':fungamerefresh')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -36,8 +37,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
-    //百度登陆
-//    implementation files('libs/baidu-android-openapi-sdk.jar')
+
     //bootstrap
     implementation 'com.beardedhen:androidbootstrap:2.0.1'
     implementation ('com.xyzlf.share:sharesdk:0.0.9') {
