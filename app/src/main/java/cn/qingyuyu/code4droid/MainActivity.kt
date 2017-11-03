@@ -11,24 +11,22 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 
 import com.hitomi.refresh.view.FunGameRefreshView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import cn.qingyuyu.code4droid.control.LoginDealController
+import cn.qingyuyu.code4droid.model.User
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import com.baidu.api.BaiduException
-import com.baidu.api.AsyncBaiduRunner.RequestListener
-import java.io.IOException
-import cn.qingyuyu.code4droid.model.User
 import cn.qingyuyu.commom.SomeValue
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
 import com.xyzlf.share.library.bean.ShareEntity
-import es.dmoral.toasty.Toasty
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -70,12 +68,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val i = Intent(this@MainActivity, EditArticleActivity::class.java)
             startActivity(i)
         })
-
-
-
-
-
-
     }
 
     @SuppressLint("NewApi")
@@ -101,9 +93,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
 
-        if (User.instance.isLogind) {
-            uname!!.text = User.instance.getUserName()
-            head_iv!!.setImageURI(User.instance.imgUri)
+        if (User.getInstance().isLogind) {
+            uname!!.text = User.getInstance().userName
+            head_iv!!.setImageURI(User.getInstance().getimgUri())
         } else {
             uname!!.text = this.getText(R.string.username)
             head_iv!!.setImageResource(R.mipmap.ic_launcher)
@@ -159,19 +151,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    //百度登陆Listener
-    inner class DefaultRequstListener : RequestListener {
-
-        override fun onBaiduException(arg0: BaiduException) {
-        }
-
-        override fun onComplete(value: String) {
-            User.getInstance(value)
-            Toasty.success(this@MainActivity, "登陆成功", Toast.LENGTH_SHORT, true).show()
-        }
-
-        override fun onIOException(arg0: IOException) {
-        }
-
-    }
 }
