@@ -25,6 +25,10 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(path: ':common')
+    implementation project(path: ':common-rpc')
+    implementation project(path: ':baidusign')
+    implementation project(path: ':fungamerefresh')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -34,36 +38,30 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     //百度登陆
-    implementation files('libs/baidu-android-openapi-sdk.jar')
+//    implementation files('libs/baidu-android-openapi-sdk.jar')
     //bootstrap
-    compile 'com.beardedhen:androidbootstrap:2.0.1' 
-    compile('com.xyzlf.share:sharesdk:0.0.9') {
+    implementation 'com.beardedhen:androidbootstrap:2.0.1'
+    implementation ('com.xyzlf.share:sharesdk:0.0.9') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
     //分享sdk
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //加载图片
-    compile 'com.github.huzhenjie:RichTextEditor:1.0.2'
+    implementation 'com.github.huzhenjie:RichTextEditor:1.0.2'
     //富文本编辑
-    compile 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.jakewharton:butterknife:8.5.1'
     //文件
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //文件
-    compile 'com.orhanobut:logger:1.15'
+    implementation 'com.orhanobut:logger:1.15'
     //文件
-    compile 'org.greenrobot:eventbus:3.0.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
     //文件
-    compile 'com.github.GrenderG:Toasty:1.2.0'
+    implementation 'com.github.GrenderG:Toasty:1.2.0'
     //文件
-    compile('me.drakeet.multitype:multitype:2.5.0') {
+    implementation('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'
     }
-    //文件
-    compile 'cn.carbs.android:MDDialog:1.0.0'
-    //弹窗
-    implementation files('libs/zip.jar')
-    compile project(path: ':common')
-    compile project(path: ':fungamerefresh')
-    compile project(path: ':common-rpc')
-    compile project(path: ':baidusign')
+    // 弹窗
+    implementation 'cn.carbs.android:MDDialog:1.0.0'
 }

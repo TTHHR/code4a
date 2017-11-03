@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
-    private static final String PATH = "atd/crash";
+    private static final String PATH = "code4a/crash-log";
     private static String name = "CrashHandler";
     private static CrashHandler instance = new CrashHandler();
     private Thread.UncaughtExceptionHandler handler;
