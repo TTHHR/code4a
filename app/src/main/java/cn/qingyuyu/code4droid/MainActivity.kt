@@ -11,22 +11,24 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 
 import com.hitomi.refresh.view.FunGameRefreshView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import cn.qingyuyu.code4droid.control.LoginDealController
-import cn.qingyuyu.code4droid.model.User
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import com.baidu.api.BaiduException
+import com.baidu.api.AsyncBaiduRunner.RequestListener
+import java.io.IOException
+import cn.qingyuyu.code4droid.model.User
 import cn.qingyuyu.commom.SomeValue
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
 import com.xyzlf.share.library.bean.ShareEntity
+import es.dmoral.toasty.Toasty
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -59,9 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
-
-
-
+            startActivity(Intent(this@MainActivity,SignActivity::class.java))
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
         newarticle.setOnClickListener(View.OnClickListener { view ->
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_tool -> {
-//                startActivity(Intent(this@MainActivity,BaiduSignActivity::class.java));
+               //
 
             }
             R.id.nav_share -> {

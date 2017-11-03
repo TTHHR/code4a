@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "cn.qingyuyu.code4droid"
         minSdkVersion 15
@@ -37,8 +37,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
-
-    //bootstrap
+    // 百度登陆
+    // implementation files('libs/baidu-android-openapi-sdk.jar')
+    // implementation files('libs/zip.jar')
+    // bootstrap
     implementation 'com.beardedhen:androidbootstrap:2.0.1'
     implementation ('com.xyzlf.share:sharesdk:0.0.9') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -58,16 +60,9 @@ dependencies {
     //文件
     implementation 'com.github.GrenderG:Toasty:1.2.0'
     //文件
-    implementation('me.drakeet.multitype:multitype:2.5.0') {
+    implementation ('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'
     }
-    //文件
+    //  弹窗
     compile 'cn.carbs.android:MDDialog:1.0.0'
-    // //弹窗
-    // implementation files('libs/zip.jar')
-    // //压缩
-    // compile project(path: ':common')
-    // compile project(path: ':fungamerefresh')
-    // compile project(path: ':common-rpc')
-    // compile project(path: ':baidusign')
 }
