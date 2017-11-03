@@ -62,6 +62,13 @@ dependencies {
     implementation('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'
     }
-    // 弹窗
-    implementation 'cn.carbs.android:MDDialog:1.0.0'
+    //文件
+    compile 'cn.carbs.android:MDDialog:1.0.0'
+    // //弹窗
+    // implementation files('libs/zip.jar')
+    // //压缩
+    // compile project(path: ':common')
+    // compile project(path: ':fungamerefresh')
+    // compile project(path: ':common-rpc')
+    // compile project(path: ':baidusign')
 }
