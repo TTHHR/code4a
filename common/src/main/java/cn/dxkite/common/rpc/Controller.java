@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import cn.atd3.proxy.ProxyController;
+import cn.qingyuyu.commom.service.FileDealService;
 
 /**
  * 远程调用状态控制器
@@ -18,6 +19,7 @@ public class Controller implements ProxyController {
      */
     @Override
     public String getCookies() {
+
         return null;
     }
 
@@ -28,6 +30,7 @@ public class Controller implements ProxyController {
      */
     @Override
     public boolean saveCookie(String cookie) {
+
         return false;
     }
 
@@ -40,6 +43,7 @@ public class Controller implements ProxyController {
      */
     @Override
     public File saveFile(String contentType, InputStream content, long contentLength) {
-        return null;
+
+        return new FileDealService().saveFile(content);//may be null
     }
 }
