@@ -1,4 +1,4 @@
-package cn.dxkite.rpc;
+package cn.dxkite.common.rpc;
 
 import java.io.File;
 import java.io.InputStream;

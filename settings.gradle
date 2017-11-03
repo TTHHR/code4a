@@ -1,1 +1,1 @@
-include ':app', ':common', ':common-rpc', ':baidusign',':fungamerefresh'
+include ':app', ':common', ':baidusign',':fungamerefresh'
