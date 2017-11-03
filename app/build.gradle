@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "cn.qingyuyu.code4droid"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,10 +35,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     //百度登陆
     implementation files('libs/baidu-android-openapi-sdk.jar')
-    //json
-    implementation files('libs/fastjson-1.2.2.jar')
-    // proxy call
-    implementation files('libs/atd-proxy-1.0.jar')
     //bootstrap
     compile 'com.beardedhen:androidbootstrap:2.0.1' 
     compile('com.xyzlf.share:sharesdk:0.0.9') {
@@ -66,5 +62,8 @@ dependencies {
     compile 'cn.carbs.android:MDDialog:1.0.0'
     //弹窗
     implementation files('libs/zip.jar')
+    compile project(path: ':common')
     compile project(path: ':fungamerefresh')
+    compile project(path: ':common-rpc')
+    compile project(path: ':baidusign')
 }

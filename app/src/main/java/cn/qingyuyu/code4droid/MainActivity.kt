@@ -17,6 +17,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import com.baidu.api.BaiduDialogError
@@ -42,8 +43,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val isConfirmLogin = true
     var head_iv: ImageView? = null
     var uname: TextView? = null
-     var  listView: ListView?=null
-    var refreshView: FunGameRefreshView?=null
+    var listView: ListView? = null
+    var refreshView: FunGameRefreshView? = null
     private var isPermissionRequested = false//权限
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +55,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
     fun initView() {
+
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -96,9 +97,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 
 
-
-
-
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
         newarticle.setOnClickListener(View.OnClickListener { view ->
@@ -106,6 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(i)
         })
     }
+
     @SuppressLint("NewApi")
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= 23 && !isPermissionRequested) {
@@ -125,6 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
 
@@ -167,6 +167,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_tool -> {
+//                startActivity(Intent(this@MainActivity,BaiduSignActivity::class.java));
 
             }
             R.id.nav_share -> {
@@ -193,7 +194,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun onComplete(value: String) {
             User.getInstance(value)
-            Toasty.success(this@MainActivity, "登陆成功" , Toast.LENGTH_SHORT, true).show()
+            Toasty.success(this@MainActivity, "登陆成功", Toast.LENGTH_SHORT, true).show()
         }
 
         override fun onIOException(arg0: IOException) {
