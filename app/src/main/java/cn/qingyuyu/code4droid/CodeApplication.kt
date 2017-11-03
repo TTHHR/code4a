@@ -2,6 +2,7 @@ package cn.qingyuyu.code4droid
 
 import android.app.Application
 import android.preference.PreferenceManager
+import cn.atd3.proxy.ProxyConfig
 import cn.dxkite.common.CrashHandler
 import java.util.*
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
@@ -32,7 +33,7 @@ class CodeApplication : Application() {
         imageLoader.init(ImageLoaderConfiguration.createDefault(this))
         // 异常处理
         CrashHandler.getInstance().init(applicationContext)
-        // 设置RPC请求超时  1s
-        cn.dxkite.rpc.Config.setTimeOut(1000)
+        // 设置RPC请求超时1s
+        ProxyConfig.setTimeOut(1000)
     }
 }
