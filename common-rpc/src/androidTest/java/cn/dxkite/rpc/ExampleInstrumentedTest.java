@@ -1,4 +1,4 @@
-package cn.dxkite.atd3proxy;
+package cn.dxkite.rpc;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
