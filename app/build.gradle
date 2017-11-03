@@ -64,6 +64,6 @@ dependencies {
     implementation files('libs/zip.jar')
     compile project(path: ':common')
     compile project(path: ':fungamerefresh')
-    compile project(path: ':common-proxy')
+    compile project(path: ':common-rpc')
     compile project(path: ':baidusign')
 }
