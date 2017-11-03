@@ -10,5 +10,7 @@ import cn.atd3.proxy.ProxyController;
  */
 
 public class Config extends  ProxyConfig {
-
+    static  {
+        Config.setController(new Controller());
+    }
 }
