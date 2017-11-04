@@ -25,16 +25,7 @@ import cn.atd3.proxy.exception.ServerException;
 public class SignWebView extends WebView {
     static String TAG="SignWebView";
 
-    static Handler hander=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch(msg.what){
-                case 0:
 
-                    break;
-            }
-        }
-    };
     /**
      * Constructs a new WebView with a Context object.
      *
@@ -70,6 +61,16 @@ public class SignWebView extends WebView {
 
 
     }
+    static Handler hander=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what){
+                case 0:
+
+                    break;
+            }
+        }
+    };
 
     public boolean change2SignPage(){
         new Thread(){
@@ -79,7 +80,7 @@ public class SignWebView extends WebView {
                     String url=(String)new BaiduSignServer().method("getAuthUrl",String.class).call();
                     // 调用webbview打开这个URL
                     Log.d(TAG,"getAuthUrl:"+url);
-                    
+
                 } catch (ServerException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
