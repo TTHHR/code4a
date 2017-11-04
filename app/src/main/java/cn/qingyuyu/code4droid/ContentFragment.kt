@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
+import cn.atd3.proxy.Param
 import cn.qingyuyu.code4droid.model.ListData
 import cn.qingyuyu.code4droid.remote.Remote
+import cn.qingyuyu.code4droid.remote.bean.Article
 import cn.qingyuyu.code4droid.remote.bean.BaiduUserInfo
 import cn.qingyuyu.code4droid.remote.bean.UserInfo
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
+import java.util.ArrayList
 
 class ContentFragment : Fragment() {
 
@@ -38,19 +41,25 @@ class ContentFragment : Fragment() {
         val ad = ArrayAdapter<String>(activity, android.R.layout.simple_expandable_list_item_1, ld.listData)
         listView.adapter = ad
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
-            var userInfo:Any?=null;
-            var baiduInfo:Any?=null;
+//            var userInfo:Any?=null;
+//            var baiduInfo:Any?=null;
+            var articleList:Any?=null;
+
             override fun onPullRefreshing() {
-                ld.upDate()
+//                ld.upDate()
 
                 // 测试获取用户信息
-                userInfo= Remote.user.method("getInfo", UserInfo::class.java).call()
-                baiduInfo=Remote.baiduUser.method("getInfo", BaiduUserInfo::class.java).call()
+//                userInfo= Remote.user.method("getInfo", UserInfo::class.java).call()
+                articleList= Remote.article.method("getList",  Article::class.java).call(1,10)
+                if (articleList is ArrayList<*>){
+                    ld.setArticles(articleList as ArrayList<Article>)
+                }
+//                baiduInfo=Remote.baiduUser.method("getInfo", BaiduUserInfo::class.java).call()
             }
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                Toasty.success(activity, "加载完成:\n用户信息："+userInfo+"\n百度:"+baiduInfo, Toast.LENGTH_SHORT).show()
+                Toasty.success(activity, "加载完成", Toast.LENGTH_SHORT).show()
             }
         })
 
