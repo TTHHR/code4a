@@ -11,6 +11,7 @@ import android.widget.ListView
 import android.widget.Toast
 import cn.qingyuyu.code4droid.model.ListData
 import cn.qingyuyu.code4droid.remote.Remote
+import cn.qingyuyu.code4droid.remote.bean.BaiduUserInfo
 import cn.qingyuyu.code4droid.remote.bean.UserInfo
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
@@ -38,17 +39,18 @@ class ContentFragment : Fragment() {
         listView.adapter = ad
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
             var userInfo:Any?=null;
+            var baiduInfo:Any?=null;
             override fun onPullRefreshing() {
                 ld.upDate()
-                // 模拟后台耗时任务
+
                 // 测试获取用户信息
                 userInfo= Remote.user.method("getInfo", UserInfo::class.java).call()
-                // SystemClock.sleep(2000)
+                baiduInfo=Remote.baiduUser.method("getInfo", BaiduUserInfo::class.java).call()
             }
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                Toasty.success(activity, "加载完成:"+userInfo, Toast.LENGTH_SHORT).show()
+                Toasty.success(activity, "加载完成:\n用户信息："+userInfo+"\n百度:"+baiduInfo, Toast.LENGTH_SHORT).show()
             }
         })
 
