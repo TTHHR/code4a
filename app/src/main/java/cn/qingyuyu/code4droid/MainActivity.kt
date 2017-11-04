@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -22,15 +21,11 @@ import cn.dxkite.baidusign.SignActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import com.baidu.api.BaiduDialogError
 import com.baidu.api.BaiduException
-import com.baidu.api.BaiduDialog.BaiduDialogListener
-import com.baidu.api.Baidu
-import com.baidu.api.Util
 import com.baidu.api.AsyncBaiduRunner.RequestListener
 import java.io.IOException
-import com.baidu.api.AsyncBaiduRunner
 import cn.qingyuyu.code4droid.model.User
+import cn.qingyuyu.commom.SomeValue
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
 import com.xyzlf.share.library.bean.ShareEntity
@@ -38,13 +33,7 @@ import es.dmoral.toasty.Toasty
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private var baidu: Baidu? = null
     final  var TAG="MainActivity";
-
-    val url = Baidu.LoggedInUser_URL
-    //是否每次授权都强制登陆
-    private val isForceLogin = false
-    private val isConfirmLogin = true
     var head_iv: ImageView? = null
     var uname: TextView? = null
     var listView: ListView? = null
@@ -73,31 +62,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
-            /*
-            baidu = Baidu(SomeValue.clientId, this@MainActivity)
-            if (User.instance.isLogind) {
-                return@setOnClickListener
-            }
-
-            baidu!!.authorize(this@MainActivity, null, isForceLogin, isConfirmLogin, object : BaiduDialogListener {
-
-                override fun onComplete(values: Bundle) {
-                    val runner = AsyncBaiduRunner(baidu)
-                    runner.request(url, null, "POST", DefaultRequstListener())
-                }
-
-                override fun onBaiduException(e: BaiduException) {
-                    Util.logd("error", "$e")
-                }
-
-                override fun onError(e: BaiduDialogError) {
-                    Util.logd("error", "$e")
-                }
-
-                override fun onCancel() {
-                    Util.logd("cancle", "I am back")
-                }
-            })*/
             startActivity(Intent(this@MainActivity,SignActivity::class.java))
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
