@@ -55,7 +55,7 @@ class ContentFragment : Fragment() {
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                Toasty.success(activity, "加载完成", Toast.LENGTH_SHORT).show()
+                Toasty.success(activity, getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show()
             }
         })
 

@@ -5,6 +5,7 @@ import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceScreen
 import android.widget.Toast
+import cn.qingyuyu.code4a.control.LoginDealController
 import es.dmoral.toasty.Toasty
 
 /**
@@ -25,7 +26,8 @@ class SettingsFragment : PreferenceFragment() {
         }
         if(preference.title==getString(R.string.setting_loginout))
         {
-            //退出登陆操作
+            var l=LoginDealController()
+            l.call("logout",null, null)
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference)
 

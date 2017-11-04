@@ -1,10 +1,7 @@
 package cn.qingyuyu.code4a
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
+
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
@@ -41,7 +38,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         initView()
-        requestPermission()//请求权限
     }
 
 
@@ -69,25 +65,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
     }
 
-    @SuppressLint("NewApi")
-    private fun requestPermission() {
-        if (Build.VERSION.SDK_INT >= 23 && !isPermissionRequested) {
-
-            isPermissionRequested = true
-
-            val permissions = ArrayList<String>()
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-
-            if (permissions.size === 0) {
-                return
-            } else {
-                requestPermissions(permissions.toArray(arrayOfNulls<String>(permissions.size)), 0)
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -97,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             head_iv!!.setImageURI(User.getInstance().getimgUri())
         } else {
             uname!!.text = this.getText(R.string.username)
-            head_iv!!.setImageResource(R.mipmap.ic_launcher)
+            head_iv!!.setImageResource(R.mipmap.logo)
         }
     }
 
