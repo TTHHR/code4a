@@ -11,31 +11,21 @@ import cn.qingyuyu.code4droid.remote.bean.Article;
  */
 
 public class ListData {
-    private ArrayList<String> listData=new ArrayList<>();
-   public  ListData(){
-        listData.add("no Data");
-       listData.add("no Data");
+    private ArrayList<String> listData = new ArrayList<>();
+
+    public ListData() {
+        listData.add("下拉刷新~(●'◡'●)");
     }
 
-   public ArrayList<String> getListData()
-   {
-       return listData;
-   }
-   public void upDate()
-   {
-       listData.clear();
-       listData.add("测试数据");
-       listData.add("测试数据");
-       listData.add("测试数据");
-       listData.add("测试数据");
-   }
+    public ArrayList<String> getListData() {
+        return listData;
+    }
+
 
     public void setArticles(@NotNull ArrayList<Article> articleList) {
         listData.clear();
-        listData.add("<--- 测试数据 --->");
-        for (Article article: articleList){
+        for (Article article : articleList) {
             listData.add(article.getTitle());
         }
-        listData.add("<--- 测试数据 --->");
     }
 }

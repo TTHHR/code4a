@@ -7,7 +7,7 @@ import cn.atd3.proxy.ProxyObject;
  */
 
 public class Remote {
-    public static String apiInterface ="http://code4a.i.atd3.cn/dev.php/open-api/1.0";
+    public static String apiInterface ="http://code4a.atd3.cn/open-api/1.0";
     /**
      * 用户接口
      */
