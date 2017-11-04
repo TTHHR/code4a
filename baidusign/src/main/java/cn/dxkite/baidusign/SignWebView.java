@@ -1,14 +1,18 @@
 package cn.dxkite.baidusign;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.logging.Handler;
+
 
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
@@ -20,7 +24,17 @@ import cn.atd3.proxy.exception.ServerException;
 
 public class SignWebView extends WebView {
     static String TAG="SignWebView";
-//    Handler hander=null;
+
+    static Handler hander=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what){
+                case 0:
+
+                    break;
+            }
+        }
+    };
     /**
      * Constructs a new WebView with a Context object.
      *
@@ -53,6 +67,8 @@ public class SignWebView extends WebView {
                 Log.i(TAG,"get cookie:"+cookie);
             }
         });
+
+
     }
 
     public boolean change2SignPage(){
@@ -63,6 +79,7 @@ public class SignWebView extends WebView {
                     String url=(String)new BaiduSignServer().method("getAuthUrl",String.class).call();
                     // 调用webbview打开这个URL
                     Log.d(TAG,"getAuthUrl:"+url);
+                    
                 } catch (ServerException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
