@@ -17,6 +17,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import cn.dxkite.baidusign.SignActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
-            startActivity(Intent(this@MainActivity,SignActivity::class.java))
+            startActivity(Intent(this@MainActivity, SignActivity::class.java))
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
         newarticle.setOnClickListener(View.OnClickListener { view ->

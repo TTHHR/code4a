@@ -5,14 +5,6 @@
     android:background="#0099cc"
     tools:context="cn.dxkite.baidusign.SignActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="测试访问登陆页面"
-        tools:layout_editor_absoluteX="288dp"
-        tools:layout_editor_absoluteY="7dp" />
-
     <cn.dxkite.baidusign.SignWebView
         android:id="@+id/sign_view"
         android:layout_width="match_parent"

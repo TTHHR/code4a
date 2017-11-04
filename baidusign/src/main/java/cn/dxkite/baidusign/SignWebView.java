@@ -1,21 +1,13 @@
 package cn.dxkite.baidusign;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-import java.io.IOException;
-
-
-import cn.atd3.proxy.exception.PermissionException;
-import cn.atd3.proxy.exception.ServerException;
+import cn.atd3.proxy.ProxyConfig;
 
 /**
  * 自定义WebView
@@ -23,8 +15,6 @@ import cn.atd3.proxy.exception.ServerException;
  */
 
 public class SignWebView extends WebView {
-    static String TAG="SignWebView";
-
 
     /**
      * Constructs a new WebView with a Context object.
@@ -47,50 +37,20 @@ public class SignWebView extends WebView {
         init();
     }
 
-    public void init(){
-        Log.d(TAG,"init webview");
+    public void init() {
         this.getSettings().setJavaScriptEnabled(true);
-        this.setWebViewClient(new WebViewClient(){
+        this.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                String cookie=CookieManager.getInstance().getCookie(url);
-                Log.i(TAG,"get cookie:"+cookie);
+                String cookie = CookieManager.getInstance().getCookie(url);
+                String[] cookies =cookie.split(";");
+                for(String cookieStr:cookies){
+                    Log.d("cookie-save",cookieStr);
+                    ProxyConfig.getController().saveCookie(cookieStr);
+                }
+                Log.d("cookie-show", cookie);
             }
         });
-
-
     }
-    static Handler hander=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch(msg.what){
-                case 0:
-
-                    break;
-            }
-        }
-    };
-
-    public boolean change2SignPage(){
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    String url=(String)new BaiduSignServer().method("getAuthUrl",String.class).call();
-                    // 调用webbview打开这个URL
-                    Log.d(TAG,"getAuthUrl:"+url);
-
-                } catch (ServerException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (PermissionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-        return true;
-    }
-
 }
