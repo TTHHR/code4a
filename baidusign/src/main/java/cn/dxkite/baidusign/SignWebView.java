@@ -1,11 +1,13 @@
 package cn.dxkite.baidusign;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import cn.atd3.proxy.ProxyConfig;
 
@@ -15,6 +17,8 @@ import cn.atd3.proxy.ProxyConfig;
  */
 
 public class SignWebView extends WebView {
+
+    private  ProgressBar progressbar;
 
     /**
      * Constructs a new WebView with a Context object.
@@ -34,6 +38,19 @@ public class SignWebView extends WebView {
      */
     public SignWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        //添加进度条UI
+        progressbar = new ProgressBar(context, null,
+                android.R.attr.progressBarStyleHorizontal);
+        progressbar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+                10, 0, 0));
+
+        Drawable drawable = context.getResources().getDrawable(R.drawable.web_progressbar);
+        progressbar.setProgressDrawable(drawable);
+        addView(progressbar);
+        setWebChromeClient(new WebChromeClient());
+
+
+
         init();
     }
 
@@ -51,6 +68,21 @@ public class SignWebView extends WebView {
                 }
                 Log.d("cookie-show", cookie);
             }
+
         });
+    }
+    //进度条改变
+    public class WebChromeClient extends android.webkit.WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if (newProgress == 100) {
+                progressbar.setVisibility(GONE);
+            } else {
+                if (progressbar.getVisibility() == GONE)
+                    progressbar.setVisibility(VISIBLE);
+                progressbar.setProgress(newProgress);
+            }
+            super.onProgressChanged(view, newProgress);
+        }
     }
 }
