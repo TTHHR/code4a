@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import cn.qingyuyu.code4droid.model.ListData
+import cn.qingyuyu.code4droid.remote.Remote
+import cn.qingyuyu.code4droid.remote.bean.UserInfo
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
 
@@ -35,15 +37,18 @@ class ContentFragment : Fragment() {
         val ad = ArrayAdapter<String>(activity, android.R.layout.simple_expandable_list_item_1, ld.listData)
         listView.adapter = ad
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
+            var userInfo:Any?=null;
             override fun onPullRefreshing() {
                 ld.upDate()
                 // 模拟后台耗时任务
-                SystemClock.sleep(2000)
+                // 测试获取用户信息
+                userInfo= Remote.user.method("getInfo", UserInfo::class.java).call()
+                // SystemClock.sleep(2000)
             }
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                Toasty.success(activity, "加载完成", Toast.LENGTH_SHORT).show()
+                Toasty.success(activity, "加载完成:"+userInfo, Toast.LENGTH_SHORT).show()
             }
         })
 

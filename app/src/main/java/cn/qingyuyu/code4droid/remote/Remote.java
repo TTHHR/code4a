@@ -10,7 +10,7 @@ public class Remote {
     /**
      * 用户接口
      */
-    static ProxyObject user=new ProxyObject() {
+    public static ProxyObject user=new ProxyObject() {
         @Override
         public String getCallUrl() {
             return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/user";
@@ -19,7 +19,7 @@ public class Remote {
     /**
      * 文章接口
      */
-    static ProxyObject article=new ProxyObject() {
+    public static ProxyObject article=new ProxyObject() {
         @Override
         public String getCallUrl() {
             return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/article";
@@ -29,7 +29,7 @@ public class Remote {
     /**
      * 标签接口
      */
-    static ProxyObject tag=new ProxyObject() {
+    public static ProxyObject tag=new ProxyObject() {
         @Override
         public String getCallUrl() {
             return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/tags";
@@ -39,7 +39,7 @@ public class Remote {
     /**
      * 类别接口
      */
-    static ProxyObject category=new ProxyObject() {
+    public static ProxyObject category=new ProxyObject() {
         @Override
         public String getCallUrl() {
             return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/category";
@@ -49,7 +49,7 @@ public class Remote {
     /**
      * 文章上传接口
      */
-    static ProxyObject upload=new ProxyObject() {
+    public static ProxyObject upload=new ProxyObject() {
         @Override
         public String getCallUrl() {
             return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/upload";
@@ -59,7 +59,7 @@ public class Remote {
     /**
      * 百度用户接口
      */
-    static ProxyObject baiduUesr=new ProxyObject() {
+    public static ProxyObject baiduUesr=new ProxyObject() {
         @Override
         public String getCallUrl() {
             return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/baidu-user";

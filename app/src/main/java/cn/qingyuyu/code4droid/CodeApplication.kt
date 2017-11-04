@@ -33,8 +33,8 @@ class CodeApplication : Application() {
         imageLoader.init(ImageLoaderConfiguration.createDefault(this))
         // 异常处理
         CrashHandler.getInstance().init(applicationContext)
-        // 设置RPC请求超时
-        ProxyConfig.setTimeOut(3000)
+        // 设置RPC请求超时 5秒
+        ProxyConfig.setTimeOut(5000)
         // 设置RPC控制器
         ProxyConfig.setController(SignController(applicationContext))
     }
