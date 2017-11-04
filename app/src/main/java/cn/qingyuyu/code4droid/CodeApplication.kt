@@ -3,6 +3,7 @@ package cn.qingyuyu.code4droid
 import android.app.Application
 import android.preference.PreferenceManager
 import cn.atd3.proxy.ProxyConfig
+import cn.dxkite.baidusign.SignController
 import cn.dxkite.common.CrashHandler
 import java.util.*
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
@@ -28,12 +29,13 @@ class CodeApplication : Application() {
             conf.locale = Locale(language)
         res.updateConfiguration(conf, dm)
 
-
         val imageLoader = ImageLoader.getInstance()  //初始化图片加载
         imageLoader.init(ImageLoaderConfiguration.createDefault(this))
         // 异常处理
         CrashHandler.getInstance().init(applicationContext)
-        // 设置RPC请求超时1s
-        ProxyConfig.setTimeOut(1000)
+        // 设置RPC请求超时
+        ProxyConfig.setTimeOut(3000)
+        // 设置RPC控制器
+        ProxyConfig.setController(SignController())
     }
 }
