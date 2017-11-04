@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.io.IOException;
+import java.util.logging.Handler;
 
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
@@ -19,7 +20,7 @@ import cn.atd3.proxy.exception.ServerException;
 
 public class SignWebView extends WebView {
     static String TAG="SignWebView";
-
+//    Handler hander=null;
     /**
      * Constructs a new WebView with a Context object.
      *

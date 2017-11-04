@@ -56,4 +56,5 @@
     <string name="info_loadingfinish">loading finished</string>
     <string name="info_pulltorefresh">Pull to refresh</string>
     <string name="info_howtogame">Up and down sliding control game</string>
+    <string name="wanning_storage">Please ensure that App is allowed to store permissions！</string>
 </resources>
