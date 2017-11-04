@@ -21,15 +21,12 @@ import cn.dxkite.baidusign.SignActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import com.baidu.api.BaiduException
-import com.baidu.api.AsyncBaiduRunner.RequestListener
-import java.io.IOException
 import cn.qingyuyu.code4droid.model.User
 import cn.qingyuyu.commom.SomeValue
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
 import com.xyzlf.share.library.bean.ShareEntity
-import es.dmoral.toasty.Toasty
+
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -133,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_tool -> {
-               //
+
 
             }
             R.id.nav_share -> {
