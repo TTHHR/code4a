@@ -64,7 +64,7 @@ public class SignWebView extends WebView {
                 String[] cookies =cookie.split(";");
                 for(String cookieStr:cookies){
                     Log.d("cookie-save",cookieStr);
-                    ProxyConfig.getController().saveCookie(cookieStr);
+                    ProxyConfig.getController().saveCookie(url,cookieStr);
                 }
                 Log.d("cookie-show", cookie);
             }

@@ -1,18 +1,20 @@
 package cn.dxkite.baidusign;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
 
-import cn.dxkite.common.rpc.DefaultController;
+import cn.atd3.proxy.DefaultController;
+import cn.atd3.proxy.ProxyConfig;
+
 
 /**
  * 状态控制器
@@ -20,88 +22,56 @@ import cn.dxkite.common.rpc.DefaultController;
  */
 
 public class SignController extends DefaultController {
-
-    final String userCookie = "user.cookie";
     final String TAG = "cookie-controller";
-    String cookiePath = null;
-    Map<String, String> cookieInfo = new HashMap<String, String>();
-    ;
-    File cookieFile = null;
-
-    public SignController(Context context) {
-        File filesDir = context.getApplicationContext().getFilesDir();
-        if (filesDir.canWrite()) {
-            cookiePath = filesDir.getAbsolutePath() + File.separator + userCookie;
-            cookieFile = new File(cookiePath);
-            if (!cookieFile.exists()) {
-                try {
-                    cookieFile.createNewFile();
-                } catch (IOException e) {
-                    Log.e(TAG, "can't create save cookie file", e);
-                }
-            }
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(cookieFile));
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-                    Log.d(TAG, "load cookie from file:" + line);
-                    setCookie(line);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            Log.e(TAG, "can't write files directory :" + filesDir.getAbsolutePath());
-        }
+    final String downloadPath="code4a/.cache/downloads";
+    public SignController() {
+        super();
     }
 
     @Override
-    public boolean saveCookie(String cookie) {
-        Log.d(TAG, "save cookie:" + cookie);
-        setCookie(cookie);
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(cookieFile);
-        } catch (IOException e) {
-            Log.e(TAG, "can't write cookie file", e);
+    public File saveFile(String contentType, InputStream content, long contentLength) throws IOException {
+        File tempFile= super.saveFile(contentType, content, contentLength);
+        MimeTypeMap  mimeTypeMap=  MimeTypeMap.getSingleton();
+        String extension=mimeTypeMap.getExtensionFromMimeType(contentType);
+        String savePath=Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+downloadPath;
+        File dir=new File(savePath);
+        if (!dir.exists() && dir.mkdirs()){
+            Log.i(TAG,"mkdir :"+dir.getAbsolutePath());
         }
-        for (Map.Entry<String, String> cookieMap : cookieInfo.entrySet()) {
-            String cookieLine = cookieMap.getKey() + "=" + cookieMap.getValue() + ";\r\n";
-            try {
-                writer.write(cookieLine);
-            } catch (IOException e) {
-                e.printStackTrace();
+        File saveFile=new File(dir.getAbsolutePath()+File.separator+tempFile.getName()+"."+extension);
+        if(!moveFile(tempFile,saveFile)){
+            Log.e(TAG,"error:move to:"+saveFile.getAbsolutePath());
+            return tempFile;
+        }
+        return saveFile;
+    }
+    private boolean moveFile(File src, File dest){
+        if (src.isDirectory() || dest.isDirectory()){
+            return false;// 判断是否是文件
+        }
+        try {
+            // 创建输入输出流
+            FileInputStream infile = new FileInputStream(src);
+            FileOutputStream outfile = new FileOutputStream(dest);
+            // 复制文件
+            int temp=0;
+            while ((temp=infile.read())!=-1)
+            {
+                outfile.write(temp);
             }
-        }
-        try {
-            writer.close();
+            // 关闭流
+            infile.close();
+            outfile.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+        if(!src.delete()){
+            Log.e(TAG,"delete srcfile error:"+src.getAbsolutePath());
         }
         return true;
-    }
-
-    private void setCookie(String cookie) {
-        String cookieStr = null;
-        if (cookie.indexOf(";") > 0) {
-            cookieStr = cookie.substring(0, cookie.indexOf(";"));
-        } else {
-            cookieStr = cookie;
-        }
-        int pos = cookieStr.indexOf("=");
-        cookieInfo.put(cookieStr.substring(0, pos), cookieStr.substring(pos + 1));
-    }
-
-    @Override
-    public String getCookies() {
-        StringBuffer cookieStr = new StringBuffer();
-        for (Map.Entry<String, String> cookie : cookieInfo.entrySet()) {
-            cookieStr.append(cookie.getKey() + "=" + cookie.getValue() + ";");
-        }
-        Log.d(TAG, "get cookies:" + cookieStr);
-        return cookieStr.toString();
     }
 }
