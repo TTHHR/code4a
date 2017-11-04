@@ -7,13 +7,14 @@ import cn.atd3.proxy.ProxyObject;
  */
 
 public class Remote {
+    public static String apiInterface ="http://code4a.i.atd3.cn/dev.php/open-api/1.0";
     /**
      * 用户接口
      */
     public static ProxyObject user=new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/user";
+            return apiInterface +"/user";
         }
     };
     /**
@@ -22,7 +23,7 @@ public class Remote {
     public static ProxyObject article=new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/article";
+            return apiInterface +"/article";
         }
     };
 
@@ -32,7 +33,7 @@ public class Remote {
     public static ProxyObject tag=new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/tags";
+            return apiInterface +"/tags";
         }
     };
 
@@ -42,7 +43,7 @@ public class Remote {
     public static ProxyObject category=new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/category";
+            return apiInterface +"/category";
         }
     };
 
@@ -52,17 +53,17 @@ public class Remote {
     public static ProxyObject upload=new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/upload";
+            return apiInterface +"/upload";
         }
     };
 
     /**
      * 百度用户接口
      */
-    public static ProxyObject baiduUesr=new ProxyObject() {
+    public static ProxyObject baiduUser=new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/baidu-user";
+            return apiInterface +"/baidu-user";
         }
     };
 }
