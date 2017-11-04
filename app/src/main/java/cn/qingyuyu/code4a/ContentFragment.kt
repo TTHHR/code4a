@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
+import cn.atd3.proxy.Param
 import cn.qingyuyu.code4a.model.ArticleAdapter
 import cn.qingyuyu.code4a.model.ArticleList
 import cn.qingyuyu.code4a.remote.Remote
 import cn.qingyuyu.code4a.remote.bean.Article
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
+import java.io.File
 import java.util.ArrayList
 
 class ContentFragment : Fragment() {
@@ -40,6 +42,7 @@ class ContentFragment : Fragment() {
 //            var userInfo:Any?=null;
 //            var baiduInfo:Any?=null;
             var articleList:Any?=null
+            var cover:Any?=null;
 
             override fun onPullRefreshing() {
 //                ld.upDate()
@@ -50,12 +53,14 @@ class ContentFragment : Fragment() {
                 if (articleList is ArrayList<*>){
                     ld.setArticles(articleList as ArrayList<Article>)
                 }
+                cover=Remote.article.method("getCover",File::class.java).call(Param("article",1));
+
 //                baiduInfo=Remote.baiduUser.method("getInfo", BaiduUserInfo::class.java).call()
             }
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                Toasty.success(activity, getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show()
+                Toasty.success(activity, getString(R.string.info_loadingfinish)+cover, Toast.LENGTH_SHORT).show()
             }
         })
 
