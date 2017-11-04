@@ -36,6 +36,6 @@ class CodeApplication : Application() {
         // 设置RPC请求超时
         ProxyConfig.setTimeOut(3000)
         // 设置RPC控制器
-        ProxyConfig.setController(SignController())
+        ProxyConfig.setController(SignController(applicationContext))
     }
 }
