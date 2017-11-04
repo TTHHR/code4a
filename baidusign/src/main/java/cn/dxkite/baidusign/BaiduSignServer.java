@@ -10,6 +10,6 @@ import cn.atd3.proxy.ProxyObject;
 public class BaiduSignServer extends ProxyObject {
     @Override
     public String getCallUrl() {
-        return "http://code4a.i.atd3.cn/dev.php/open-api/1.0/baidu-user";
+        return "http://code4a.atd3.cn/open-api/1.0/baidu-user";
     }
 }
