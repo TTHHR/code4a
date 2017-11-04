@@ -12,11 +12,13 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.hitomi.refresh.view.FunGameRefreshView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import cn.dxkite.baidusign.SignActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -37,6 +39,8 @@ import es.dmoral.toasty.Toasty
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var baidu: Baidu? = null
+    final  var TAG="MainActivity";
+
     val url = Baidu.LoggedInUser_URL
     //是否每次授权都强制登陆
     private val isForceLogin = false
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
+            /*
             baidu = Baidu(SomeValue.clientId, this@MainActivity)
             if (User.instance.isLogind) {
                 return@setOnClickListener
@@ -92,11 +97,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 override fun onCancel() {
                     Util.logd("cancle", "I am back")
                 }
-            })
-
-//
-
-
+            })*/
+            startActivity(Intent(this@MainActivity,SignActivity::class.java))
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
         newarticle.setOnClickListener(View.OnClickListener { view ->
@@ -167,8 +169,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_tool -> {
-//                startActivity(Intent(this@MainActivity,BaiduSignActivity::class.java));
-
+               //
+                Log.i(TAG,"nav tool is clicked!");
             }
             R.id.nav_share -> {
                 val testBean = ShareEntity(getString(R.string.app_name), getString(R.string.share_content))

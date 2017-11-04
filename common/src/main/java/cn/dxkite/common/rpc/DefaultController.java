@@ -10,7 +10,7 @@ import cn.atd3.proxy.ProxyController;
  * Created by DXkite on 2017/11/3 0003.
  */
 
-public class Controller implements ProxyController {
+public class DefaultController implements ProxyController {
 
     /**
      * 获取全部保持用户状态的 Cookie
