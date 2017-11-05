@@ -10,11 +10,12 @@ class SignActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        signView= findViewById(R.id.sign_view) as SignWebView;
+        signView= findViewById(R.id.sign_view) as SignWebView
         change2Auth()
     }
 
     private fun change2Auth(){
+        signView!!.setSignActivity(this)
         Thread {
             kotlin.run {
                 var url=BaiduSignServer().method("getAuthUrl",String::class.java).call() as String;
@@ -24,5 +25,4 @@ class SignActivity : AppCompatActivity() {
             }
         }.start()
     }
-
 }

@@ -3,6 +3,7 @@ package cn.dxkite.baidusign;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -26,6 +27,8 @@ public class SignWebView extends WebView {
 
     private  ProgressBar progressbar;
     private  Context context;
+    private  AppCompatActivity signActivity;
+
     /**
      * Constructs a new WebView with a Context object.
      *
@@ -79,10 +82,10 @@ public class SignWebView extends WebView {
                         Object baidu=new BaiduSignServer().method("getInfo",BaiduUser.class).call();
 
                         if (baidu instanceof BaiduUser){
-                            Looper.prepare();
-                            Log.e("json",baidu.toString());
                             new FileDealService().userFile(baidu.toString());
+                            Looper.prepare();
                             Toast.makeText(context,"登陆成功！Success",Toast.LENGTH_LONG).show();
+                            signActivity.finish();
                             Looper.loop();
                         }
                     } catch (ServerException e) {
@@ -111,5 +114,9 @@ public class SignWebView extends WebView {
             }
             super.onProgressChanged(view, newProgress);
         }
+    }
+
+    public void setSignActivity(AppCompatActivity signActivit) {
+        this.signActivity = signActivit;
     }
 }

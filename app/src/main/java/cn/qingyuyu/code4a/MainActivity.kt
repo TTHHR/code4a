@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
-
         if (User.getInstance().isLogind) {
             uname!!.text = User.getInstance().userName
             head_iv!!.setImageURI(User.getInstance().getimgUri())
