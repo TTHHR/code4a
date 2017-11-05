@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import cn.dxkite.baidusign.SignActivity;
+import cn.qingyuyu.code4a.model.User;
+import cn.qingyuyu.commom.SomeValue;
+import cn.qingyuyu.commom.service.FileDealService;
 
 /**
  * Created by harrytit on 2017/11/2.
@@ -20,6 +23,8 @@ public class LoginDealController {
             return bindMail(mail);
         else if(call.equals("checkmail"))
             return checkMail();
+        else if(call.equals("logout"))
+            return logout(con);
         return false;
     }
     private boolean login(Activity con)
@@ -28,6 +33,11 @@ public class LoginDealController {
         con.startActivity(i);
 
         return true;
+    }
+    private boolean logout(Activity con)
+    {
+
+        return User.getInstance().logout();
     }
     private boolean bindMail(String mailAdd)
     {

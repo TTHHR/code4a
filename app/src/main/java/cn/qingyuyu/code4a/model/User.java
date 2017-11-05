@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import cn.qingyuyu.code4a.remote.Remote;
 import cn.qingyuyu.commom.SomeValue;
 import cn.qingyuyu.commom.service.FileDealService;
 
@@ -38,7 +39,7 @@ public class User {
                   iconName = user.getString("portrait");
                    userName = user.getString("uname");
                } catch ( Exception e) {
-                   Log.e("User", "null");
+                   Log.e("User", "not login");
                }
 
           }
@@ -87,9 +88,16 @@ public void changeFile(String json)
 
 
     }
-    public void logout(){
-        new FileDealService().delFile(SomeValue.userData);
-
+    public boolean logout(){
+        try {
+            new FileDealService().delFile(SomeValue.userData);//删除本地信息
+            Remote.user.method("signout").call();//服务器退出登陆
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
     public String getUserName(){
         return userName;
