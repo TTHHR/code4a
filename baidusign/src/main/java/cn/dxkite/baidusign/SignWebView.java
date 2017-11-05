@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import cn.atd3.proxy.ProxyConfig;
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
+import cn.qingyuyu.commom.service.FileDealService;
 
 /**
  * 自定义WebView
@@ -75,9 +77,12 @@ public class SignWebView extends WebView {
                 public void run() {
                     try {
                         Object baidu=new BaiduSignServer().method("getInfo",BaiduUser.class).call();
+
                         if (baidu instanceof BaiduUser){
                             Looper.prepare();
-                            Toast.makeText(context,"你的百度信息为："+baidu,Toast.LENGTH_SHORT).show();
+                            Log.e("json",baidu.toString());
+                            new FileDealService().userFile(baidu.toString());
+                            Toast.makeText(context,"登陆成功！Success",Toast.LENGTH_LONG).show();
                             Looper.loop();
                         }
                     } catch (ServerException e) {

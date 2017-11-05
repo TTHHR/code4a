@@ -113,4 +113,68 @@ public class FileDealService {
         }
         return f;
     }
+
+
+
+
+    public void userFile(final String json)
+    {
+
+        JSONObject user = JSONObject.parseObject(json);
+            final String  iconName = user.getString("portrait");
+             new Thread(new Runnable() {//下载保存头像
+            @Override
+            public void run() {
+                File tmp=new FileDealService().saveFile(SomeValue.imgUrl + iconName);//保存头像
+                File icon=new File(SomeValue.dirPath+iconName);
+
+
+                try{
+                    if(icon.exists())
+                        icon.delete();
+                    icon.createNewFile();
+
+
+                    FileInputStream ins = new FileInputStream(tmp);
+                    FileOutputStream out = new FileOutputStream(icon);
+                    byte[] b = new byte[1024];
+                    int n=0;
+                    while((n=ins.read(b))!=-1){
+                        out.write(b, 0, n);
+                    }
+                    ins.close();
+                    out.close();
+
+
+                    File userdata=new File(SomeValue.dirPath+SomeValue.userData);
+                    if(userdata.exists())
+                        userdata.delete();
+                    userdata.createNewFile();
+                     out = new FileOutputStream(userdata);
+                   out.write(json.getBytes());
+                    out.close();
+
+                }
+                catch (Exception e)
+                {
+                        Log.e("User",""+e);
+                }
+
+            }
+        }).start();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

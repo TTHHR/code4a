@@ -29,9 +29,10 @@ public class LoginDealController {
     }
     private boolean login(Activity con)
     {
-        Intent i=new Intent(con, SignActivity.class);
-        con.startActivity(i);
-
+        if(!User.getInstance().isLogind()) {
+            Intent i = new Intent(con, SignActivity.class);
+            con.startActivity(i);
+        }
         return true;
     }
     private boolean logout(Activity con)
