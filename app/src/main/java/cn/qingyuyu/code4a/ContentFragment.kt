@@ -1,4 +1,4 @@
-package cn.qingyuyu.code4droid
+package cn.qingyuyu.code4a
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
+import cn.atd3.proxy.Param
 import cn.qingyuyu.code4a.model.ArticleAdapter
 import cn.qingyuyu.code4a.model.ArticleList
 import cn.qingyuyu.code4a.remote.Remote
@@ -59,7 +60,7 @@ class ContentFragment : Fragment() {
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                Toasty.success(activity, "加载完成,下载的文件："+cover, Toast.LENGTH_SHORT).show()
+                Toasty.success(activity, getString(R.string.info_loadingfinish)+cover, Toast.LENGTH_SHORT).show()
             }
         })
 
