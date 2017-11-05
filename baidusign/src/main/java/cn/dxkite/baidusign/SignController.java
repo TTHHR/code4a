@@ -1,19 +1,16 @@
 package cn.dxkite.baidusign;
 
-import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import cn.atd3.proxy.DefaultController;
-import cn.atd3.proxy.ProxyConfig;
+
 
 
 /**
@@ -45,6 +42,7 @@ public class SignController extends DefaultController {
         }
         return saveFile;
     }
+
     private boolean moveFile(File src, File dest){
         if (src.isDirectory() || dest.isDirectory()){
             return false;// 判断是否是文件

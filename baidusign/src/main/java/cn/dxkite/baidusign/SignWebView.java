@@ -2,14 +2,18 @@ package cn.dxkite.baidusign;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 import cn.atd3.proxy.ProxyConfig;
+import cn.atd3.proxy.exception.PermissionException;
+import cn.atd3.proxy.exception.ServerException;
 
 /**
  * 自定义WebView
@@ -19,7 +23,7 @@ import cn.atd3.proxy.ProxyConfig;
 public class SignWebView extends WebView {
 
     private  ProgressBar progressbar;
-
+    private  Context context;
     /**
      * Constructs a new WebView with a Context object.
      *
@@ -27,7 +31,7 @@ public class SignWebView extends WebView {
      */
     public SignWebView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     /**
@@ -38,6 +42,11 @@ public class SignWebView extends WebView {
      */
     public SignWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
+    }
+
+    public void init(Context context) {
+        this.context=context;
         //添加进度条UI
         progressbar = new ProgressBar(context, null,
                 android.R.attr.progressBarStyleHorizontal);
@@ -48,29 +57,42 @@ public class SignWebView extends WebView {
         progressbar.setProgressDrawable(drawable);
         addView(progressbar);
         setWebChromeClient(new WebChromeClient());
-
-
-
-        init();
+        setWebViewClient(new WebViewClient());
+        getSettings().setJavaScriptEnabled(true);
     }
 
-    public void init() {
-        this.getSettings().setJavaScriptEnabled(true);
-        this.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                String cookie = CookieManager.getInstance().getCookie(url);
-                String[] cookies =cookie.split(";");
-                for(String cookieStr:cookies){
-                    Log.d("cookie-save",cookieStr);
-                    ProxyConfig.getController().saveCookie(url,cookieStr);
-                }
-                Log.d("cookie-show", cookie);
+    public  class WebViewClient extends  android.webkit.WebViewClient {
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            String cookie = CookieManager.getInstance().getCookie(url);
+            String[] cookies =cookie.split(";");
+            for(String cookieStr:cookies){
+                ProxyConfig.getController().saveCookie(url,cookieStr);
             }
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Object baidu=new BaiduSignServer().method("getInfo",BaiduUser.class).call();
+                        if (baidu instanceof BaiduUser){
+                            Looper.prepare();
+                            Toast.makeText(context,"你的百度信息为："+baidu,Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+                    } catch (ServerException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (PermissionException e) {
+                        e.printStackTrace();
+                    }
 
-        });
+                }
+            }.start();
+        }
     }
+
     //进度条改变
     public class WebChromeClient extends android.webkit.WebChromeClient {
         @Override
