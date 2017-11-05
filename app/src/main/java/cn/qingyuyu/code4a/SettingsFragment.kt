@@ -6,6 +6,7 @@ import android.preference.PreferenceFragment
 import android.preference.PreferenceScreen
 import android.widget.Toast
 import cn.qingyuyu.code4a.control.LoginDealController
+import cn.qingyuyu.code4a.model.User
 import es.dmoral.toasty.Toasty
 
 /**
@@ -28,6 +29,7 @@ class SettingsFragment : PreferenceFragment() {
         {
             var l=LoginDealController()
             l.call("logout",null, null)
+            Toasty.success(activity,"退出登陆成功，Sucess",Toast.LENGTH_SHORT).show()
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference)
 

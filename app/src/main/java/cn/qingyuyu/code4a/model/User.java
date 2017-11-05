@@ -34,7 +34,7 @@ public class User {
     {
       if (iconName == null && userName == null) {
           try{
-                String data=new FileDealService().readFile(SomeValue.userData);
+                String data=new FileDealService().readFile(SomeValue.dirPath+SomeValue.userData);
               JSONObject user = JSONObject.parseObject(data);
                   iconName = user.getString("portrait");
                    userName = user.getString("uname");
@@ -47,41 +47,6 @@ public class User {
     }
 
 
-public void changeFile(String json)
-{
-    JSONObject user = JSONObject.parseObject(json);
-    iconName = user.getString("portrait");
-    userName = user.getString("uname");
-    new Thread(new Runnable() {//下载保存头像
-        @Override
-        public void run() {
-            File tmp=new FileDealService().saveFile(SomeValue.imgUrl + iconName);
-            File icon=new File(SomeValue.dirPath+iconName);
-            try{
-                FileInputStream ins = new FileInputStream(tmp);
-                FileOutputStream out = new FileOutputStream(icon);
-                byte[] b = new byte[1024];
-                int n=0;
-                while((n=ins.read(b))!=-1){
-                    out.write(b, 0, n);
-                }
-                ins.close();
-                out.close();
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-    }).start();
-}
-
-
-
-
-
-
-
     public boolean isLogind(){
 
         return userName != null;
@@ -90,7 +55,9 @@ public void changeFile(String json)
     }
     public boolean logout(){
         try {
-            new FileDealService().delFile(SomeValue.userData);//删除本地信息
+            userName=null;
+
+            new FileDealService().delFile(SomeValue.dirPath+SomeValue.userData);//删除本地信息
             Remote.user.method("signout").call();//服务器退出登陆
             return true;
         }

@@ -43,11 +43,6 @@ public class BaiduUser {
 
     @Override
     public String toString() {
-        return "BaiduUser{" +
-                "user=" + user +
-                ", uid=" + uid +
-                ", uname='" + uname + '\'' +
-                ", portrait='" + portrait + '\'' +
-                '}';
+        return "{" + "\"user\":" + user + ",\"uid\":" + uid + ",\"uname\":\"" + uname + "\"" + ",\"portrait\":\"" + portrait + "\"" + "}";
     }
 }
