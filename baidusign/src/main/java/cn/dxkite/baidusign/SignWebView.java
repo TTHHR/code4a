@@ -85,7 +85,6 @@ public class SignWebView extends WebView {
                             new FileDealService().userFile(baidu.toString());
                             Looper.prepare();
                             Toast.makeText(context,"登陆成功！Success",Toast.LENGTH_LONG).show();
-                            signActivity.finish();
                             Looper.loop();
                         }
                     } catch (ServerException e) {
