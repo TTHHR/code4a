@@ -20,7 +20,7 @@ import cn.atd3.proxy.DefaultController;
 
 public class SignController extends DefaultController {
     final String TAG = "cookie-controller";
-    final String downloadPath="code4a/.cache/downloads";
+    final String downloadPath="code4a/.cache/temps";
     public SignController() {
         super();
     }
