@@ -14,15 +14,16 @@
 
     <ImageView
         android:id="@+id/headImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
         android:clickable="true"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/logo" />
 
     <TextView
         android:id="@+id/uname"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="code4droid"

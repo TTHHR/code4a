@@ -90,7 +90,7 @@ public class FileDealService {
         File f = null;
 
         try {
-            f = new File(Environment.getExternalStorageDirectory().toString() + SomeValue.userDir + name);
+            f = new File(SomeValue.dirPath + name);
             if (f.exists())
                 f.delete();
             f.createNewFile();
