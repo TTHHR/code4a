@@ -1,7 +1,10 @@
 package cn.qingyuyu.code4a.model;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -57,10 +60,9 @@ public class User {
 
     }
 
-    public boolean logout() {
+    public boolean logout(Activity con) {
         try {
             userName = null;
-
             new FileDealService().delFile(SomeValue.dirPath + SomeValue.userData);//删除本地信息
             Remote.user.method("signout").call();//服务器退出登陆
             return true;

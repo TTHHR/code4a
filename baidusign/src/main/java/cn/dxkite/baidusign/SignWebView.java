@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
