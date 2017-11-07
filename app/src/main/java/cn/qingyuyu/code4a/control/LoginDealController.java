@@ -38,7 +38,7 @@ public class LoginDealController {
     private boolean logout(Activity con)
     {
 
-        return User.getInstance().logout();
+        return User.getInstance().logout(con);
     }
     private boolean bindMail(String mailAdd)
     {
