@@ -2,6 +2,7 @@ package cn.qingyuyu.code4a
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,9 +50,15 @@ class ContentFragment : Fragment() {
 
                 // 测试获取用户信息
 //                userInfo= Remote.user.method("getInfo", UserInfo::class.java).call()
-                articleList= Remote.article.method("getList",  Article::class.java).call(1,10)
-                if (articleList is ArrayList<*>){
-                    ld.setArticles(articleList as ArrayList<Article>)
+                try {
+                    articleList = Remote.article.method("getList", Article::class.java).call(1, 10)
+                    if (articleList is ArrayList<*>) {
+                        ld.setArticles(articleList as ArrayList<Article>)
+                    }
+                }
+                catch (e:Exception)
+                {
+                    Log.e("net error",""+e)
                 }
 //                cover=Remote.article.method("getCover",File::class.java).call(Param("article",1));
 
@@ -60,6 +67,9 @@ class ContentFragment : Fragment() {
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
+                if(ld.listData.size==1)
+                    Toasty.error(activity, getString(R.string.error_network), Toast.LENGTH_SHORT).show()
+                else
                 Toasty.success(activity, getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show()
             }
         })

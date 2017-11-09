@@ -6,7 +6,7 @@ package cn.qingyuyu.code4a.model;
 
 public abstract class Database {
     private String tableName = "";
-    private int id = 0;
+    private int id = 99999;
 
     Database(String tableName) {
         this.tableName = tableName;
@@ -17,6 +17,6 @@ public abstract class Database {
     }
 
     public abstract String getCreate();
-    // private static final String CREATE_TBL = " create table "
-    //         + " CollTbl(_id integer primary key autoincrement,name text,url text, desc text) ";
+    private static final String CREATE_TBL = " create table "
+            + " Article(_id integer primary key autoincrement,name text,url text, desc text) ";
 }

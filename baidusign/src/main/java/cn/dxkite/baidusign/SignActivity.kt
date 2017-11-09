@@ -3,6 +3,7 @@ package cn.dxkite.baidusign
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 
@@ -14,6 +15,7 @@ class SignActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         signView= findViewById(R.id.sign_view) as SignWebView
+        CookieSyncManager.createInstance(this)
         change2Auth()
     }
 
@@ -34,9 +36,15 @@ class SignActivity : AppCompatActivity() {
         signView!!.setSignActivity(this)
         Thread {
             kotlin.run {
-                var url=BaiduSignServer().method("getAuthUrl",String::class.java).call() as String
-                runOnUiThread {
-                    signView!!.loadUrl(url)
+                try {
+                    var url = BaiduSignServer().method("getAuthUrl", String::class.java).call() as String
+                    runOnUiThread {
+                        signView!!.loadUrl(url)
+                    }
+                }
+                catch (e:Exception)
+                {
+                    Log.e("net error",""+e)
                 }
             }
         }.start()

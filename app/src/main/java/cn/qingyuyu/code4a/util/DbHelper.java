@@ -15,8 +15,7 @@ import cn.qingyuyu.code4a.model.Database;
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "code.db";
     private String TBL_NAME = "";
-    private String CREATE_TBL = " create table "
-            + " CollTbl(_id integer primary key autoincrement,name text,url text, desc text) ";
+    private String CREATE_TBL = "";
     private SQLiteDatabase db;
 
     DbHelper(Context c, Database dbmodel) {
