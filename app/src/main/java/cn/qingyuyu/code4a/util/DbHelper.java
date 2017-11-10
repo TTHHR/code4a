@@ -9,19 +9,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import cn.qingyuyu.code4a.model.Database;
+import cn.qingyuyu.commom.SomeValue;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "code.db";
-    private String TBL_NAME = "";
-    private String CREATE_TBL = "";
+    private String TBL_NAME = "Articles";
+    private String CLEAR = "drop table if exists "+TBL_NAME;
+    private String QUERY = "select * from "+TBL_NAME;
+    private String CREATE_TBL = " create table "
+            + " Articles(id integer,title text,slug text,user integer,created integer,modify integer,category integer, cover integer,views integer,status integer,mAbstract text);";
     private SQLiteDatabase db;
 
-    DbHelper(Context c, Database dbmodel) {
+   public DbHelper(Context c) {
         super(c, DB_NAME, null, 2);
-        this.TBL_NAME = dbmodel.getTabltName();
-        this.CREATE_TBL = dbmodel.getCreate();
     }
 
     @Override
@@ -37,8 +39,8 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor query() {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor c = db.query(TBL_NAME, null, null, null, null, null, null);
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(SomeValue.dirPath+"databases/"+DB_NAME,null);
+        Cursor c = db.rawQuery(QUERY, null);
         return c;
     }
 
@@ -47,7 +49,12 @@ public class DbHelper extends SQLiteOpenHelper {
             db = getWritableDatabase();
         db.delete(TBL_NAME, "id=?", new String[]{String.valueOf(id)});
     }
-
+    public void clear() {
+        if (db == null)
+            db = getWritableDatabase();
+        db.execSQL(CLEAR);
+        db.execSQL(CREATE_TBL);
+    }
     public void close() {
         if (db != null)
             db.close();
