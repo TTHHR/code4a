@@ -6,16 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
-import cn.atd3.proxy.Param
+import cn.qingyuyu.code4a.control.DataBaseController
 import cn.qingyuyu.code4a.model.ArticleAdapter
 import cn.qingyuyu.code4a.model.ArticleList
 import cn.qingyuyu.code4a.remote.Remote
 import cn.qingyuyu.code4a.remote.bean.Article
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
-import java.io.File
 import java.util.ArrayList
 
 class ContentFragment : Fragment() {
@@ -24,7 +24,7 @@ class ContentFragment : Fragment() {
     private lateinit var refreshView: FunGameRefreshView
 
     private lateinit var listView: ListView
-    var ld = ArticleList()
+    var ld = ArticleList(context)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -39,6 +39,9 @@ class ContentFragment : Fragment() {
         listView = view.findViewById(R.id.list_view)
         val ad = ArticleAdapter(activity,R.layout.articlelist_item,ld.listData)
         listView.adapter = ad
+        listView.onItemClickListener= AdapterView.OnItemClickListener{ adapterView,view,i,l->
+            Toasty.info(activity,ld.listData[i].toString(),Toast.LENGTH_SHORT).show()
+        }
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
 //            var userInfo:Any?=null;
 //            var baiduInfo:Any?=null;
@@ -77,5 +80,12 @@ class ContentFragment : Fragment() {
         return view
 
 
+    }
+
+    override fun onDestroy() {
+        var data= DataBaseController()
+        data.clearArticles(context)
+        data.saveArticles(context,ld.listData)
+        super.onDestroy()
     }
 }

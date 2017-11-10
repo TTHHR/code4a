@@ -1,9 +1,12 @@
 package cn.qingyuyu.code4a.model;
 
+import android.content.Context;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import cn.qingyuyu.code4a.control.DataBaseController;
 import cn.qingyuyu.code4a.remote.bean.Article;
 
 /**
@@ -13,14 +16,19 @@ import cn.qingyuyu.code4a.remote.bean.Article;
 public class ArticleList {
     private ArrayList<Article> listData = new ArrayList<>();
 
-    public ArticleList() {
-        Article refresh=new Article();
-        refresh.setTitle("下拉刷新~(●'◡'●)");
-        refresh.setAbstract("按住我下拉刷新");
-        refresh.setUser(123);
-        refresh.setModify(456);
-
-        listData.add(refresh);
+    public ArticleList(Context context) {
+        ArrayList<Article> al= new DataBaseController().getTempArticles(context);
+        if(al.isEmpty()) {
+            Article refresh = new Article();
+            refresh.setTitle("下拉刷新~(●'◡'●)");
+            refresh.setAbstract("按住我下拉刷新");
+            refresh.setUser(123);
+            refresh.setModify(456);
+            refresh.setCategory(0);
+            listData.add(refresh);
+        }
+        else
+            listData=al;
     }
 
     public ArrayList<Article> getListData() {
