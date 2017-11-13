@@ -14,32 +14,53 @@ import cn.qingyuyu.code4a.remote.bean.Article;
  */
 
 public class ArticleList {
-    private ArrayList<Article> listData = new ArrayList<>();
 
+    private ArrayList<Article> c4droidList = new ArrayList<>();
+    private ArrayList<Article> aideList = new ArrayList<>();
     public ArticleList(Context context) {
-        ArrayList<Article> al= new DataBaseController().getTempArticles(context);
-        if(al.isEmpty()) {
+        ArrayList<ArrayList> al= new DataBaseController().getTempArticles(context);
+        if(al.get(0).isEmpty()) {
             Article refresh = new Article();
             refresh.setTitle("下拉刷新~(●'◡'●)");
             refresh.setAbstract("按住我下拉刷新");
             refresh.setUser(123);
             refresh.setModify(456);
             refresh.setCategory(0);
-            listData.add(refresh);
+            c4droidList.add(refresh);
         }
         else
-            listData=al;
-    }
-
-    public ArrayList<Article> getListData() {
-        return listData;
-    }
-
-
-    public void setArticles(@NotNull ArrayList<Article> articleList) {
-        listData.clear();
-        for (Article article : articleList) {
-            listData.add(article);
+            c4droidList=al.get(0);
+        if(al.get(1).isEmpty()) {
+            Article refresh = new Article();
+            refresh.setTitle("下拉刷新~(●'◡'●)");
+            refresh.setAbstract("按住我下拉刷新");
+            refresh.setUser(123);
+            refresh.setModify(456);
+            refresh.setCategory(1);
+            aideList.add(refresh);
         }
+        else
+            aideList=al.get(1);
+    }
+    public ArrayList<Article> getC4droidList() {
+        return c4droidList;
+    }
+    public ArrayList<Article>getAideList(){
+        return aideList;
+    }
+
+    public void setArticles(@NotNull ArrayList<Article> articleList,int kind) {
+        switch (kind)
+        {
+            case 0:c4droidList.clear();
+                for (Article article : articleList) {
+                    c4droidList.add(article);
+                }
+            case 1:aideList.clear();
+                for (Article article : articleList) {
+                    aideList.add(article);
+                }
+        }
+
     }
 }

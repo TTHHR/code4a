@@ -33,10 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="27dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginRight="27dp"
+        android:layout_marginBottom="95dp"
+        android:layout_marginEnd="40dp"
+        android:alpha="0.5"
         android:src="@mipmap/newarticle"
         app:backgroundTint="#ff87ffeb"
         app:rippleColor="#33728dff" />

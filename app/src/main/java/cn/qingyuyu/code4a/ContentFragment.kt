@@ -1,5 +1,6 @@
 package cn.qingyuyu.code4a
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import cn.qingyuyu.code4a.control.DataBaseController
@@ -16,19 +18,22 @@ import cn.qingyuyu.code4a.remote.Remote
 import cn.qingyuyu.code4a.remote.bean.Article
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
-import java.util.ArrayList
+import java.util.*
+import java.util.stream.Collector
 
 class ContentFragment : Fragment() {
-
-
+        private var kind=0
     private lateinit var refreshView: FunGameRefreshView
-
+    private var articleTemp=ArticleList(context)
+    private var articleData=ArrayList<Article>()
     private lateinit var listView: ListView
-    var ld = ArticleList(context)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_content, container, false)//实例化
+
+        val c4droid=view.findViewById<Button>(R.id.c4droid)
+        val aide=view.findViewById<Button>(R.id.aide)
 
         refreshView = view.findViewById(R.id.refresh)
         refreshView.setLoadingText(getString(R.string.info_loadingtext))
@@ -37,10 +42,12 @@ class ContentFragment : Fragment() {
         refreshView.setTopMaskText(getString(R.string.info_pulltorefresh))
         refreshView.setBottomMaskText(getString(R.string.info_howtogame))
         listView = view.findViewById(R.id.list_view)
-        val ad = ArticleAdapter(activity,R.layout.articlelist_item,ld.listData)
+        copyList(articleData,articleTemp.c4droidList)
+        val ad = ArticleAdapter(activity,R.layout.articlelist_item,articleData)
         listView.adapter = ad
         listView.onItemClickListener= AdapterView.OnItemClickListener{ adapterView,view,i,l->
-            Toasty.info(activity,ld.listData[i].toString(),Toast.LENGTH_SHORT).show()
+           Toasty.info(activity,articleData[i].toString(),Toast.LENGTH_SHORT).show()
+
         }
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
 //            var userInfo:Any?=null;
@@ -56,7 +63,7 @@ class ContentFragment : Fragment() {
                 try {
                     articleList = Remote.article.method("getList", Article::class.java).call(1, 10)
                     if (articleList is ArrayList<*>) {
-                        ld.setArticles(articleList as ArrayList<Article>)
+                        articleTemp.setArticles(articleList as ArrayList<Article>,kind)
                     }
                 }
                 catch (e:Exception)
@@ -70,12 +77,28 @@ class ContentFragment : Fragment() {
 
             override fun onRefreshComplete() {
                 ad.notifyDataSetChanged()
-                if(ld.listData.size==1)
-                    Toasty.error(activity, getString(R.string.error_network), Toast.LENGTH_SHORT).show()
-                else
                 Toasty.success(activity, getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show()
             }
         })
+
+        c4droid.setOnClickListener(View.OnClickListener {
+            kind=0
+            c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            copyList(articleData,articleTemp.c4droidList)
+            ad.notifyDataSetChanged()
+           Log.e("click",""+articleData.toString())
+        })
+        aide.setOnClickListener(View.OnClickListener {
+            kind=1
+            aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            copyList(articleData,articleTemp.aideList)
+            ad.notifyDataSetChanged()
+            Log.e("click",""+articleData.toString())
+        })
+
+
 
         return view
 
@@ -85,7 +108,14 @@ class ContentFragment : Fragment() {
     override fun onDestroy() {
         var data= DataBaseController()
         data.clearArticles(context)
-        data.saveArticles(context,ld.listData)
+        data.saveArticles(context,articleTemp.c4droidList)
+        data.saveArticles(context,articleTemp.aideList)
         super.onDestroy()
+    }
+    fun copyList( m :ArrayList<Article>  ,  s: ArrayList<Article>)
+    {
+        m.clear()
+        for (i in s)
+            m.add(i)
     }
 }
