@@ -63,13 +63,16 @@ public class DataBaseController {
         }
         return  true;
     }
-    public ArrayList<Article> getTempArticles(Context context){
-        ArrayList<Article> al=new ArrayList<>();
+    public ArrayList<ArrayList> getTempArticles(Context context){
+        ArrayList<ArrayList>al=new ArrayList<>();
+        ArrayList<Article> a0=new ArrayList<>();
+        ArrayList<Article> a1=new ArrayList<>();
         DbHelper database = new DbHelper(context);
         try {
             Cursor c = database.query();
             while (c.moveToNext()) {
                 Article a = new Article();
+                a.setCategory(c.getInt(c.getColumnIndex("category")));//读取分类
                 a.setId(c.getInt(c.getColumnIndex("id")));
                 a.setTitle(c.getString(c.getColumnIndex("title")));
                 a.setSlug(c.getString(c.getColumnIndex("slug")));
@@ -77,11 +80,16 @@ public class DataBaseController {
                 a.setUser(c.getInt(c.getColumnIndex("user")));
                 a.setCreate(c.getInt(c.getColumnIndex("created")));
                 a.setModify(c.getInt(c.getColumnIndex("modify")));
-                a.setCategory(c.getInt(c.getColumnIndex("category")));
                 a.setCover(c.getInt(c.getColumnIndex("cover")));
                 a.setViews(c.getInt(c.getColumnIndex("views")));
                 a.setStatus(c.getInt(c.getColumnIndex("status")));
-                al.add(a);
+               switch (a.getCategory())
+               {
+                   case 0:a0.add(a);break;
+                   case 1:a1.add(a);break;
+
+                       default:
+               }
 
             }
         }
@@ -92,6 +100,8 @@ public class DataBaseController {
         finally {
             database.close();
         }
-            return al;
+           al.add(a0);
+        al.add(a1);
+        return al;
     }
 }
