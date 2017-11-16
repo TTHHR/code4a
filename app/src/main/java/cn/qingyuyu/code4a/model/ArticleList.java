@@ -17,6 +17,7 @@ public class ArticleList {
 
     private ArrayList<Article> c4droidList = new ArrayList<>();
     private ArrayList<Article> aideList = new ArrayList<>();
+    private ArrayList<Article> androidList = new ArrayList<>();
     public ArticleList(Context context) {
         ArrayList<ArrayList> al= new DataBaseController().getTempArticles(context);
         if(al.get(0).isEmpty()) {
@@ -41,12 +42,26 @@ public class ArticleList {
         }
         else
             aideList=al.get(1);
+        if(al.get(2).isEmpty()) {
+            Article refresh = new Article();
+            refresh.setTitle("下拉刷新~(●'◡'●)");
+            refresh.setAbstract("按住我下拉刷新");
+            refresh.setUser(123);
+            refresh.setModify(456);
+            refresh.setCategory(1);
+            androidList.add(refresh);
+        }
+        else
+            androidList=al.get(2);
     }
     public ArrayList<Article> getC4droidList() {
         return c4droidList;
     }
     public ArrayList<Article>getAideList(){
         return aideList;
+    }
+    public ArrayList<Article>getAndroidList(){
+        return androidList;
     }
 
     public void setArticles(@NotNull ArrayList<Article> articleList,int kind) {

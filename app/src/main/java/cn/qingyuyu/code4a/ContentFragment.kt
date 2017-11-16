@@ -34,6 +34,7 @@ class ContentFragment : Fragment() {
 
         val c4droid=view.findViewById<Button>(R.id.c4droid)
         val aide=view.findViewById<Button>(R.id.aide)
+        val android=view.findViewById<Button>(R.id.android)
 
         refreshView = view.findViewById(R.id.refresh)
         refreshView.setLoadingText(getString(R.string.info_loadingtext))
@@ -61,9 +62,18 @@ class ContentFragment : Fragment() {
                 // 测试获取用户信息
 //                userInfo= Remote.user.method("getInfo", UserInfo::class.java).call()
                 try {
-                    articleList = Remote.article.method("getList", Article::class.java).call(1, 10)
+                    Log.e("get Article","kind="+kind)
+                    //articleList = Remote.article.method("getList", Article::class.java).call(1, 10)
+                    articleList = Remote.article.method("getListByCategoryId", Article::class.java).call(kind,1, 10)
                     if (articleList is ArrayList<*>) {
                         articleTemp.setArticles(articleList as ArrayList<Article>,kind)
+                        when(kind)
+                        {
+
+                            0->copyList(articleData,articleTemp.c4droidList)
+                            1->copyList(articleData,articleTemp.aideList)
+                            2->copyList(articleData,articleTemp.androidList)
+                        }
                     }
                 }
                 catch (e:Exception)
@@ -87,7 +97,6 @@ class ContentFragment : Fragment() {
             aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
             copyList(articleData,articleTemp.c4droidList)
             ad.notifyDataSetChanged()
-           Log.e("click",""+articleData.toString())
         })
         aide.setOnClickListener(View.OnClickListener {
             kind=1
@@ -95,9 +104,14 @@ class ContentFragment : Fragment() {
             c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
             copyList(articleData,articleTemp.aideList)
             ad.notifyDataSetChanged()
-            Log.e("click",""+articleData.toString())
         })
-
+        android.setOnClickListener(View.OnClickListener {
+            kind=2
+            c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            copyList(articleData,articleTemp.androidList)
+            ad.notifyDataSetChanged()
+        })
 
 
         return view
