@@ -64,16 +64,16 @@ class ContentFragment : Fragment() {
                 try {
                     Log.e("get Article","kind="+kind)
                     //articleList = Remote.article.method("getList", Article::class.java).call(1, 10)
-                    articleList = Remote.article.method("getListByCategoryId", Article::class.java).call(kind,1, 10)
+                    articleList = Remote.category.method("getArticleById", Article::class.java).call(kind,1, 10)
                     if (articleList is ArrayList<*>) {
                         articleTemp.setArticles(articleList as ArrayList<Article>,kind)
                         when(kind)
                         {
-
                             0->copyList(articleData,articleTemp.c4droidList)
                             1->copyList(articleData,articleTemp.aideList)
                             2->copyList(articleData,articleTemp.androidList)
                         }
+
                     }
                 }
                 catch (e:Exception)
@@ -95,6 +95,7 @@ class ContentFragment : Fragment() {
             kind=0
             c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
             aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            android.setBackgroundColor(resources.getColor(R.color.btn_enable))
             copyList(articleData,articleTemp.c4droidList)
             ad.notifyDataSetChanged()
         })
@@ -102,12 +103,14 @@ class ContentFragment : Fragment() {
             kind=1
             aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
             c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            android.setBackgroundColor(resources.getColor(R.color.btn_enable))
             copyList(articleData,articleTemp.aideList)
             ad.notifyDataSetChanged()
         })
         android.setOnClickListener(View.OnClickListener {
             kind=2
-            c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            android.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
             aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
             copyList(articleData,articleTemp.androidList)
             ad.notifyDataSetChanged()
@@ -124,12 +127,13 @@ class ContentFragment : Fragment() {
         data.clearArticles(context)
         data.saveArticles(context,articleTemp.c4droidList)
         data.saveArticles(context,articleTemp.aideList)
+        data.saveArticles(context,articleTemp.androidList)
         super.onDestroy()
     }
     fun copyList( m :ArrayList<Article>  ,  s: ArrayList<Article>)
     {
         m.clear()
-        for (i in s)
-            m.add(i)
+        m.addAll(s)
+        Log.e("copy","okkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
     }
 }

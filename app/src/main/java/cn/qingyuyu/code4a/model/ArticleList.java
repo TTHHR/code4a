@@ -23,7 +23,7 @@ public class ArticleList {
         if(al.get(0).isEmpty()) {
             Article refresh = new Article();
             refresh.setTitle("下拉刷新~(●'◡'●)");
-            refresh.setAbstract("按住我下拉刷新");
+            refresh.setAbstract("按住我下拉刷新0");
             refresh.setUser(123);
             refresh.setModify(456);
             refresh.setCategory(0);
@@ -34,7 +34,7 @@ public class ArticleList {
         if(al.get(1).isEmpty()) {
             Article refresh = new Article();
             refresh.setTitle("下拉刷新~(●'◡'●)");
-            refresh.setAbstract("按住我下拉刷新");
+            refresh.setAbstract("按住我下拉刷新1");
             refresh.setUser(123);
             refresh.setModify(456);
             refresh.setCategory(1);
@@ -45,7 +45,7 @@ public class ArticleList {
         if(al.get(2).isEmpty()) {
             Article refresh = new Article();
             refresh.setTitle("下拉刷新~(●'◡'●)");
-            refresh.setAbstract("按住我下拉刷新");
+            refresh.setAbstract("按住我下拉刷新2");
             refresh.setUser(123);
             refresh.setModify(456);
             refresh.setCategory(1);
@@ -74,6 +74,10 @@ public class ArticleList {
             case 1:aideList.clear();
                 for (Article article : articleList) {
                     aideList.add(article);
+                }
+            case 2:androidList.clear();
+                for (Article article : articleList) {
+                    androidList.add(article);
                 }
         }
 
