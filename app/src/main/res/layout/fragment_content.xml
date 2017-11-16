@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/colorMultiSelectHighlight"
+            android:background="@color/btn_enable"
             android:orientation="horizontal">
 
             <Button
@@ -42,8 +42,39 @@
                 android:background="@color/btn_enable" />
 
             <Button
-                android:id="@+id/aide"
-                android:text="aide"
+            android:id="@+id/aide"
+            android:text="aide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/btn_enable"
+            />
+            <Button
+                android:id="@+id/android"
+                android:text="android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/btn_enable"
+                />
+            <Button
+                android:text="欢"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/btn_enable"
+                />
+            <Button
+                android:text="迎"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/btn_enable"
+                />
+            <Button
+                android:text="补"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/btn_enable"
+                />
+            <Button
+                android:text="充"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/btn_enable"

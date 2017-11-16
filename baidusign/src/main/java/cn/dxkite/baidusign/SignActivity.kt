@@ -44,7 +44,7 @@ class SignActivity : AppCompatActivity() {
                 }
                 catch (e:Exception)
                 {
-                    Log.e("net error",""+e)
+                    Log.e(javaClass.name+"net error",""+e)
                 }
             }
         }.start()

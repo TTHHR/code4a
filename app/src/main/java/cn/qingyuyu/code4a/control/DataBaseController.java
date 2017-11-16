@@ -67,6 +67,7 @@ public class DataBaseController {
         ArrayList<ArrayList>al=new ArrayList<>();
         ArrayList<Article> a0=new ArrayList<>();
         ArrayList<Article> a1=new ArrayList<>();
+        ArrayList<Article> a2=new ArrayList<>();
         DbHelper database = new DbHelper(context);
         try {
             Cursor c = database.query();
@@ -87,7 +88,7 @@ public class DataBaseController {
                {
                    case 0:a0.add(a);break;
                    case 1:a1.add(a);break;
-
+                   case 2:a2.add(a);break;
                        default:
                }
 
@@ -102,6 +103,7 @@ public class DataBaseController {
         }
            al.add(a0);
         al.add(a1);
+        al.add(a2);
         return al;
     }
 }
