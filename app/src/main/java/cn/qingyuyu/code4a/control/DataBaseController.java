@@ -65,9 +65,9 @@ public class DataBaseController {
     }
     public ArrayList<ArrayList> getTempArticles(Context context){
         ArrayList<ArrayList>al=new ArrayList<>();
-        ArrayList<Article> a0=new ArrayList<>();
         ArrayList<Article> a1=new ArrayList<>();
         ArrayList<Article> a2=new ArrayList<>();
+        ArrayList<Article> a3=new ArrayList<>();
         DbHelper database = new DbHelper(context);
         try {
             Cursor c = database.query();
@@ -86,9 +86,9 @@ public class DataBaseController {
                 a.setStatus(c.getInt(c.getColumnIndex("status")));
                switch (a.getCategory())
                {
-                   case 0:a0.add(a);break;
                    case 1:a1.add(a);break;
                    case 2:a2.add(a);break;
+                   case 3:a3.add(a);break;
                        default:
                }
 
@@ -101,9 +101,9 @@ public class DataBaseController {
         finally {
             database.close();
         }
-           al.add(a0);
-        al.add(a1);
+           al.add(a1);
         al.add(a2);
+        al.add(a3);
         return al;
     }
 }

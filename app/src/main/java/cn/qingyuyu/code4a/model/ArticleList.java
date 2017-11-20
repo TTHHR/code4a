@@ -1,6 +1,7 @@
 package cn.qingyuyu.code4a.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -14,11 +15,16 @@ import cn.qingyuyu.code4a.remote.bean.Article;
  */
 
 public class ArticleList {
-
-    private ArrayList<Article> c4droidList = new ArrayList<>();
-    private ArrayList<Article> aideList = new ArrayList<>();
-    private ArrayList<Article> androidList = new ArrayList<>();
-    public ArticleList(Context context) {
+    private static ArticleList articleList=new ArticleList();
+    private static ArrayList<Article> c4droidList = new ArrayList<>();
+    private static ArrayList<Article> aideList = new ArrayList<>();
+    private static ArrayList<Article> androidList = new ArrayList<>();
+    private ArticleList(){}
+    public static ArticleList getArticleList(Context context) {
+        if(!c4droidList.isEmpty())
+        {
+            return articleList;
+        }
         ArrayList<ArrayList> al= new DataBaseController().getTempArticles(context);
         if(al.get(0).isEmpty()) {
             Article refresh = new Article();
@@ -53,6 +59,7 @@ public class ArticleList {
         }
         else
             androidList=al.get(2);
+        return articleList;
     }
     public ArrayList<Article> getC4droidList() {
         return c4droidList;
@@ -63,19 +70,29 @@ public class ArticleList {
     public ArrayList<Article>getAndroidList(){
         return androidList;
     }
+    public ArrayList<Article>getArticleListByKind(int kind){
+        switch (kind)
+        {
+            case 1:return c4droidList;
+            case 2:return aideList;
+            case 3:return androidList;
+                default:return null;
+        }
+
+    }
 
     public void setArticles(@NotNull ArrayList<Article> articleList,int kind) {
         switch (kind)
         {
-            case 0:c4droidList.clear();
+            case 1:c4droidList.clear();
                 for (Article article : articleList) {
                     c4droidList.add(article);
                 }
-            case 1:aideList.clear();
+            case 2:aideList.clear();
                 for (Article article : articleList) {
                     aideList.add(article);
                 }
-            case 2:androidList.clear();
+            case 3:androidList.clear();
                 for (Article article : articleList) {
                     androidList.add(article);
                 }

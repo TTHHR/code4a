@@ -19,18 +19,18 @@ import cn.qingyuyu.code4a.remote.bean.Article
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
 import java.util.*
-import java.util.stream.Collector
+import android.content.Intent
 
 class ContentFragment : Fragment() {
-        private var kind=0
+        private var kind=1
     private lateinit var refreshView: FunGameRefreshView
-    private var articleTemp=ArticleList(context)
+    private var articleTemp=ArticleList.getArticleList(context)
     private var articleData=ArrayList<Article>()
     private lateinit var listView: ListView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_content, container, false)//实例化
+        val view = inflater.inflate(R.layout.fragment_content, null, false)//实例化
 
         val c4droid=view.findViewById<Button>(R.id.c4droid)
         val aide=view.findViewById<Button>(R.id.aide)
@@ -47,8 +47,10 @@ class ContentFragment : Fragment() {
         val ad = ArticleAdapter(activity,R.layout.articlelist_item,articleData)
         listView.adapter = ad
         listView.onItemClickListener= AdapterView.OnItemClickListener{ adapterView,view,i,l->
-           Toasty.info(activity,articleData[i].toString(),Toast.LENGTH_SHORT).show()
-
+           var intent=Intent()
+            intent.setClass(activity,ViewArticleActivity::class.java)
+            intent.putExtra("id",articleData[i].id)
+            startActivity(intent)
         }
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
 //            var userInfo:Any?=null;
@@ -69,9 +71,9 @@ class ContentFragment : Fragment() {
                         articleTemp.setArticles(articleList as ArrayList<Article>,kind)
                         when(kind)
                         {
-                            0->copyList(articleData,articleTemp.c4droidList)
-                            1->copyList(articleData,articleTemp.aideList)
-                            2->copyList(articleData,articleTemp.androidList)
+                            1->copyList(articleData,articleTemp.c4droidList)
+                            2->copyList(articleData,articleTemp.aideList)
+                            3->copyList(articleData,articleTemp.androidList)
                         }
 
                     }
@@ -92,7 +94,7 @@ class ContentFragment : Fragment() {
         })
 
         c4droid.setOnClickListener(View.OnClickListener {
-            kind=0
+            kind=1
             c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
             aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
             android.setBackgroundColor(resources.getColor(R.color.btn_enable))
@@ -100,7 +102,7 @@ class ContentFragment : Fragment() {
             ad.notifyDataSetChanged()
         })
         aide.setOnClickListener(View.OnClickListener {
-            kind=1
+            kind=2
             aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
             c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
             android.setBackgroundColor(resources.getColor(R.color.btn_enable))
@@ -108,7 +110,7 @@ class ContentFragment : Fragment() {
             ad.notifyDataSetChanged()
         })
         android.setOnClickListener(View.OnClickListener {
-            kind=2
+            kind=3
             android.setBackgroundColor(resources.getColor(R.color.btn_unable))
             c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
             aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
@@ -134,6 +136,5 @@ class ContentFragment : Fragment() {
     {
         m.clear()
         m.addAll(s)
-        Log.e("copy","okkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
     }
 }
