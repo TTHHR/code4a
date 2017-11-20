@@ -8,8 +8,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-
-import com.hitomi.refresh.view.FunGameRefreshView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -30,9 +28,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     var head_iv: ImageView? = null
     var uname: TextView? = null
-    var listView: ListView? = null
-    var refreshView: FunGameRefreshView? = null
-    private var isPermissionRequested = false//权限
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
