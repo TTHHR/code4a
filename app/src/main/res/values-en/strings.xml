@@ -59,4 +59,5 @@
     <string name="wanning_storage">Please ensure that App is allowed to store permissions！</string>
     <string name="info_changelanguage">After changing the language, restart the App manually</string>
     <string name="error_network">Net Error：</string>
+    <string name="download_file">Down attachments</string>
 </resources>

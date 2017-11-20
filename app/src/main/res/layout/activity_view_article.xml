@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ViewArticleActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+       >
 
+    </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:fillViewport="true">
-        <!--android:focusable="false"-->
         <TextView
             android:autoLink="web"
             android:id="@+id/rich_text"
@@ -26,4 +34,56 @@
             android:paddingTop="16dp"
             android:scrollbars="vertical" />
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:fillViewport="true">
+            <TextView
+                android:autoLink="web"
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="comment list\n11111\n22222\n333333"
+                android:background="@android:color/transparent"
+                android:gravity="top|start"
+                android:paddingEnd="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:scrollbars="vertical" />
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            >
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.35"
+                android:hint="my comment"
+                android:lines="1"
+                app:bootstrapBrand="info"
+                app:bootstrapSize="md" />
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:text="@string/feedback_send"
+                android:id="@+id/comment_send"
+                app:bootstrapBrand="success"
+                app:buttonMode="regular"
+                app:roundedCorners="true" />
+
+           </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

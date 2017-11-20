@@ -99,7 +99,10 @@ class EditArticleActivity : AppCompatActivity() {
                             1-> message.text=getString(R.string.action_packfile)
                             2-> message.text=getString(R.string.title_upfile)
                             3->message.text=getString(R.string.action_upfinish)
-                            4->md.cancel()
+                            4->{
+                                Log.e("html",richEditText!!.toHtml())
+                                md.cancel()
+                            }
                         }
 
                             super.handleMessage(msg)
