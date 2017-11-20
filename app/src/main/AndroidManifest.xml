@@ -32,7 +32,10 @@
             ></activity>
         <activity android:name="cn.qingyuyu.code4a.SettingActivity"
             android:label="@string/setting"/>
-        <activity android:name="cn.qingyuyu.code4a.ViewArticleActivity"></activity>
+        <activity
+            android:name="cn.qingyuyu.code4a.ViewArticleActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
         <activity android:name="cn.qingyuyu.code4a.EditArticleActivity"
             android:label="@string/editarticle_name"
             ></activity>

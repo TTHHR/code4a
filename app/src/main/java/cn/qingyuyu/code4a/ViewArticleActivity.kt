@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.preference.PreferenceActivity
+import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -19,41 +21,79 @@ import cn.qingyuyu.code4a.remote.Remote
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import cn.qingyuyu.code4a.remote.bean.Article
+import cn.qingyuyu.code4a.remote.bean.UserInfo
 import es.dmoral.toasty.Toasty
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class ViewArticleActivity : AppCompatActivity() {
 
     private var richEditText: TextView? = null
 
-    private var id=0
+    private var articleid=0
+    private var userid=999
     private lateinit var hd:Handler
+    private val CHANGE_USERNAME=0
+    private val CHANGE_CONTENT=1
 
-
+    private lateinit var mToolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_article)
         val i = this.intent
-         id=i.getIntExtra("id",-1)
-        if (id!= -1) {
+         articleid=i.getIntExtra("articleid",-1)
+        userid=i.getIntExtra("userid",999)
+        if (articleid!= -1) {
             Toasty.info(this, "Loding...", Toast.LENGTH_SHORT).show()
         }
         richEditText = findViewById<TextView>(R.id.rich_text)
-        Log.e("id",""+id)
+        Log.e("id",""+articleid)
         if(richEditText != null) {
             val imageGetter = URLImageParser(richEditText as TextView)
              hd = object : Handler() {
                 override fun handleMessage(msg: Message) {
-                    val s = msg.obj as String
+                    when(msg.what)
+                    {
+                        CHANGE_CONTENT->{
+                            richEditText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
+                        }
+                        CHANGE_USERNAME->{
+                            supportActionBar!!.subtitle=msg.obj as String
+                        }
 
-                    richEditText!!.text = Html.fromHtml(s, imageGetter, null)
-
+                    }
                     super.handleMessage(msg)
                 }
             }
         }
-        }
 
+        mToolbar = findViewById<Toolbar>(R.id.toolbar)
+        // toolbar.setLogo   在handler里
+        mToolbar.title=i.getStringExtra("title")// 标题的文字需在setSupportActionBar之前，不然会无效
+        setSupportActionBar(mToolbar)
+
+/* 菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理 */
+        mToolbar.setOnMenuItemClickListener(object : Toolbar.OnMenuItemClickListener{
+           override fun onMenuItemClick(item: MenuItem): Boolean {
+                when (item.itemId) {
+                    R.id.action_downloadfile -> Log.e("xiazai","doanload")
+                    else -> {
+
+                    }
+
+                }
+                return true
+            }
+        })
+
+
+    }
+    //创建菜单
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.activity_viewarticle, menu)
+        return true
+    }
     override fun onStart() {
 
         Thread( Runnable {
@@ -61,22 +101,49 @@ class ViewArticleActivity : AppCompatActivity() {
                 var msg = Message()
 
                 try {
-                    var a = Remote.article.method("getArticleById",Article::class.java).call(id)
+                    var username=Remote.user.method("id2name",String.javaClass).call(userid)
+                    if(username is String)
+                    {
+
+                            msg.obj=username
+
+                    }
+                    else
+                    {
+                        msg.obj="error"
+                    }
+                    msg.what=CHANGE_USERNAME
+                    hd.sendMessage(msg)
+                    Log.e("username",""+msg.obj)
+                }
+                catch (e:Exception)
+                {
+                    Log.e("userid",e.toString())
+                }
+
+
+
+
+
+                 msg = Message()
+                try {
+                    var a = Remote.article.method("getArticleById",Article::class.java).call(articleid)
                         if(a is Article)
                         {
                             Log.i("obj","is article")
-                            if(a.abstract!=null)
+                            if(a.content!=null)
                             {
-//                                msg.obj="\"<blockquote>Android 端的富文本编辑器</blockquote>\" +\n" +
-//                                        "                    \"<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\\n\" +\n" +
-//                                        "                    \"<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">\" +\n" +
-//                                        "                    \"<img src=\"http://blog.qingyuyu.cn/storage/a5124910.jpg\">\""
-//                                Log.i("obj",a.toString());
-//                                Log.i("obj",a.getAbstract())
                                 // fix: kotlin keywords abstract error
-                                msg.obj=a.getAbstract() + a.content   // abstract 属于关键字，不能用作属性名直接获取
-//                                msg.obj=a.content;
-                             }
+                                var text= a.content   // abstract 属于关键字，不能用作属性名直接获取
+                               var imgSet= getImgStr(text)
+                                for(imgurl in imgSet)
+                                {
+                                    Log.e("img",imgurl)
+                                    text=text.replace(imgurl,"http://code4a.atd3.cn"+imgurl)//地址转换成绝对地址
+                                }
+                                Log.e("final",text)
+                                msg.obj=text
+                            }
                             else
                             {
                                 Log.e("obj","null")
@@ -87,6 +154,7 @@ class ViewArticleActivity : AppCompatActivity() {
                         {
                             msg.obj="error"
                         }
+                    msg.what=CHANGE_CONTENT
                     hd.sendMessage(msg)
                 }
                 catch (e:Exception)
@@ -97,6 +165,30 @@ class ViewArticleActivity : AppCompatActivity() {
         }).start()
 
         super.onStart()
+    }
+
+    /**
+     * 得到网页中图片的地址
+     * @param sets html字符串
+     */
+    fun getImgStr(htmlStr: String): Set<String> {
+        val pics = HashSet<String>()
+        var img = ""
+        val p_image: Pattern
+        val m_image: Matcher
+        val regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>"
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE)
+        m_image = p_image.matcher(htmlStr)
+        while (m_image.find()) {
+            // 得到<img />数据
+            img = m_image.group()
+            // 匹配<img>中的src数据
+            val m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img)
+            while (m.find()) {
+                pics.add(m.group(1))
+            }
+        }
+        return pics
     }
 
     inner class URLImageParser(internal var mTextView: TextView) : Html.ImageGetter {

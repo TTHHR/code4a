@@ -49,7 +49,9 @@ class ContentFragment : Fragment() {
         listView.onItemClickListener= AdapterView.OnItemClickListener{ adapterView,view,i,l->
            var intent=Intent()
             intent.setClass(activity,ViewArticleActivity::class.java)
-            intent.putExtra("id",articleData[i].id)
+            intent.putExtra("articleid",articleData[i].id)
+            intent.putExtra("userid",articleData[i].user)
+            intent.putExtra("title",articleData[i].title)
             startActivity(intent)
         }
         refreshView.setOnRefreshListener(object : FunGameRefreshView.FunGameRefreshListener {
