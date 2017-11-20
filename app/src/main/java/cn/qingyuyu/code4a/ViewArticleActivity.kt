@@ -67,11 +67,15 @@ class ViewArticleActivity : AppCompatActivity() {
                             Log.i("obj","is article")
                             if(a.abstract!=null)
                             {
-                                msg.obj="\"<blockquote>Android 端的富文本编辑器</blockquote>\" +\n" +
-                                        "                    \"<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\\n\" +\n" +
-                                        "                    \"<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">\" +\n" +
-                                        "                    \"<img src=\"http://blog.qingyuyu.cn/storage/a5124910.jpg\">\""
-                               // msg.obj=a.abstract   这里有问题
+//                                msg.obj="\"<blockquote>Android 端的富文本编辑器</blockquote>\" +\n" +
+//                                        "                    \"<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\\n\" +\n" +
+//                                        "                    \"<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">\" +\n" +
+//                                        "                    \"<img src=\"http://blog.qingyuyu.cn/storage/a5124910.jpg\">\""
+//                                Log.i("obj",a.toString());
+//                                Log.i("obj",a.getAbstract())
+                                // fix: kotlin keywords abstract error
+                                msg.obj=a.getAbstract() + a.content   // abstract 属于关键字，不能用作属性名直接获取
+//                                msg.obj=a.content;
                              }
                             else
                             {

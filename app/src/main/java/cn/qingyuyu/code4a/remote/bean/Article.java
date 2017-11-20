@@ -16,6 +16,9 @@ public class Article {
     Integer cover;
     Integer  views;
     Integer status;
+    String content;
+
+
 
     public Integer getId() {
         return id;
@@ -102,10 +105,17 @@ public class Article {
     public void setStatus(Integer status) {
         this.status = status;
     }
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     @Override
     public String toString() {
-        return "Article {" +
+        return "Article{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", slug='" + slug + '\'' +
@@ -117,6 +127,7 @@ public class Article {
                 ", cover=" + cover +
                 ", views=" + views +
                 ", status=" + status +
+                ", content='" + content + '\'' +
                 '}';
     }
 }
