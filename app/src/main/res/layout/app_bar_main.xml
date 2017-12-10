@@ -20,12 +20,12 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-    <fragment
-        android:layout_below="@id/appbar"
-        android:name="cn.qingyuyu.code4a.ContentFragment"
-        android:id="@+id/content"
+    <android.support.v4.view.ViewPager
+        android:layout_below="@+id/appbar"
+        android:id="@+id/myViewPager"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+         />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/newarticle"
@@ -39,4 +39,33 @@
         android:src="@mipmap/newarticle"
         app:backgroundTint="#ff87ffeb"
         app:rippleColor="#33728dff" />
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/btn_enable"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/c4droid"
+            android:text="c4droid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/btn_unable" />
+
+        <Button
+            android:id="@+id/aide"
+            android:text="aide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/btn_enable"
+            />
+        <Button
+            android:id="@+id/android"
+            android:text="android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/btn_enable"
+            />
+    </LinearLayout>
 </RelativeLayout>
