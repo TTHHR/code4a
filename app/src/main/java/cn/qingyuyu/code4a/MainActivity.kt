@@ -1,18 +1,22 @@
 package cn.qingyuyu.code4a
 
 import android.content.Intent
-
+import android.util.Log
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import cn.qingyuyu.code4a.control.DataBaseController
 import cn.qingyuyu.code4a.control.LoginDealController
+import cn.qingyuyu.code4a.model.ArticleList
+import cn.qingyuyu.code4a.model.TabFragmentAdapter
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -25,7 +29,12 @@ import com.xyzlf.share.library.bean.ShareEntity
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+lateinit var myViewPager:ViewPager
+    //把Fragment添加到List集合里面
+    var fragmentList= mutableListOf(c4droidFragment(),aideFragment(),androidFragment())
+   lateinit var button_aide:Button
+    lateinit var button_android:Button
+    lateinit var button_c4droid:Button
     var head_iv: ImageView? = null
     var uname: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +52,76 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+
+        myViewPager =  findViewById(R.id.myViewPager)
+        var adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
+        myViewPager.adapter = adapter
+        myViewPager.currentItem = 0  //初始化显示第一个页面
+        class PageChange : ViewPager.OnPageChangeListener
+        {
+            override fun onPageSelected(position: Int) {
+                when (position)
+                {
+                    0-> {
+                        Log.e("viewpage",""+0)
+                        button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                        button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                    }
+                    1->{
+                        Log.e("viewpage",""+1)
+                        button_aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                        button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                    }
+                    2->{
+                        Log.e("viewpage",""+2)
+                        button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        button_android.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                    }
+                }
+            }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+        }
+        myViewPager.setOnPageChangeListener(PageChange())
+
+
+
+        button_c4droid = findViewById(R.id.c4droid)
+        button_aide =  findViewById(R.id.aide)
+        button_android = findViewById(R.id.android)
+
+
+// 设置TAB的点击事件
+        button_aide.setOnClickListener(View.OnClickListener {
+            myViewPager.currentItem = 1
+            button_aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+        })
+        button_android.setOnClickListener(View.OnClickListener {
+            myViewPager.currentItem = 2
+            button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            button_android.setBackgroundColor(resources.getColor(R.color.btn_unable))
+        })
+        button_c4droid.setOnClickListener(View.OnClickListener {
+            myViewPager.currentItem = 0
+            button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+        })
+
+
+
+
+
+
 
         //获取头像点击事件
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
@@ -120,5 +199,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
-
+    override fun onDestroy() {
+        var data= DataBaseController()
+        data.clearArticles(this)
+        data.saveArticles(this,ArticleList.getArticleList(this).c4droidList)
+        data.saveArticles(this,ArticleList.getArticleList(this).aideList)
+        data.saveArticles(this,ArticleList.getArticleList(this).androidList)
+        super.onDestroy()
+    }
 }

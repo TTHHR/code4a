@@ -8,12 +8,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.v7.widget.Toolbar
+
 import android.text.Html
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import cn.qingyuyu.code4a.remote.Remote
@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import cn.qingyuyu.code4a.remote.bean.Article
 import cn.qingyuyu.code4a.remote.bean.UserInfo
+import cn.qingyuyu.commom.SomeValue
 import es.dmoral.toasty.Toasty
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -29,24 +30,25 @@ import java.util.regex.Pattern
 class ViewArticleActivity : AppCompatActivity() {
 
     private var richEditText: TextView? = null
-
+private lateinit var loadBar:ProgressBar
     private var articleid=0
     private var userid=999
     private lateinit var hd:Handler
     private val CHANGE_USERNAME=0
     private val CHANGE_CONTENT=1
 
-    private lateinit var mToolbar: Toolbar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_article)
+        loadBar=findViewById(R.id.progressBar)
         val i = this.intent
          articleid=i.getIntExtra("articleid",-1)
-        userid=i.getIntExtra("userid",999)
-        if (articleid!= -1) {
-            Toasty.info(this, "Loding...", Toast.LENGTH_SHORT).show()
+        userid=i.getIntExtra("userid",-1)
+        if (articleid== -1) {
+            Toasty.info(this, "error...", Toast.LENGTH_SHORT).show()
+            loadBar.visibility=View.INVISIBLE
         }
+        supportActionBar!!.title=i.getStringExtra("title")
         richEditText = findViewById<TextView>(R.id.rich_text)
         Log.e("id",""+articleid)
         if(richEditText != null) {
@@ -56,6 +58,7 @@ class ViewArticleActivity : AppCompatActivity() {
                     when(msg.what)
                     {
                         CHANGE_CONTENT->{
+                            loadBar.visibility=View.INVISIBLE
                             richEditText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
                         }
                         CHANGE_USERNAME->{
@@ -68,24 +71,9 @@ class ViewArticleActivity : AppCompatActivity() {
             }
         }
 
-        mToolbar = findViewById<Toolbar>(R.id.toolbar)
-        // toolbar.setLogo   在handler里
-        mToolbar.title=i.getStringExtra("title")// 标题的文字需在setSupportActionBar之前，不然会无效
-        setSupportActionBar(mToolbar)
 
-/* 菜单的监听可以在toolbar里设置，也可以像ActionBar那样，通过Activity的onOptionsItemSelected回调方法来处理 */
-        mToolbar.setOnMenuItemClickListener(object : Toolbar.OnMenuItemClickListener{
-           override fun onMenuItemClick(item: MenuItem): Boolean {
-                when (item.itemId) {
-                    R.id.action_downloadfile -> Log.e("xiazai","doanload")
-                    else -> {
 
-                    }
 
-                }
-                return true
-            }
-        })
 
 
     }
@@ -104,9 +92,7 @@ class ViewArticleActivity : AppCompatActivity() {
                     var username=Remote.user.method("id2name",String.javaClass).call(userid)
                     if(username is String)
                     {
-
                             msg.obj=username
-
                     }
                     else
                     {
@@ -139,7 +125,7 @@ class ViewArticleActivity : AppCompatActivity() {
                                 for(imgurl in imgSet)
                                 {
                                     Log.e("img",imgurl)
-                                    text=text.replace(imgurl,"http://code4a.atd3.cn"+imgurl)//地址转换成绝对地址
+                                    text=text.replace(imgurl,SomeValue.ServerAddress+imgurl)//地址转换成绝对地址
                                 }
                                 Log.e("final",text)
                                 msg.obj=text

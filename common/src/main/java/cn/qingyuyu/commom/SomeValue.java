@@ -5,7 +5,7 @@ package cn.qingyuyu.commom;
  */
 
 public final class SomeValue {
-
+    public static final String ServerAddress = "http://code4a.atd3.cn/";
     public static final String imgUrl = "http://tb.himg.baidu.com/sys/portrait/item/";
 
     public static final String dirPath = "/data/data/cn.qingyuyu.code4a/";

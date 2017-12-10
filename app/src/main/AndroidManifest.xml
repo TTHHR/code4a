@@ -34,7 +34,8 @@
             android:label="@string/setting"/>
         <activity
             android:name="cn.qingyuyu.code4a.ViewArticleActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"
             ></activity>
         <activity android:name="cn.qingyuyu.code4a.EditArticleActivity"
             android:label="@string/editarticle_name"

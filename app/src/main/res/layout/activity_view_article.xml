@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ViewArticleActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-       >
-
-    </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -33,7 +24,14 @@
             android:paddingStart="16dp"
             android:paddingTop="16dp"
             android:scrollbars="vertical" />
+
+
     </ScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
