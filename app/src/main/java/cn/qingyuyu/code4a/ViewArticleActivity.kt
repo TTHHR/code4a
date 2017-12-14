@@ -60,6 +60,7 @@ private lateinit var loadBar:ProgressBar
                     {
                         CHANGE_CONTENT->{
                             loadBar.visibility=View.INVISIBLE
+
                             richEditText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
                         }
                         CHANGE_USERNAME->{
@@ -91,11 +92,6 @@ private lateinit var loadBar:ProgressBar
         }
 
 
-
-
-
-
-
     }
     //创建菜单
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -109,7 +105,7 @@ private lateinit var loadBar:ProgressBar
                 var msg = Message()
 
                 try {
-                    var username=Remote.user.method("id2name",String.javaClass).call(userid)
+                    val username=Remote.user.method("id2name",String::class.java).call(userid)
                     if(username is String)
                     {
                             msg.obj=username
@@ -133,7 +129,7 @@ private lateinit var loadBar:ProgressBar
 
                  msg = Message()
                 try {
-                    var a = Remote.article.method("getArticleById",Article::class.java).call(articleid)
+                    val a = Remote.article.method("getArticleById",Article::class.java).call(articleid)
                         if(a is Article)
                         {
                             Log.i("obj","is article")
@@ -141,7 +137,7 @@ private lateinit var loadBar:ProgressBar
                             {
                                 // fix: kotlin keywords abstract error
                                 var text= a.content   // abstract 属于关键字，不能用作属性名直接获取
-                               var imgSet= getImgStr(text)
+                               val imgSet= getImgStr(text)
                                 for(imgurl in imgSet)
                                 {
                                     Log.e("img",imgurl)
@@ -175,7 +171,7 @@ private lateinit var loadBar:ProgressBar
 
     /**
      * 得到网页中图片的地址
-     * @param sets html字符串
+     * @param  html字符串
      */
     fun getImgStr(htmlStr: String): Set<String> {
         val pics = HashSet<String>()

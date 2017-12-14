@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import cn.qingyuyu.code4a.control.DataBaseController;
 import cn.qingyuyu.code4a.remote.bean.Article;
 
+import static cn.qingyuyu.commom.SomeValue.AIDE;
+import static cn.qingyuyu.commom.SomeValue.ANDROID;
+import static cn.qingyuyu.commom.SomeValue.C4DROID;
+
 /**
  * Created by harrytit on 2017/10/20.
  */
@@ -26,7 +30,7 @@ public class ArticleList {
             return articleList;
         }
         ArrayList<ArrayList> al= new DataBaseController().getTempArticles(context);
-        if(al.get(0).isEmpty()) {
+        if(al.get(C4DROID).isEmpty()) {
             Article refresh0 = new Article();
             refresh0.setTitle("下拉刷新~(●'◡'●)");
             refresh0.setAbstract("按住我下拉刷新0");
@@ -36,8 +40,8 @@ public class ArticleList {
             c4droidList.add(refresh0);
         }
         else
-            c4droidList=al.get(0);
-        if(al.get(1).isEmpty()) {
+            c4droidList=al.get(C4DROID);
+        if(al.get(AIDE).isEmpty()) {
             Article refresh1 = new Article();
             refresh1.setTitle("下拉刷新~(●'◡'●)");
             refresh1.setAbstract("按住我下拉刷新1");
@@ -47,8 +51,8 @@ public class ArticleList {
             aideList.add(refresh1);
         }
         else
-            aideList=al.get(1);
-        if(al.get(2).isEmpty()) {
+            aideList=al.get(AIDE);
+        if(al.get(ANDROID).isEmpty()) {
             Article refresh2 = new Article();
             refresh2.setTitle("下拉刷新~(●'◡'●)");
             refresh2.setAbstract("按住我下拉刷新2");
@@ -58,10 +62,18 @@ public class ArticleList {
             androidList.add(refresh2);
         }
         else
-            androidList=al.get(2);
+            androidList=al.get(ANDROID);
         return articleList;
     }
-    public ArrayList<Article> getC4droidList() {
+    public ArrayList<Article> getArticleList(int kind) {
+        switch (kind) {
+            case C4DROID:
+                return c4droidList;
+            case AIDE:
+                return aideList;
+            case ANDROID:
+                return androidList;
+        }
         return c4droidList;
     }
     public ArrayList<Article>getAideList(){
@@ -74,18 +86,15 @@ public class ArticleList {
     public void setArticles(@NotNull ArrayList<Article> articleList,int kind) {
         switch (kind)
         {
-            case 0:c4droidList.clear();
-                for (Article article : articleList) {
-                    c4droidList.add(article);
-                }
-            case 1:aideList.clear();
-                for (Article article : articleList) {
-                    aideList.add(article);
-                }
-            case 2:androidList.clear();
-                for (Article article : articleList) {
-                    androidList.add(article);
-                }
+            case C4DROID:c4droidList.clear();
+                     c4droidList.addAll(articleList);
+				break;
+            case AIDE:aideList.clear();
+                    aideList.addAll(articleList);
+				break;
+            case ANDROID:androidList.clear();
+                    androidList.addAll(articleList);
+				break;
         }
 
     }

@@ -16,4 +16,7 @@ public final class SomeValue {
 
     public static final String shareImg = "http://blog.qingyuyu.cn/conf/profile.png";
     public static final String userDir = "/code4a";
+    public static final int C4DROID = 0;
+    public static final int AIDE = 1;
+    public static final int ANDROID = 2 ;
 }

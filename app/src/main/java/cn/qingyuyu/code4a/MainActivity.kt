@@ -1,5 +1,7 @@
 package cn.qingyuyu.code4a
 
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.content.Intent
 import android.util.Log
 import android.os.Bundle
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import cn.qingyuyu.code4a.model.User
 import cn.qingyuyu.commom.SomeValue
+import cn.qingyuyu.commom.SomeValue.*
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
 import com.xyzlf.share.library.bean.ShareEntity
@@ -31,16 +34,20 @@ import com.xyzlf.share.library.bean.ShareEntity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 lateinit var myViewPager:ViewPager
     //把Fragment添加到List集合里面
-    var fragmentList= mutableListOf(c4droidFragment(),aideFragment(),androidFragment())
+    var fragmentList = mutableListOf(ArticleFragment(C4DROID) as Fragment,ArticleFragment(AIDE)as Fragment,ArticleFragment(ANDROID)as Fragment)
    lateinit var button_aide:Button
     lateinit var button_android:Button
     lateinit var button_c4droid:Button
     var head_iv: ImageView? = null
     var uname: TextView? = null
+   private  var btnUnableColor=0
+    private var btnEnableColor=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        btnUnableColor=ContextCompat.getColor(this@MainActivity,R.color.btn_unable)
+        btnEnableColor=ContextCompat.getColor(this@MainActivity,R.color.btn_enable)
         initView()
     }
 
@@ -54,31 +61,33 @@ lateinit var myViewPager:ViewPager
         nav_view.setNavigationItemSelectedListener(this)
 
         myViewPager =  findViewById(R.id.myViewPager)
-        var adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
+        val adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
         myViewPager.adapter = adapter
         myViewPager.currentItem = 0  //初始化显示第一个页面
         class PageChange : ViewPager.OnPageChangeListener
         {
+
             override fun onPageSelected(position: Int) {
                 when (position)
                 {
-                    0-> {
+                    C4DROID-> {
                         Log.e("viewpage",""+0)
-                        button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
-                        button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
-                        button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        button_aide.setBackgroundColor(btnEnableColor)
+                        button_c4droid.setBackgroundColor(btnUnableColor)
+                        button_android.setBackgroundColor(btnEnableColor)
+
                     }
-                    1->{
+                    AIDE->{
                         Log.e("viewpage",""+1)
-                        button_aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
-                        button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
-                        button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        button_aide.setBackgroundColor(btnUnableColor)
+                        button_c4droid.setBackgroundColor(btnEnableColor)
+                        button_android.setBackgroundColor(btnEnableColor)
                     }
-                    2->{
+                    ANDROID->{
                         Log.e("viewpage",""+2)
-                        button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
-                        button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
-                        button_android.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                        button_aide.setBackgroundColor(btnEnableColor)
+                        button_c4droid.setBackgroundColor(btnEnableColor)
+                        button_android.setBackgroundColor(btnUnableColor)
                     }
                 }
             }
@@ -88,7 +97,7 @@ lateinit var myViewPager:ViewPager
             }
 
         }
-        myViewPager.setOnPageChangeListener(PageChange())
+        myViewPager.addOnPageChangeListener(PageChange())
 
 
 
@@ -99,22 +108,22 @@ lateinit var myViewPager:ViewPager
 
 // 设置TAB的点击事件
         button_aide.setOnClickListener(View.OnClickListener {
-            myViewPager.currentItem = 1
-            button_aide.setBackgroundColor(resources.getColor(R.color.btn_unable))
-            button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
-            button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            myViewPager.currentItem = AIDE
+            button_aide.setBackgroundColor(btnUnableColor)
+            button_c4droid.setBackgroundColor(btnEnableColor)
+            button_android.setBackgroundColor(btnEnableColor)
         })
         button_android.setOnClickListener(View.OnClickListener {
-            myViewPager.currentItem = 2
-            button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
-            button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_enable))
-            button_android.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            myViewPager.currentItem = ANDROID
+            button_aide.setBackgroundColor(btnEnableColor)
+            button_c4droid.setBackgroundColor(btnEnableColor)
+            button_android.setBackgroundColor(btnUnableColor)
         })
         button_c4droid.setOnClickListener(View.OnClickListener {
-            myViewPager.currentItem = 0
-            button_aide.setBackgroundColor(resources.getColor(R.color.btn_enable))
-            button_c4droid.setBackgroundColor(resources.getColor(R.color.btn_unable))
-            button_android.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            myViewPager.currentItem = C4DROID
+            button_aide.setBackgroundColor(btnEnableColor)
+            button_c4droid.setBackgroundColor(btnUnableColor)
+            button_android.setBackgroundColor(btnEnableColor)
         })
 
 
@@ -129,7 +138,7 @@ lateinit var myViewPager:ViewPager
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
-            var ldc=LoginDealController()
+            val ldc=LoginDealController()
             ldc.call("login",this@MainActivity,null)
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
@@ -200,15 +209,15 @@ lateinit var myViewPager:ViewPager
         return true
     }
     override fun onDestroy() {
-        var data= DataBaseController()
+        val data= DataBaseController()
         data.clearArticles(this)
         val al=ArticleList.getArticleList(this)
-        if(!al.c4droidList[0].title.equals("下拉刷新~(●'◡'●)"))
-        data.saveArticles(this,al.c4droidList)
-        if(!al.aideList[0].title.equals("下拉刷新~(●'◡'●)"))
-        data.saveArticles(this,al.aideList)
-        if(!al.androidList[0].title.equals("下拉刷新~(●'◡'●)"))
-        data.saveArticles(this,al.androidList)
+        if(!al.getArticleList(C4DROID)[0].title.equals("下拉刷新~(●'◡'●)"))
+        data.saveArticles(this,al.getArticleList(C4DROID))
+        if(!al.getArticleList(AIDE)[0].title.equals("下拉刷新~(●'◡'●)"))
+        data.saveArticles(this,al.getArticleList(AIDE))
+        if(!al.getArticleList(ANDROID)[0].title.equals("下拉刷新~(●'◡'●)"))
+        data.saveArticles(this,al.getArticleList(ANDROID))
         super.onDestroy()
     }
 }
