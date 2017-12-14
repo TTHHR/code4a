@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:fillViewport="true">
         <TextView
             android:autoLink="web"
@@ -32,22 +32,23 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        >
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
             <TextView
                 android:autoLink="web"
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="comment list\n11111\n22222\n333333"
                 android:background="@android:color/transparent"
                 android:gravity="top|start"
@@ -57,31 +58,17 @@
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
                 android:scrollbars="vertical" />
-        </ScrollView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:orientation="horizontal"
-            >
-            <com.beardedhen.androidbootstrap.BootstrapEditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.35"
-                android:hint="my comment"
-                android:lines="1"
-                app:bootstrapBrand="info"
-                app:bootstrapSize="md" />
             <com.beardedhen.androidbootstrap.BootstrapButton
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:text="@string/feedback_send"
-                android:id="@+id/comment_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mycomment"
+                android:text="my comment"
                 app:bootstrapBrand="success"
                 app:buttonMode="regular"
-                app:roundedCorners="true" />
+                app:roundedCorners="true"
+                />
 
-           </LinearLayout>
-    </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
 </LinearLayout>

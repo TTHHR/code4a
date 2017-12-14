@@ -44,11 +44,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public void del(int id) {
-        if (db == null)
-            db = getWritableDatabase();
-        db.delete(TBL_NAME, "id=?", new String[]{String.valueOf(id)});
-    }
     public void clear() {
         if (db == null)
             db = getWritableDatabase();

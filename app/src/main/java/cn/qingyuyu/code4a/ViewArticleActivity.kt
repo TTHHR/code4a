@@ -16,19 +16,20 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import cn.carbs.android.library.MDDialog
 import cn.qingyuyu.code4a.remote.Remote
 
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import cn.qingyuyu.code4a.remote.bean.Article
-import cn.qingyuyu.code4a.remote.bean.UserInfo
 import cn.qingyuyu.commom.SomeValue
+import com.beardedhen.androidbootstrap.BootstrapButton
 import es.dmoral.toasty.Toasty
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class ViewArticleActivity : AppCompatActivity() {
-
+    private lateinit var mycomment: BootstrapButton
     private var richEditText: TextView? = null
 private lateinit var loadBar:ProgressBar
     private var articleid=0
@@ -70,6 +71,25 @@ private lateinit var loadBar:ProgressBar
                 }
             }
         }
+    mycomment=findViewById(R.id.mycomment)
+        mycomment.setOnClickListener{
+            MDDialog.Builder(this@ViewArticleActivity)
+                    .setTitle("Edit my comment")
+                    .setContentView(R.layout.dialog_mycomment)
+                    .setNegativeButton(R.string.button_cancel,View.OnClickListener {
+
+                    })
+                    .setPositiveButton(R.string.button_ok,View.OnClickListener {
+
+                    })
+
+                    .setWidthMaxDp(600)
+                    .setShowTitle(true)
+                    .setShowButtons(true)
+                    .create()
+                    .show()
+        }
+
 
 
 
@@ -171,6 +191,7 @@ private lateinit var loadBar:ProgressBar
             // 匹配<img>中的src数据
             val m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img)
             while (m.find()) {
+                if(!m.group(1).startsWith("http:"))//图片为表情就跳过
                 pics.add(m.group(1))
             }
         }
@@ -198,7 +219,7 @@ private lateinit var loadBar:ProgressBar
         var drawBitmap: Bitmap? = null
         override fun draw(canvas: Canvas) {
             if (drawBitmap != null) {
-                canvas.drawBitmap(drawBitmap!!, 0f, 0f, paint)
+                canvas.drawBitmap(drawBitmap, 0f, 0f, paint)
             }
         }
     }

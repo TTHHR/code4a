@@ -57,6 +57,7 @@ class EditArticleActivity : AppCompatActivity() {
                     .setCancelable(true)
                     .create()
             md .show()
+            if(richEditText!=null)
             richEditText!!.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
                     "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n" +
                     "<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">" +

@@ -37,6 +37,7 @@
     <string name="title_showfile">查看文件 </string>
     <string name="button_add">添加</string>
     <string name="button_ok">确定</string>
+    <string name="button_cancel">取消</string>
     <string name="title_article">上传文章</string>
     <string name="title_articleproperty">文章属性</string>
     <string name="title_upfile">上传文件</string>
