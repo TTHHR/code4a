@@ -38,6 +38,7 @@ class c4droidFragment : Fragment() {
 
         val ad = ArticleAdapter(activity,R.layout.articlelist_item,articleTemp.c4droidList)
         listView.adapter = ad
+        Log.e("c4droidfragment","list"+articleTemp.c4droidList+"ad"+ad)
         listView.onItemClickListener= AdapterView.OnItemClickListener{ adapterView,view,i,l->
            var intent=Intent()
             intent.setClass(activity,ViewArticleActivity::class.java)

@@ -3,6 +3,7 @@ package cn.qingyuyu.code4a
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class androidFragment : Fragment() {
         listView = view.findViewById(R.id.list_view)
         val ad = ArticleAdapter(activity, R.layout.articlelist_item, articleTemp.androidList)
         listView.adapter = ad
+        Log.e("androidfragment","list"+articleTemp.androidList+"ad"+ad)
         listView.onItemClickListener= android.widget.AdapterView.OnItemClickListener{ adapterView, view, i, l->
             var intent= Intent()
             intent.setClass(activity,ViewArticleActivity::class.java)

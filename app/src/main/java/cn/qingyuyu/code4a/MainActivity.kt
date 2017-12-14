@@ -202,9 +202,13 @@ lateinit var myViewPager:ViewPager
     override fun onDestroy() {
         var data= DataBaseController()
         data.clearArticles(this)
-        data.saveArticles(this,ArticleList.getArticleList(this).c4droidList)
-        data.saveArticles(this,ArticleList.getArticleList(this).aideList)
-        data.saveArticles(this,ArticleList.getArticleList(this).androidList)
+        val al=ArticleList.getArticleList(this)
+        if(!al.c4droidList[0].title.equals("下拉刷新~(●'◡'●)"))
+        data.saveArticles(this,al.c4droidList)
+        if(!al.aideList[0].title.equals("下拉刷新~(●'◡'●)"))
+        data.saveArticles(this,al.aideList)
+        if(!al.androidList[0].title.equals("下拉刷新~(●'◡'●)"))
+        data.saveArticles(this,al.androidList)
         super.onDestroy()
     }
 }

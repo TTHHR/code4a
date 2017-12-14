@@ -34,6 +34,7 @@
     <string name="title_showfile">view file </string>
     <string name="button_add">Add</string>
     <string name="button_ok">Ok</string>
+    <string name="button_cancel">cancel</string>
     <string name="title_article">upload article</string>
     <string name="title_articleproperty">property article</string>
     <string name="title_upfile">upload files</string>
