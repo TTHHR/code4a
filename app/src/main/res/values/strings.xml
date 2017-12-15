@@ -62,7 +62,6 @@
     <string name="info_howtogame">上下滑动控制游戏</string>
     <string name="wanning_storage">请确保允许App有储存权限！</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="info_changelanguage">改变语言后，请手动重启App</string>
     <string name="error_network">网络错误：</string>
     <string name="download_file">下载附件</string>
