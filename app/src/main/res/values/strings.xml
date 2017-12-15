@@ -34,9 +34,11 @@
     <string name="click_file_tip">长按选择 %1$s</string>
     <string name="click_file_cancel">再按一次取消选择文件</string>
     <string name="click_file_remove"> 成功移除 </string>
+    <string name="info_success"> 成功 </string>
     <string name="title_showfile">查看文件 </string>
     <string name="button_add">添加</string>
     <string name="button_ok">确定</string>
+    <string name="button_copy">复制</string>
     <string name="button_cancel">取消</string>
     <string name="title_article">上传文章</string>
     <string name="title_articleproperty">文章属性</string>

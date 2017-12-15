@@ -13,6 +13,7 @@
     <string name="setting_auth_summary">Donate to authors</string>
     <string name="setting_update">update</string>
     <string name="nav_share">Share</string>
+    <string name="info_success"> Sucess </string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
     <string name="setting_loginout">login out</string>
@@ -36,6 +37,7 @@
     <string name="title_showfile">view file </string>
     <string name="button_add">Add</string>
     <string name="button_ok">Ok</string>
+    <string name="button_copy">Copy</string>
     <string name="button_cancel">cancel</string>
     <string name="title_article">upload article</string>
     <string name="title_articleproperty">property article</string>
