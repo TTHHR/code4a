@@ -1,5 +1,8 @@
 package cn.qingyuyu.code4a
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -32,6 +35,7 @@ class ViewArticleActivity : AppCompatActivity() {
     private lateinit var mycomment: BootstrapButton
     private var richEditText: TextView? = null
 private lateinit var loadBar:ProgressBar
+    private lateinit var copyButton:BootstrapButton
     private var articleid=0
     private var userid=999
     private lateinit var hd:Handler
@@ -42,6 +46,15 @@ private lateinit var loadBar:ProgressBar
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_article)
         loadBar=findViewById(R.id.progressBar)
+        copyButton=findViewById(R.id.copy)
+        copyButton.setOnClickListener {
+            if(richEditText!=null)
+            {
+                val cm = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                  cm.primaryClip=ClipData.newPlainText("code",richEditText!!.text)
+                Toasty.info(this,getString(R.string.info_success),Toast.LENGTH_SHORT).show()
+            }
+        }
         val i = this.intent
          articleid=i.getIntExtra("articleid",-1)
         userid=i.getIntExtra("userid",-1)
@@ -60,8 +73,8 @@ private lateinit var loadBar:ProgressBar
                     {
                         CHANGE_CONTENT->{
                             loadBar.visibility=View.INVISIBLE
-
                             richEditText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
+                            copyButton.isClickable=true
                         }
                         CHANGE_USERNAME->{
                             supportActionBar!!.subtitle=msg.obj as String
