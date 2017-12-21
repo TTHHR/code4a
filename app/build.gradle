@@ -24,7 +24,7 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             def today = new Date().format('yy-MM-dd')//添加日期
-            outputFileName ="${applicationId}-${android.defaultConfig.versionName}-${today}.apk"
+            outputFileName = "${applicationId}-${android.defaultConfig.versionName}-${today}.apk"
         }
     }
 }
@@ -48,7 +48,7 @@ dependencies {
     // implementation files('libs/zip.jar')
     // bootstrap
     implementation 'com.beardedhen:androidbootstrap:2.0.1'
-    implementation ('com.xyzlf.share:sharesdk:0.0.9') {
+    implementation('com.xyzlf.share:sharesdk:0.0.9') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
     //分享sdk
@@ -66,7 +66,7 @@ dependencies {
     //文件
     implementation 'com.github.GrenderG:Toasty:1.2.0'
     //文件
-    implementation ('me.drakeet.multitype:multitype:2.5.0') {
+    implementation('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'
     }
     //  弹窗

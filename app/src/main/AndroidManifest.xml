@@ -9,13 +9,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="cn.qingyuyu.code4a.CodeApplication"
+        android:name=".CodeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="cn.qingyuyu.code4a.SplashActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,23 +23,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cn.qingyuyu.code4a.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="cn.qingyuyu.code4a.library.fileselect.FileSelectActivity"></activity>
-        <activity android:name="cn.qingyuyu.code4a.FeedbackActivity"
-            android:label="@string/app_name"
-            ></activity>
-        <activity android:name="cn.qingyuyu.code4a.SettingActivity"
-            android:label="@string/setting"/>
+        <activity android:name=".library.fileselect.FileSelectActivity" />
         <activity
-            android:name="cn.qingyuyu.code4a.ViewArticleActivity"
+            android:name=".FeedbackActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/setting" />
+        <activity
+            android:name=".ViewArticleActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"
-            ></activity>
-        <activity android:name="cn.qingyuyu.code4a.EditArticleActivity"
-            android:label="@string/editarticle_name"
-            ></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".EditArticleActivity"
+            android:label="@string/editarticle_name" />
+        <activity android:name=".EggActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+
+        </activity>
     </application>
 
 </manifest>

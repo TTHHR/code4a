@@ -42,6 +42,7 @@ lateinit var myViewPager:ViewPager
     var uname: TextView? = null
    private  var btnUnableColor=0
     private var btnEnableColor=0
+    private var eggTrigger=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,7 +51,6 @@ lateinit var myViewPager:ViewPager
         btnEnableColor=ContextCompat.getColor(this@MainActivity,R.color.btn_enable)
         initView()
     }
-
 
     fun initView() {
 
@@ -129,9 +129,6 @@ lateinit var myViewPager:ViewPager
 
 
 
-
-
-
         //获取头像点击事件
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
@@ -139,6 +136,17 @@ lateinit var myViewPager:ViewPager
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
             val ldc=LoginDealController()
+            if(true)//登录判断User.getInstance().isLogind
+            {
+                eggTrigger+=1
+                if (eggTrigger>=5)
+                {
+                    eggTrigger=0
+                    val i = Intent(this@MainActivity, EggActivity::class.java)
+                    startActivity(i)
+                }
+            }
+            else
             ldc.call("login",this@MainActivity,null)
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
