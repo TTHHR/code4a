@@ -136,7 +136,7 @@ lateinit var myViewPager:ViewPager
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
             val ldc=LoginDealController()
-            if(true)//登录判断User.getInstance().isLogind
+            if(User.getInstance().isLogind)//登录判断
             {
                 eggTrigger+=1
                 if (eggTrigger>=5)
