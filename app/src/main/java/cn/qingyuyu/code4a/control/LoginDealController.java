@@ -25,7 +25,13 @@ public class LoginDealController {
             return checkMail();
         else if(call.equals("logout"))
             return logout(con);
+        else if(call.equals("islogin"))
+            return isLogin(con);
         return false;
+    }
+    private boolean isLogin(Activity con)
+    {
+        return true;
     }
     private boolean login(Activity con)
     {

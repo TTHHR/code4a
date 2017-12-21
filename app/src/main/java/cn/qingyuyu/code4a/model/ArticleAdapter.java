@@ -39,7 +39,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         TextView articleUser = view.findViewById(R.id.articleuser);
         articleUser.setText(a.getUser().toString());
         TextView articleModify = view.findViewById(R.id.articlemodify);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         long lt = new Long(a.getModify());
         Date date = new Date(lt);
         articleModify.setText(simpleDateFormat.format(date));
