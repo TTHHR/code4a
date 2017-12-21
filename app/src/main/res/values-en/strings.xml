@@ -16,6 +16,7 @@
     <string name="info_success"> Sucess </string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
+    <string name="setting_software_info">software info</string>
     <string name="setting_loginout">login out</string>
     <string name="username">Not logged in</string>
     <string name="feedback_title">Feedback your suggests</string>
