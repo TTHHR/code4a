@@ -1,0 +1,16 @@
+开源说明：
+code4a
+一个代码分享平台 a code share platform
+
+本着开源分享的精神，本软件也是开源的
+
+code4a使用了以下开源库
+
+富文本编辑：https://github.com/huzhenjie/RichTextEditor 
+文件浏览：https://github.com/WeiMei-Tian/FileBrowser 
+弹窗：https://github.com/Carbs0126/MDDialog 
+下拉刷新： https://github.com/Hitomis/FunGameRefresh
+
+以上代码以后若侵权，立删
+
+本软件源码可以下载修改，修改请附加原作者，但是不可以发布到各大应用商店。

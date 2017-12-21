@@ -1,6 +1,6 @@
-# c4droidcode
-一个 c4droid的代码分享平台
-a c4droid code share platform
+# code4a
+一个代码分享平台
+a code share platform
 
 apk下载地址：https://github.com/TTHHR/c4droidcode/tree/dev/release
 
