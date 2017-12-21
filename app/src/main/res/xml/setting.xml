@@ -22,13 +22,23 @@
         <PreferenceScreen
             android:summary="@string/setting_auth_summary"
             android:title="@string/setting_auth">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/TTHHR/code4a/blob/dev/donation.jpg" />
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/setting_update">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="http://www.baidu.com" />
         </PreferenceScreen>
-        <PreferenceScreen android:title="@string/setting_loginout"></PreferenceScreen>
+        <PreferenceScreen android:title="@string/setting_loginout">
+
+        </PreferenceScreen>
+        <PreferenceScreen android:title="@string/setting_software_info">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/TTHHR/code4a/blob/dev/开源说明.txt" />
+        </PreferenceScreen>
     </PreferenceCategory>
 
 </PreferenceScreen>
