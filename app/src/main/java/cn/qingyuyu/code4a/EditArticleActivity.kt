@@ -20,7 +20,10 @@ import cn.qingyuyu.code4a.library.fileselect.FileSelectActivity
 import com.scrat.app.richtext.RichEditText
 import es.dmoral.toasty.Toasty
 import android.widget.TextView
+import cn.atd3.proxy.Param
 import cn.carbs.android.library.MDDialog
+import cn.qingyuyu.code4a.remote.Remote
+import java.io.File
 
 
 /**
@@ -119,6 +122,14 @@ class EditArticleActivity : AppCompatActivity() {
                     message.what=2
                     hd.sendMessage(message)
                     Thread.sleep(1000)
+
+                    // 0 - delete 1 - crash 2 public
+                    Remote.article.method("upload").call(
+                            Param("article",File("path/to/file")),
+                            Param("type","xml"),
+                            Param("status",2)
+                    );
+
                     message = Message()
                     message.what=3
                     hd.sendMessage(message)
