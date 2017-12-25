@@ -32,8 +32,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sd_notready_tip">你手机的sd卡没有准备好</string>
+    <string name="error_title">标题不能为空</string>
     <string name="click_file_tip">长按选择 %1$s</string>
-    <string name="click_file_cancel">再按一次取消选择文件</string>
+    <string name="click_file_exit">再按一次退出选择文件</string>
     <string name="click_file_remove"> 成功移除 </string>
     <string name="info_success"> 成功 </string>
     <string name="title_showfile">查看文件 </string>

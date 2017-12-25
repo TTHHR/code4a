@@ -17,6 +17,7 @@
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
     <string name="setting_software_info">software info</string>
+    <string name="error_title">The title can not be empty</string>
     <string name="setting_loginout">login out</string>
     <string name="username">Not logged in</string>
     <string name="feedback_title">Feedback your suggests</string>
@@ -33,7 +34,7 @@
     </string-array>
     <string name="sd_notready_tip">your phone SDCard not ready OK</string>
     <string name="click_file_tip">long click to select %1$s</string>
-    <string name="click_file_cancel"> click twice to cancel select files</string>
+    <string name="click_file_exit"> click twice to exit select files</string>
     <string name="click_file_remove"> Successfully removed </string>
     <string name="title_showfile">view file </string>
     <string name="button_add">Add</string>

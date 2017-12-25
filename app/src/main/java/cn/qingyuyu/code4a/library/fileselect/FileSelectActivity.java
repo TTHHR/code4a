@@ -69,7 +69,7 @@ public class FileSelectActivity extends AppCompatActivity{
             case KeyEvent.KEYCODE_BACK:
                 if ((System.currentTimeMillis() - exitTime) > 2000)
                 {
-                    Toasty.warning(getApplicationContext(), getString(R.string.click_file_cancel), Toast.LENGTH_SHORT).show();
+                    Toasty.warning(getApplicationContext(), getString(R.string.click_file_exit), Toast.LENGTH_SHORT).show();
                     exitTime = System.currentTimeMillis();
                 }
                 else
