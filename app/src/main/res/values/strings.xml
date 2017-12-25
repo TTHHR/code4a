@@ -69,4 +69,6 @@
     <string name="info_changelanguage">改变语言后，请手动重启App</string>
     <string name="error_network">网络错误：</string>
     <string name="download_file">下载附件</string>
+    <string name="server_timeout">服务器链接超时！</string>
+    <string name="server_exception">服务器异常</string>
 </resources>

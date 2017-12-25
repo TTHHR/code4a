@@ -28,6 +28,7 @@ import android.widget.TextView
 import cn.atd3.proxy.Param
 import cn.carbs.android.library.MDDialog
 import cn.qingyuyu.code4a.remote.Remote
+
 import cn.qingyuyu.code4a.remote.bean.Article
 import cn.qingyuyu.commom.SomeValue
 import cn.qingyuyu.commom.service.FileDealService
@@ -36,12 +37,14 @@ import cn.qingyuyu.zip.ZipHelper
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapEditText
 import java.io.File
-import javax.xml.parsers.DocumentBuilder
+
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
+
+
 
 
 /**
@@ -200,6 +203,7 @@ class EditArticleActivity : AppCompatActivity() {
                     var message = Message()
                     message.what=1
                     hd.sendMessage(message)
+
                     //打包文件
                     article.content=richEditText!!.toHtml()
 
@@ -262,6 +266,7 @@ class EditArticleActivity : AppCompatActivity() {
                         }
 
                     }
+
                 }).start()
 
 
