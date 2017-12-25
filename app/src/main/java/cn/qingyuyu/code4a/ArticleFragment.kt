@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
+import cn.dxkite.common.CrashHandler
 import cn.qingyuyu.code4a.model.ArticleAdapter
 import cn.qingyuyu.code4a.model.ArticleList
 import cn.qingyuyu.code4a.remote.Remote
 import cn.qingyuyu.code4a.remote.bean.Article
 import com.hitomi.refresh.view.FunGameRefreshView
 import es.dmoral.toasty.Toasty
+import java.net.UnknownHostException
 import java.util.ArrayList
 
 @SuppressLint("ValidFragment")
@@ -68,9 +70,9 @@ class ArticleFragment(val kind:Int) : Fragment() {
                         articleTemp.setArticles(articleList as ArrayList<Article>,kind)
                     }
                 }
-                catch (e:Exception)
+                catch (e: UnknownHostException)
                 {
-                    Log.e("net error", "" + e)
+                    Log.e("Article","Host Error",e);
                 }
 //                cover=Remote.article.method("getCover",File::class.java).call(Param("article",1));
 
