@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 异常捕获类
@@ -33,6 +34,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static CrashHandler instance = new CrashHandler();
     private Thread.UncaughtExceptionHandler handler;
     private Context context;
+
+    private static Map<Class<? extends Throwable>,ExceptionHandler> handlerMap=new HashMap<Class<? extends Throwable>,ExceptionHandler>();
+
     private Map<String, String> infos = new HashMap<String, String>();
     @SuppressLint("SimpleDateFormat")
     private DateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
@@ -51,21 +55,40 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
+    public static  void addHander(Class<? extends Throwable> className,ExceptionHandler handler) {
+        Log.d(TAG,"load "+className.getName() +" handler");
+        handlerMap.put(className,handler);
+    }
+
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        Log.d(TAG, "hand error!");
-        if (!handlerException(ex) && handler != null) {
-            handler.uncaughtException(thread, ex);
-        } else {
-            Log.d(TAG, "kill self");
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Log.d(TAG, "uncaught error > "+ex.getClass().getName() +" => "+ ex.getMessage());
+        if (handler != null) {
+            for (Throwable exception=ex;exception != null;exception=exception.getCause()){
+                Log.d(TAG,"searching handler for "+exception.getClass().getName());
+                if (handlerMap.containsKey(exception.getClass())){
+                    Log.d(TAG,"handler exception "+exception.getClass().getName() + " => " +exception.getMessage());
+                    handlerMap.get(exception.getClass()).uncaughtException(context,thread,exception);
+                    return;
+                }
             }
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
+            if(!handlerException(ex)){
+                handler.uncaughtException(thread, ex);
+            }
+        } else {
+            kill();
         }
+    }
+
+    private  void kill() {
+        Log.d(TAG, "kill self");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 
     private boolean handlerException(Throwable ex) {
@@ -77,9 +100,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 Looper.prepare();
                 Toast.makeText(context, "程序异常，记录日志中...", Toast.LENGTH_SHORT).show();
                 Looper.loop();
+
             }
         }.start();
         this.save(ex);
+        kill();
         return true;
     }
 
@@ -110,6 +135,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private void save(Throwable ex) {
         Log.e(TAG, "log error", ex);
         Log.d(TAG, "prepare save file");
+
         insertDeviceInfo();
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> enter : infos.entrySet()) {
