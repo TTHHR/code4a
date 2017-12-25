@@ -17,8 +17,8 @@ public class Article {
     Integer  views;
     Integer status;
     String content;
-
-
+    String visibility;
+    String visibilitypassword;
 
     public Integer getId() {
         return id;
@@ -111,6 +111,21 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+    public String getVisibilitypassword() {
+        return visibilitypassword;
+    }
+
+    public void setVisibilitypassword(String visibilitypassword) {
+        this.visibilitypassword = visibilitypassword;
     }
 
     @Override

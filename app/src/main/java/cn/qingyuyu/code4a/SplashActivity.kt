@@ -56,10 +56,12 @@ var isPermission=false
                     // 获取到权限，作相应处理（）
 
 
-                    var userDir= File(Environment.getExternalStorageDirectory().toString()+ SomeValue.userDir)
+                    val userDir= File(Environment.getExternalStorageDirectory().toString()+ SomeValue.userDir)
+                    val zipDir= File(Environment.getExternalStorageDirectory().toString()+ SomeValue.userDir+SomeValue.zipDir)
                     if(!userDir.exists())
                         try {
                             userDir.mkdir()
+                            zipDir.mkdir()
                         }catch (e:Exception)
                         {
                             Toasty.warning(this@SplashActivity,getString(R.string.wanning_storage), Toast.LENGTH_SHORT).show()
