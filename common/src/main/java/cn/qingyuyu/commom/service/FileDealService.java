@@ -56,7 +56,7 @@ public class FileDealService {
 
     //删除指定文件夹下所有文件
 //param path 文件夹完整绝对路径
-    public  boolean delAllFile(String path) {
+    private  boolean delAllFile(String path) {
         boolean flag = false;
         File file = new File(path);
         if (!file.exists()) {
@@ -89,19 +89,17 @@ public class FileDealService {
         try     {
             int    bytesum    =    0;
             int    byteread    =    0;
-            File     oldfile  =  new  File(oldPath);
                 InputStream    inStream    =    new    FileInputStream(oldPath);
                 FileOutputStream    fs    =    new    FileOutputStream(newPath);
                 byte[]   buffer    =    new    byte[1024];
                 while    (   (byteread    =    inStream.read(buffer))    !=    -1)    {
                     bytesum   +=    byteread;
-                    System.out.println(bytesum);
                     fs.write(buffer,   0,   byteread);
                 }
                 inStream.close();
         }
         catch     (Exception     e)     {
-            e.printStackTrace();
+            Log.e("copyFile",e.toString());
             return false;
         }
         return true;

@@ -250,9 +250,6 @@ class EditArticleActivity : AppCompatActivity() {
                                 message.what = 3
                                 hd.sendMessage(message)
                                 Thread.sleep(1000)
-                                message = Message()
-                                message.what = 4
-                                hd.sendMessage(message)
 
                             }
                             catch (e:Exception)
@@ -264,7 +261,9 @@ class EditArticleActivity : AppCompatActivity() {
                             }
 
                         }
-
+                        message = Message()
+                        message.what = 4
+                        hd.sendMessage(message)
                     }
 
                 }).start()
@@ -352,7 +351,7 @@ class EditArticleActivity : AppCompatActivity() {
                 .setTitle(R.string.title_showfile)
                 .setNegativeButton(R.string.button_add,View.OnClickListener {
                     Toasty.info(this@EditArticleActivity, getString(R.string.select_file_info) , Toast.LENGTH_LONG, true).show()
-                    var i=Intent(this@EditArticleActivity,FileSelectActivity::class.java)
+                    val i=Intent(this@EditArticleActivity,FileSelectActivity::class.java)
                     startActivityForResult(i,SELECTFILE)
                 })
                 .setPositiveButton(R.string.button_ok,View.OnClickListener { Toasty.success(this@EditArticleActivity, getString(R.string.button_ok ), Toast.LENGTH_SHORT, true).show() })
@@ -378,9 +377,9 @@ class EditArticleActivity : AppCompatActivity() {
     }
     fun articleToXml():Boolean?
     {
-        var userDir = File(Environment.getExternalStorageDirectory().toString() + SomeValue.userDir)
+        val userDir = File(Environment.getExternalStorageDirectory().toString() + SomeValue.userDir)
         val zipDir=File(userDir.absolutePath+SomeValue.zipDir)
-        val xmlFile = File(userDir.absolutePath +SomeValue.zipDir+ "/index.xml")
+        val xmlFile = File(userDir.absolutePath + "/index.xml")
         if (!userDir.exists())
             try {
                 userDir.mkdir()
@@ -465,13 +464,14 @@ class EditArticleActivity : AppCompatActivity() {
             articles.appendChild(content)
 
             val attachments = document.createElement("attachments")
-            val attarchment = document.createElement("attachment")
-            attarchment.setAttribute("name", "one")
-            attarchment.setAttribute("src", "attarchment/1.zip")
-            attarchment.setAttribute("visibility", "public")
 
-            attachments.appendChild(attarchment)
-
+            for(f in FileList.fileList) {
+                val attarchment = document.createElement("attachment")
+                attarchment.setAttribute("name", f.substring(f.lastIndexOf("/")+1))
+                attarchment.setAttribute("src", "attarchment/"+f.substring(f.lastIndexOf("/")+1))
+                attarchment.setAttribute("visibility", "public")
+                attachments.appendChild(attarchment)
+            }
             articles.appendChild(attachments)
 
             document.appendChild(articles)
@@ -494,7 +494,27 @@ class EditArticleActivity : AppCompatActivity() {
     fun packageFile():Boolean?
     {
         val root=Environment.getExternalStorageDirectory().toString()
-        val zipFile= File(root+ SomeValue.userDir+SomeValue.zipDir+SomeValue.zipFile)
+
+
+        val fds=FileDealService()
+        val zipDir = File(root+ SomeValue.userDir+SomeValue.zipDir)
+        if (!zipDir.exists())
+            try {
+                zipDir.mkdir()//创文件夹
+            } catch (e: Exception) {
+                Log.e("attach",""+e)
+                Toasty.warning(this, getString(R.string.wanning_storage), Toast.LENGTH_SHORT).show()
+                return false
+            }
+        else//文件夹存在，可能有其它文件
+        {
+            fds.delFolder(zipDir.path)
+            zipDir.mkdir()
+        }
+
+        fds.copyFile(root+SomeValue.userDir+"/index.xml",root+SomeValue.userDir+SomeValue.zipDir+"/index.xml")//复制
+
+        val zipFile= File(root+ SomeValue.userDir+SomeValue.zipDir+SomeValue.zipFile)   //新建zip
 
         if(zipFile.exists())
             try {
@@ -503,35 +523,28 @@ class EditArticleActivity : AppCompatActivity() {
                 Toasty.warning(this, getString(R.string.wanning_storage), Toast.LENGTH_SHORT).show()
                 return false
             }
-
-        val fds=FileDealService()
-        val attachDir = File(root+ SomeValue.userDir+SomeValue.zipDir+"/attachments")
-        if (!attachDir.exists())
-            try {
-                attachDir.mkdir()
-            } catch (e: Exception) {
-                Toasty.warning(this, getString(R.string.wanning_storage), Toast.LENGTH_SHORT).show()
-                return false
-            }
-        else//文件夹存在，可能有其它文件
-        {
-            fds.delFolder(attachDir.path)
-            attachDir.mkdir()
-        }
         val assetsDir = File(root+ SomeValue.userDir+SomeValue.zipDir+"/assets")
-        if (!assetsDir.exists())
+
             try {
                 assetsDir.mkdir()
             } catch (e: Exception) {
                 Toasty.warning(this, getString(R.string.wanning_storage), Toast.LENGTH_SHORT).show()
                 return false
             }
-        else//文件夹存在，可能有其它文件
-        {
-            fds.delFolder(assetsDir.path)
-            assetsDir.mkdir()
+        val attachDir = File(root+ SomeValue.userDir+SomeValue.zipDir+"/attachment")
+
+        try {
+            attachDir.mkdir()
+
+            for (f in FileList.fileList)
+                    fds.copyFile(f,attachDir.absolutePath+"/"+f.substring(f.lastIndexOf("/")+1))
+        } catch (e: Exception) {
+            Toasty.warning(this, getString(R.string.wanning_storage), Toast.LENGTH_SHORT).show()
+            return false
         }
         val zipfiles=DirTraversal.arrayListFiles(root+ SomeValue.userDir+SomeValue.zipDir)
+        for(f in zipfiles)
+        Log.e("files",f.absolutePath)
         try {
             ZipHelper.zipFiles(zipfiles, zipFile)
         }
