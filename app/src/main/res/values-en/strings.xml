@@ -67,4 +67,6 @@
     <string name="info_changelanguage">After changing the language, restart the App manually</string>
     <string name="error_network">Net Error：</string>
     <string name="download_file">Down attachments</string>
+    <string name="server_timeout">server timeout！</string>
+    <string name="server_exception">server exception</string>
 </resources>
