@@ -429,7 +429,7 @@ class EditArticleActivity : AppCompatActivity() {
             slug.setAttribute("name", "slug")
             slug.setTextContent(base64.encode(article.slug.toByteArray()))
             category.setAttribute("name", "category")
-            category.setAttribute("valve", ""+article.category)
+            category.setAttribute("value", ""+article.category)
             tag.setAttribute("name", "tag")
             create.setAttribute("name", "create")
             create.setAttribute("value", ""+article.create)
