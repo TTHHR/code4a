@@ -250,7 +250,7 @@ class EditArticleActivity : AppCompatActivity() {
                                 message.what = 3
                                 hd.sendMessage(message)
                                 Thread.sleep(1000)
-
+                                FileList.fileList.clear()
                             }
                             catch (e:Exception)
                             {

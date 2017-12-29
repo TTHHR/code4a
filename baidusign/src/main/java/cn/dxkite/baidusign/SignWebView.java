@@ -2,10 +2,13 @@ package cn.dxkite.baidusign;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.webkit.CookieManager;
+import android.webkit.PermissionRequest;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -66,6 +69,7 @@ public class SignWebView extends WebView {
     }
 
     public  class WebViewClient extends  android.webkit.WebViewClient {
+
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
@@ -80,7 +84,9 @@ public class SignWebView extends WebView {
                     try {
                         Object baidu=new BaiduSignServer().method("getInfo",BaiduUser.class).call();
 
+
                         if (baidu instanceof BaiduUser){
+                            Log.e("login baidu",baidu.toString());
                             new FileDealService().userFile(baidu.toString());
                             Looper.prepare();
                             Toast.makeText(context,"登陆成功！Success",Toast.LENGTH_LONG).show();
@@ -101,6 +107,13 @@ public class SignWebView extends WebView {
 
     //进度条改变
     public class WebChromeClient extends android.webkit.WebChromeClient {
+        @Override
+        public void onPermissionRequest(PermissionRequest request) {
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                request.grant(request.getResources());
+            }
+        }
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress == 100) {
