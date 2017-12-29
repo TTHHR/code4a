@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
-import cn.dxkite.baidusign.SignActivity;
+import cn.qingyuyu.code4a.LoginActivity;
 import cn.qingyuyu.code4a.model.User;
-import cn.qingyuyu.commom.SomeValue;
-import cn.qingyuyu.commom.service.FileDealService;
 
 /**
  * Created by harrytit on 2017/11/2.
@@ -36,7 +34,7 @@ public class LoginDealController {
     private boolean login(Activity con)
     {
         if(!User.getInstance().isLogind()) {
-            Intent i = new Intent(con, SignActivity.class);
+            Intent i = new Intent(con, LoginActivity.class);
             con.startActivity(i);
         }
         return true;

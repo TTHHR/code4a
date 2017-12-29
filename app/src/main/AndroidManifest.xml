@@ -8,6 +8,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".CodeApplication"
         android:allowBackup="true"
@@ -40,11 +45,12 @@
         <activity
             android:name=".EditArticleActivity"
             android:label="@string/editarticle_name" />
-        <activity android:name=".EggActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-
-        </activity>
+        <activity
+            android:name=".EggActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>
