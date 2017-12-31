@@ -9,6 +9,11 @@
         android:orderInCategory="80"
         android:icon="@mipmap/download"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/edit"
+        android:title="@string/button_edit" />
+    <item
+        android:id="@+id/del"
+        android:title="@string/button_del" />
 
 </menu>
