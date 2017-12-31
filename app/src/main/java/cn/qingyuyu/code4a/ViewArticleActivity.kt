@@ -3,6 +3,7 @@ package cn.qingyuyu.code4a
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -15,6 +16,7 @@ import android.os.Message
 import android.text.Html
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -33,7 +35,7 @@ import java.util.regex.Pattern
 
 class ViewArticleActivity : AppCompatActivity() {
     private lateinit var mycomment: BootstrapButton
-    private var richEditText: TextView? = null
+    private var richText: TextView? = null
 private lateinit var loadBar:ProgressBar
     private lateinit var copyButton:BootstrapButton
     private var articleid=0
@@ -42,16 +44,18 @@ private lateinit var loadBar:ProgressBar
     private val CHANGE_USERNAME=0
     private val CHANGE_CONTENT=1
 
+    private lateinit var article:Article
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_article)
         loadBar=findViewById(R.id.progressBar)
         copyButton=findViewById(R.id.copy)
         copyButton.setOnClickListener {
-            if(richEditText!=null)
+            if(richText !=null)
             {
                 val cm = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                  cm.primaryClip=ClipData.newPlainText("code",richEditText!!.text)
+                  cm.primaryClip=ClipData.newPlainText("code", richText!!.text)
                 Toasty.info(this,getString(R.string.info_success),Toast.LENGTH_SHORT).show()
             }
         }
@@ -63,17 +67,17 @@ private lateinit var loadBar:ProgressBar
             loadBar.visibility=View.INVISIBLE
         }
         supportActionBar!!.title=i.getStringExtra("title")
-        richEditText = findViewById<TextView>(R.id.rich_text)
+        richText = findViewById<TextView>(R.id.rich_text)
         Log.e("id",""+articleid)
-        if(richEditText != null) {
-            val imageGetter = URLImageParser(richEditText as TextView)
+        if(richText != null) {
+            val imageGetter = URLImageParser(richText as TextView)
              hd = object : Handler() {
                 override fun handleMessage(msg: Message) {
                     when(msg.what)
                     {
                         CHANGE_CONTENT->{
                             loadBar.visibility=View.INVISIBLE
-                            richEditText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
+                            richText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
                             copyButton.isClickable=true
                         }
                         CHANGE_USERNAME->{
@@ -111,6 +115,41 @@ private lateinit var loadBar:ProgressBar
         menuInflater.inflate(R.menu.activity_viewarticle, menu)
         return true
     }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if(item!=null)
+        when(item.itemId)
+        {
+            R.id.action_downloadfile->{
+                //下载附件
+            }
+
+            R.id.del->{
+                //删除文章
+            }
+
+            R.id.edit->{
+                //编辑文章
+
+                val i= Intent(this@ViewArticleActivity,EditArticleActivity::class.java)
+
+                i.putExtra("content", article.content)
+
+                startActivity(i)
+
+            }
+
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
+
+
     override fun onStart() {
 
         Thread( Runnable {
@@ -148,6 +187,7 @@ private lateinit var loadBar:ProgressBar
                             Log.i("obj","is article")
                             if(a.content!=null)
                             {
+                                article=a
                                 // fix: kotlin keywords abstract error
                                 var text= a.content   // abstract 属于关键字，不能用作属性名直接获取
                                val imgSet= getImgStr(text)

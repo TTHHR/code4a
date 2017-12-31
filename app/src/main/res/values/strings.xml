@@ -44,6 +44,8 @@
     <string name="button_ok">确定</string>
     <string name="button_copy">复制</string>
     <string name="button_cancel">取消</string>
+    <string name="button_del">删除</string>
+    <string name="button_edit">编辑</string>
     <string name="title_article">上传文章</string>
     <string name="title_articleproperty">文章属性</string>
     <string name="title_upfile">上传文件</string>
@@ -81,6 +83,8 @@
     <string name="prompt_password">密码</string>
     <string name="prompt_password_confirm">确认密码</string>
     <string name="need_password_confirm">需要确认密码</string>
+    <string name="need_email">需要邮箱地址</string>
+    <string name="need_nickname">需要用户名</string>
     <string name="action_sign_in">注册</string>
     <string name="action_login_in">登录</string>
 

@@ -1,12 +1,12 @@
 package cn.qingyuyu.code4a
 
 
+import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 
 import android.view.View
@@ -19,7 +19,7 @@ import android.widget.Toast
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapEditText
 import es.dmoral.toasty.Toasty
-
+import java.util.regex.*
 
 /**
  * A login screen that offers login via email/password.
@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
      */
 
     var accountString=""
+    var emailString=""  //for register
     var password=""
     var passwordConfirm=""
 
@@ -121,6 +122,32 @@ class LoginActivity : AppCompatActivity() {
                         }
                         else if(passwordConfirm!=password)
                             Toasty.error(this@LoginActivity, getString(R.string.check_confirm_fail), Toast.LENGTH_SHORT).show()
+                        else if(emailString.isEmpty())
+                        {
+                            val registerLayout=layoutInflater.inflate(R.layout.dialog_register,null)
+
+                            val registerInfo=registerLayout.findViewById<TextView>(R.id.registerinfo)
+
+                            val registerdialog= AlertDialog.Builder(this@LoginActivity)
+                                    .setView(registerInfo)
+                                    .setNegativeButton(getString(R.string.button_cancel),null)
+                                    .setPositiveButton(getString(R.string.button_ok),DialogInterface.OnClickListener { dialogInterface, i ->
+
+                                        //注册操作
+
+                                    })
+                                    .setCancelable(true)
+                            val regex = "[a-zA-Z_]{1,}[0-9]{0,}@(([a-zA-z0-9]-*){1,}\\.){1,3}[a-zA-z\\-]{1,}"
+
+                            if(Pattern.matches(regex,accountString))//如果账户是邮箱
+                            {
+                                registerdialog.setTitle(getString(R.string.need_nickname))
+                            }
+                            else
+                            {
+                                registerdialog.setTitle(getString(R.string.need_email))
+                            }
+                        }
                         else {
                             md.setTitle(getString(R.string.action_sign_in))
                             md.create()

@@ -14,6 +14,8 @@
     <string name="setting_update">update</string>
     <string name="nav_share">Share</string>
     <string name="info_success"> Success </string>
+    <string name="button_del">delete</string>
+    <string name="button_edit">edit</string>
     <string name="info_fail"> fail </string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
@@ -78,6 +80,8 @@
     <string name="need_password_confirm">need confirm password</string>
     <string name="prompt_password">password</string>
     <string name="prompt_password_confirm">confirm password</string>
+    <string name="need_email">need email address</string>
+    <string name="need_nickname">need nickname</string>
     <string name="action_sign_in">register</string>
     <string name="action_login_in">Login</string>
 </resources>
