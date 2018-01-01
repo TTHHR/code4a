@@ -87,5 +87,5 @@
     <string name="need_nickname">需要用户名</string>
     <string name="action_sign_in">注册</string>
     <string name="action_login_in">登录</string>
-
+    <string name="copyright">Copyright © ATDStudio All Rights Reserved</string>
 </resources>
