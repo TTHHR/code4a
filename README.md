@@ -1,12 +1,16 @@
-# code4a
+# Code4A
+
 一个代码分享平台
+
 a code share platform
 
-apk下载地址：https://github.com/TTHHR/c4droidcode/tree/dev/release
+### 相关开源依赖
 
-apk download：https://github.com/TTHHR/c4droidcode/tree/dev/release
+- 富文本编辑：https://github.com/huzhenjie/RichTextEditor
+- 文件浏览：https://github.com/WeiMei-Tian/FileBrowser
+- 弹窗：https://github.com/Carbs0126/MDDialog
+- 下拉刷新： https://github.com/Hitomis/FunGameRefresh
 
-使用了 富文本编辑：https://github.com/huzhenjie/RichTextEditor
-		文件浏览：https://github.com/WeiMei-Tian/FileBrowser
-		弹窗：https://github.com/Carbs0126/MDDialog
-        下拉刷新： https://github.com/Hitomis/FunGameRefresh
+### 协议
+
+本软件源码可以下载修改，修改请附加原作者，但是不可以发布到各大应用商店。
