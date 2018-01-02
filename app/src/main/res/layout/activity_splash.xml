@@ -55,7 +55,7 @@
                         android:baselineAlignBottom="false"
                         android:cropToPadding="false"
                         android:layoutDirection="ltr"
-                        app:srcCompat="@mipmap/icon" />
+                        app:srcCompat="@drawable/ic_launcher" />
                 </LinearLayout>
 
                 <TextView
