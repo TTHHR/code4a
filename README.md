@@ -1,5 +1,7 @@
 # Code4A
 
+[![Build Status](https://travis-ci.org/ATDStudio/code4a.svg)](https://travis-ci.org/ATDStudio/code4a)
+
 一个代码分享平台
 
 a code share platform
