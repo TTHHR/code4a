@@ -1,4 +1,6 @@
-# Code4A
+
+
+![Icon](code4a.svg)
 
 [![Build Status](https://travis-ci.org/ATDStudio/code4a.svg)](https://travis-ci.org/ATDStudio/code4a)
 
@@ -13,6 +15,12 @@ a code share platform
 - 弹窗：https://github.com/Carbs0126/MDDialog
 - 下拉刷新： https://github.com/Hitomis/FunGameRefresh
 
+### 服务器程序
+Code4A Server: https://github.com/DXkite/DxSite
+
 ### 协议
 
 本软件源码可以下载修改，修改请附加原作者，但是不可以发布到各大应用商店。
+
+### 捐赠
+![Alipay](donation.jpg)
