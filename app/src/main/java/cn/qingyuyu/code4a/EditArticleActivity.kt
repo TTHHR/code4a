@@ -166,7 +166,6 @@ class EditArticleActivity : AppCompatActivity() {
                 }
 
 
-
                val inflater = layoutInflater
                 val dialoglayout = inflater.inflate(R.layout.dialog_uploadarticle, null)
                 val message= dialoglayout.findViewById<TextView>(R.id.message)
@@ -176,33 +175,11 @@ class EditArticleActivity : AppCompatActivity() {
                         .setCancelable(false)
                         .create()
                 md .show()
-                val hd=object:Handler(){
-                    override fun handleMessage(msg: Message) {
-                        val s = msg.what
-                        Log.e("what",""+s)
-                        when(s)
-                        {
-                            1-> message.text=getString(R.string.action_packfile)
-                            2-> message.text=getString(R.string.title_upfile)
-                            3->message.text=getString(R.string.action_upfinish)
-                            4->{
-                                Log.e("html",richEditText!!.toHtml())
-                                md.cancel()
-                            }
-                            else->{
-                                Toasty.error(this@EditArticleActivity,"error",Toast.LENGTH_SHORT).show()
-                                md.cancel()
-                            }
-                        }
-
-                            super.handleMessage(msg)
-                    }
-                }
 
                 Thread(Runnable {
-                    var message = Message()
-                    message.what=1
-                    hd.sendMessage(message)
+                    runOnUiThread {
+                        message.text=getString(R.string.action_packfile)
+                    }
 
                     //打包文件
                     article.content=richEditText!!.toHtml()
@@ -217,28 +194,28 @@ class EditArticleActivity : AppCompatActivity() {
                 article.modify=(System.currentTimeMillis()/1000).toInt()//添加修改时间
 
 
-
-
                 val xmlFile=articleToXml()
 
                     if(xmlFile==false)
                     {
-                        message = Message()
-                        message.what=5
-                        hd.sendMessage(message)
+                        runOnUiThread {
+                            Toasty.error(this@EditArticleActivity,"error",Toast.LENGTH_SHORT).show()
+                            md.cancel()
+                        }
                     }
                     else {
                         val zipFile=packageFile()
                         if(zipFile==false)
                         {
-                            message = Message()
-                            message.what=5
-                            hd.sendMessage(message)
+                            runOnUiThread {
+                                Toasty.error(this@EditArticleActivity, "error", Toast.LENGTH_SHORT).show()
+                                md.cancel()
+                            }
                         }
                         else {
-                            message = Message()
-                            message.what = 2
-                            hd.sendMessage(message)
+                            runOnUiThread {
+                                message.text = getString(R.string.title_upfile)
+                            }
                             //上传
                             try {
                                 Remote.article.method("upload").call(
@@ -246,24 +223,25 @@ class EditArticleActivity : AppCompatActivity() {
                                         Param("type", "xml"),
                                         Param("status", 2)
                                 )
-                               message = Message()
-                                message.what = 3
-                                hd.sendMessage(message)
+                                runOnUiThread {
+                                    message.text=getString(R.string.action_upfinish)
+                                }
                                 Thread.sleep(1000)
                                 FileList.fileList.clear()
                             }
                             catch (e:Exception)
                             {
                                 Log.e("upload",""+e)
-                                message = Message()
-                                message.what=5
-                                hd.sendMessage(message)
+                                runOnUiThread {
+                                    Toasty.error(this@EditArticleActivity, "error", Toast.LENGTH_SHORT).show()
+                                    md.cancel()
+                                }
                             }
 
                         }
-                        message = Message()
-                        message.what = 4
-                        hd.sendMessage(message)
+                        runOnUiThread {
+                            md.cancel()
+                        }
                     }
 
                 }).start()
@@ -409,7 +387,7 @@ class EditArticleActivity : AppCompatActivity() {
             val db = dbf.newDocumentBuilder()
             val document = db.newDocument()
             val base64 = sun.misc.BASE64Encoder()
-            document.setXmlStandalone(true)
+            document.xmlStandalone = true
             val articles = document.createElement("article")
             val attrs = document.createElement("attrs")
             val title = document.createElement("attr")
@@ -424,10 +402,10 @@ class EditArticleActivity : AppCompatActivity() {
             val cover = document.createElement("attr")
 
             title.setAttribute("name", "title")
-            title.setTextContent(base64.encode(article.title.toByteArray()))
+            title.textContent = base64.encode(article.title.toByteArray())
             Log.e("eeeee",""+base64.encode(article.title.toByteArray()))
             slug.setAttribute("name", "slug")
-            slug.setTextContent(base64.encode(article.slug.toByteArray()))
+            slug.textContent = base64.encode(article.slug.toByteArray())
             category.setAttribute("name", "category")
             category.setAttribute("value", ""+article.category)
             tag.setAttribute("name", "tag")
@@ -439,7 +417,7 @@ class EditArticleActivity : AppCompatActivity() {
             visibility.setAttribute("value", article.visibility)
             visibility.setAttribute("password", article.visibilitypassword)
             abstracts.setAttribute("name", "abstract")
-            abstracts.setTextContent(base64.encode(article.abstract.toByteArray()))
+            abstracts.textContent = base64.encode(article.abstract.toByteArray())
             status.setAttribute("name", "status")
             status.setAttribute("value", "2")
             cover.setAttribute("name", "cover")
@@ -459,7 +437,7 @@ class EditArticleActivity : AppCompatActivity() {
 
             val content = document.createElement("content")
             content.setAttribute("type", "html")
-            content.setTextContent(base64.encode(article.content.toByteArray()))
+            content.textContent = base64.encode(article.content.toByteArray())
 
             articles.appendChild(content)
 

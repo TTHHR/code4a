@@ -5,14 +5,13 @@ import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+
 import android.support.design.widget.TextInputLayout
 
 import android.view.View
 
 import android.support.v7.app.AlertDialog
-import android.util.Log
+
 import android.widget.TextView
 import android.widget.Toast
 
@@ -86,23 +85,7 @@ class LoginActivity : AppCompatActivity() {
                 val md= AlertDialog.Builder(this@LoginActivity)
                         .setView(infoLayout)
                         .setCancelable(true)
-                val hd=object:Handler(){
-                    override fun handleMessage(msg: Message) {
-                        val s = msg.what
-                        Log.e("what",""+s)
-                        when(s)
-                        {
-                           1->Toasty.info(this@LoginActivity,getString(R.string.info_success),Toast.LENGTH_SHORT).show()
-                            2-> {
-                                Toasty.info(this@LoginActivity, getString(R.string.info_fail), Toast.LENGTH_SHORT).show()
-                                if(msg.obj is String)
-                                debuginfo.setText(msg.obj.toString())
-                            }
-                        }
 
-                        super.handleMessage(msg)
-                    }
-                }
                 when (v.id) {
                     R.id.login_in_button -> {
                         if (accountString.isEmpty() || password.isEmpty())

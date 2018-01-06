@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">BaiduSign</string>
-
-    <string name="title_activity_sign">SignActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="sign_sucess">登陆成功</string>
-</resources>

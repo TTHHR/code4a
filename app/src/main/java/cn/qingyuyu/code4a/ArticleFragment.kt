@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
-import cn.dxkite.common.CrashHandler
 import cn.qingyuyu.code4a.model.ArticleAdapter
 import cn.qingyuyu.code4a.model.ArticleList
 import cn.qingyuyu.code4a.remote.Remote
@@ -72,7 +71,7 @@ class ArticleFragment(val kind:Int) : Fragment() {
                 }
                 catch (e: UnknownHostException)
                 {
-                    Log.e("Article","Host Error",e);
+                    Log.e("Article","Host Error",e)
                 }
 //                cover=Remote.article.method("getCover",File::class.java).call(Param("article",1));
 

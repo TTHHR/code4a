@@ -1,17 +1,17 @@
 package cn.qingyuyu.code4a
 
 import android.app.Application
-import android.content.Context
 import android.os.Looper
 import android.preference.PreferenceManager
-import android.util.Log
-import android.widget.TableRow
+
 import android.widget.Toast
 import cn.atd3.proxy.ProxyConfig
+
 import cn.atd3.proxy.exception.ServerException
-import cn.dxkite.baidusign.SignController
+
 import cn.dxkite.common.CrashHandler
 import cn.dxkite.common.ExceptionHandler
+import cn.qingyuyu.code4a.control.SignController
 import java.util.*
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -50,7 +50,7 @@ class CodeApplication : Application() {
         ProxyConfig.setController(SignController())
     }
     private  fun initGlobalHandler(){
-        val serverTimeout= ExceptionHandler(){ context, thread, exception ->
+        val serverTimeout= ExceptionHandler { context, thread, exception ->
             kotlin.run {
                 Looper.prepare()
                 Toast.makeText(context, getString(R.string.server_timeout), Toast.LENGTH_SHORT).show()
