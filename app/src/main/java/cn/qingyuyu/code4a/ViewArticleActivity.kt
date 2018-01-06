@@ -40,11 +40,11 @@ private lateinit var loadBar:ProgressBar
     private lateinit var copyButton:BootstrapButton
     private var articleid=0
     private var userid=999
-    private lateinit var hd:Handler
-    private val CHANGE_USERNAME=0
-    private val CHANGE_CONTENT=1
+
 
     private lateinit var article:Article
+
+    private lateinit var imageGetter:URLImageParser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,24 +70,8 @@ private lateinit var loadBar:ProgressBar
         richText = findViewById<TextView>(R.id.rich_text)
         Log.e("id",""+articleid)
         if(richText != null) {
-            val imageGetter = URLImageParser(richText as TextView)
-             hd = object : Handler() {
-                override fun handleMessage(msg: Message) {
-                    when(msg.what)
-                    {
-                        CHANGE_CONTENT->{
-                            loadBar.visibility=View.INVISIBLE
-                            richText!!.text = Html.fromHtml(msg.obj as String, imageGetter, null)
-                            copyButton.isClickable=true
-                        }
-                        CHANGE_USERNAME->{
-                            supportActionBar!!.subtitle=msg.obj as String
-                        }
+             imageGetter = URLImageParser(richText as TextView)
 
-                    }
-                    super.handleMessage(msg)
-                }
-            }
         }
     mycomment=findViewById(R.id.mycomment)
         mycomment.setOnClickListener{
@@ -154,32 +138,31 @@ private lateinit var loadBar:ProgressBar
 
         Thread( Runnable {
             run {
-                var msg = Message()
+                var usern=""
 
                 try {
                     val username=Remote.user.method("id2name",String::class.java).call(userid)
                     if(username is String)
                     {
-                            msg.obj=username
+                           usern=username
                     }
                     else
                     {
-                        msg.obj="error"
+                       usern="error"
                     }
-                    msg.what=CHANGE_USERNAME
-                    hd.sendMessage(msg)
-                    Log.e("username",""+msg.obj)
+
+                    Log.e("username",""+username)
                 }
                 catch (e:Exception)
                 {
                     Log.e("userid",e.toString())
                 }
 
+                runOnUiThread {
+                     supportActionBar!!.subtitle=usern
+                    }
 
-
-
-
-                 msg = Message()
+                var text=""
                 try {
                     val a = Remote.article.method("getArticleById",Article::class.java).call(articleid)
                         if(a is Article)
@@ -189,7 +172,7 @@ private lateinit var loadBar:ProgressBar
                             {
                                 article=a
                                 // fix: kotlin keywords abstract error
-                                var text= a.content   // abstract 属于关键字，不能用作属性名直接获取
+                                text= a.content   // abstract 属于关键字，不能用作属性名直接获取
                                val imgSet= getImgStr(text)
                                 for(imgurl in imgSet)
                                 {
@@ -197,20 +180,21 @@ private lateinit var loadBar:ProgressBar
                                     text=text.replace(imgurl,SomeValue.ServerAddress+imgurl)//地址转换成绝对地址
                                 }
                                 Log.e("final",text)
-                                msg.obj=text
                             }
                             else
                             {
                                 Log.e("obj","null")
-                                msg.obj="null"
+                               text=""
                             }
                          }
-                        else
-                        {
-                            msg.obj="error"
+
+                    runOnUiThread {
+                        loadBar.visibility=View.INVISIBLE
+                        if(imageGetter!=null) {
+                            richText!!.text = Html.fromHtml(text, imageGetter, null)
+                            copyButton.isClickable = true
                         }
-                    msg.what=CHANGE_CONTENT
-                    hd.sendMessage(msg)
+                    }
                 }
                 catch (e:Exception)
                 {

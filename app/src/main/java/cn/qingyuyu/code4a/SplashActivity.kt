@@ -8,18 +8,13 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.os.Handler
-import android.util.Log
+
 import android.view.View
 import android.widget.Toast
 import cn.qingyuyu.commom.SomeValue
 import es.dmoral.toasty.Toasty
 import java.io.File
-import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LOW_PROFILE
+
 
 
 
@@ -35,7 +30,7 @@ var isPermission=false
             actionBar.hide()
         }
         val mContentView:View = findViewById(R.id.splash_view)
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+        mContentView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
