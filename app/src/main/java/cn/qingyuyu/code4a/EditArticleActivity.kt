@@ -474,7 +474,7 @@ class EditArticleActivity : AppCompatActivity() {
         val root=Environment.getExternalStorageDirectory().toString()
 
 
-        val fds=FileDealService()
+        val fds=FileDealService.getInstance()
         val zipDir = File(root+ SomeValue.userDir+SomeValue.zipDir)
         if (!zipDir.exists())
             try {

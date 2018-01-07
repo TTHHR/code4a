@@ -16,8 +16,9 @@
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none">
-        </ListView>
+            android:divider="@color/bootstrap_gray_lighter"
+            android:dividerHeight="8dp"
+            android:scrollbars="none"></ListView>
 
     </com.hitomi.refresh.view.FunGameRefreshView>
 </RelativeLayout>

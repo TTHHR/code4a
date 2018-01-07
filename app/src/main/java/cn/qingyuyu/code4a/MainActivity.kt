@@ -166,7 +166,25 @@ lateinit var myViewPager:ViewPager
             uname!!.text = this.getText(R.string.username)
             head_iv!!.setImageResource(R.mipmap.logo)
         }
+
+        //Banner测试
+        Thread(Runnable {
+            Thread.sleep(1000)
+            Log.e("banner", "")
+            val bar = Banner(toolbar, this@MainActivity)
+            runOnUiThread {
+                bar.show()
+            }
+            Thread.sleep(5000)
+            runOnUiThread{
+                bar.dismiss()
+            }
+        }  ).start()
+
+
     }
+
+
 
     //返回键
     override fun onBackPressed() {

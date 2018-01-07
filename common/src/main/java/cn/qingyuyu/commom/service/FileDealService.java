@@ -1,6 +1,5 @@
 package cn.qingyuyu.commom.service;
 
-import android.os.Environment;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
@@ -21,6 +20,18 @@ import cn.qingyuyu.commom.SomeValue;
  */
 
 public class FileDealService {
+
+    static FileDealService fdl=new FileDealService();
+
+    public static FileDealService getInstance()
+    {
+        return fdl;
+    }
+
+   private FileDealService(){
+
+    }
+
     public File saveFile(InputStream is)//暂时保存文件
     {
         return save(is);
@@ -86,7 +97,11 @@ public class FileDealService {
     }
     public    boolean   copyFile(String     oldPath,     String     newPath)
     {
+        Log.e("copyFile","old"+oldPath+"  new"+newPath);
         try     {
+            File newFile=new File(newPath);
+            if(!newFile.exists())
+                newFile.createNewFile();
             int    bytesum    =    0;
             int    byteread    =    0;
                 InputStream    inStream    =    new    FileInputStream(oldPath);
@@ -151,7 +166,7 @@ public class FileDealService {
     将流保存文件
      */
     private File save(InputStream is) {
-        String name = "temp";
+        String name = "/temp";
         File f = null;
 
         try {
@@ -171,7 +186,7 @@ public class FileDealService {
             fos.close();
 
         } catch (Exception e) {
-
+            Log.e("save inputstream",e.toString());
         }
         return f;
     }
