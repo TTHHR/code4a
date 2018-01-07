@@ -49,7 +49,9 @@
             android:label="@string/editarticle_name" />
         <activity
             android:name=".EggActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@android:style/Theme.Translucent" >
+
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"></activity>

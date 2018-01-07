@@ -41,7 +41,7 @@ public class User {
         }
         if (firstRun || modified) {
             try {
-                String data = new FileDealService().readFile(userData);
+                String data =  FileDealService.getInstance().readFile(userData);
                 JSONObject user = JSONObject.parseObject(data);
                 iconName = user.getString("portrait");
                 userName = user.getString("uname");
@@ -63,7 +63,7 @@ public class User {
     public boolean logout(Activity con) {
         try {
             userName = null;
-            new FileDealService().delFile(SomeValue.dirPath + SomeValue.userData);//删除本地信息
+             FileDealService.getInstance().delFile(SomeValue.dirPath + SomeValue.userData);//删除本地信息
             Remote.user.method("signout").call();//服务器退出登陆
             return true;
         } catch (Exception e) {

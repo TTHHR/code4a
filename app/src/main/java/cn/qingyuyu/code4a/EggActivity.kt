@@ -11,6 +11,10 @@ class EggActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_egg)
+        // 全屏
+        if (actionBar != null){
+            actionBar.hide()
+        }
         val iv=findViewById<ImageView>(R.id.imageView)
         iv.setOnClickListener {
             point+=1
