@@ -2,7 +2,7 @@
 
 ![Icon](code4a.svg)
 
-[![Build Status](https://travis-ci.org/TTHHR/code4a.svg?branch=master)](https://travis-ci.org/TTHHR/code4a)
+[![Build Status](https://travis-ci.org/TTHHR/code4a.svg)](https://travis-ci.org/TTHHR/code4a)
 
 一个代码分享平台
 
