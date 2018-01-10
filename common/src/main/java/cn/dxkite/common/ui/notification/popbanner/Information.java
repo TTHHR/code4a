@@ -11,6 +11,8 @@ public class Information {
     private String url = null;
     private boolean touchable = false;
     private int time = 2000;
+    private String backgroundColor = null;
+    private String color= null ;
 
     public int getTime() {
         return time;
@@ -42,5 +44,21 @@ public class Information {
 
     public void setTouchable(boolean touchable) {
         this.touchable = touchable;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
