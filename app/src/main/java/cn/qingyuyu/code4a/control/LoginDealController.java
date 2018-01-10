@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import cn.qingyuyu.code4a.LoginActivity;
+import cn.qingyuyu.code4a.TryLoginActivity;
 import cn.qingyuyu.code4a.model.User;
 
 /**
@@ -35,6 +36,7 @@ public class LoginDealController {
     {
         if(!User.getInstance().isLogind()) {
             Intent i = new Intent(con, LoginActivity.class);
+            //Intent i = new Intent(con, TryLoginActivity.class);
             con.startActivity(i);
         }
         return true;
