@@ -1,54 +1,56 @@
 package cn.qingyuyu.code4a
 
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.content.Intent
-import android.util.Log
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import cn.dxkite.common.ui.notification.popbanner.Adapter
+import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.qingyuyu.code4a.control.DataBaseController
 import cn.qingyuyu.code4a.control.LoginDealController
 import cn.qingyuyu.code4a.model.ArticleList
 import cn.qingyuyu.code4a.model.TabFragmentAdapter
-
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import cn.qingyuyu.code4a.model.User
 import cn.qingyuyu.commom.SomeValue
 import cn.qingyuyu.commom.SomeValue.*
+import com.xyzlf.share.library.bean.ShareEntity
 import com.xyzlf.share.library.interfaces.ShareConstant
 import com.xyzlf.share.library.util.ShareUtil
-import com.xyzlf.share.library.bean.ShareEntity
-
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-lateinit var myViewPager:ViewPager
+    lateinit var myViewPager: ViewPager
     //把Fragment添加到List集合里面
-    var fragmentList = mutableListOf(ArticleFragment(C4DROID) as Fragment,ArticleFragment(AIDE)as Fragment,ArticleFragment(ANDROID)as Fragment)
-   lateinit var button_aide:Button
-    lateinit var button_android:Button
-    lateinit var button_c4droid:Button
+    var fragmentList = mutableListOf(ArticleFragment(C4DROID) as Fragment, ArticleFragment(AIDE) as Fragment, ArticleFragment(ANDROID) as Fragment)
+    lateinit var button_aide: Button
+    lateinit var button_android: Button
+    lateinit var button_c4droid: Button
     var head_iv: ImageView? = null
     var uname: TextView? = null
-   private  var btnUnableColor=0
-    private var btnEnableColor=0
-    private var eggTrigger=0
+    private var btnUnableColor = 0
+    private var btnEnableColor = 0
+    private var eggTrigger = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        btnUnableColor=ContextCompat.getColor(this@MainActivity,R.color.btn_unable)
-        btnEnableColor=ContextCompat.getColor(this@MainActivity,R.color.btn_enable)
+        btnUnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_unable)
+        btnEnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_enable)
         initView()
     }
 
@@ -60,39 +62,39 @@ lateinit var myViewPager:ViewPager
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
 
-        myViewPager =  findViewById(R.id.myViewPager)
+        myViewPager = findViewById(R.id.myViewPager)
         val adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
         myViewPager.adapter = adapter
         myViewPager.currentItem = 0  //初始化显示第一个页面
-        class PageChange : ViewPager.OnPageChangeListener
-        {
+        class PageChange : ViewPager.OnPageChangeListener {
 
             override fun onPageSelected(position: Int) {
-                when (position)
-                {
-                    C4DROID-> {
-                        Log.e("viewpage",""+0)
+                when (position) {
+                    C4DROID -> {
+                        Log.e("viewpage", "" + 0)
                         button_aide.setBackgroundColor(btnEnableColor)
                         button_c4droid.setBackgroundColor(btnUnableColor)
                         button_android.setBackgroundColor(btnEnableColor)
 
                     }
-                    AIDE->{
-                        Log.e("viewpage",""+1)
+                    AIDE -> {
+                        Log.e("viewpage", "" + 1)
                         button_aide.setBackgroundColor(btnUnableColor)
                         button_c4droid.setBackgroundColor(btnEnableColor)
                         button_android.setBackgroundColor(btnEnableColor)
                     }
-                    ANDROID->{
-                        Log.e("viewpage",""+2)
+                    ANDROID -> {
+                        Log.e("viewpage", "" + 2)
                         button_aide.setBackgroundColor(btnEnableColor)
                         button_c4droid.setBackgroundColor(btnEnableColor)
                         button_android.setBackgroundColor(btnUnableColor)
                     }
                 }
             }
+
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
             }
+
             override fun onPageScrollStateChanged(state: Int) {
             }
 
@@ -102,11 +104,11 @@ lateinit var myViewPager:ViewPager
 
 
         button_c4droid = findViewById(R.id.c4droid)
-        button_aide =  findViewById(R.id.aide)
+        button_aide = findViewById(R.id.aide)
         button_android = findViewById(R.id.android)
 
 
-// 设置TAB的点击事件
+        // 设置TAB的点击事件
         button_aide.setOnClickListener(View.OnClickListener {
             myViewPager.currentItem = AIDE
             button_aide.setBackgroundColor(btnUnableColor)
@@ -127,33 +129,31 @@ lateinit var myViewPager:ViewPager
         })
 
 
-
-
         //获取头像点击事件
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
         head_iv!!.setOnClickListener {
-            val ldc=LoginDealController()
-            if(User.getInstance().isLogind)//登录判断
+            val ldc = LoginDealController()
+            if (User.getInstance().isLogind)//登录判断
             {
-                eggTrigger+=1
-                if (eggTrigger>=5)
-                {
-                    eggTrigger=0
+                eggTrigger += 1
+                if (eggTrigger >= 5) {
+                    eggTrigger = 0
                     val i = Intent(this@MainActivity, EggActivity::class.java)
                     startActivity(i)
                 }
-            }
-            else
-            ldc.call("login",this@MainActivity,null)
+            } else
+                ldc.call("login", this@MainActivity, null)
         }
         val newarticle = findViewById<FloatingActionButton>(R.id.newarticle) as FloatingActionButton
         newarticle.setOnClickListener(View.OnClickListener { view ->
             val i = Intent(this@MainActivity, EditArticleActivity::class.java)
             startActivity(i)
         })
+
+        testBanner()
     }
 
 
@@ -167,23 +167,10 @@ lateinit var myViewPager:ViewPager
             head_iv!!.setImageResource(R.mipmap.logo)
         }
 
-        //Banner测试
-        Thread(Runnable {
-            Thread.sleep(1000)
-            Log.e("banner", "")
-            val bar = Banner(toolbar, this@MainActivity)
-            runOnUiThread {
-                bar.show()
-            }
-            Thread.sleep(5000)
-            runOnUiThread{
-                bar.dismiss()
-            }
-        }  ).start()
+
 
 
     }
-
 
 
     //返回键
@@ -195,7 +182,30 @@ lateinit var myViewPager:ViewPager
         }
     }
 
+    fun testBanner () {
+        Log.e("banner","start test banner");
+        //Banner测试
+        Thread(Runnable {
+            Thread.sleep(1000)
+            Log.e("banner", "")
+            val bar = cn.dxkite.common.ui.notification.popbanner.PopBanner(this@MainActivity,toolbar,R.mipmap.broadcast)
+            bar.setMessageAdapter(Adapter {
+                // 模拟从服务器获取信息
+                val info=Information()
+                info.message="01-10 17:58:10.662 1988-1988/cn.qingyuyu.code4a D/PopBanner: dismiss banner"
+                info.url="https://github.com/TTHHR/code4a"
+                info.setTouchable(true)
+                info.time=5000
+                info
+            })
+            bar.update()
+            runOnUiThread {
+                bar.show()
+            }
+            Log.e("banner","end test banner");
+        }).start()
 
+    }
     //创建菜单
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
@@ -234,16 +244,17 @@ lateinit var myViewPager:ViewPager
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
     override fun onDestroy() {
-        val data= DataBaseController()
+        val data = DataBaseController()
         data.clearArticles(this)
-        val al=ArticleList.getArticleList(this)
-        if(!al.getArticleList(C4DROID)[0].title.equals("下拉刷新~(●'◡'●)"))
-        data.saveArticles(this,al.getArticleList(C4DROID))
-        if(!al.getArticleList(AIDE)[0].title.equals("下拉刷新~(●'◡'●)"))
-        data.saveArticles(this,al.getArticleList(AIDE))
-        if(!al.getArticleList(ANDROID)[0].title.equals("下拉刷新~(●'◡'●)"))
-        data.saveArticles(this,al.getArticleList(ANDROID))
+        val al = ArticleList.getArticleList(this)
+        if (!al.getArticleList(C4DROID)[0].title.equals("下拉刷新~(●'◡'●)"))
+            data.saveArticles(this, al.getArticleList(C4DROID))
+        if (!al.getArticleList(AIDE)[0].title.equals("下拉刷新~(●'◡'●)"))
+            data.saveArticles(this, al.getArticleList(AIDE))
+        if (!al.getArticleList(ANDROID)[0].title.equals("下拉刷新~(●'◡'●)"))
+            data.saveArticles(this, al.getArticleList(ANDROID))
         super.onDestroy()
     }
 }
