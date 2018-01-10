@@ -1,4 +1,4 @@
-package cn.dxkite.common.ui.notification.popbanner;
+package cn.dxkite.common.ui.notification;
 
 
 import android.content.Context;
@@ -6,19 +6,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.util.LogPrinter;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import cn.dxkite.common.ui.notification.popbanner.Adapter;
+import cn.dxkite.common.ui.notification.popbanner.Information;
 
 /**
  * 弹窗通知
@@ -28,24 +27,24 @@ import android.widget.TextView;
 
 public class PopBanner extends View {
 
-    
-    private  Adapter messageAdapter;
+
+    private Adapter messageAdapter;
     private TextView textView;
     private ImageView imageView;
     private PopupWindow popupWindow;
-    private final String TAG ="PopBanner";
-    private View container=null;
-    private int imageResource =0;
+    private final String TAG = "PopBanner";
+    private View container = null;
+    private int imageResource = 0;
     private int backgroundColor = Color.parseColor("#FFC125");
     private Information information;
     private LinearLayout layout;
     private Handler dismissHandler;
 
 
-    public PopBanner(Context context,View container,int imageResource) {
+    public PopBanner(Context context, View container, int imageResource) {
         super(context);
-        this.imageResource=imageResource;
-        this.container=container;
+        this.imageResource = imageResource;
+        this.container = container;
         initView();
     }
 
@@ -61,30 +60,36 @@ public class PopBanner extends View {
      * 更新信息
      */
     public void update() {
-        Adapter adapter=getMessageAdapter();
-        if (adapter!=null){
-            information=adapter.refersh();
-        }else{
-            Log.e(TAG,"adapter is null");
+        Adapter adapter = getMessageAdapter();
+        if (adapter != null) {
+            information = adapter.refersh();
+        } else {
+            Log.e(TAG, "adapter is null");
         }
     }
 
     /**
      * 显示
      */
-    public void show()
-    {
+    public void show() {
         // UI线程调用
-        dismissHandler=new Handler(){
+        dismissHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 dismiss();
             }
         };
 
-        if(!popupWindow.isShowing()) {
+        if (!popupWindow.isShowing()) {
             imageView.setImageResource(imageResource);
-            layout.setBackgroundColor(backgroundColor);
+            if (information.getBackgroundColor() != null && !TextUtils.isEmpty(information.getBackgroundColor())) {
+                layout.setBackgroundColor(Color.parseColor(information.getBackgroundColor()));
+            } else {
+                layout.setBackgroundColor(backgroundColor);
+            }
+            if (information.getColor() != null && !TextUtils.isEmpty(information.getColor())) {
+                textView.setTextColor(Color.parseColor(information.getColor()));
+            }
             if (information.isTouchable()) {
                 popupWindow.setTouchable(true);
                 textView.setClickable(true);
@@ -98,7 +103,7 @@ public class PopBanner extends View {
                 });
             }
             // 自动消失
-            if (information.getTime()>0){
+            if (information.getTime() > 0) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -116,9 +121,8 @@ public class PopBanner extends View {
         }
     }
 
-    public void dismiss()
-    {
-        if(popupWindow.isShowing()){
+    public void dismiss() {
+        if (popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
     }
@@ -146,9 +150,9 @@ public class PopBanner extends View {
     }
 
     private void initView() {
-        layout=new LinearLayout(getContext());
-        textView=new TextView(getContext());
-        imageView=new ImageView(getContext());
+        layout = new LinearLayout(getContext());
+        textView = new TextView(getContext());
+        imageView = new ImageView(getContext());
         layout.setOrientation(LinearLayout.HORIZONTAL);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -165,7 +169,7 @@ public class PopBanner extends View {
         layout.addView(imageView);
         layout.addView(textView);
         layout.setGravity(Gravity.CENTER);
-        popupWindow=new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, false);
+        popupWindow = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, false);
         popupWindow.setOutsideTouchable(false);
         popupWindow.setTouchable(false);
     }

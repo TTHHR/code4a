@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.qingyuyu.code4a.control.DataBaseController
@@ -188,7 +189,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Thread(Runnable {
             Thread.sleep(1000)
             Log.e("banner", "")
-            val bar = cn.dxkite.common.ui.notification.popbanner.PopBanner(this@MainActivity,toolbar,R.mipmap.broadcast)
+            val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
             bar.setMessageAdapter(Adapter {
                 // 模拟从服务器获取信息
                 val info=Information()
@@ -196,6 +197,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 info.url="https://github.com/TTHHR/code4a"
                 info.setTouchable(true)
                 info.time=5000
+                info.color="#222222"
+                info.backgroundColor="#cccccc"
                 info
             })
             bar.update()
