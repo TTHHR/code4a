@@ -50,16 +50,16 @@ public class TryLoginActivity extends AppCompatActivity {
             public void run() {
                 try{
                     String s;
-                    s=Remote.user.method("signup").call("ygl2018","ygl2018@qq.com","aaa12345").toString();
+                    s=(String) Remote.user.method("signup").call("110test","110test@email.com","aaa12345");
                     //s=Remote.category.method("getArticleById").call(1,1, 10).toString();
                     showMessage(s);
                     Log.i(TAG,"trySignup() s:"+s);
                 }catch (ServerException e){
-                    e.printStackTrace();
+                    Log.e(TAG,"ServerException:"+e);
                 }catch (PermissionException e){
-                    e.printStackTrace();
+                    Log.e(TAG,"ermissionException:"+e);
                 }catch (IOException e){
-                    e.printStackTrace();
+                    Log.e(TAG,"IOException:"+e);
                 }
             }
         }).start();
