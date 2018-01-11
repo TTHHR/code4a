@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //加载图片
     implementation 'com.github.huzhenjie:RichTextEditor:1.0.2'
-    //富文本编辑
+    //富文本编辑,BindView工具
     implementation 'com.jakewharton:butterknife:8.5.1'
     //文件
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
@@ -71,4 +71,8 @@ dependencies {
     }
     //  弹窗
     compile 'cn.carbs.android:MDDialog:1.0.0'
+
+    //RxJava and RxAndroid
+    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
 }
