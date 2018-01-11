@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':common')
+
     implementation project(path: ':fungamerefresh')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.0.0'
@@ -47,6 +48,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+
     // bootstrap
     implementation 'com.beardedhen:androidbootstrap:2.0.1'
     implementation('com.xyzlf.share:sharesdk:0.0.9') {
@@ -56,7 +58,7 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //加载图片
     implementation 'com.github.huzhenjie:RichTextEditor:1.0.2'
-    //富文本编辑
+    //富文本编辑,BindView工具
     implementation 'com.jakewharton:butterknife:8.5.1'
     //文件
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
