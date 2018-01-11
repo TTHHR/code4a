@@ -39,7 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor query() {
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(SomeValue.dirPath+"databases/"+DB_NAME,null);
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(DB_NAME,null);
         Cursor c = db.rawQuery(QUERY, null);
         return c;
     }

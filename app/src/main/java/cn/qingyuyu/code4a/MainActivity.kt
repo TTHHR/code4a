@@ -53,6 +53,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         btnUnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_unable)
         btnEnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_enable)
         initView()
+
+        val i=intent
+
+        if(i.getStringExtra("url")!=null)
+        {
+
+            val intent = Intent(this@MainActivity,WebActivity::class.java)
+                            intent.putExtra("url",i.getStringExtra("url"))
+                            startActivity(intent)
+        }
+
+
     }
 
     fun initView() {
@@ -184,28 +196,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun testBanner () {
-        Log.e("banner","start test banner");
+        Log.e("banner","start test banner")
         //Banner测试
         Thread(Runnable {
             Thread.sleep(1000)
             Log.e("banner", "")
             val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
-            bar.setMessageAdapter(Adapter {
+            bar.messageAdapter = Adapter {
                 // 模拟从服务器获取信息
                 val info=Information()
                 info.message="01-10 17:58:10.662 1988-1988/cn.qingyuyu.code4a D/PopBanner: dismiss banner"
                 info.url="https://github.com/TTHHR/code4a"
-                info.setTouchable(true)
+                info.isTouchable = true
                 info.time=5000
                 info.color="#222222"
                 info.backgroundColor="#cccccc"
                 info
-            })
+            }
             bar.update()
             runOnUiThread {
                 bar.show()
             }
-            Log.e("banner","end test banner");
+            Log.e("banner","end test banner")
         }).start()
 
     }
