@@ -14,13 +14,12 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <ImageView
-            android:id="@+id/adView"
+        <cn.qingyuyu.commom.ui.SplashAd
+            android:id="@+id/splash_ad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".3"
-            android:clickable="true"
-            app:srcCompat="@color/blue" />
+            />
 
         <LinearLayout
             android:layout_width="match_parent"

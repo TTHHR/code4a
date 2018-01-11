@@ -8,12 +8,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.Handler
+import android.util.Log
 
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import cn.qingyuyu.commom.SomeValue
+
+import cn.qingyuyu.commom.ui.SplashAd
+
 import cn.qingyuyu.commom.service.FileDealService
 import es.dmoral.toasty.Toasty
 import java.io.File
@@ -23,7 +25,7 @@ import java.util.*
 
 class SplashActivity : AppCompatActivity() {
 var isPermission=false
-    lateinit var adImage:ImageView
+    lateinit var adView:SplashAd
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -40,7 +42,7 @@ var isPermission=false
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
 
-        adImage=findViewById(R.id.adView)
+        adView=findViewById(R.id.splash_ad)
 
         if (Build.VERSION.SDK_INT >= 23&&!isPermission) {
             val permissions = ArrayList<String>()
@@ -106,16 +108,44 @@ var isPermission=false
 
     private fun goNext()
     {
+
+        adView.setSplashAdListener(object :SplashAd.SplashAdListener{
+            var  clicked=false
+            override fun doWhenAdDismiss() {//广告结束 ，跳转activity
+
+                Log.e("dismiss","clicked="+clicked)
+
+                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+
+                if (clicked) {
+                    intent.putExtra("url", "http://blog.qingyuyu.cn/")
+                    Log.e("puturl","")
+                }
+                //跳转到主界面
+                this@SplashActivity.startActivity(intent)
+                this@SplashActivity.finish()
+            }
+
+            override fun onAdImageClicked() {
+                clicked=true
+                Log.e("click","clicked="+clicked)
+            }
+
+        })
+
         val adImg=File(SomeValue.dirPath+SomeValue.adImg)
+
+
 
         if(adImg.exists())//设置开屏广告
         {
-            adImage.setImageURI(Uri.fromFile(adImg))
+            adView.setAdImageURI(Uri.fromFile(adImg))
+            adView.show(this@SplashActivity,3000)//显示3秒
             val cal = Calendar.getInstance()
             val time = adImg.lastModified()
             val formatter = SimpleDateFormat("yyyy-MM-dd")
             cal.timeInMillis=time
-            System.out.println("修改时间 " + formatter.format(cal.time))
+
            val lastTime=formatter.format(cal.time)
 
             cal.timeInMillis=System.currentTimeMillis()
@@ -143,13 +173,9 @@ var isPermission=false
                         fdl.delFile(nfile.absolutePath)
                     }
             ).start()
+            adView.show(this@SplashActivity,1000)//显示空白1秒
         }
 
-        Handler().postDelayed(Runnable {
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
-            //跳转到主界面
-            this@SplashActivity.startActivity(intent)
-            this@SplashActivity.finish()
-        }, 1000)//1000毫秒后执行上面的跳转主界面语句
+
     }
 }

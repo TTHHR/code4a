@@ -3,6 +3,7 @@ package cn.qingyuyu.code4a
 import android.app.Application
 import android.os.Looper
 import android.preference.PreferenceManager
+import android.util.Log
 
 import android.widget.Toast
 import cn.atd3.proxy.ProxyConfig
@@ -17,6 +18,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.ImageLoader
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
+import com.tencent.smtt.sdk.QbSdk
+
+
 
 
 /**
@@ -26,6 +30,27 @@ import java.util.concurrent.TimeoutException
 class CodeApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        //腾讯webview
+        val cb = object : QbSdk.PreInitCallback {
+
+            override fun onViewInitFinished(arg0: Boolean) {
+                // TODO Auto-generated method stub
+                //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
+                Log.d("app", " onViewInitFinished is " + arg0)
+            }
+
+            override fun onCoreInitFinished() {
+                // TODO Auto-generated method stub
+            }
+        }
+        //x5内核初始化接口
+        QbSdk.initX5Environment(applicationContext, cb)
+
+
+
+
+
         val language: String = PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao")
         // 本地语言设置
         val res = this.resources
