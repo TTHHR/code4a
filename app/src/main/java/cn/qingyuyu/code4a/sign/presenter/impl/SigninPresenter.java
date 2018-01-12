@@ -39,8 +39,9 @@ public class SigninPresenter extends SigninContract.Presenter {
 
                 @Override
                 public void onNext(Object o) {
+                    //在Model中的subscriber.onNext(o);就是调用的这个方法
                     Integer i=Integer.valueOf(o.toString());
-                    if(i>0){
+                    if(i>=0){
                         //登陆成功
                         mView.signinSuccessful();
                     }else {

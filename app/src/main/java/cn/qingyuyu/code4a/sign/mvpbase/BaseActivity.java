@@ -1,7 +1,9 @@
 package cn.qingyuyu.code4a.sign.mvpbase;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -24,6 +26,11 @@ public abstract class BaseActivity<M extends BaseModel,P extends BasePresenter> 
     @Override
     public void onCreate(Bundle s){
         super.onCreate(s);
+        //设置返回键
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         if (getLayoutId() != 0) {
             //设置布局资源文件
             setContentView(getLayoutId());
@@ -45,7 +52,15 @@ public abstract class BaseActivity<M extends BaseModel,P extends BasePresenter> 
         }
     }
 
-    //    获取布局资源文件
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        if(menuItem.getItemId()==android.R.id.home){
+            finish();
+        }
+        return true;
+    }
+
+    //获取布局资源文件
     protected abstract int getLayoutId();
 
     private void bindMVP() {

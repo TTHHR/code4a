@@ -51,11 +51,16 @@
             android:label="@string/editarticle_name" />
         <activity
             android:name=".EggActivity"
-            android:theme="@android:style/Theme.Translucent"></activity>
+            android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".sign.view.SigninActivity"></activity>
+        <activity
+            android:name=".sign.view.SigninActivity"
+            android:label="@string/title_activity_login"/>
+        <activity
+            android:name=".sign.view.SignupActivity"
+            android:label="@string/action_sign_in"/>
     </application>
 
 </manifest>
