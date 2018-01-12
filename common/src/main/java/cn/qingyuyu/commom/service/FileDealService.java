@@ -13,15 +13,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import cn.qingyuyu.commom.SomeValue;
-
 /**
  * Created by harrytit on 2017/11/4.
  */
 
 public class FileDealService {
 
-    static FileDealService fdl=new FileDealService();
+    public static FileDealService fdl=new FileDealService();
 
     public static FileDealService getInstance()
     {
@@ -31,12 +29,6 @@ public class FileDealService {
    private FileDealService(){
 
     }
-
-    public File saveFile(InputStream is)//暂时保存文件
-    {
-        return save(is);
-    }
-
     public boolean delFile(String filePath) {//删除文件
 
         File f = new File(filePath);
@@ -123,9 +115,8 @@ public class FileDealService {
     /*
     通过网址保存文件
      */
-    public File saveFile(String http)//暂时保存文件
+    public void saveFile(String filepath,String http)//暂时保存文件
     {
-        File f = null;
         try {
             // 构造URL
             URL url = new URL(http);
@@ -133,11 +124,10 @@ public class FileDealService {
             URLConnection con = url.openConnection();
             //设置请求超时为5s
             con.setConnectTimeout(5000);
-            f = save(con.getInputStream());
+            save(filepath,con.getInputStream());
         } catch (Exception e) {
-            Log.e("downicon", e.toString());
+            Log.e("saveFile", e.toString());
         }
-        return f;
     }
 
     /*
@@ -165,12 +155,11 @@ public class FileDealService {
     /*
     将流保存文件
      */
-    private File save(InputStream is) {
-        String name = "/temp";
+    private void save(String filePath,InputStream is) {
         File f = null;
 
         try {
-            f = new File(SomeValue.dirPath + name);
+            f = new File(filePath);
             if (f.exists())
                 f.delete();
             f.createNewFile();
@@ -188,50 +177,6 @@ public class FileDealService {
         } catch (Exception e) {
             Log.e("save inputstream",e.toString());
         }
-        return f;
-    }
-
-
-    public void userFile(final String json) {
-
-        JSONObject user = JSONObject.parseObject(json);
-        final String iconName = user.getString("portrait");
-        new Thread(new Runnable() {//下载保存头像
-            @Override
-            public void run() {
-                File tmp = new FileDealService().saveFile(SomeValue.imgUrl + iconName);//保存头像
-                File icon = new File(SomeValue.dirPath + iconName);
-
-                try {
-                    if (icon.exists())
-                        icon.delete();
-                    icon.createNewFile();
-
-
-                    FileInputStream ins = new FileInputStream(tmp);
-                    FileOutputStream out = new FileOutputStream(icon);
-                    byte[] b = new byte[1024];
-                    int n = 0;
-                    while ((n = ins.read(b)) != -1) {
-                        out.write(b, 0, n);
-                    }
-                    ins.close();
-                    out.close();
-
-                    File userdata = new File(SomeValue.dirPath + SomeValue.userData);
-                    if (userdata.exists()){
-                        userdata.delete();
-                    }
-                    userdata.createNewFile();
-                    out = new FileOutputStream(userdata);
-                    out.write(json.getBytes());
-                    out.close();
-                } catch (Exception e) {
-                    Log.e("User", "create error" , e);
-                }
-
-            }
-        }).start();
     }
 
 

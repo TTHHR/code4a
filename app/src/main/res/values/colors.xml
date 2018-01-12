@@ -32,4 +32,6 @@
 
     <drawable name="menu_press_night">#f0f0f2</drawable>
     <color name="item_driver_bg_light">#f0f0f2</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
