@@ -70,6 +70,7 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
     @Override
     public void accountError(String message) {
         closeProgressDialog();
+        //我知道要显示的字符应该放在R.string,下次改哈
         account.setError("用户名错误:"+message);
     }
 

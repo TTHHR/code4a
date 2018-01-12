@@ -26,6 +26,6 @@ public interface SignupContract {
     }
 
     abstract class Presenter extends BasePresenter<View,SignModel> {
-        public abstract void signupButtonClick(String account,String password);
+        public abstract void signupButtonClick(String user,String email,String password);
     }
 }

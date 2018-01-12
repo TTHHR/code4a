@@ -52,17 +52,24 @@ public class SignModel implements Sign {
         return Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
+                Log.i("xxxxx","1");
                 Object o=null;
                 try {
                     o= Remote.user.method("signup").call(user,email,password,code);
+                    Log.i("xxxxx","4 o:"+o.toString());
                 }catch (ServerException e){
+                    Log.i("xxxxx","5");
                     Log.e(TAG,"ServerException:"+e);
                 }catch (PermissionException e){
+                    Log.i("xxxxx","6");
                     Log.e(TAG,"ermissionException:"+e);
                 }catch (IOException e){
+                    Log.i("xxxxx","7");
                     Log.e(TAG,"IOException:"+e);
                 }
+                Log.i("xxxxx","2");
                 subscriber.onNext(o);
+                Log.i("xxxxx","3");
             }
         }).subscribeOn(Schedulers.io())//在其他线程执行
           .observeOn(AndroidSchedulers.mainThread());//在主线程触发
