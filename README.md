@@ -1,4 +1,4 @@
-![Icon](code4a.svg)
+![Icon](docs/assets/code4a.svg)
 
 [![Build Status](https://travis-ci.org/TTHHR/code4a.svg)](https://travis-ci.org/TTHHR/code4a)
 
@@ -39,6 +39,12 @@ Code4A Server: https://github.com/DXkite/DxSite
 - [ ] 应用功能
     - [x] 应用设置
  
+## 参与贡献
+
+- [开发必看](docs/before-develop.md)
+- [程序模块列表](docs/module.md)
+
+
 ## 协议
 
 本软件源码可以下载修改，修改请附加原作者，但是不可以发布到各大应用商店。
