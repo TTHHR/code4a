@@ -1,10 +1,9 @@
-package cn.qingyuyu.code4a.TestSigninAndSignup.Presenter.impl;
+package cn.qingyuyu.code4a.sign.presenter.impl;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import cn.qingyuyu.code4a.TestSigninAndSignup.Presenter.interfaces.SigninContract;
-import cn.qingyuyu.code4a.control.SignController;
+import cn.qingyuyu.code4a.sign.presenter.interfaces.SigninContract;
 import rx.Subscriber;
 
 /**
@@ -12,7 +11,7 @@ import rx.Subscriber;
  * 电话：13036804886
  * 邮箱：2369015621@qq.com
  * 版本号：1.0
- * 类描述：
+ * 类描述：主要负责处理业务逻辑
  * 备注消息：
  * 创建时间：2018/01/10   22:15
  **/

@@ -1,31 +1,26 @@
-package cn.qingyuyu.code4a.TestSigninAndSignup.View;
+package cn.qingyuyu.code4a.sign.view;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.qingyuyu.code4a.R;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BaseActivity;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BaseView;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Model.SigninModel;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Presenter.impl.SigninPresenter;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Presenter.interfaces.SigninContract;
+import cn.qingyuyu.code4a.sign.mvpbase.BaseActivity;
+import cn.qingyuyu.code4a.sign.mvpbase.BaseView;
+import cn.qingyuyu.code4a.sign.model.SigninModel;
+import cn.qingyuyu.code4a.sign.presenter.impl.SigninPresenter;
+import cn.qingyuyu.code4a.sign.presenter.interfaces.SigninContract;
 
 /**
  * 作者：YGL
  * 电话：13036804886
  * 邮箱：2369015621@qq.com
  * 版本号：1.0
- * 类描述：
+ * 类描述：主要负责处理UI逻辑
  * 备注消息：
  * 创建时间：2018/01/10   20:18
  **/

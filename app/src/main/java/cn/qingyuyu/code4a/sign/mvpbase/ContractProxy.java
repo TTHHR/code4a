@@ -1,13 +1,9 @@
-package cn.qingyuyu.code4a.TestSigninAndSignup.tools;
+package cn.qingyuyu.code4a.sign.mvpbase;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BaseModel;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BasePresenter;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BaseView;
 
 /**
  * 作者：YGL

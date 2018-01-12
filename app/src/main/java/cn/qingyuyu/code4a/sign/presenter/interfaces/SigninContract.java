@@ -1,9 +1,8 @@
-package cn.qingyuyu.code4a.TestSigninAndSignup.Presenter.interfaces;
+package cn.qingyuyu.code4a.sign.presenter.interfaces;
 
-import butterknife.BindView;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BaseModel;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BasePresenter;
-import cn.qingyuyu.code4a.TestSigninAndSignup.Base.BaseView;
+import cn.qingyuyu.code4a.sign.mvpbase.BaseModel;
+import cn.qingyuyu.code4a.sign.mvpbase.BasePresenter;
+import cn.qingyuyu.code4a.sign.mvpbase.BaseView;
 import rx.Observable;
 
 /**

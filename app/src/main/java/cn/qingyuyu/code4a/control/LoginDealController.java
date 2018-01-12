@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
-import cn.qingyuyu.code4a.TestSigninAndSignup.View.SigninActivity;
+import cn.qingyuyu.code4a.sign.view.SigninActivity;
 import cn.qingyuyu.code4a.model.User;
 
 /**

@@ -1,18 +1,17 @@
-package cn.qingyuyu.code4a.TestSigninAndSignup.Base;
+package cn.qingyuyu.code4a.sign.mvpbase;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cn.qingyuyu.code4a.TestSigninAndSignup.tools.ContractProxy;
 
 /**
  * 作者：YGL
  * 电话：13036804886
  * 邮箱：2369015621@qq.com
  * 版本号：1.0
- * 类描述：
+ * 类描述：定义每一个Activity都应该有的行为：在初始化时绑定MVP，在销毁时解除绑定MVP
  * 备注消息：
  * 创建时间：2018/01/10   22:33
  **/

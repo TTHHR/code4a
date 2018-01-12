@@ -55,7 +55,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".TestSigninAndSignup.View.SigninActivity"></activity>
+        <activity android:name=".sign.view.SigninActivity"></activity>
     </application>
 
 </manifest>

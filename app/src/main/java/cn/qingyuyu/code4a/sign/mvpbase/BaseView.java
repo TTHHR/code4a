@@ -1,4 +1,4 @@
-package cn.qingyuyu.code4a.TestSigninAndSignup.Base;
+package cn.qingyuyu.code4a.sign.mvpbase;
 
 /**
  * 作者：YGL
@@ -9,5 +9,7 @@ package cn.qingyuyu.code4a.TestSigninAndSignup.Base;
  * 备注消息：
  * 创建时间：2017/12/28   6:13
  **/
-public interface BaseModel {
+public interface BaseView {
+    //    提示错误消息
+    void showErrorWithStatus(String msg);
 }
