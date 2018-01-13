@@ -31,6 +31,13 @@
         <activity android:name=".view.view.WebActivity">
 
         </activity>
+        <activity
+            android:name=".view.view.SigninActivity"
+            android:label="@string/action_login_in">
+        </activity>
+        <activity
+            android:name=".view.view.SignupActivity"
+            android:label="@string/action_sign_in"/>
     </application>
 
 </manifest>
