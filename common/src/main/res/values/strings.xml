@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">common</string>
+    <string name="skip">跳过</string>
 </resources>
