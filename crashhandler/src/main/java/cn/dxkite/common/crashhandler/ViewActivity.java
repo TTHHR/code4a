@@ -23,7 +23,6 @@ public class ViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         textView=(TextView)findViewById(R.id.textView);
         textView.setText(CrashManager.throwable2String(CrashManager.throwable));
-
     }
 
     @Override
