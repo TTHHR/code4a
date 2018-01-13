@@ -152,9 +152,9 @@ public class SplashPresenter {
 
         try {
 
-            final File adImg=new File(Constant.adImg);//本地图片文件
+            final File adImg=new File(Constant.getAdImg());//本地图片文件
 
-            final File adUrl=new File(Constant.adUrl);//本地链接文件
+            final File adUrl=new File(Constant.getAdUrl());//本地链接文件
 
             if(adImg.exists()&&adUrl.exists())//设置Uri
             {

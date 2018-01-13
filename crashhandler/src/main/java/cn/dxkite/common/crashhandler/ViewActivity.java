@@ -23,6 +23,7 @@ public class ViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         textView=(TextView)findViewById(R.id.textView);
         textView.setText(CrashManager.throwable2String(CrashManager.throwable));
+
     }
 
     @Override
@@ -34,9 +35,10 @@ public class ViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_save) {
-            Toast.makeText(this,"保存",Toast.LENGTH_SHORT).show();
+            CrashManager.getInstance().saveException(CrashManager.throwable);
+            Toast.makeText(this,"日志保存成功 ",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this,"上传",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"上传还没弄 ",Toast.LENGTH_SHORT).show();
         }
         return true;
     }
