@@ -1,19 +1,15 @@
 package cn.atd3.code4a
 
 import android.app.Application
-import android.os.Looper
 import android.preference.PreferenceManager
-import android.widget.Toast
 import cn.atd3.code4a.presenter.SignController
 import cn.atd3.proxy.ProxyConfig
-import cn.atd3.proxy.exception.ServerException
-import cn.dxkite.common.CrashHandler
-import cn.dxkite.common.ExceptionHandler
+import cn.dxkite.common.crashhandler.Config
+import cn.dxkite.common.crashhandler.CrashManager
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
-import java.net.UnknownHostException
+import java.io.File
 import java.util.*
-import java.util.concurrent.TimeoutException
 
 
 /**
@@ -21,27 +17,19 @@ import java.util.concurrent.TimeoutException
  * Created by Administrator on 2017\8\6 0006.
  */
 class CodeApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
-        val language: String = PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao")
-        // 本地语言设置
-        val res = this.resources
-        val dm = res.displayMetrics
-        val conf = res.configuration
         // 初始化全局常量
         Constant.init(applicationContext)
-        if (language == "miao")//就是没有设置
-            conf.locale = Locale.getDefault()
-        else
-            conf.locale = Locale(language)
-        res.updateConfiguration(conf, dm)
+        initCrashManager();
+        initProxyManager();
+        initLanguage();
+        // 初始化图片加载
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this))
+    }
 
-        val imageLoader = ImageLoader.getInstance()  //初始化图片加载
-        imageLoader.init(ImageLoaderConfiguration.createDefault(this))
-        // 异常处理
-        CrashHandler.getInstance().init(applicationContext)
-        // 预定义处理器
-        initGlobalHandler()
+    private fun initProxyManager() {
         // 设置RPC请求超时 5秒
         ProxyConfig.setTimeOut(5000)
         // 设置RPC控制器
@@ -49,23 +37,23 @@ class CodeApplication : Application() {
         ProxyConfig.setController(SignController())
     }
 
-    private fun initGlobalHandler() {
-        val serverTimeout = ExceptionHandler { context, thread, exception ->
-            kotlin.run {
-                Looper.prepare()
-                Toast.makeText(context, getString(R.string.server_timeout), Toast.LENGTH_SHORT).show()
-                Looper.loop()
-            }
-        }
-        CrashHandler.addHander(TimeoutException::class.java, serverTimeout)
-        CrashHandler.addHander(UnknownHostException::class.java, serverTimeout)
-        CrashHandler.addHander(ServerException::class.java) { context, thread, exception ->
-            kotlin.run {
-                Looper.prepare()
-                Toast.makeText(context, getString(R.string.server_exception), Toast.LENGTH_SHORT).show()
-                Looper.loop()
-            }
-        }
+    private fun initCrashManager() {
+        CrashManager.getInstance().active(Config()
+                .setSavePath(Constant.getPublicFilePath()+ File.separator + "crash-log")
+                .setUpstream("")
+                ,applicationContext);
+    }
 
+    private fun initLanguage() {
+        val language: String? = PreferenceManager.getDefaultSharedPreferences(this).getString("language", null)
+        // 本地语言设置
+        val res = this.resources
+        val dm = res.displayMetrics
+        val conf = res.configuration
+        if (language == null)
+            conf.locale = Locale.getDefault()
+        else
+            conf.locale = Locale(language)
+        res.updateConfiguration(conf, dm)
     }
 }
