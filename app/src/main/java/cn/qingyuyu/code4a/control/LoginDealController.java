@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
-import cn.qingyuyu.code4a.LoginActivity;
+import cn.qingyuyu.code4a.sign.view.SigninActivity;
 import cn.qingyuyu.code4a.model.User;
 
 /**
@@ -34,7 +34,8 @@ public class LoginDealController {
     private boolean login(Activity con)
     {
         if(!User.getInstance().isLogind()) {
-            Intent i = new Intent(con, LoginActivity.class);
+            //Intent i = new Intent(con, LoginActivity.class);
+            Intent i = new Intent(con, SigninActivity.class);
             con.startActivity(i);
         }
         return true;
