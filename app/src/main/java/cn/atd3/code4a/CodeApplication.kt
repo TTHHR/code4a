@@ -2,7 +2,7 @@ package cn.atd3.code4a
 
 import android.app.Application
 import android.preference.PreferenceManager
-import cn.atd3.code4a.presenter.SignController
+import cn.code4a.ProxyController
 import cn.atd3.proxy.ProxyConfig
 import cn.dxkite.common.crashhandler.Config
 import cn.dxkite.common.crashhandler.CrashManager
@@ -34,7 +34,7 @@ class CodeApplication : Application() {
         ProxyConfig.setTimeOut(5000)
         // 设置RPC控制器
         ProxyConfig.setCookiePath(applicationContext.filesDir.absolutePath)
-        ProxyConfig.setController(SignController())
+        ProxyConfig.setController(ProxyController())
     }
 
     private fun initCrashManager() {
