@@ -3,22 +3,17 @@ package cn.atd3.code4a
 import android.app.Application
 import android.os.Looper
 import android.preference.PreferenceManager
-
 import android.widget.Toast
+import cn.atd3.code4a.presenter.SignController
 import cn.atd3.proxy.ProxyConfig
-
 import cn.atd3.proxy.exception.ServerException
-
 import cn.dxkite.common.CrashHandler
 import cn.dxkite.common.ExceptionHandler
-import cn.atd3.code4a.presenter.SignController
-import java.util.*
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import java.net.UnknownHostException
+import java.util.*
 import java.util.concurrent.TimeoutException
-
-
 
 
 /**
@@ -28,17 +23,13 @@ import java.util.concurrent.TimeoutException
 class CodeApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
-
-
-
-
-
         val language: String = PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao")
         // 本地语言设置
         val res = this.resources
         val dm = res.displayMetrics
         val conf = res.configuration
+        // 初始化全局常量
+        Constant.init(applicationContext)
         if (language == "miao")//就是没有设置
             conf.locale = Locale.getDefault()
         else
@@ -57,20 +48,21 @@ class CodeApplication : Application() {
         ProxyConfig.setCookiePath(applicationContext.filesDir.absolutePath)
         ProxyConfig.setController(SignController())
     }
-    private  fun initGlobalHandler(){
-        val serverTimeout= ExceptionHandler { context, thread, exception ->
+
+    private fun initGlobalHandler() {
+        val serverTimeout = ExceptionHandler { context, thread, exception ->
             kotlin.run {
                 Looper.prepare()
                 Toast.makeText(context, getString(R.string.server_timeout), Toast.LENGTH_SHORT).show()
                 Looper.loop()
             }
         }
-        CrashHandler.addHander(TimeoutException::class.java ,serverTimeout)
-        CrashHandler.addHander(UnknownHostException::class.java,serverTimeout)
-        CrashHandler.addHander(ServerException::class.java){ context, thread, exception ->
+        CrashHandler.addHander(TimeoutException::class.java, serverTimeout)
+        CrashHandler.addHander(UnknownHostException::class.java, serverTimeout)
+        CrashHandler.addHander(ServerException::class.java) { context, thread, exception ->
             kotlin.run {
                 Looper.prepare()
-                Toast.makeText(context,getString(R.string.server_exception), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.server_exception), Toast.LENGTH_SHORT).show()
                 Looper.loop()
             }
         }
