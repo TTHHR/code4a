@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import cn.atd3.code4a.Constant;
+
 public class MainActivity extends Activity {
 
     @Override
@@ -19,9 +21,15 @@ public class MainActivity extends Activity {
             startActivity(intent);
         }
 
-        Toast.makeText(getApplicationContext(), "Main", Toast.LENGTH_SHORT).show();
+        if (Constant.isDebug()) {
+            Toast.makeText(getApplicationContext(), "Main is debug", Toast.LENGTH_SHORT).show();
+            testExcepion();
+        }else{
+            Toast.makeText(getApplicationContext(), "Main is release", Toast.LENGTH_SHORT).show();
+        }
 
-        testExcepion();
+
+
     }
 
     void testExcepion() {
