@@ -33,6 +33,11 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
+
         sad=findViewById(R.id.splash_ad);
 
         sp=new SplashPresenter(this);//实例化，并将自身做参数
@@ -43,7 +48,7 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
 
         sp.setSplashAdListener(this,sad);//设置广告监听
 
-        sp.showAd(5000);//显示广告5秒
+        sp.showAd(3000);//显示广告3秒
 
     }
 

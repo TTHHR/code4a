@@ -31,9 +31,6 @@ class CodeApplication : Application() {
 
 
 
-
-
-
         val language: String = PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao")
         // 本地语言设置
         val res = this.resources

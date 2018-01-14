@@ -11,7 +11,9 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
@@ -41,6 +43,10 @@ public class SplashPresenter {
         this.svi = s;
         sami=new SplashAdModel();
     }
+
+
+
+
 
     private void updateImage()
     {
@@ -162,6 +168,30 @@ public class SplashPresenter {
                 setAd(Uri.fromFile(adImg),u);
                 //通知View层改变视图
                 updateImage();
+
+                Calendar cal = Calendar.getInstance();
+                long time = adImg.lastModified();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                cal.setTimeInMillis(time);
+                String lastTime = formatter.format(cal.getTime());
+                cal.setTimeInMillis(System.currentTimeMillis());
+
+                if(!(formatter.format(cal.getTime()).equals(lastTime)))//ad图片老旧
+                {//下载开屏广告
+                    new Thread(
+                          new  Runnable() {
+                              @Override
+                              public void run() {
+                                  FileDealService fdl=FileDealService.getInstance();
+                                  fdl.saveFile(Constant.adImg,Constant.remoteAdImg);//从网络保存文件
+                                  fdl.saveFile(Constant.adUrl,Constant.remoteAdUrl);
+                              }
+                }
+                ).start();
+
+                }
+
+
             }
             else//新开线程下载广告，因为带宽问题，广告下次显示
             {
