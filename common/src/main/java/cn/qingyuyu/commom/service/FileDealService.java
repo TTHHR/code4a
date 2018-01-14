@@ -175,7 +175,7 @@ public class FileDealService {
             fos.close();
 
         } catch (Exception e) {
-            Log.e("save inputstream",e.toString());
+            Log.e("save inputstream",filePath+":"+e.toString());
         }
     }
 

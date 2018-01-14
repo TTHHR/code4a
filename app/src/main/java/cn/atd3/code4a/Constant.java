@@ -3,8 +3,10 @@ package cn.atd3.code4a;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
+
 
 /**
  * 系统定义的常量
@@ -18,9 +20,7 @@ public final class Constant {
     public final static String shareImg = "http://blog.qingyuyu.cn/conf/profile.png";
     public final static String remoteAdImg = "http://code4a.atd3.cn/ad.png";
     public final static String remoteAdUrl = "http://code4a.atd3.cn/adurl.txt";
-    public final static String userDir = "/code4a";
-    public final static String zipDir = userDir + "/zip";
-    public final static String zipFile = "/code.zip";
+
     public final static int C4DROID = 0;
     public final static int AIDE = 1;
     public final static int ANDROID = 2;
@@ -29,15 +29,17 @@ public final class Constant {
     public final static int NORMAL = 2;
     public final static int WARNING = 3;
     public final static int ERROR = 4;
-    public final static String sdcardName="code4a";
-    public final static String privateString=".private";
+    public final static String sdcardName=File.separator +"code4a";
+    public final static String privateString=File.separator +".private";
+    public final static String zipDir = File.separator + "zip";
+    public final static String zipFile = File.separator +"code.zip";
     private static boolean init = false;
     private static String privateFilePath;
     private static String publicFilePath;
 
-    private static String adImg = privateFilePath + "/adImg.png";
-    private static String adUrl = privateFilePath + "/adUrl.txt";
-    private static String userData = privateFilePath + "/user.data";
+    private static String adImg = null;
+    private static  String adUrl =File.separator +"adUrl.txt";
+    private  static String userData =File.separator +"user.data";
 
 
 
@@ -48,17 +50,23 @@ public final class Constant {
     private Constant(Context context) {
         Constant.debug = judgeDebug(context);
         Constant.privateFilePath = context.getFilesDir().getAbsolutePath();
-        Constant.publicFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() +File.separator + sdcardName;
+        Constant.publicFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + sdcardName;
         if (debug) {
-            Constant.privateFilePath = Constant.publicFilePath + File.separator + privateString;
+            Constant.privateFilePath = Constant.publicFilePath + privateString;
+
         }
+        Log.e("privateFilePath", privateFilePath);
+        adImg = privateFilePath + File.separator +"adImg.png";
+         adUrl = privateFilePath +File.separator + "adUrl.txt";
+         userData = privateFilePath + File.separator +"user.data";
+
+
+
+
     }
 
     private boolean judgeDebug(Context context) {
-        if (context.getApplicationInfo() != null && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-            return true;
-        }
-        return false;
+        return context.getApplicationInfo() != null && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 
     public static void init(Context context) {

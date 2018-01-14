@@ -22,9 +22,9 @@ class CodeApplication : Application() {
         super.onCreate()
         // 初始化全局常量
         Constant.init(applicationContext)
-        initCrashManager();
-        initProxyManager();
-        initLanguage();
+        initCrashManager()
+        initProxyManager()
+        initLanguage()
         // 初始化图片加载
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this))
     }
@@ -41,7 +41,7 @@ class CodeApplication : Application() {
         CrashManager.getInstance().active(Config()
                 .setSavePath(Constant.getPublicFilePath()+ File.separator + "crash-log")
                 .setUpstream("")
-                ,applicationContext);
+                ,applicationContext)
     }
 
     private fun initLanguage() {
