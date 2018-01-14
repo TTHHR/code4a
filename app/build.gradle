@@ -26,8 +26,8 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            def today = new Date().format('yy-MM-dd')//添加日期
-            outputFileName = "${applicationId}-${android.defaultConfig.versionName}-${today}.apk"
+            def today = new Date().format('yyMMdd')//添加日期
+            outputFileName = "${applicationId}_${android.defaultConfig.versionName}.${today}.apk"
         }
     }
     lintOptions {

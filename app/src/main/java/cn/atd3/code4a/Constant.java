@@ -34,16 +34,10 @@ public final class Constant {
     private static boolean init = false;
     private static String privateFilePath;
     private static String publicFilePath;
-
-    private static String adImg = privateFilePath + "/adImg.png";
-    private static String adUrl = privateFilePath + "/adUrl.txt";
-    private static String userData = privateFilePath + "/user.data";
-
-
-
+    private static String adImg;
+    private static String adUrl;
+    private static String userData;
     private static boolean debug;
-
-
 
     private Constant(Context context) {
         Constant.debug = judgeDebug(context);
@@ -52,6 +46,9 @@ public final class Constant {
         if (debug) {
             Constant.privateFilePath = Constant.publicFilePath + File.separator + privateString;
         }
+        adImg = privateFilePath + "/adImg.png";
+        adUrl = privateFilePath + "/adUrl.txt";
+        userData = privateFilePath + "/user.data";
     }
 
     private boolean judgeDebug(Context context) {
