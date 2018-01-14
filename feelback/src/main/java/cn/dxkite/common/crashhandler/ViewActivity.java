@@ -8,21 +8,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.awt.font.TextAttribute;
 
 public class ViewActivity extends AppCompatActivity {
-    TextView textView ;
+    ExpandableListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        textView=(TextView)findViewById(R.id.textView);
-        textView.setText(CrashManager.throwable2String(CrashManager.throwable));
+        listView=(ExpandableListView) findViewById(R.id.list);
+        listView.setAdapter(new ExceptionView(CrashManager.throwable,getLayoutInflater()));
     }
 
     @Override
