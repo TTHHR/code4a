@@ -28,7 +28,7 @@
          />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/newarticle"
+        android:id="@+id/newArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
