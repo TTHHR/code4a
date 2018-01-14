@@ -3,13 +3,13 @@ package cn.atd3.code4a.view.view;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Window;
+import android.view.View;
 import android.widget.Toast;
-
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.SplashPresenter;
 import cn.atd3.code4a.view.inter.SplashViewInterface;
@@ -32,11 +32,13 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        if (getSupportActionBar() != null){
-            getSupportActionBar().hide();
-        }
-
+        View mContentView = findViewById(R.id.splash_view);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         sad=findViewById(R.id.splash_ad);
 
@@ -87,18 +89,21 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
                 new Runnable() {
                     @Override
                     public void run() {
-                        switch (infotype)
-                        {
+                        switch (infotype) {
                             case SUCESS:
-                                Toasty.success(getApplicationContext(),info, Toast.LENGTH_SHORT).show();
+                                Toasty.success(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case INFO:Toasty.info(getApplicationContext(),info, Toast.LENGTH_SHORT).show();
+                            case INFO:
+                                Toasty.info(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case NORMAL:Toasty.normal(getApplicationContext(),info, Toast.LENGTH_SHORT).show();
+                            case NORMAL:
+                                Toasty.normal(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case WARNING:Toasty.warning(getApplicationContext(),info, Toast.LENGTH_SHORT).show();
+                            case WARNING:
+                                Toasty.warning(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case ERROR:Toasty.error(getApplicationContext(),info, Toast.LENGTH_SHORT).show();
+                            case ERROR:
+                                Toasty.error(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 
