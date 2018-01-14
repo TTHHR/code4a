@@ -66,7 +66,10 @@ public final class Constant {
     }
 
     private boolean judgeDebug(Context context) {
-        return context.getApplicationInfo() != null && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        if (context.getApplicationInfo() != null && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            return true;
+        }
+        return false;
     }
 
     public static void init(Context context) {
