@@ -12,7 +12,6 @@ import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import cn.atd3.code4a.Constant;
@@ -75,8 +74,10 @@ public class SplashPresenter {
                 Log.e("请求权限","正在请求");
                 activity.requestPermissions(permission,0);//请求
             }
-            else
-                isPermission=true;
+            else {
+                isPermission = true;
+                onDirInit();
+            }
 
         }
         else//不需要请求权限，直接初始化文件夹
@@ -141,13 +142,16 @@ public class SplashPresenter {
 
     private void onDirInit()//初始化应用文件夹
     {
-        File userDir= new File(Environment.getExternalStorageDirectory().toString()+ Constant.userDir);
-        File zipDir= new File(Environment.getExternalStorageDirectory().toString()+ Constant.zipDir);
+        File userDir= new File(Constant.getPublicFilePath());
+        File zipDir= new File(Constant.getPublicFilePath()+ Constant.zipDir);
+        File priDir= new File(Constant.getPrivateFilePath());
         if(!userDir.exists())
             try {
                 userDir.mkdir();
 
                 zipDir.mkdir();
+
+                priDir.mkdir();
             }catch (Exception e)
             {
                 svi.showToast(ERROR,svi.getXmlString(R.string.wanning_storage));
@@ -183,8 +187,8 @@ public class SplashPresenter {
                               @Override
                               public void run() {
                                   FileDealService fdl=FileDealService.getInstance();
-                                  fdl.saveFile(Constant.adImg,Constant.remoteAdImg);//从网络保存文件
-                                  fdl.saveFile(Constant.adUrl,Constant.remoteAdUrl);
+                                  fdl.saveFile(Constant.getAdImg(),Constant.remoteAdImg);//从网络保存文件
+                                  fdl.saveFile(Constant.getAdUrl(),Constant.remoteAdUrl);
                               }
                 }
                 ).start();

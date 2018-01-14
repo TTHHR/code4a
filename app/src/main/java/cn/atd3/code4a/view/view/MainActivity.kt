@@ -98,6 +98,9 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         //写新文章按钮
         newarticle.setOnClickListener(View.OnClickListener { view ->
+
+            throw  RuntimeException("shejiu")
+
             //
         })
 

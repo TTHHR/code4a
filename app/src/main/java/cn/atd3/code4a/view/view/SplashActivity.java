@@ -1,12 +1,11 @@
 package cn.atd3.code4a.view.view;
 
 
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
