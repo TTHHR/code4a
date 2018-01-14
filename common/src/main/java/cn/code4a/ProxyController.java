@@ -1,4 +1,4 @@
-package cn.atd3.code4a.presenter;
+package cn.code4a;
 
 import android.os.Environment;
 import android.util.Log;
@@ -11,17 +11,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import cn.atd3.proxy.DefaultController;
 
-
-
 /**
  * 状态控制器
  * Created by DXkite on 2017/11/4 0004.
  */
 
-public class SignController extends DefaultController {
+public class ProxyController extends DefaultController {
     final String TAG = "cookie-controller";
     final String downloadPath="code4a/.cache/temps";
-    public SignController() {
+    public ProxyController() {
         super();
     }
 
