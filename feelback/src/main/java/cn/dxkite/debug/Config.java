@@ -24,8 +24,7 @@ public class Config {
      * 是否自动上传异常崩溃信息
      */
     protected boolean autoUpload=true;
-
-
+    protected String uploadSavePath=null;
     protected String packageName=null;
     protected String crashDumpPath=null;
 
@@ -78,6 +77,15 @@ public class Config {
 
     public Config setCrashDumpPath(String crashDumpPath) {
         this.crashDumpPath = crashDumpPath;
+        return this;
+    }
+
+    public String getUploadSavePath() {
+        return uploadSavePath;
+    }
+
+    public Config setUploadSavePath(String uploadSavePath) {
+        this.uploadSavePath = uploadSavePath;
         return this;
     }
 }

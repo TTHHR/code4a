@@ -21,6 +21,7 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import android.util.Log
+import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
@@ -28,6 +29,7 @@ import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.atd3.code4a.view.inter.MainViewInterface
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNavigationItemSelectedListener{
 
@@ -98,10 +100,15 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         //写新文章按钮
         newarticle.setOnClickListener(View.OnClickListener { view ->
-
-            throw  RuntimeException("shejiu")
-
-            //
+//            Thread(){
+//                kotlin.run {
+//                    Log.e("DXKite","perpare signup")
+//                    val ret:Any=Remote.user.method("signup").call("dxkite-test","dxkite_test1@qq.com","dxlidx");
+//                    Log.e("DXKite",ret.toString())
+//                }
+//            }.start()
+            throw RuntimeException("Something is error")
+;            //
         })
 
         //策划栏点击事件

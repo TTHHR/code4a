@@ -33,13 +33,14 @@ class CodeApplication : Application() {
         // 设置RPC请求超时 5秒
         ProxyConfig.setTimeOut(5000)
         // 设置RPC控制器
-        ProxyConfig.setCookiePath(applicationContext.filesDir.absolutePath)
+        ProxyConfig.setCookiePath(Constant.getPrivateFilePath())
         ProxyConfig.setController(ProxyController())
     }
 
     private fun initCrashManager() {
         DebugManager.config(applicationContext,Config()
                 .setSavePath(Constant.getPublicFilePath()+ File.separator + "crash-log")
+                .setUploadSavePath(Constant.getPrivateFilePath()+ File.separator + "crash-log")
                 .setUpstream("")
                 .setCrashDumpPath(Constant.getPrivateFilePath()+File.separator + "crash-dump")
                 .setDebug(Constant.isDebug()))

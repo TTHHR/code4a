@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by DXkite on 2018/1/15 0015.
  */
 
-public class CrashInfomation implements Serializable{
+public class CrashInformation implements Serializable{
     /**
      * 设备ID
      */
@@ -50,7 +50,7 @@ public class CrashInfomation implements Serializable{
     private String title;
     private String message;
 
-    public CrashInfomation(String deviceId, String userId, Throwable throwable, Thread thread) {
+    public CrashInformation(String deviceId, String userId, Throwable throwable, Thread thread) {
         this.deviceId = deviceId;
         this.userId = userId;
         this.throwable = throwable;
@@ -124,7 +124,7 @@ public class CrashInfomation implements Serializable{
             debug.put("title",title);
             debug.put("message",message);
             debug.put("thread",dumpThread());
-            debug.put("env",dumpEnv());
+            debug.put("env",dumpEnvJson());
             JSONArray traceInfo=new JSONArray();
             for (Throwable tmp:dumpThrowable()) {
                 JSONObject trace=new JSONObject();
@@ -188,6 +188,18 @@ public class CrashInfomation implements Serializable{
                     .append("\r\n");
         }
         return sb.toString();
+    }
+
+    private JSONObject dumpEnvJson() {
+        JSONObject object=new JSONObject();
+        for (Map.Entry<String, String> enter : dumpEnv().entrySet()) {
+            try {
+                object.put(enter.getKey(),enter.getValue());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return object;
     }
 
     private String dumpException() {

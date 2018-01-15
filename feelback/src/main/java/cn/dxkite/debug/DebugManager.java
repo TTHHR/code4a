@@ -1,11 +1,10 @@
 package cn.dxkite.debug;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,11 +12,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import cn.dxkite.debug.activity.ExceptionViewActivity;
-
-import static android.content.Context.BIND_AUTO_CREATE;
 
 /**
  * Debug 管理
@@ -31,10 +29,9 @@ public class DebugManager {
     private Thread.UncaughtExceptionHandler defaultHandler;
     private Context context;
     private static DebugManager instance = new DebugManager();
-    private static CrashInfomation crashInfo = null;
+    private static CrashInformation crashInfo = null;
 
-    private DebugManager()
-    {
+    private DebugManager() {
 
     }
 
@@ -46,17 +43,17 @@ public class DebugManager {
         DebugManager.config = config;
     }
 
-    public static DebugManager config(Context context,Config config){
+    public static DebugManager config(Context context, Config config) {
         setConfig(config);
-        instance.context=context;
+        instance.context = context;
         instance.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        File crashDump=new File(instance.config.getCrashDumpPath());
+        File crashDump = new File(instance.config.getCrashDumpPath());
 
         if (crashDump.exists()) {
-            CrashInfomation infomation=(CrashInfomation)loadObject(crashDump);
-            if (infomation!=null){
-                DebugManager.crashInfo=infomation;
-                Log.e(TAG," load exception ",infomation.getThrowable());
+            CrashInformation infomation = (CrashInformation) loadObject(crashDump);
+            if (infomation != null) {
+                DebugManager.crashInfo = infomation;
+                Log.e(TAG, " load exception ", infomation.getThrowable());
                 instance.context.startActivity(new Intent(instance.context, ExceptionViewActivity.class));
             }
             crashDump.delete();
@@ -65,10 +62,28 @@ public class DebugManager {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable throwable) {
-                crashInfo=new CrashInfomation(null,null,throwable,thread);
-                Log.d(TAG,"uncaughtException  " +throwable.getClass().getName());
-                saveObject(new File(instance.config.getCrashDumpPath()),crashInfo);
-                android.os.Process.killProcess(android.os.Process.myPid());
+                crashInfo = new CrashInformation(null, null, throwable, thread);
+                // 保存到文件
+                instance.saveCrashInfomation(crashInfo);
+                Log.d(TAG, "uncaughtException  " + throwable.getClass().getName());
+                saveObject(new File(instance.config.getCrashDumpPath()), crashInfo);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        Looper.prepare();
+                        Toast.makeText(instance.context, "程序异常，文件日志记录成功", Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+
+                    }
+                }.start();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // TODO 重启APP
+                instance.defaultHandler.uncaughtException(thread, throwable);
             }
         });
         return instance;
@@ -111,11 +126,42 @@ public class DebugManager {
         }
     }
 
-    public static CrashInfomation getCrashInfo() {
+    public static CrashInformation getCrashInfo() {
         return crashInfo;
     }
 
-    public static void setCrashInfo(CrashInfomation crashInfo) {
+    public static void setCrashInfo(CrashInformation crashInfo) {
         DebugManager.crashInfo = crashInfo;
+    }
+
+    public boolean saveCrashInfomation(CrashInformation information) {
+        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String millis = String.valueOf(System.currentTimeMillis());
+        String fileName = context.getPackageName() + "_" + format.format(System.currentTimeMillis())+"_" +millis ;
+        return saveFile(config.getSavePath() + File.separator + fileName + ".log", information.toString())
+                &&
+                saveFile(config.getUploadSavePath()+ File.separator + fileName + ".json", information.toJsonString());
+    }
+
+    private static boolean saveFile(String path, String content) {
+        File file = new File(path);
+        Log.d(TAG, "prepare directory:" + path);
+        if (!file.getParentFile().exists() && file.getParentFile().mkdirs()) {
+            Log.d(TAG, "create log directory");
+        }
+        try {
+            Log.d(TAG, "start write file");
+            if (!file.exists() && file.createNewFile()) {
+                Log.d(TAG, "create log file:" + file.getAbsolutePath());
+            }
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(content.toString().getBytes());
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "error writer file!", e);
+            return false;
+        }
+        return true;
     }
 }
