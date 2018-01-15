@@ -27,6 +27,7 @@ public class Config {
 
 
     protected String packageName=null;
+    protected String crashDumpPath=null;
 
     public boolean isDebug() {
         return debug;
@@ -69,5 +70,14 @@ public class Config {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public String getCrashDumpPath() {
+        return crashDumpPath;
+    }
+
+    public Config setCrashDumpPath(String crashDumpPath) {
+        this.crashDumpPath = crashDumpPath;
+        return this;
     }
 }

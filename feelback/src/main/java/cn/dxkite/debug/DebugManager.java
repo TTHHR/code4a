@@ -7,6 +7,14 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import cn.dxkite.debug.activity.ExceptionViewActivity;
 
 import static android.content.Context.BIND_AUTO_CREATE;
@@ -23,7 +31,7 @@ public class DebugManager {
     private Thread.UncaughtExceptionHandler defaultHandler;
     private Context context;
     private static DebugManager instance = new DebugManager();
-    private static CrashInfo crashInfo = null;
+    private static CrashInfomation crashInfo = null;
 
     private DebugManager()
     {
@@ -42,39 +50,72 @@ public class DebugManager {
         setConfig(config);
         instance.context=context;
         instance.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        File crashDump=new File(instance.config.getCrashDumpPath());
 
-
-        CrashManager.setThrowable(new RuntimeException("dxkite test"));
-
-        instance.context.startActivity(new Intent(instance.context, ExceptionViewActivity.class));
+        if (crashDump.exists()) {
+            CrashInfomation infomation=(CrashInfomation)loadObject(crashDump);
+            if (infomation!=null){
+                DebugManager.crashInfo=infomation;
+                Log.e(TAG," load exception ",infomation.getThrowable());
+                instance.context.startActivity(new Intent(instance.context, ExceptionViewActivity.class));
+            }
+            crashDump.delete();
+        }
 
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable throwable) {
-                crashInfo=new CrashInfo(null,null,throwable,thread);
+                crashInfo=new CrashInfomation(null,null,throwable,thread);
                 Log.d(TAG,"uncaughtException  " +throwable.getClass().getName());
-                instance.defaultHandler.uncaughtException(thread,throwable);
+                saveObject(new File(instance.config.getCrashDumpPath()),crashInfo);
+                android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
         return instance;
     }
 
-    public static void connectSaveExceptionService() {
-        Intent startIntent = new Intent(instance.context, DebugService.class);
-        Log.d(TAG,"service start");
-        instance.context.startService(startIntent);
-        Log.d(TAG,"service connecting");
-        instance.context.bindService(startIntent, new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder server) {
-                Log.d(TAG,"onServiceConnected");
-                final DebugService.DebugBinder debugService = (DebugService.DebugBinder)server;
-                debugService.saveException();
+    public static Object loadObject(File file) {
+        if (!file.exists()) {
+            return null;
+        }
+        ObjectInputStream input;
+        try {
+            input = new ObjectInputStream(new FileInputStream(file));
+            Object obj = input.readObject();
+            input.close();
+            return obj;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static boolean saveObject(File file, Object object) {
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                Log.d(TAG,"onServiceDisconnected");
-            }
-        },BIND_AUTO_CREATE);
+        }
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
+            output.writeObject(object);
+            output.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static CrashInfomation getCrashInfo() {
+        return crashInfo;
+    }
+
+    public static void setCrashInfo(CrashInfomation crashInfo) {
+        DebugManager.crashInfo = crashInfo;
     }
 }
