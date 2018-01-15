@@ -29,22 +29,20 @@ public final class Constant {
     public final static int NORMAL = 2;
     public final static int WARNING = 3;
     public final static int ERROR = 4;
-    public final static String sdcardName=File.separator +"code4a";
-    public final static String privateString=File.separator +".private";
+    public final static String sdcardName = File.separator + "code4a";
+    public final static String privateString = File.separator + ".private";
     public final static String zipDir = File.separator + "zip";
-    public final static String zipFile = File.separator +"code.zip";
+    public final static String zipFile = File.separator + "code.zip";
     private static boolean init = false;
     private static String privateFilePath;
     private static String publicFilePath;
 
     private static String adImg = null;
-    private static  String adUrl =File.separator +"adUrl.txt";
-    private  static String userData =File.separator +"user.data";
-
+    private static String adUrl = File.separator + "adUrl.txt";
+    private static String userData = File.separator + "user.data";
 
 
     private static boolean debug;
-
 
 
     private Constant(Context context) {
@@ -53,16 +51,12 @@ public final class Constant {
         Constant.publicFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + sdcardName;
         if (debug) {
             Constant.privateFilePath = Constant.publicFilePath + privateString;
-
         }
         Log.e("privateFilePath", privateFilePath);
-        adImg = privateFilePath + File.separator +"adImg.png";
-         adUrl = privateFilePath +File.separator + "adUrl.txt";
-         userData = privateFilePath + File.separator +"user.data";
-
-
-
-
+        adImg = privateFilePath + File.separator + "adImg.png";
+        adUrl = privateFilePath + File.separator + "adUrl.txt";
+        userData = privateFilePath + File.separator + "user.data";
+        init = true;
     }
 
     private boolean judgeDebug(Context context) {

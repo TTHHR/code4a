@@ -1,4 +1,4 @@
-package cn.dxkite.common.crashhandler;
+package cn.dxkite.debug.adapter;
 
 
 import android.content.Context;
@@ -12,19 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import cn.dxkite.debug.CrashInformation;
+import cn.dxkite.debug.R;
+
 /**
  *  异常显示列表
  * Created by DXkite on 2018/1/14 0014.
  */
 
-public class ExceptionView extends BaseExpandableListAdapter {
+public class ExceptionViewListAdapter extends BaseExpandableListAdapter {
 
     List<Throwable> throwables;
     LayoutInflater inflater;
-    public ExceptionView(Throwable throwable,LayoutInflater layoutInflater){
+    public ExceptionViewListAdapter(CrashInformation crashInformation, LayoutInflater layoutInflater){
         throwables=new ArrayList<Throwable>();
         inflater=layoutInflater;
-        for(Throwable tmp=throwable;tmp!=null;tmp=tmp.getCause()){
+        for(Throwable tmp=crashInformation.getThrowable();tmp!=null;tmp=tmp.getCause()){
             throwables.add(tmp);
         }
     }
@@ -79,14 +82,14 @@ public class ExceptionView extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(int parentPos, int childPos, boolean b, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = inflater.inflate(R.layout.list_exception_trace, null);
         }
-        view.setTag(R.layout.list_exception_name, i);
-        view.setTag(R.layout.list_exception_trace, i1);
+        view.setTag(R.layout.list_exception_name, parentPos);
+        view.setTag(R.layout.list_exception_trace, childPos);
         TextView message = (TextView) view.findViewById(R.id.exception_info);
-        message.setText(throwables.get(i).getStackTrace()[i].toString());
+        message.setText(throwables.get(parentPos).getStackTrace()[childPos].toString());
         return view;
     }
 
