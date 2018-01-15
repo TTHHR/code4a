@@ -17,6 +17,7 @@ public interface SigninContract {
     interface View extends BaseView {
         void accountError(String message);
         void passwordError(String message);
+        void codeError(String message);
         void remoteError(String message);
         void signinSuccessful();
     }
