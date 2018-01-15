@@ -81,14 +81,14 @@ public class ExceptionViewListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(int parentPos, int childPos, boolean b, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = inflater.inflate(R.layout.list_exception_trace, null);
         }
-        view.setTag(R.layout.list_exception_name, i);
-        view.setTag(R.layout.list_exception_trace, i1);
+        view.setTag(R.layout.list_exception_name, parentPos);
+        view.setTag(R.layout.list_exception_trace, childPos);
         TextView message = (TextView) view.findViewById(R.id.exception_info);
-        message.setText(throwables.get(i).getStackTrace()[i].toString());
+        message.setText(throwables.get(parentPos).getStackTrace()[parentPos].toString());
         return view;
     }
 

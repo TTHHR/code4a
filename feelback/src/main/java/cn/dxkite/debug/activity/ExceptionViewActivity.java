@@ -8,9 +8,9 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import cn.dxkite.debug.DebugManager;
 import cn.dxkite.debug.adapter.ExceptionViewListAdapter;
 import cn.dxkite.debug.R;
-import cn.dxkite.debug.CrashManager;
 
 public class ExceptionViewActivity extends AppCompatActivity {
     ExpandableListView listView;
@@ -22,7 +22,7 @@ public class ExceptionViewActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         listView=(ExpandableListView) findViewById(R.id.list);
-        listView.setAdapter(new ExceptionViewListAdapter(CrashManager.getThrowable(),getLayoutInflater()));
+        listView.setAdapter(new ExceptionViewListAdapter(DebugManager.getCrashInfo().getThrowable(),getLayoutInflater()));
     }
 
     @Override
@@ -34,7 +34,6 @@ public class ExceptionViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_save) {
-            CrashManager.getInstance().saveException(CrashManager.getThrowable());
             Toast.makeText(this,"日志保存成功 ",Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this,"上传还没弄 ",Toast.LENGTH_SHORT).show();

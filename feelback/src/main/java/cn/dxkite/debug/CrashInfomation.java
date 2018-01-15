@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -23,7 +24,7 @@ import java.util.Map;
  * Created by DXkite on 2018/1/15 0015.
  */
 
-public class CrashInfo {
+public class CrashInfomation implements Serializable{
     /**
      * 设备ID
      */
@@ -35,8 +36,8 @@ public class CrashInfo {
 
     // 异常信息
     private Throwable throwable;
-    private Thread thread;
-
+    private long threadId;
+    private String threadName;
     /**
      * 环境信息
      */
@@ -49,11 +50,12 @@ public class CrashInfo {
     private String title;
     private String message;
 
-    public CrashInfo(String deviceId, String userId, Throwable throwable, Thread thread) {
+    public CrashInfomation(String deviceId, String userId, Throwable throwable, Thread thread) {
         this.deviceId = deviceId;
         this.userId = userId;
         this.throwable = throwable;
-        this.thread = thread;
+        this.threadId = thread.getId();
+        this.threadName =thread.getName();
         this.environment=new HashMap<>();
     }
 
@@ -87,14 +89,6 @@ public class CrashInfo {
 
     public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public void setThread(Thread thread) {
-        this.thread = thread;
     }
 
     public void addEnv(String name,String value) {
@@ -216,8 +210,8 @@ public class CrashInfo {
 
     private Map<String,String> dumpThread() {
         Map<String,String> thread=new HashMap<>();
-        thread.put("threadId",String.valueOf(this.thread.getId()));
-        thread.put("threadName",this.thread.getName());
+        thread.put("threadId",String.valueOf(this.threadId));
+        thread.put("threadName",this.threadName);
         return  thread;
     }
 
@@ -231,5 +225,21 @@ public class CrashInfo {
                     .append("\r\n");
         }
         return sb.toString();
+    }
+
+    public long getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(long threadId) {
+        this.threadId = threadId;
+    }
+
+    public String getThreadName() {
+        return threadName;
+    }
+
+    public void setThreadName(String threadName) {
+        this.threadName = threadName;
     }
 }

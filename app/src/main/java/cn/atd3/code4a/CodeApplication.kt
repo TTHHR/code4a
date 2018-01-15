@@ -5,7 +5,6 @@ import android.preference.PreferenceManager
 import cn.code4a.ProxyController
 import cn.atd3.proxy.ProxyConfig
 import cn.dxkite.debug.Config
-import cn.dxkite.debug.CrashManager
 import cn.dxkite.debug.DebugManager
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
@@ -42,6 +41,7 @@ class CodeApplication : Application() {
         DebugManager.config(applicationContext,Config()
                 .setSavePath(Constant.getPublicFilePath()+ File.separator + "crash-log")
                 .setUpstream("")
+                .setCrashDumpPath(Constant.getPrivateFilePath()+File.separator + "crash-dump")
                 .setDebug(Constant.isDebug()))
     }
 
