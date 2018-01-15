@@ -87,7 +87,11 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
-
+        //测试登陆
+        head_iv.setOnClickListener(View.OnClickListener {
+            var i=Intent(this,SigninActivity::class.java)
+            startActivity(i)
+        })
     }
 
     private fun bindListener(){
