@@ -41,53 +41,56 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
     private int kind=0;
     private ArticleAdapter aad=null;
-
+private View view;
     private ListView listView;
     private ArticleFragmentPresenter afp;
 
     public ArticleFragment(int kind){
         this.kind=kind;
         afp=new ArticleFragmentPresenter(this);
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
-        Log.e("kind", "" + kind);
+        if(view==null) {
+            view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
+            Log.e("kind", "" + kind);
 
-        FunGameRefreshView refreshView = view.findViewById(R.id.refresh);
-        refreshView.setLoadingText(getString(R.string.info_loadingtext));
-        refreshView.setGameOverText(getString(R.string.info_gaveover));
-        refreshView.setLoadingFinishedText(getString(R.string.info_loadingfinish));
-        refreshView.setTopMaskText(getString(R.string.info_pulltorefresh));
-        refreshView.setBottomMaskText(getString(R.string.info_howtogame));
-         listView = view.findViewById(R.id.list_view);
-        afp.setAdapterData(kind);//设置适配器
-        listView.setOnItemClickListener( new AdapterView.OnItemClickListener(){
+            FunGameRefreshView refreshView = view.findViewById(R.id.refresh);
+            refreshView.setLoadingText(getString(R.string.info_loadingtext));
+            refreshView.setGameOverText(getString(R.string.info_gaveover));
+            refreshView.setLoadingFinishedText(getString(R.string.info_loadingfinish));
+            refreshView.setTopMaskText(getString(R.string.info_pulltorefresh));
+            refreshView.setBottomMaskText(getString(R.string.info_howtogame));
+            listView = view.findViewById(R.id.list_view);
+            afp.setAdapterData();//设置适配器
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent= new Intent();
-                //intent.setClass(getActivity(), ViewArticleActivity.class);
-                afp.setIntentData(intent);
-               // startActivity(intent);
-            }
-        });
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent();
+                    //intent.setClass(getActivity(), ViewArticleActivity.class);
+                    afp.setIntentData(intent, i);
+                    // startActivity(intent);
+                }
+            });
 
-        refreshView.setOnRefreshListener(new FunGameRefreshView.FunGameRefreshListener() {
-            @Override
-            public void onPullRefreshing() {
+            refreshView.setOnRefreshListener(new FunGameRefreshView.FunGameRefreshListener() {
+                @Override
+                public void onPullRefreshing() {
                     afp.requestData(kind);
-            }
+                }
 
-            @Override
-            public void onRefreshComplete() {
+                @Override
+                public void onRefreshComplete() {
                     afp.update();
-            }
+                }
 
-        });
+            });
 
+        }
         return view;
     }
 

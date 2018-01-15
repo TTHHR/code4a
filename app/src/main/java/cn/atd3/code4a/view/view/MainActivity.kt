@@ -21,13 +21,16 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import android.util.Log
+import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.atd3.code4a.view.inter.MainViewInterface
+import cn.dxkite.debug.DebugManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNavigationItemSelectedListener{
 
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         mp=MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
+        DebugManager.askIfCrash(this,R.drawable.ic_launcher);
     }
 
     private fun initView()
@@ -78,10 +82,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         btnUnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_unable)
         btnEnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_enable)
 
-
-
          newarticle = findViewById(R.id.newArticle)
-
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
         uname = drawview.findViewById(R.id.uname)
@@ -99,10 +100,15 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         //写新文章按钮
         newarticle.setOnClickListener(View.OnClickListener { view ->
-
-            throw  RuntimeException("shejiu")
-
-            //
+//            Thread(){
+//                kotlin.run {
+//                    Log.e("DXKite","perpare signup")
+//                    val ret:Any=Remote.user.method("signup").call("dxkite-test","dxkite_test1@qq.com","dxlidx");
+//                    Log.e("DXKite",ret.toString())
+//                }
+//            }.start()
+            throw RuntimeException("Something is error")
+;            //
         })
 
         //策划栏点击事件
@@ -129,6 +135,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
+
                 when (position) {
                     C4DROID -> {
                         Log.e("viewpage", "" + 0)
@@ -199,7 +206,10 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
     //菜单点击事件
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
+        when (item.itemId) {
+            R.id.action_settings -> startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+            else -> return super.onOptionsItemSelected(item)
+        }
         return true
     }
     //右侧列表点击事件

@@ -27,20 +27,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.view.MainActivity"
+        <activity
+            android:name=".view.view.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".view.view.WebActivity">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.view.WebActivity"></activity>
         <activity
             android:name=".view.view.SigninActivity"
-            android:label="@string/action_login_in">
-        </activity>
+            android:label="@string/action_login_in"></activity>
         <activity
             android:name=".view.view.SignupActivity"
-            android:label="@string/action_sign_in"/>
+            android:label="@string/action_sign_in" />
+        <activity android:name=".view.view.SettingActivity"></activity>
     </application>
 
 </manifest>

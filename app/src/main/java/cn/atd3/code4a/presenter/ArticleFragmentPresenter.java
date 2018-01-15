@@ -1,10 +1,12 @@
 package cn.atd3.code4a.presenter;
 
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 
 /**
@@ -14,26 +16,31 @@ import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 public class ArticleFragmentPresenter {
     private ArticleFragmentInterface afi;
 
-    private ArrayList<ArticleModel> al= new ArrayList<>();
+    private   ArrayList<ArticleModel> al= null;
 
     public ArticleFragmentPresenter(ArticleFragmentInterface afi)
     {
         this.afi=afi;
-
+        al=new ArrayList<>();
     }
 
-    public void setIntentData(Intent i)
+    public void setIntentData(Intent i,int p)
     {
-
+        i.putExtra("articleid",al.get(p).getId());
+        i.putExtra("userid",al.get(p).getUser());
+        i.putExtra("title",al.get(p).getTitle());
     }
-    public void setAdapterData( int kind)
+    public void setAdapterData()
     {
+        Log.e("al",""+al.hashCode());
+
+
         if(al.size()==0)
         {
             //初始数据
             ArticleModel refresh0 = new ArticleModel();
             refresh0.setTitle("下拉刷新~(●'◡'●)");
-            refresh0.setAbstract("按住我下拉刷新"+kind);
+            refresh0.setAbstract("按住我下拉刷新");
             refresh0.setUser(123);
             refresh0.setModify(456);
             refresh0.setCategory(0);
@@ -43,27 +50,25 @@ public class ArticleFragmentPresenter {
     }
     public void update()
     {
-        if(al!=null)
+        if(al!=null&&al.size()!=0)
         afi.upDate(al);
     }
     public void requestData(final int kind)//Refresh 库自带异步
     {
-
+        al.clear();//清空之前数据
               try {
-                   Thread.sleep(2000);//模拟延时
-              } catch (InterruptedException e) {
-                            e.printStackTrace();
+                  Object articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind + 1, 1, 10);
+                  if (articleList.getClass().equals(ArrayList.class)) {
+                            for(ArticleModel am:(ArrayList<ArticleModel>)articleList)
+                            {
+                                Log.e("recdata",am.toString());
+                                al.add(am);
+                            }
+                  }
+              } catch (Exception e) {
+                            Log.e("requestdata",""+e);
                 }
-             al.clear();//清空之前数据
-            //模拟数据
-            ArticleModel refresh1 = new ArticleModel();
-        refresh1.setTitle("下拉刷新~(●'◡'●)");
-              refresh1.setAbstract("按住我下拉刷新1"+kind);
-              refresh1.setUser(123);
-                refresh1.setModify(456);
-          refresh1.setCategory(0);
-        al.add(refresh1);
-               afi.upDate(al);//通知UI刷新
+        afi.upDate(al);//通知UI刷新
 
     }
 

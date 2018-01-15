@@ -4,8 +4,8 @@ import android.app.Application
 import android.preference.PreferenceManager
 import cn.code4a.ProxyController
 import cn.atd3.proxy.ProxyConfig
-import cn.dxkite.common.crashhandler.Config
-import cn.dxkite.common.crashhandler.CrashManager
+import cn.dxkite.debug.Config
+import cn.dxkite.debug.DebugManager
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import java.io.File
@@ -33,15 +33,17 @@ class CodeApplication : Application() {
         // 设置RPC请求超时 5秒
         ProxyConfig.setTimeOut(5000)
         // 设置RPC控制器
-        ProxyConfig.setCookiePath(applicationContext.filesDir.absolutePath)
+        ProxyConfig.setCookiePath(Constant.getPrivateFilePath()+File.separator + "cookies")
         ProxyConfig.setController(ProxyController())
     }
 
     private fun initCrashManager() {
-        CrashManager.getInstance().active(Config()
+        DebugManager.config(applicationContext,Config()
                 .setSavePath(Constant.getPublicFilePath()+ File.separator + "crash-log")
+                .setUploadSavePath(Constant.getPrivateFilePath()+ File.separator + "crash-log")
                 .setUpstream("")
-                ,applicationContext)
+                .setCrashDumpPath(Constant.getPrivateFilePath()+File.separator + "crash-dump")
+                .setDebug(Constant.isDebug()))
     }
 
     private fun initLanguage() {
