@@ -145,12 +145,15 @@ public class SplashPresenter {
         File userDir= new File(Constant.getPublicFilePath());
         File zipDir= new File(Constant.getPublicFilePath()+ Constant.zipDir);
         File priDir= new File(Constant.getPrivateFilePath());
-        if(!userDir.exists())
+
             try {
+                if(!userDir.exists())
                 userDir.mkdir();
 
+                if(!zipDir.exists())
                 zipDir.mkdir();
 
+                if(!priDir.exists())
                 priDir.mkdir();
             }catch (Exception e)
             {

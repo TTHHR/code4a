@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
+
                 when (position) {
                     C4DROID -> {
                         Log.e("viewpage", "" + 0)
@@ -201,7 +202,10 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
     //菜单点击事件
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
+        when (item.itemId) {
+            R.id.action_settings -> startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+            else -> return super.onOptionsItemSelected(item)
+        }
         return true
     }
     //右侧列表点击事件
