@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import cn.dxkite.debug.CrashInformation;
 import cn.dxkite.debug.R;
 
 /**
@@ -23,10 +24,10 @@ public class ExceptionViewListAdapter extends BaseExpandableListAdapter {
 
     List<Throwable> throwables;
     LayoutInflater inflater;
-    public ExceptionViewListAdapter(Throwable throwable, LayoutInflater layoutInflater){
+    public ExceptionViewListAdapter(CrashInformation crashInformation, LayoutInflater layoutInflater){
         throwables=new ArrayList<Throwable>();
         inflater=layoutInflater;
-        for(Throwable tmp=throwable;tmp!=null;tmp=tmp.getCause()){
+        for(Throwable tmp=crashInformation.getThrowable();tmp!=null;tmp=tmp.getCause()){
             throwables.add(tmp);
         }
     }
@@ -88,7 +89,7 @@ public class ExceptionViewListAdapter extends BaseExpandableListAdapter {
         view.setTag(R.layout.list_exception_name, parentPos);
         view.setTag(R.layout.list_exception_trace, childPos);
         TextView message = (TextView) view.findViewById(R.id.exception_info);
-        message.setText(throwables.get(parentPos).getStackTrace()[parentPos].toString());
+        message.setText(throwables.get(parentPos).getStackTrace()[childPos].toString());
         return view;
     }
 
