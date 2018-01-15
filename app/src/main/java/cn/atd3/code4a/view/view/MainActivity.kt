@@ -21,15 +21,20 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import android.util.Log
+import android.widget.LinearLayout
+import cn.atd3.code4a.Constant
+import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.atd3.code4a.view.inter.MainViewInterface
+import cn.dxkite.common.StorageData
 import cn.dxkite.debug.DebugManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.io.File
 import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNavigationItemSelectedListener{
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
     lateinit var uname: TextView
     private var btnUnableColor = 0
     private var btnEnableColor = 0
-    private var categoryId=0;
+    private  var tagList:List<Button> = ArrayList<Button>()
 
     private lateinit var newarticle:FloatingActionButton
     //把Fragment添加到List集合里面
@@ -75,6 +80,15 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        val catelist: List<CategoryModel>  = StorageData.loadObject(File(Constant.getPrivateFilePath() + Constant.categoryListFile)) as List<CategoryModel>;
+
+        val taglistLayout=findViewById<LinearLayout>(R.id.tagList)
+        for ( cate:CategoryModel in catelist){
+            val button=Button(applicationContext);
+            button.text=cate.name;
+            button.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            taglistLayout.addView(button)
+        }
 
         myViewPager = findViewById(R.id.myViewPager)
 
