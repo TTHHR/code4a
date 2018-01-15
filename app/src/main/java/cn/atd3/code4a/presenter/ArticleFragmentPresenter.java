@@ -16,27 +16,24 @@ import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 public class ArticleFragmentPresenter {
     private ArticleFragmentInterface afi;
 
-    private   ArrayList<ArticleModel> al= null;
+    private ArrayList<ArticleModel> al = null;
 
-    public ArticleFragmentPresenter(ArticleFragmentInterface afi)
-    {
-        this.afi=afi;
-        al=new ArrayList<>();
+    public ArticleFragmentPresenter(ArticleFragmentInterface afi) {
+        this.afi = afi;
+        al = new ArrayList<>();
     }
 
-    public void setIntentData(Intent i,int p)
-    {
-        i.putExtra("articleid",al.get(p).getId());
-        i.putExtra("userid",al.get(p).getUser());
-        i.putExtra("title",al.get(p).getTitle());
+    public void setIntentData(Intent i, int p) {
+        i.putExtra("articleid", al.get(p).getId());
+        i.putExtra("userid", al.get(p).getUser());
+        i.putExtra("title", al.get(p).getTitle());
     }
-    public void setAdapterData()
-    {
-        Log.e("al",""+al.hashCode());
+
+    public void setAdapterData() {
+        Log.e("al", "" + al.hashCode());
 
 
-        if(al.size()==0)
-        {
+        if (al.size() == 0) {
             //初始数据
             ArticleModel refresh0 = new ArticleModel();
             refresh0.setTitle("下拉刷新~(●'◡'●)");
@@ -48,26 +45,32 @@ public class ArticleFragmentPresenter {
         }
         afi.setAdapter(al);
     }
-    public void update()
-    {
-        if(al!=null&&al.size()!=0)
-        afi.upDate(al);
+
+    public void update() {
+        if (al != null && al.size() != 0)
+            afi.upDate(al);
     }
+
     public void requestData(final int kind)//Refresh 库自带异步
     {
         al.clear();//清空之前数据
-              try {
-                  Object articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind + 1, 1, 10);
-                  if (articleList.getClass().equals(ArrayList.class)) {
-                            for(ArticleModel am:(ArrayList<ArticleModel>)articleList)
-                            {
-                                Log.e("recdata",am.toString());
-                                al.add(am);
-                            }
-                  }
-              } catch (Exception e) {
-                            Log.e("requestdata",""+e);
+
+        try {
+            Object articleList =null;
+            if (kind ==0 ) {
+               articleList = Remote.article.method("getList", ArticleModel.class).call( 1, 10);
+            }else{
+                articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind , 1, 10);
+            }
+            if (articleList.getClass().equals(ArrayList.class)) {
+                for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
+                    Log.e("recdata", am.toString());
+                    al.add(am);
                 }
+            }
+        } catch (Exception e) {
+            Log.e("requestdata", "" + e);
+        }
         afi.upDate(al);//通知UI刷新
 
     }
