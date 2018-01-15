@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         mp=MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
-        DebugManager.askIfCrash(this,R.drawable.ic_launcher);
+        DebugManager.askIfCrash(this,R.drawable.ic_launcher)
     }
 
     private fun initView()
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 //                }
 //            }.start()
             throw RuntimeException("Something is error")
-;            //
+//
         })
 
         //策划栏点击事件

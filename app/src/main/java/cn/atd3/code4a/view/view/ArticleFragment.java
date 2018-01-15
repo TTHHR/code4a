@@ -71,9 +71,9 @@ private View view;
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent();
-                    //intent.setClass(getActivity(), ViewArticleActivity.class);
+                    intent.setClass(getActivity(), ViewArticleActivity.class);
                     afp.setIntentData(intent, i);
-                    // startActivity(intent);
+                    startActivity(intent);
                 }
             });
 
