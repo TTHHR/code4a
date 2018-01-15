@@ -63,14 +63,14 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
         refreshView.setTopMaskText(getString(R.string.info_pulltorefresh));
         refreshView.setBottomMaskText(getString(R.string.info_howtogame));
          listView = view.findViewById(R.id.list_view);
-        afp.setAdapterData(kind);//设置适配器
+        afp.setAdapterData();//设置适配器
         listView.setOnItemClickListener( new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent= new Intent();
                 //intent.setClass(getActivity(), ViewArticleActivity.class);
-                afp.setIntentData(intent);
+                afp.setIntentData(intent,i);
                // startActivity(intent);
             }
         });
