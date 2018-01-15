@@ -53,29 +53,6 @@
             android:layout_height="match_parent"
             android:background="@color/btn_enable"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/c4droid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:background="@color/btn_unable"
-                android:text="c4droid" />
-
-            <Button
-                android:id="@+id/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/btn_enable"
-                android:text="android" />
-
-            <Button
-                android:id="@+id/aide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/btn_enable"
-                android:text="aide" />
         </LinearLayout>
     </HorizontalScrollView>
 

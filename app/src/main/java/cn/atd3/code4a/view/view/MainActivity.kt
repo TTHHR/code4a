@@ -32,6 +32,7 @@ import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
 import cn.dxkite.debug.DebugManager
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
@@ -48,11 +49,12 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
     lateinit var uname: TextView
     private var btnUnableColor = 0
     private var btnEnableColor = 0
-    private  var tagList:List<Button> = ArrayList<Button>()
+    private var tagList:List<Button> = ArrayList<Button>()
 
     private lateinit var newarticle:FloatingActionButton
     //把Fragment添加到List集合里面
-    var fragmentList = mutableListOf(ArticleFragment(C4DROID) as Fragment, ArticleFragment(AIDE) as Fragment, ArticleFragment(ANDROID) as Fragment)
+    var fragmentList:List<Fragment> = ArrayList<Fragment>()
+
     private lateinit var mp:MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,23 +83,38 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         toggle.syncState()
 
         val catelist: List<CategoryModel>  = StorageData.loadObject(File(Constant.getPrivateFilePath() + Constant.categoryListFile)) as List<CategoryModel>;
+        val tagListLayout=findViewById<LinearLayout>(R.id.tagList)
+        val defaultButton:Button = Button(applicationContext)
+        defaultButton.text="首页";
+        defaultButton.id=0;
+        defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
+        tagList=tagList.plus(defaultButton)
 
-        val taglistLayout=findViewById<LinearLayout>(R.id.tagList)
         for ( cate:CategoryModel in catelist){
             val button=Button(applicationContext);
             button.text=cate.name;
+            button.id=cate.id
             button.setBackgroundColor(resources.getColor(R.color.btn_enable))
-            taglistLayout.addView(button)
+            tagList=tagList.plus(button)
         }
 
+        for (btn:Button in tagList ){
+            fragmentList=fragmentList.plus(ArticleFragment(btn.id))
+            btn.setOnClickListener { view ->
+                for ((index,btn:Button) in tagList.withIndex() ){
+                    if( btn.id ==view.id ){
+                        btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                        myViewPager.currentItem =index;
+                    }else{
+                        btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                    }
+                }
+            }
+            tagListLayout.addView(btn)
+        }
+
+
         myViewPager = findViewById(R.id.myViewPager)
-
-        button_c4droid = findViewById(R.id.c4droid)
-        button_aide = findViewById(R.id.aide)
-        button_android = findViewById(R.id.android)
-
-        btnUnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_unable)
-        btnEnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_enable)
 
          newarticle = findViewById(R.id.newArticle)
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
@@ -130,50 +147,14 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         // 侧边栏点击事件
         nav_view.setNavigationItemSelectedListener(this)
-
-
-        // 设置TAB的点击事件
-        button_aide.setOnClickListener(View.OnClickListener {
-            myViewPager.currentItem = AIDE
-            button_aide.setBackgroundColor(btnUnableColor)
-            button_c4droid.setBackgroundColor(btnEnableColor)
-            button_android.setBackgroundColor(btnEnableColor)
-        })
-        button_android.setOnClickListener(View.OnClickListener {
-            myViewPager.currentItem = ANDROID
-            button_aide.setBackgroundColor(btnEnableColor)
-            button_c4droid.setBackgroundColor(btnEnableColor)
-            button_android.setBackgroundColor(btnUnableColor)
-        })
-        button_c4droid.setOnClickListener(View.OnClickListener {
-            myViewPager.currentItem = C4DROID
-            button_aide.setBackgroundColor(btnEnableColor)
-            button_c4droid.setBackgroundColor(btnUnableColor)
-            button_android.setBackgroundColor(btnEnableColor)
-        })
-
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
 
-                when (position) {
-                    C4DROID -> {
-                        Log.e("viewpage", "" + 0)
-                        button_aide.setBackgroundColor(btnEnableColor)
-                        button_c4droid.setBackgroundColor(btnUnableColor)
-                        button_android.setBackgroundColor(btnEnableColor)
-
-                    }
-                    AIDE -> {
-                        Log.e("viewpage", "" + 1)
-                        button_aide.setBackgroundColor(btnUnableColor)
-                        button_c4droid.setBackgroundColor(btnEnableColor)
-                        button_android.setBackgroundColor(btnEnableColor)
-                    }
-                    ANDROID -> {
-                        Log.e("viewpage", "" + 2)
-                        button_aide.setBackgroundColor(btnEnableColor)
-                        button_c4droid.setBackgroundColor(btnEnableColor)
-                        button_android.setBackgroundColor(btnUnableColor)
+                for ((index,btn:Button) in tagList.withIndex() ){
+                    if( index ==position ){
+                        btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                    }else{
+                        btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
                     }
                 }
             }
@@ -183,10 +164,8 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
             override fun onPageScrollStateChanged(state: Int) {
             }
-
         }
         myViewPager.addOnPageChangeListener(PageChange())//滑动事件
-
     }
 
     override fun showMessageBanner(m: MessageModelInterface) {//显示通知消息
