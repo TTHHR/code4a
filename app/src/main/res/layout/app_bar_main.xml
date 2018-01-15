@@ -16,6 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
@@ -39,35 +40,43 @@
         android:src="@mipmap/newarticle"
         app:backgroundTint="#ff87ffeb"
         app:rippleColor="#33728dff" />
-    <LinearLayout
-        android:layout_alignParentBottom="true"
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/btn_enable"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true">
 
-        <Button
-            android:id="@+id/c4droid"
+        <LinearLayout
+            android:id="@+id/tagList"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/btn_unable"
-            android:text="c4droid" />
+            android:layout_height="match_parent"
+            android:background="@color/btn_enable"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/aide"
-            android:text="aide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/btn_enable"
-            />
-        <Button
-            android:id="@+id/android"
-            android:text="android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/btn_enable"
-            />
-    </LinearLayout>
+            <Button
+                android:id="@+id/c4droid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/btn_unable"
+                android:text="c4droid" />
+
+            <Button
+                android:id="@+id/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/btn_enable"
+                android:text="android" />
+
+            <Button
+                android:id="@+id/aide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/btn_enable"
+                android:text="aide" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
 </RelativeLayout>
