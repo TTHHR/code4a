@@ -27,6 +27,7 @@ import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.atd3.code4a.view.inter.MainViewInterface
+import cn.dxkite.debug.DebugManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.lang.RuntimeException
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         mp=MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
+        DebugManager.askIfCrash(this,R.drawable.ic_launcher);
     }
 
     private fun initView()
@@ -80,17 +82,11 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         btnUnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_unable)
         btnEnableColor = ContextCompat.getColor(this@MainActivity, R.color.btn_enable)
 
-
-
          newarticle = findViewById(R.id.newArticle)
-
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
-
-
-
 
     }
 
