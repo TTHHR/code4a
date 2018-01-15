@@ -1,7 +1,6 @@
-package cn.dxkite.common.crashhandler;
+package cn.dxkite.debug;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -37,6 +36,22 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
     static Throwable throwable;
     static Thread thread;
 
+    public static Throwable getThrowable() {
+        return throwable;
+    }
+
+    public static void setThrowable(Throwable throwable) {
+        CrashManager.throwable = throwable;
+    }
+
+    public static Thread getThread() {
+        return thread;
+    }
+
+    public static void setThread(Thread thread) {
+        CrashManager.thread = thread;
+    }
+
     private CrashManager() {
         this.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
@@ -57,7 +72,7 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
 //        CrashManager.thread = thread;
 //
 //        Log.e(TAG,"uncaugth => "+throwable.getClass().getName(),throwable);
-//        context.startActivity(new Intent(context,ViewActivity.class));
+//        context.startActivity(new Intent(context,ExceptionViewActivity.class));
 //        defaultHandler.uncaughtException(thread,throwable);
 
         new Thread() {
