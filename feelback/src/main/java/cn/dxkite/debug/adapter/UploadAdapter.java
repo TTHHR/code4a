@@ -1,4 +1,4 @@
-package cn.dxkite.common.crashhandler;
+package cn.dxkite.debug.adapter;
 
 /**
  * 上传适配器

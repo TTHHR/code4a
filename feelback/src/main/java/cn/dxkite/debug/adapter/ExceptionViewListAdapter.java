@@ -1,4 +1,4 @@
-package cn.dxkite.common.crashhandler;
+package cn.dxkite.debug.adapter;
 
 
 import android.content.Context;
@@ -12,16 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import cn.dxkite.debug.R;
+
 /**
  *  异常显示列表
  * Created by DXkite on 2018/1/14 0014.
  */
 
-public class ExceptionView extends BaseExpandableListAdapter {
+public class ExceptionViewListAdapter extends BaseExpandableListAdapter {
 
     List<Throwable> throwables;
     LayoutInflater inflater;
-    public ExceptionView(Throwable throwable,LayoutInflater layoutInflater){
+    public ExceptionViewListAdapter(Throwable throwable, LayoutInflater layoutInflater){
         throwables=new ArrayList<Throwable>();
         inflater=layoutInflater;
         for(Throwable tmp=throwable;tmp!=null;tmp=tmp.getCause()){

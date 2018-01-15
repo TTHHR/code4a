@@ -1,6 +1,6 @@
-package cn.dxkite.common.crashhandler;
+package cn.dxkite.debug.adapter;
 
-import org.json.*;
+import cn.dxkite.debug.adapter.UploadAdapter;
 
 /**
  * 上传适配器
