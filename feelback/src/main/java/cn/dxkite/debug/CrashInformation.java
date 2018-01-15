@@ -132,12 +132,21 @@ public class CrashInformation implements Serializable{
                 trace.put("message",tmp.getMessage());
                 JSONArray traceback=new JSONArray();
                 for (StackTraceElement ele:tmp.getStackTrace() ){
-                    traceback.put(ele);
+                    JSONObject elo=new JSONObject();
+                    elo.put("file",ele.getFileName());
+                    if (ele.isNativeMethod()) {
+                        elo.put("native",ele.isNativeMethod());
+                    }else{
+                        elo.put("class",ele.getClassName());
+                        elo.put("line",ele.getLineNumber());
+                        elo.put("method",ele.getMethodName());
+                    }
+                    traceback.put(elo);
                 }
-                trace.put("trace",traceback);
+                trace.put("traceback",traceback);
                 traceInfo.put(trace);
             }
-            debug.put("trace",traceInfo);
+            debug.put("traceinfo",traceInfo);
         } catch (JSONException e) {
             return "<invalid json>";
         }
