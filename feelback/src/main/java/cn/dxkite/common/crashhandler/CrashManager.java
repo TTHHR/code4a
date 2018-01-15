@@ -53,11 +53,26 @@ public class CrashManager implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
-        CrashManager.throwable = throwable;
-        CrashManager.thread = thread;
-        context.startActivity(new Intent(context,ViewActivity.class));
-    }
+//        CrashManager.throwable = throwable;
+//        CrashManager.thread = thread;
+//
+//        Log.e(TAG,"uncaugth => "+throwable.getClass().getName(),throwable);
+//        context.startActivity(new Intent(context,ViewActivity.class));
+//        defaultHandler.uncaughtException(thread,throwable);
 
+        new Thread() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                Toast.makeText(context, "程序异常，文件日志记录中", Toast.LENGTH_SHORT).show();
+                Looper.loop();
+
+            }
+        }.start();
+        saveException(throwable);
+       // defaultHandler.uncaughtException(thread,throwable);
+    }
+    
     public Context getContext() {
         return context;
     }
