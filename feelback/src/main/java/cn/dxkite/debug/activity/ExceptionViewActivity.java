@@ -22,7 +22,7 @@ public class ExceptionViewActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         listView=(ExpandableListView) findViewById(R.id.list);
-        listView.setAdapter(new ExceptionViewListAdapter(DebugManager.getCrashInfo().getThrowable(),getLayoutInflater()));
+        listView.setAdapter(new ExceptionViewListAdapter(DebugManager.getCrashInfo(),getLayoutInflater()));
     }
 
     @Override
