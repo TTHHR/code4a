@@ -16,12 +16,12 @@ import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 public class ArticleFragmentPresenter {
     private ArticleFragmentInterface afi;
 
-    private ArrayList<ArticleModel> al= new ArrayList<>();
+    private   ArrayList<ArticleModel> al= null;
 
     public ArticleFragmentPresenter(ArticleFragmentInterface afi)
     {
         this.afi=afi;
-
+        al=new ArrayList<>();
     }
 
     public void setIntentData(Intent i,int p)
@@ -32,6 +32,9 @@ public class ArticleFragmentPresenter {
     }
     public void setAdapterData()
     {
+        Log.e("al",""+al.hashCode());
+
+
         if(al.size()==0)
         {
             //初始数据
@@ -47,7 +50,7 @@ public class ArticleFragmentPresenter {
     }
     public void update()
     {
-        if(al!=null)
+        if(al!=null&&al.size()!=0)
         afi.upDate(al);
     }
     public void requestData(final int kind)//Refresh 库自带异步
