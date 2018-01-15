@@ -20,6 +20,7 @@ public final class Constant {
     public final static String shareImg = "http://blog.qingyuyu.cn/conf/profile.png";
     public final static String remoteAdImg = "http://code4a.atd3.cn/ad.png";
     public final static String remoteAdUrl = "http://code4a.atd3.cn/adurl.txt";
+    public final static String categoryListFile= File.separator + "categories";
 
     public final static int C4DROID = 0;
     public final static int AIDE = 1;

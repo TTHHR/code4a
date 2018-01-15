@@ -39,22 +39,22 @@ import static cn.atd3.code4a.Constant.WARNING;
 @SuppressLint("ValidFragment")
 public class ArticleFragment extends Fragment implements ArticleFragmentInterface {
 
-    private int kind=0;
-    private ArticleAdapter aad=null;
-private View view;
+    private int kind = 0;
+    private ArticleAdapter aad = null;
+    private View view;
     private ListView listView;
     private ArticleFragmentPresenter afp;
 
-    public ArticleFragment(int kind){
-        this.kind=kind;
-        afp=new ArticleFragmentPresenter(this);
+    public ArticleFragment(int kind) {
+        this.kind = kind;
+        afp = new ArticleFragmentPresenter(this);
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(view==null) {
+        if (view == null) {
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
@@ -98,41 +98,45 @@ private View view;
     @Override
     public void upDate(ArrayList<ArticleModel> al) {
 
-                getActivity().runOnUiThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                aad.notifyDataSetChanged();
-                                Toasty.success(getContext(), getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                );
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        aad.notifyDataSetChanged();
+                        Toasty.success(getContext(), getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
 
     }
 
     @Override
     public void setAdapter(@NotNull ArrayList<ArticleModel> al) {
-            aad=new ArticleAdapter(getContext(),R.layout.articlelist_item,al);
-            listView.setAdapter(aad);
+        aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
+        listView.setAdapter(aad);
     }
+
     @Override
     public void showToast(final int infotype, final String info) {
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
-                        switch (infotype)
-                        {
+                        switch (infotype) {
                             case SUCESS:
-                                Toasty.success(getContext(),info, Toast.LENGTH_SHORT).show();
+                                Toasty.success(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case INFO:Toasty.info(getContext(),info, Toast.LENGTH_SHORT).show();
+                            case INFO:
+                                Toasty.info(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case NORMAL:Toasty.normal(getContext(),info, Toast.LENGTH_SHORT).show();
+                            case NORMAL:
+                                Toasty.normal(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case WARNING:Toasty.warning(getContext(),info, Toast.LENGTH_SHORT).show();
+                            case WARNING:
+                                Toasty.warning(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
-                            case ERROR:Toasty.error(getContext(),info, Toast.LENGTH_SHORT).show();
+                            case ERROR:
+                                Toasty.error(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 

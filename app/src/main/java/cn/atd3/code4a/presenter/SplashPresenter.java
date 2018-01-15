@@ -11,15 +11,22 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.inter.SplashAdModelInterface;
+import cn.atd3.code4a.model.model.CategoryModel;
 import cn.atd3.code4a.model.model.SplashAdModel;
+import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.SplashViewInterface;
 import cn.atd3.code4a.view.view.MainActivity;
+import cn.atd3.proxy.exception.PermissionException;
+import cn.atd3.proxy.exception.ServerException;
+import cn.dxkite.common.StorageData;
 import cn.qingyuyu.commom.service.FileDealService;
 import cn.qingyuyu.commom.ui.SplashAd;
 
@@ -43,10 +50,6 @@ public class SplashPresenter {
         sami=new SplashAdModel();
     }
 
-
-
-
-
     private void updateImage()
     {
         svi.onImageUpdate(sami.getImageUri());
@@ -67,27 +70,29 @@ public class SplashPresenter {
 
     public void requestPermissions(Activity activity)
     {
-        if (Build.VERSION.SDK_INT >= 23&&!isPermission) {
-
+        if (Build.VERSION.SDK_INT >= 23 && !isPermission) {
             String[] permission=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
             if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {//检查权限
                 Log.e("请求权限","正在请求");
                 activity.requestPermissions(permission,0);//请求
             }
-            else {
-                isPermission = true;
-                onDirInit();
+            // 确认权限
+            if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {//检查权限
+                isPermission=true;
+            }else{
+                android.os.Process.killProcess(android.os.Process.myPid());
             }
-
-        }
-        else//不需要请求权限，直接初始化文件夹
-        {
+        }else{
             isPermission=true;
-            Log.e("请求权限","老版本，不需要请求");
-            onDirInit();
         }
 
+        if (isPermission){
+            Log.d(TAG,"init applications");
+            onDirInit();
+            onCategoryInit();
+        }
     }
+
     //供ui层调用，用来处理请求权限结果
     public void onRequestPermissionsResult(int requestCode,int[] grantResults )
     {
@@ -121,6 +126,7 @@ public class SplashPresenter {
 
         svi.setSplashAdListener(sal);
     }
+
     public void showAd(final int showtime)
     {
         new Thread(new Runnable() {
@@ -159,6 +165,25 @@ public class SplashPresenter {
             {
                 svi.showToast(ERROR,svi.getXmlString(R.string.wanning_storage));
             }
+    }
+
+    private void onCategoryInit() {
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    List<CategoryModel> list=(List<CategoryModel>)Remote.category.method("getList", CategoryModel.class).call();
+                    StorageData.saveObject(new File(Constant.getPrivateFilePath() + Constant.categoryListFile),list);
+                    Log.i(TAG,list.toString());
+                } catch (ServerException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (PermissionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private void getAd(){//从本地和网络加载广告信息

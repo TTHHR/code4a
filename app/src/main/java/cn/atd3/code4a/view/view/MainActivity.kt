@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
     lateinit var uname: TextView
     private var btnUnableColor = 0
     private var btnEnableColor = 0
+    private var categoryId=0;
 
     private lateinit var newarticle:FloatingActionButton
     //把Fragment添加到List集合里面
@@ -62,6 +63,8 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         mp=MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
+
+        // 异常报告
         DebugManager.askIfCrash(this,R.drawable.ic_launcher);
     }
 
@@ -111,8 +114,10 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 ;            //
         })
 
-        //策划栏点击事件
+        // 侧边栏点击事件
         nav_view.setNavigationItemSelectedListener(this)
+
+
         // 设置TAB的点击事件
         button_aide.setOnClickListener(View.OnClickListener {
             myViewPager.currentItem = AIDE
