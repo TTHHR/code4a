@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 ;            //
         })
 
-        // 侧边栏点击事件
+        //策划栏点击事件
         nav_view.setNavigationItemSelectedListener(this)
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
