@@ -123,7 +123,7 @@ public class CrashInformation implements Serializable{
             debug.put("user",userId);
             debug.put("title",title);
             debug.put("message",message);
-            debug.put("thread",dumpThread());
+            debug.put("thread",dumpThreadJson());
             debug.put("env",dumpEnvJson());
             JSONArray traceInfo=new JSONArray();
             for (Throwable tmp:dumpThrowable()) {
@@ -226,7 +226,16 @@ public class CrashInformation implements Serializable{
         thread.put("threadName",this.threadName);
         return  thread;
     }
-
+    private JSONObject dumpThreadJson() {
+        JSONObject thread=new JSONObject();
+        try {
+            thread.put("threadId",String.valueOf(this.threadId));
+            thread.put("threadName",this.threadName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  thread;
+    }
     private String dumpThreadString() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> enter : dumpThread().entrySet()) {
