@@ -68,26 +68,29 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
     @Override
     public void accountError(String message) {
         closeProgressDialog();
-        //我知道要显示的字符应该放在R.string,下次改哈
-        account.setError("用户名错误:"+message);
+        account.setError(message);
     }
 
     @Override
     public void passwordError(String message) {
         closeProgressDialog();
-        password.setError("密码错误:"+message);
+        password.setError(message);
+    }
+
+    @Override
+    public void codeError(String message) {
     }
 
     @Override
     public void remoteError(String message) {
         closeProgressDialog();
-        Toasty.error(this,"出现错误:"+message,Toast.LENGTH_SHORT).show();
+        Toasty.error(this,message,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void signinSuccessful() {
         closeProgressDialog();
-        Toasty.success(this, "登陆成功", Toast.LENGTH_SHORT).show();
+        Toasty.success(this,getResources().getString(R.string.signin_successful), Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -105,7 +108,7 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("登陆中");
+            progressDialog.setMessage(getResources().getString(R.string.signing));
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
