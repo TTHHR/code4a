@@ -109,7 +109,7 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("登陆中");
+            progressDialog.setMessage("提交数据");
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
