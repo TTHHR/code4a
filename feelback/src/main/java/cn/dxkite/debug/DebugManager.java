@@ -1,6 +1,8 @@
 package cn.dxkite.debug;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Looper;
 import android.util.Log;
@@ -47,17 +49,7 @@ public class DebugManager {
         setConfig(config);
         instance.context = context;
         instance.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        File crashDump = new File(instance.config.getCrashDumpPath());
 
-        if (crashDump.exists()) {
-            CrashInformation infomation = (CrashInformation) loadObject(crashDump);
-            if (infomation != null) {
-                DebugManager.crashInfo = infomation;
-                Log.e(TAG, " load exception ", infomation.getThrowable());
-                instance.context.startActivity(new Intent(instance.context, ExceptionViewActivity.class));
-            }
-            crashDump.delete();
-        }
 
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
@@ -137,10 +129,10 @@ public class DebugManager {
     public boolean saveCrashInfomation(CrashInformation information) {
         DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         String millis = String.valueOf(System.currentTimeMillis());
-        String fileName = context.getPackageName() + "_" + format.format(System.currentTimeMillis())+"_" +millis ;
+        String fileName = context.getPackageName() + "_" + format.format(System.currentTimeMillis()) + "_" + millis;
         return saveFile(config.getSavePath() + File.separator + fileName + ".log", information.toString())
                 &&
-                saveFile(config.getUploadSavePath()+ File.separator + fileName + ".json", information.toJsonString());
+                saveFile(config.getUploadSavePath() + File.separator + fileName + ".json", information.toJsonString());
     }
 
     private static boolean saveFile(String path, String content) {
@@ -164,4 +156,49 @@ public class DebugManager {
         }
         return true;
     }
+
+    public static boolean hasLastCrashInfomation() {
+        File crashDump = new File(instance.config.getCrashDumpPath());
+        if (crashDump.exists()) {
+            CrashInformation infomation = (CrashInformation) loadObject(crashDump);
+            if (infomation == null) {
+                return false;
+            }
+            DebugManager.crashInfo = infomation;
+            Log.e(TAG, " load exception ", infomation.getThrowable());
+            crashDump.delete();
+            return true;
+        }
+        return false;
+    }
+
+    public static void jumpToShow() {
+        instance.context.startActivity(new Intent(instance.context, ExceptionViewActivity.class));
+    }
+
+    public static void askIfCrash(Context context, int iconRes) {
+        if (hasLastCrashInfomation()) {
+            final AlertDialog.Builder normalDialog =
+                    new AlertDialog.Builder(context);
+            normalDialog.setIcon(iconRes);
+            normalDialog.setTitle("异常崩溃提示");
+            normalDialog.setMessage("检测到上次异常崩溃，是否查看详情?");
+            normalDialog.setPositiveButton("是",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            jumpToShow();
+                        }
+                    });
+            normalDialog.setNegativeButton("否",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(instance.context, "作为程序员，你居然不想看看", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            normalDialog.show();
+        }
+    }
+
 }

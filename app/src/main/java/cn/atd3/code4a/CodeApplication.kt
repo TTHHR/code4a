@@ -33,7 +33,7 @@ class CodeApplication : Application() {
         // 设置RPC请求超时 5秒
         ProxyConfig.setTimeOut(5000)
         // 设置RPC控制器
-        ProxyConfig.setCookiePath(Constant.getPrivateFilePath())
+        ProxyConfig.setCookiePath(Constant.getPrivateFilePath()+File.separator + "cookies")
         ProxyConfig.setController(ProxyController())
     }
 
