@@ -48,10 +48,12 @@
 
         <Button
             android:id="@+id/c4droid"
-            android:text="c4droid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/btn_unable" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/btn_unable"
+            android:text="c4droid" />
 
         <Button
             android:id="@+id/aide"
