@@ -47,7 +47,11 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
     public void init(int kind) {
         this.kind = kind;
-        afp = new ArticleFragmentPresenter(this);
+    }
+    public ArticleFragment()
+    {
+        if(afp==null)
+            afp = new ArticleFragmentPresenter(this);
     }
 
     @Nullable
@@ -57,6 +61,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
+
             FunGameRefreshView refreshView = view.findViewById(R.id.refresh);
             refreshView.setLoadingText(getString(R.string.info_loadingtext));
             refreshView.setGameOverText(getString(R.string.info_gaveover));
@@ -65,6 +70,8 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             refreshView.setBottomMaskText(getString(R.string.info_howtogame));
             listView = view.findViewById(R.id.list_view);
             afp.setAdapterData();//设置适配器
+
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -90,6 +97,15 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             });
 
         }
+
+        ViewGroup parent= (ViewGroup) view.getParent();
+
+        if(parent!=null)
+        {
+            parent.removeView(view);
+        }
+
+
         return view;
     }
 
