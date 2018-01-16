@@ -128,8 +128,8 @@ public class DebugManager {
 
     public boolean saveCrashInfomation(CrashInformation information) {
         DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        String millis = String.valueOf(System.currentTimeMillis());
-        String fileName = context.getPackageName() + "_" + format.format(System.currentTimeMillis()) + "_" + millis;
+        String millis = String.valueOf(information.getTimestamp());
+        String fileName = context.getPackageName() + "_" + format.format(information.getTimestamp()) + "_" + millis;
         return saveFile(config.getSavePath() + File.separator + fileName + ".log", information.toString())
                 &&
                 saveFile(config.getUploadSavePath() + File.separator + fileName + ".json", information.toJsonString());

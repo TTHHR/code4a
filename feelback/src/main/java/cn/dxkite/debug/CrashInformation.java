@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +51,7 @@ public class CrashInformation implements Serializable{
     // 用户提交信息
     private String title;
     private String message;
+    private long timestamp=0;
 
     public CrashInformation(String deviceId, String userId, Throwable throwable, Thread thread) {
         this.deviceId = deviceId;
@@ -56,6 +59,7 @@ public class CrashInformation implements Serializable{
         this.throwable = throwable;
         this.threadId = thread.getId();
         this.threadName =thread.getName();
+        this.timestamp=System.currentTimeMillis();
         this.environment=new HashMap<>();
     }
 
@@ -125,6 +129,7 @@ public class CrashInformation implements Serializable{
             debug.put("message",message);
             debug.put("thread",dumpThreadJson());
             debug.put("env",dumpEnvJson());
+            debug.put("time",timestamp);
             JSONArray traceInfo=new JSONArray();
             for (Throwable tmp:dumpThrowable()) {
                 JSONObject trace=new JSONObject();
@@ -160,6 +165,9 @@ public class CrashInformation implements Serializable{
     @Override
     public String toString() {
         StringBuffer stringBuilder=new StringBuffer();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        stringBuilder.append("Time:" +timestamp +":\r\n");
+        stringBuilder.append("\t"+format.format(getTimestamp())+"\r\n");
         stringBuilder.append("Thread Info:\r\n");
         stringBuilder.append(dumpThreadString());
         stringBuilder.append("Environment Info:\r\n");
@@ -271,5 +279,13 @@ public class CrashInformation implements Serializable{
 
     public void setThreadName(String threadName) {
         this.threadName = threadName;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
