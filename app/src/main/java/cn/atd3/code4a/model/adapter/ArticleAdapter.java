@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import cn.atd3.code4a.R;
@@ -39,10 +38,8 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
         TextView articleUser = view.findViewById(R.id.articleuser);
         articleUser.setText(a.getUser().toString());
         TextView articleModify = view.findViewById(R.id.articlemodify);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        long lt = new Long(a.getModify());
-        Date date = new Date(lt);
-        articleModify.setText(simpleDateFormat.format(date));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        articleModify.setText(simpleDateFormat.format(Long.valueOf(a.getModify())*1000));
         return  view;
     }
 }
