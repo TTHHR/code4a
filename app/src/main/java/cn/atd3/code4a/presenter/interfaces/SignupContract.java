@@ -20,10 +20,14 @@ public interface SignupContract {
         void passwordError(String message);
         void passwordDifferent(String message);
         void remoteError(String message);
+        void showCode();
         void signupSuccessful();
+        void showProgressDialog();
+        void closeProgressDialog();
     }
 
     abstract class Presenter extends BasePresenter<View,SignModel> {
         public abstract void signupButtonClick(String user,String email,String password);
+        public abstract void checkCode();
     }
 }

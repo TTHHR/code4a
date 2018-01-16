@@ -1,5 +1,6 @@
 package cn.atd3.code4a.model.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.io.IOException;
@@ -24,12 +25,14 @@ import rx.schedulers.Schedulers;
  **/
 public class SignModel implements Sign {
     private static final String TAG = "SignModel";
+    public static final int SIGNIN=1;
+    public static final int SIGNUP=2;
     @Override
-    public Observable<Object> signin(final String account, final String password, final Boolean remember, final String code) {
+    public Observable<Integer> signin(final String account, final String password, final Boolean remember, final String code) {
         //这里使用了Rxjava
-        return Observable.create(new Observable.OnSubscribe<Object>() {
+        return Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
-            public void call(Subscriber<? super Object> subscriber) {
+            public void call(Subscriber<? super Integer> subscriber) {
                 Object o=null;
                 try {
                     o= Remote.user.method("signin").call(account,password,remember,code);
@@ -40,17 +43,18 @@ public class SignModel implements Sign {
                 }catch (IOException e){
                     Log.e(TAG,"IOException:"+e);
                 }
-                subscriber.onNext(o);
+                Integer i=Integer.valueOf(o.toString());
+                subscriber.onNext(i);
             }
         }).subscribeOn(Schedulers.io())//在其他线程执行
           .observeOn(AndroidSchedulers.mainThread());//在主线程触发
     }
 
     @Override
-    public Observable<Object> signup(final String user, final String email, final String password,final String code) {
-        return Observable.create(new Observable.OnSubscribe<Object>() {
+    public Observable<Integer> signup(final String user, final String email, final String password,final String code) {
+        return Observable.create(new Observable.OnSubscribe<Integer>() {
             @Override
-            public void call(Subscriber<? super Object> subscriber) {
+            public void call(Subscriber<? super Integer> subscriber) {
                 Log.i("xxxxx","1");
                 Object o=null;
                 try {
@@ -67,10 +71,55 @@ public class SignModel implements Sign {
                     Log.e(TAG,"IOException:"+e);
                 }
                 Log.i("xxxxx","2");
-                subscriber.onNext(o);
+                Integer i=Integer.valueOf(o.toString());
+                subscriber.onNext(i);
                 Log.i("xxxxx","3");
             }
         }).subscribeOn(Schedulers.io())//在其他线程执行
           .observeOn(AndroidSchedulers.mainThread());//在主线程触发
+    }
+
+    @Override
+    public Observable<Boolean> getNeedSignCode(final int type) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                Object o=null;
+                try {
+                    o= Remote.user.method("getNeedSignCode").call(type);
+                }catch (ServerException e){
+                    Log.e(TAG,"ServerException:"+e);
+                }catch (PermissionException e){
+                    Log.e(TAG,"ermissionException:"+e);
+                }catch (IOException e){
+                    Log.e(TAG,"IOException:"+e);
+                }
+                Boolean b=Boolean.valueOf(o.toString());
+                subscriber.onNext(b);
+            }
+        }).subscribeOn(Schedulers.io())//在其他线程执行
+        .observeOn(AndroidSchedulers.mainThread());//在主线程触发
+    }
+
+    @Override
+    public Observable<Bitmap> displayImage() {
+        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
+            @Override
+            public void call(Subscriber<? super Bitmap> subscriber) {
+                Object o=null;
+                try {
+                    o= Remote.user.method("displayImage").call();
+                }catch (ServerException e){
+                    Log.e(TAG,"ServerException:"+e);
+                }catch (PermissionException e){
+                    Log.e(TAG,"ermissionException:"+e);
+                }catch (IOException e){
+                    Log.e(TAG,"IOException:"+e);
+                }
+
+                //subscriber.onNext(b);
+            }
+        }).subscribeOn(Schedulers.io())//在其他线程执行
+                .observeOn(AndroidSchedulers.mainThread());//在主线程触发
     }
 }

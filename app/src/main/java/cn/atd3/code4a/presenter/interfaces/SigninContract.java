@@ -20,6 +20,8 @@ public interface SigninContract {
         void codeError(String message);
         void remoteError(String message);
         void signinSuccessful();
+        void showProgressDialog();
+        void closeProgressDialog();
     }
 
     abstract class Presenter extends BasePresenter<View,SignModel> {

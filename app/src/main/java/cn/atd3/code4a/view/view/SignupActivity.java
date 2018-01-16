@@ -3,6 +3,9 @@ package cn.atd3.code4a.view.view;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -38,12 +41,19 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     BootstrapEditText passwordConfirm;
     @BindView(R.id.signup_button)
     BootstrapButton signupButton;
+    @BindView(R.id.code)
+    EditText code;
+    @BindView(R.id.code_image)
+    ImageView codeImage;
+    @BindView(R.id.code_layout)
+    LinearLayout codeLayout;
     private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle s){
         super.onCreate(s);
 
+        mPresenter.checkCode();
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +99,12 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     }
 
     @Override
+    public void showCode() {
+        closeProgressDialog();
+        codeLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void signupSuccessful() {
         closeProgressDialog();
         Toasty.success(this, "注册成功", Toast.LENGTH_SHORT).show();
@@ -106,16 +122,18 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     }
 
     /**   * 显示进度对话框   */
-    private void showProgressDialog() {
+    @Override
+    public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("提交数据");
+            progressDialog.setMessage(getResources().getString(R.string.please_wait));
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
     }
     /**   * 关闭进度对话框   */
-    private void closeProgressDialog() {
+    @Override
+    public void closeProgressDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }

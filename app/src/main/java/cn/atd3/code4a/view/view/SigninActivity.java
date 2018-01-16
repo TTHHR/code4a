@@ -105,7 +105,8 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
     }
 
     /**   * 显示进度对话框   */
-    private void showProgressDialog() {
+    @Override
+    public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage(getResources().getString(R.string.signing));
@@ -114,7 +115,8 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
         progressDialog.show();
     }
     /**   * 关闭进度对话框   */
-    private void closeProgressDialog() {
+    @Override
+    public void closeProgressDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
