@@ -45,10 +45,9 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     private ListView listView;
     private ArticleFragmentPresenter afp;
 
-    public ArticleFragment(int kind) {
+    public void init(int kind) {
         this.kind = kind;
         afp = new ArticleFragmentPresenter(this);
-
     }
 
     @Nullable
