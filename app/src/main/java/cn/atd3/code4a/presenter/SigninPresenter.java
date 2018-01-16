@@ -33,7 +33,7 @@ public class SigninPresenter extends SigninContract.Presenter {
             //检查密码
             if (checkPassword()){
                 //提交
-                mModel.signin(account,password,false,null).subscribe(new Subscriber<Object>() {
+                mModel.signin(account,password,false,null).subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onCompleted() {
                         Log.i(TAG,"onCompleted()");
@@ -45,9 +45,8 @@ public class SigninPresenter extends SigninContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(Object o) {
+                    public void onNext(Integer i) {
                         //在Model中的subscriber.onNext(o);就是调用的这个方法
-                        Integer i=Integer.valueOf(o.toString());
                         disposeStatus(i);
                     }
                 });

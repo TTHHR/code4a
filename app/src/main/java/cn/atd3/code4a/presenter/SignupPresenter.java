@@ -3,7 +3,9 @@ package cn.atd3.code4a.presenter;
 import android.text.TextUtils;
 import android.util.Log;
 
+import cn.atd3.code4a.model.model.SignModel;
 import cn.atd3.code4a.presenter.interfaces.SignupContract;
+import rx.Observer;
 import rx.Subscriber;
 
 /**
@@ -27,7 +29,7 @@ public class SignupPresenter extends SignupContract.Presenter {
         this.password=password;
         if (checkUser()&&checkEmail()&&checkPassword()){
             //提交数据
-            mModel.signup(user,email,password,null).subscribe(new Subscriber<Object>() {
+            mModel.signup(user,email,password,null).subscribe(new Subscriber<Integer>() {
                 @Override
                 public void onCompleted() {
                     Log.i(TAG,"onCompleted()");
@@ -39,9 +41,8 @@ public class SignupPresenter extends SignupContract.Presenter {
                 }
 
                 @Override
-                public void onNext(Object o) {
-                    Log.i("xxxxx","o:"+o);
-                    Integer i=Integer.valueOf(o.toString());
+                public void onNext(Integer i) {
+                    Log.i("xxxxx","i:"+i);
                     if(i>=0){
                         //注册成功
                         mView.signupSuccessful();
@@ -54,6 +55,27 @@ public class SignupPresenter extends SignupContract.Presenter {
         }else {
             mView.userNameError("Error!");
         }
+    }
+
+    @Override
+    public void checkCode() {
+        mView.showProgressDialog();
+        mModel.getNeedSignCode(SignModel.SIGNUP).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                if(aBoolean){
+                    mView.showCode();
+                }
+            }
+        });
     }
 
     private Boolean checkUser(){

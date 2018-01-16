@@ -1,6 +1,8 @@
 package cn.atd3.code4a.model.inter;
 
 
+import android.graphics.Bitmap;
+
 import cn.atd3.code4a.mvpbase.BaseModel;
 import rx.Observable;
 
@@ -14,6 +16,8 @@ import rx.Observable;
  * 创建时间：2018/01/12   10:24
  **/
 public interface Sign extends BaseModel {
-    Observable<Object> signin(String account, String password, Boolean remember, String code);
-    Observable<Object> signup(String user, String email, String password, String code);
+    Observable<Integer> signin(String account, String password, Boolean remember, String code);
+    Observable<Integer> signup(String user, String email, String password, String code);
+    Observable<Boolean> getNeedSignCode(int type);
+    Observable<Bitmap> displayImage();
 }
