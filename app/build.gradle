@@ -20,7 +20,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -73,7 +73,6 @@ dependencies {
     //  弹窗
     compile 'cn.carbs.android:MDDialog:1.0.0'
     implementation project(':feelback')
-
     //RxJava and RxAndroid
     implementation 'io.reactivex:rxjava:1.2.0'
     implementation 'io.reactivex:rxandroid:1.2.1'
