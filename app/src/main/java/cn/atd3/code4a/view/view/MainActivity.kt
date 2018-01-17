@@ -2,6 +2,7 @@ package cn.atd3.code4a.view.view
 
 import android.support.v4.app.Fragment
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
@@ -73,6 +74,8 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         // 异常报告
         DebugManager.askIfCrash(this,R.drawable.ic_launcher)
+        // 固定横屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
     }
 
     private fun initView()
