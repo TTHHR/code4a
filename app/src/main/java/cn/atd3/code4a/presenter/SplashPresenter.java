@@ -140,6 +140,10 @@ public class SplashPresenter {
                         e.printStackTrace();
                     }
                 }
+
+                if(sami.getImageUri()==null)//图片为空
+                    svi.showAd(1000);
+                    else
                 svi.showAd(showtime);
             }
         }).start();
@@ -200,7 +204,6 @@ public class SplashPresenter {
                 setAd(Uri.fromFile(adImg),u);
                 //通知View层改变视图
                 updateImage();
-
                 Calendar cal = Calendar.getInstance();
                 long time = adImg.lastModified();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

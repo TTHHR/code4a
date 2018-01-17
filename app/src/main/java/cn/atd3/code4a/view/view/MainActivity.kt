@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         bindListener()//绑定事件
 
         // 异常报告
-        DebugManager.askIfCrash(this,R.drawable.ic_launcher);
+        DebugManager.askIfCrash(this,R.drawable.ic_launcher)
     }
 
     private fun initView()
@@ -82,29 +82,31 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val catelist: List<CategoryModel>  = StorageData.loadObject(File(Constant.getPrivateFilePath() + Constant.categoryListFile)) as List<CategoryModel>;
+        val catelist: List<CategoryModel>  = StorageData.loadObject(File(Constant.getPrivateFilePath() + Constant.categoryListFile)) as List<CategoryModel>
         val tagListLayout=findViewById<LinearLayout>(R.id.tagList)
         val defaultButton:Button = Button(applicationContext)
-        defaultButton.text="首页";
-        defaultButton.id=0;
+        defaultButton.text="首页"
+        defaultButton.id=0
         defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
         tagList=tagList.plus(defaultButton)
 
         for ( cate:CategoryModel in catelist){
-            val button=Button(applicationContext);
-            button.text=cate.name;
+            val button=Button(applicationContext)
+            button.text=cate.name
             button.id=cate.id
             button.setBackgroundColor(resources.getColor(R.color.btn_enable))
             tagList=tagList.plus(button)
         }
 
         for (btn:Button in tagList ){
-            fragmentList=fragmentList.plus(ArticleFragment(btn.id))
+            val a=ArticleFragment()
+            a.init(btn.id)
+            fragmentList=fragmentList.plus(a)
             btn.setOnClickListener { view ->
                 for ((index,btn:Button) in tagList.withIndex() ){
                     if( btn.id ==view.id ){
                         btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
-                        myViewPager.currentItem =index;
+                        myViewPager.currentItem =index
                     }else{
                         btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
                     }
@@ -142,7 +144,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 //                }
 //            }.start()
             throw RuntimeException("Something is error")
-;            //
+//
         })
 
         //策划栏点击事件
