@@ -92,9 +92,6 @@
     <string name="action_login_in">登录</string>
     <string name="copyright"> ©ATDStudio 版权所有</string>
 
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_splash">SplashActivity</string>
 
