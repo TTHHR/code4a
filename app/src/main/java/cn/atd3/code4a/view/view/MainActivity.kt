@@ -136,15 +136,8 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
 
         //写新文章按钮
         newarticle.setOnClickListener(View.OnClickListener { view ->
-//            Thread(){
-//                kotlin.run {
-//                    Log.e("DXKite","perpare signup")
-//                    val ret:Any=Remote.user.method("signup").call("dxkite-test","dxkite_test1@qq.com","dxlidx");
-//                    Log.e("DXKite",ret.toString())
-//                }
-//            }.start()
-            throw RuntimeException("Something is error")
-//
+        val i=Intent(this,EditArticleActivity::class.java)
+            startActivity(i)
         })
 
         //策划栏点击事件
