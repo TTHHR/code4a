@@ -28,6 +28,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
         resourceId = textViewResourceId;
     }
 
+
     public View getView(int position, View convertView, ViewGroup parent) {
         ArticleModel a = getItem(position);
         View view = LayoutInflater.from(getContext()).inflate(resourceId,null);

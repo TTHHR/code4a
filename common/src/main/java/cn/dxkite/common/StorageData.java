@@ -2,8 +2,10 @@ package cn.dxkite.common;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -15,7 +17,7 @@ import java.io.Serializable;
 
 public class StorageData implements Serializable {
 
-    public static StorageData load(File file) {
+    public static StorageData load(File file) throws FileNotFoundException {
         return (StorageData)loadObject(file);
     }
 
@@ -23,13 +25,26 @@ public class StorageData implements Serializable {
        return saveObject(file,this);
     }
 
-    public static Object loadObject(File file) {
+    public static Object loadObject(File file) throws FileNotFoundException {
         if (!file.exists()) {
-            return null;
+            throw new FileNotFoundException(file.getAbsolutePath());
         }
         ObjectInputStream input;
         try {
             input = new ObjectInputStream(new FileInputStream(file));
+            Object obj =  input.readObject();
+            input.close();
+            return obj;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object loadObject(InputStream file) {
+        ObjectInputStream input;
+        try {
+            input = new ObjectInputStream(file);
             Object obj =  input.readObject();
             input.close();
             return obj;

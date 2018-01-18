@@ -8,6 +8,9 @@ import cn.dxkite.common.StorageData;
  */
 
 public class CategoryModel extends StorageData {
+
+    private static final long serialVersionUID = 0x60d4b6bc997429e1L;
+
     private int id;
     private String name;
     private String slug;
