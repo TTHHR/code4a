@@ -1,13 +1,13 @@
 package cn.atd3.code4a.view.view
 
-import android.support.v4.app.Fragment
+
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.ViewPager
 import android.support.v4.view.GravityCompat
-import android.support.v4.content.ContextCompat
+
 import android.view.View
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -16,15 +16,16 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import cn.atd3.code4a.Constant.*
+
 import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
-import android.util.Log
+
 import android.widget.LinearLayout
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.model.model.CategoryModel
-import cn.atd3.code4a.net.Remote
+
+import cn.atd3.code4a.presenter.DatabasePresenter
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
@@ -32,28 +33,22 @@ import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
 import cn.dxkite.debug.DebugManager
-import es.dmoral.toasty.Toasty
+
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
-import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNavigationItemSelectedListener{
 
 
     lateinit var myViewPager: ViewPager
-    lateinit var button_aide: Button
-    lateinit var button_android: Button
-    lateinit var button_c4droid: Button
     lateinit var head_iv: ImageView
     lateinit var uname: TextView
-    private var btnUnableColor = 0
-    private var btnEnableColor = 0
     private var tagList:List<Button> = ArrayList<Button>()
 
     private lateinit var newarticle:FloatingActionButton
     //把Fragment添加到List集合里面
-    var fragmentList:List<Fragment> = ArrayList<Fragment>()
+    var fragmentList:List<ArticleFragment> = ArrayList<ArticleFragment>()
 
     private lateinit var mp:MainPresenter
 
@@ -99,9 +94,9 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         }
 
         for (btn:Button in tagList ){
-            val a=ArticleFragment()
-            a.init(btn.id)
-            fragmentList=fragmentList.plus(a)
+            val af=ArticleFragment()
+            af.init(btn.id)
+            fragmentList=fragmentList.plus(af)
             btn.setOnClickListener { view ->
                 for ((index,btn:Button) in tagList.withIndex() ){
                     if( btn.id ==view.id ){
@@ -123,11 +118,7 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
-        //测试登陆
-        head_iv.setOnClickListener(View.OnClickListener {
-            var i=Intent(this,SigninActivity::class.java)
-            startActivity(i)
-        })
+
     }
 
     private fun bindListener(){
@@ -140,8 +131,18 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
             startActivity(i)
         })
 
+
+        //测试登陆
+        head_iv.setOnClickListener(View.OnClickListener {
+            var i=Intent(this,SigninActivity::class.java)
+            startActivity(i)
+        })
+
+
         //策划栏点击事件
         nav_view.setNavigationItemSelectedListener(this)
+
+
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
 
@@ -212,5 +213,20 @@ class MainActivity : AppCompatActivity() ,MainViewInterface, NavigationView.OnNa
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+
+    override fun onDestroy() {
+
+        DatabasePresenter().clearArticles(this)//清空之前数据库
+
+        for(f in fragmentList)
+        {
+            f.onSaveEvent()//储存数据
+        }
+
+        super.onDestroy()
+    }
+
+
 
 }

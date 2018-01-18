@@ -1,5 +1,6 @@
 package cn.atd3.code4a.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -29,9 +30,9 @@ public class ArticleFragmentPresenter {
         i.putExtra("title", al.get(p).getTitle());
     }
 
-    public void setAdapterData() {
+    public void setAdapterData(Context c,int category) {
         Log.e("al", "" + al.hashCode());
-
+            al=new DatabasePresenter().getArticles(c,category);
 
         if (al.size() == 0) {
             //初始数据
@@ -46,6 +47,12 @@ public class ArticleFragmentPresenter {
         afi.setAdapter(al);
     }
 
+    public void saveToDatabase(Context c)
+    {
+            new DatabasePresenter().saveArticles(c,al);
+    }
+
+
     public void update() {
         if (al != null && al.size() != 0)
             afi.upDate(al);
@@ -53,7 +60,7 @@ public class ArticleFragmentPresenter {
 
     public void requestData(final int kind)//Refresh 库自带异步
     {
-        al.clear();//清空之前数据
+  //先清空数据会导致还在请求网络数据时，用户滑动LIST，数组越界错误      al.clear();//清空之前数据
 
         try {
             Object articleList =null;
@@ -63,6 +70,7 @@ public class ArticleFragmentPresenter {
                 articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind , 1, 10);
             }
             if (articleList.getClass().equals(ArrayList.class)) {
+                al.clear();//清空之前数据
                 for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
                     Log.e("recdata", am.toString());
                     al.add(am);
