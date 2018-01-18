@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -97,6 +99,54 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
         super.onStart();
     }
+    //创建菜单
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_viewarticle, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId())
+        {
+
+            case R.id.action_downloadfile : {
+                //下载附件
+                break;
+            }
+
+            case R.id.del:{
+                //删除文章
+
+                break;
+            }
+
+            case R.id.edit : {
+           //编辑文章
+                Intent i=new Intent(this,EditArticleActivity.class);
+
+                i.putExtra("content",vap.getContent());
+                i.putExtra("create",vap.getCreate());
+                i.putExtra("id",vap.getArticleid());
+                startActivity(i);
+                break;
+
+            }
+
+        }
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+
 
     @Override
     public void showToast(final int infotype, final String info) {

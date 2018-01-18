@@ -43,9 +43,9 @@
     <string name="click_file_remove"> Successfully removed </string>
     <string name="title_showfile">view file </string>
     <string name="button_add">Add</string>
-    <string name="button_ok">Ok</string>
+    <string name="button_ok">OK</string>
     <string name="button_copy">Copy</string>
-    <string name="button_cancel">cancel</string>
+    <string name="button_cancel">Cancel</string>
     <string name="title_article">upload article</string>
     <string name="title_articleproperty">property article</string>
     <string name="title_upfile">upload files</string>
@@ -90,9 +90,7 @@
     <string name="prompt_email">email</string>
     <string name="copyright">Copyright © ATDStudio All Rights Reserved</string>
 
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="password_empty">password empty</string>
 
     <string name="title_activity_splash">SplashActivity</string>
 </resources>
