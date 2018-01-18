@@ -177,7 +177,7 @@ public class SplashPresenter {
             public void run() {
                 try {
                     List<CategoryModel> list=(List<CategoryModel>)Remote.category.method("getList", CategoryModel.class).call();
-                    StorageData.saveObject(new File(Constant.getPrivateFilePath() + Constant.categoryListFile),list);
+                    StorageData.saveObject(new File(Constant.getCategoryListFilePath()),list);
                     Log.i(TAG,list.toString());
                 } catch (ServerException e) {
                     e.printStackTrace();
