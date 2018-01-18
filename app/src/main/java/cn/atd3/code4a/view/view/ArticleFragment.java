@@ -69,7 +69,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             refreshView.setTopMaskText(getString(R.string.info_pulltorefresh));
             refreshView.setBottomMaskText(getString(R.string.info_howtogame));
             listView = view.findViewById(R.id.list_view);
-            afp.setAdapterData();//设置适配器
+            afp.setAdapterData(getContext(),kind);//设置适配器
 
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -160,5 +160,10 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                 }
         );
 
+    }
+
+    @Override
+    public void onSaveEvent() {
+        afp.saveToDatabase(getContext());//储存数据
     }
 }

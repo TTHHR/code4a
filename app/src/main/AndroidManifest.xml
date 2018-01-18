@@ -39,7 +39,10 @@
             android:name=".view.view.SignupActivity"
             android:label="@string/action_sign_in" />
         <activity android:name=".view.view.SettingActivity" />
-        <activity android:name=".view.view.ViewArticleActivity"></activity>
+        <activity android:name=".view.view.ViewArticleActivity" />
+        <activity android:name=".library.fileselect.FileSelectActivity" />
+        <activity android:name=".view.view.EditArticleActivity" />
+        <activity android:name=".view.view.EggActivity"></activity>
     </application>
 
 </manifest>

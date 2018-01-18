@@ -30,11 +30,14 @@ import static cn.atd3.code4a.Constant.ERROR;
 
 public class ViewArticlePresenter {
 
-    ArticleViewInterface avi;
-    URLImageParser urlImageParser;
+    private ArticleViewInterface avi;
+    private URLImageParser urlImageParser;
 
-    int articleid=-1;
-    int userid=-1;
+    private String content="";//原始文章数据
+
+    private int create=0;//文章创建时间
+    private int articleid=-1;
+    private int userid=-1;
 
     public ViewArticlePresenter(ArticleViewInterface avi)
     {
@@ -48,7 +51,18 @@ public class ViewArticlePresenter {
 
 
     }
-
+    public String getContent()
+    {
+        return content;
+    }
+    public int getCreate()
+    {
+        return create;
+    }
+public int getArticleid()
+{
+    return articleid;
+}
     public void shouWaitDialog()
     {
         avi.showWaitDialog();
@@ -96,8 +110,6 @@ public class ViewArticlePresenter {
 
                         avi.loadUser(usern);//UI加载用户名
 
-
-                        String text="";
                         try {
                             Object a = Remote.article.method("getArticleById", ArticleModel.class).call(articleid);
                             if(a instanceof ArticleModel)
@@ -105,24 +117,25 @@ public class ViewArticlePresenter {
                                 Log.i("obj","is article");
                                 if(((ArticleModel) a).getContent()!=null)
                                 {
+                                    create=((ArticleModel) a).getCreate();
                                     // fix: kotlin keywords abstract error
-                                    text= ((ArticleModel) a).getContent();   // abstract 属于关键字，不能用作属性名直接获取
-                                    Set<String> imgSet= getImgStr(text);
+                                    content= ((ArticleModel) a).getContent();   // abstract 属于关键字，不能用作属性名直接获取
+                                    Set<String> imgSet= getImgStr(content);
                                     for(String imgurl : imgSet)
                                     {
                                         Log.e("img",""+imgurl);
-                                        text=text.replace(imgurl, Constant.serverAddress+imgurl);//地址转换成绝对地址
+                                        content=content.replace(imgurl, Constant.serverAddress+imgurl);//地址转换成绝对地址
                                     }
-                                    Log.e("final",text);
+                                    Log.e("final",content);
                                 }
                                 else
                                 {
                                     Log.e("obj","null");
-                                    text="";
+                                    content="";
                                 }
                             }
 
-                            avi.loadArticle(text,urlImageParser);//显示文章
+                            avi.loadArticle(content,urlImageParser);//显示文章
 
                         }
                         catch (Exception e)
