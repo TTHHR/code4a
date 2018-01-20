@@ -19,7 +19,7 @@ import static android.view.KeyEvent.KEYCODE_BACK;
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.NORMAL;
-import static cn.atd3.code4a.Constant.SUCESS;
+import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
 
@@ -89,7 +89,7 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
                     @Override
                     public void run() {
                         switch (infotype) {
-                            case SUCESS:
+                            case SUCCESS:
                                 Toasty.success(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case INFO:

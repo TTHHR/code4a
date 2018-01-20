@@ -19,7 +19,7 @@ import es.dmoral.toasty.Toasty;
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.NORMAL;
-import static cn.atd3.code4a.Constant.SUCESS;
+import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
 /**
@@ -57,7 +57,7 @@ public class SettingFragment extends PreferenceFragment implements SettingFragme
                     @Override
                     public void run() {
                         switch (infotype) {
-                            case SUCESS:
+                            case SUCCESS:
                                 Toasty.success(getActivity(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case INFO:

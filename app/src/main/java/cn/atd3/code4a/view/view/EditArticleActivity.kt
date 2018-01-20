@@ -4,8 +4,11 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -126,8 +129,7 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
 
         if(richEditText.text.isEmpty())
             richEditText.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
-                    "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n" +
-                    "<img src=\"http://img5.duitang.com/uploads/item/201409/07/20140907195835_GUXNn.thumb.700_0.jpeg\">")
+                    "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n")
 
     }
 
@@ -153,7 +155,7 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
                 eap.setArticleContent(richEditText.toHtml())//设置内容
                 eap.setArticleModifyTime()//设置修改时间
 
-                eap.uploadArticle()
+                eap.uploadArticle(this@EditArticleActivity)
             }
         }
         return true
@@ -184,7 +186,7 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
       override fun showToast(infotype:Int, info:String) {
 runOnUiThread {
     when (infotype) {
-        SUCESS -> Toasty.success(applicationContext, info, Toast.LENGTH_LONG).show()
+        SUCCESS -> Toasty.success(applicationContext, info, Toast.LENGTH_LONG).show()
         INFO -> Toasty.info(applicationContext, info, Toast.LENGTH_LONG).show()
         NORMAL -> Toasty.normal(applicationContext, info, Toast.LENGTH_LONG).show()
         WARNING -> Toasty.warning(applicationContext, info, Toast.LENGTH_LONG).show()
@@ -201,6 +203,7 @@ return getString(resourceId)
         if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE||data==null|| data.data==null)
             return
         val uri = data.data
+        Log.e("image uri",""+uri)
         val width = richEditText.measuredWidth - richEditText.paddingLeft - richEditText.paddingRight
         richEditText.image(uri, width)
     }

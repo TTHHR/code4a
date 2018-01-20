@@ -10,6 +10,9 @@
         android:icon="@mipmap/download"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/share"
+        android:title="@string/nav_share" />
+    <item
         android:id="@+id/edit"
         android:title="@string/button_edit" />
     <item
