@@ -1,5 +1,9 @@
 package cn.atd3.code4a.presenter;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -7,6 +11,10 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,7 +28,9 @@ import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.model.model.FileListModel;
+import cn.atd3.code4a.model.model.PictureListModel;
 import cn.atd3.code4a.net.Remote;
+import cn.atd3.code4a.util.UriRealPath;
 import cn.atd3.code4a.view.inter.EditArticleActivityInterface;
 import cn.atd3.proxy.Param;
 import cn.qingyuyu.commom.service.FileDealService;
@@ -118,7 +128,52 @@ public class EditArticlePresenter {
          eai.dismissArticleInfoDialog();//检查无误
     }
 
-    public void uploadArticle()
+
+    /**
+     * 得到网页中图片的地址
+     * @param
+     */
+    private Set<String> getImgStr(String htmlStr)  {
+        HashSet pics = new HashSet<String>();
+        String img = "";
+        Pattern p_image;
+        Matcher m_image;
+        String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+        p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+        m_image = p_image.matcher(htmlStr);
+        while (m_image.find()) {
+            // 得到<img />数据
+            img = m_image.group();
+            // 匹配<img>中的src数据
+            Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+            while (m.find()) {
+                if(m.group(1).startsWith("content:")||m.group(1).startsWith("file:"))//图片
+                    pics.add(m.group(1));
+            }
+        }
+        return pics;
+    }
+    private void getPictureList(Context context)
+    {
+        Log.e("get picture list",article.getContent());
+        Set<String> ss=getImgStr(article.getContent());
+
+        String c=article.getContent();
+
+        for(String s:ss)
+        {
+            Uri u=Uri.parse(s);
+            String realPath=UriRealPath.getRealPathFromUri(context,u);//将Uri转换成文件路径，方便打包
+            PictureListModel.getIns().addPicture(realPath);
+            Log.e("uri to path","uri:"+s+"  path:"+realPath);
+            c=c.replace(s,"assets/"+new File(realPath).getName());//将文章中的Uri换成服务器路径
+        }
+
+        article.setContent(c);//将替换后的文章重新赋值给Article
+
+    }
+
+    public void uploadArticle(final Context context)
     {
         new Thread(
                 new Runnable() {
@@ -126,6 +181,11 @@ public class EditArticlePresenter {
                     public void run() {
 
                         eai.prgoressOfUpload(eai.getXmlString(R.string.action_packfile));
+
+
+                        getPictureList(context);
+
+
 
                         if(!articleToXml())
                         {
@@ -146,20 +206,23 @@ public class EditArticlePresenter {
                             //上传
                             try {
 
+                                File f=new File(Constant.getPublicFilePath()+Constant.zipFile);
+
+                                if(f.length()>2048000)
+                                {
+                                    eai.showToast(Constant.INFO,String.format(eai.getXmlString(R.string.info_upload_slow),f.length()/1000000+"M"));
+                                }
+
                                 Remote.article.method("upload").call(
-                                        new Param("article", new File(Constant.getPublicFilePath()+Constant.zipFile)),
+                                        new Param("article",f ),
                                         new  Param("type", "xml"),
                                         new Param("status", 2)
                                 );
 
 
-                                FileListModel.getIns().clear();//清除
-
                                 eai.prgoressOfUpload(eai.getXmlString(R.string.action_upfinish));
 
                                 Thread.sleep(1000);
-
-
 
                             }
                             catch (Exception e)
@@ -167,8 +230,11 @@ public class EditArticlePresenter {
                                 Log.e("upload",""+e);
                                 eai.showToast(ERROR,e.toString());
                             }
-
-                            eai.dismissArticleInfoDialog();
+                            finally {
+                                FileListModel.getIns().clear();//清除
+                                PictureListModel.getIns().clear();
+                                eai.dismissArticleInfoDialog();
+                            }
 
                         }
 
@@ -254,6 +320,7 @@ public class EditArticlePresenter {
 
             Element content = document.createElement("content");
             content.setAttribute("type", "html");
+            Log.e("xml content",article.getContent());
             content.setTextContent(base64.encode(article.getContent().getBytes()));
 
             articles.appendChild(content);
@@ -330,6 +397,12 @@ public class EditArticlePresenter {
 
         try {
             assetsDir.mkdir();
+            for (int i=0;;i++) {
+                String f=PictureListModel.getIns().get(i);
+                if(f==null)
+                    break;
+                fds.copyFile(f, assetsDir.getAbsolutePath() + "/" + f.substring(f.lastIndexOf("/") + 1));
+            }
         } catch ( Exception e) {
             eai.showToast(ERROR,e.toString());
         return false;

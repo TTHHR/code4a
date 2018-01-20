@@ -29,7 +29,7 @@ import es.dmoral.toasty.Toasty;
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.NORMAL;
-import static cn.atd3.code4a.Constant.SUCESS;
+import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
 /**
@@ -138,7 +138,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     @Override
                     public void run() {
                         switch (infotype) {
-                            case SUCESS:
+                            case SUCCESS:
                                 Toasty.success(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case INFO:

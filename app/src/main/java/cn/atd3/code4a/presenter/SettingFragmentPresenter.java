@@ -28,7 +28,7 @@ public class SettingFragmentPresenter {
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_loginout))
         {
            //退出登录
-            sfi.showToast(Constant.SUCESS,"退出登陆成功，Sucess");
+            sfi.showToast(Constant.SUCCESS,"退出登陆成功，Success");
         }
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_software_info))
         {

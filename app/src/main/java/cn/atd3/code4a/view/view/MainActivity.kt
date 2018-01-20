@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         // 异常报告
         DebugManager.askIfCrash(this, R.drawable.ic_launcher)
         // 固定横屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     private fun initView() {
@@ -75,14 +75,14 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        var cateListFile = File(Constant.getCategoryListFilePath());
+        var cateListFile = File(Constant.getCategoryListFilePath())
 
         val catelist: List<CategoryModel>
 
         if (cateListFile.exists()) {
             catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
         } else {
-            Log.i(TAG,"load from network faild, load from assets!");
+            Log.i(TAG,"load from network faild, load from assets!")
             catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
         }
 
@@ -212,6 +212,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings -> startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -220,7 +221,17 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     //右侧列表点击事件
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-
+        when(item.itemId)
+        {
+            R.id.nav_share->{
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Share")
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_content)+Constant.shareUrl)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(Intent.createChooser(intent, title))
+            }
+        }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }

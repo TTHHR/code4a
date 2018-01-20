@@ -3,24 +3,25 @@ package cn.atd3.code4a.view.view;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.ViewArticlePresenter;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
@@ -29,8 +30,9 @@ import es.dmoral.toasty.Toasty;
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.NORMAL;
-import static cn.atd3.code4a.Constant.SUCESS;
+import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
+import static cn.atd3.code4a.Constant.categoryListFile;
 
 public class ViewArticleActivity extends AppCompatActivity implements ArticleViewInterface {
     private TextView articleText;
@@ -119,7 +121,17 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
             case R.id.del:{
                 //删除文章
+                    vap.deleteArticle();
+                break;
+            }
 
+            case R.id.share:{
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType( "text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Share");
+                intent.putExtra(Intent.EXTRA_TEXT, articleText.getText()+ Constant.shareUrl);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent, getTitle()));
                 break;
             }
 
@@ -155,7 +167,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                     @Override
                     public void run() {
                         switch (infotype) {
-                            case SUCESS:
+                            case SUCCESS:
                                 Toasty.success(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case INFO:

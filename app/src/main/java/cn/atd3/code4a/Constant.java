@@ -16,16 +16,12 @@ import java.io.File;
 public final class Constant {
 
     public final static String serverAddress = "http://code4a.atd3.cn/";
-    public final static String shareUrl = "http://blog.qingyuyu.cn/";
-    public final static String shareImg = "http://blog.qingyuyu.cn/conf/profile.png";
+    public final static String shareUrl = "http://github.com/tthhr/code4a";
     public final static String remoteAdImg = "http://code4a.atd3.cn/ad.png";
     public final static String remoteAdUrl = "http://code4a.atd3.cn/adurl.txt";
     public final static String categoryListFile= "categories";
 
-    public final static int C4DROID = 0;
-    public final static int AIDE = 1;
-    public final static int ANDROID = 2;
-    public final static int SUCESS = 0;
+    public final static int SUCCESS = 0;
     public final static int INFO = 1;
     public final static int NORMAL = 2;
     public final static int WARNING = 3;
@@ -61,10 +57,7 @@ public final class Constant {
     }
 
     private boolean judgeDebug(Context context) {
-        if (context.getApplicationInfo() != null && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-            return true;
-        }
-        return false;
+        return context.getApplicationInfo() != null && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 
     public static void init(Context context) {

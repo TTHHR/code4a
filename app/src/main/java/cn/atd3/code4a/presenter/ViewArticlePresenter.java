@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -21,8 +22,10 @@ import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
+import cn.atd3.proxy.Param;
 
 import static cn.atd3.code4a.Constant.ERROR;
+import static cn.atd3.code4a.Constant.SUCCESS;
 
 /**
  * Created by harry on 2018/1/15.
@@ -82,6 +85,30 @@ public int getArticleid()
         this. articleid=articleid;
         this. userid=userid;
     }
+
+
+    public void deleteArticle()
+    {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Remote.article.method("delete").call(
+                                new Param("id", articleid)
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        avi.showToast(ERROR,""+e);
+                    }
+                    avi.showToast(SUCCESS,"success");
+                }
+            }).start();
+
+
+    }
+
+
 
     public void loadArticle()
     {
