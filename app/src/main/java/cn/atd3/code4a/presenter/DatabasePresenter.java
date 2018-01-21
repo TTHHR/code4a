@@ -20,8 +20,9 @@ public class DatabasePresenter {
     {
         DbHelper database = new DbHelper(con);
         try {
-            for(ArticleModel article : listData)
+            for(int i=listData.size()-1;i>=0;i--)
             {
+                ArticleModel article=listData.get(i);
                 ContentValues cv = new ContentValues();//实例化一个ContentValues用来装载待插入的数据
                 cv.put("id", article.getId()); //添加数据
                 cv.put("title", article.getTitle()); //添加数据
@@ -101,12 +102,6 @@ public class DatabasePresenter {
         }
         return al;
     }
-
-
-
-
-
-
 
 
 }

@@ -168,8 +168,11 @@ public int getArticleid()
                         catch (Exception e)
                         {
                             Log.e("net error",""+e);
+                            avi.showToast(ERROR,e.toString());
                         }
-
+                        finally {
+                            avi.dismissWaitDialog();//取消等待
+                        }
 
                     }
                 }

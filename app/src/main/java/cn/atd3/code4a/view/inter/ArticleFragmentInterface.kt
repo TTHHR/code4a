@@ -9,8 +9,11 @@ import java.util.ArrayList
  */
 
 internal interface ArticleFragmentInterface {
-    fun upDate(al:ArrayList<ArticleModel> )
+    fun upDate()
     fun setAdapter(al:ArrayList<ArticleModel>)
     fun showToast(infotype:Int , info:String)
     fun onSaveEvent()
+    fun onfinishRefresh()
+    fun onfinishLoadmore()
+
 }
