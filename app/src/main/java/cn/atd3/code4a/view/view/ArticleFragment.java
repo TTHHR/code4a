@@ -3,6 +3,7 @@ package cn.atd3.code4a.view.view;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,7 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.hitomi.refresh.view.FunGameRefreshView;
+import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
+import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,6 +26,7 @@ import cn.atd3.code4a.model.adapter.ArticleAdapter;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.presenter.ArticleFragmentPresenter;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
+import cn.atd3.code4a.view.inter.HeadRefreshView;
 import es.dmoral.toasty.Toasty;
 
 import static cn.atd3.code4a.Constant.ERROR;
@@ -44,6 +47,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     private View view;
     private ListView listView;
     private ArticleFragmentPresenter afp;
+    private PullToRefreshLayout pullToRefreshLayout;
 
     public void init(int kind) {
         this.kind = kind;
@@ -61,13 +65,10 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
+             pullToRefreshLayout=view.findViewById(R.id.pulltorefresh_layout);
 
-            FunGameRefreshView refreshView = view.findViewById(R.id.refresh);
-            refreshView.setLoadingText(getString(R.string.info_loadingtext));
-            refreshView.setGameOverText(getString(R.string.info_gaveover));
-            refreshView.setLoadingFinishedText(getString(R.string.info_loadingfinish));
-            refreshView.setTopMaskText(getString(R.string.info_pulltorefresh));
-            refreshView.setBottomMaskText(getString(R.string.info_howtogame));
+            pullToRefreshLayout.setHeaderView(new HeadRefreshView(getContext()));////加载的视图
+
             listView = view.findViewById(R.id.list_view);
             afp.setAdapterData(getContext(),kind);//设置适配器
 
@@ -83,18 +84,26 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                 }
             });
 
-            refreshView.setOnRefreshListener(new FunGameRefreshView.FunGameRefreshListener() {
+            pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
                 @Override
-                public void onPullRefreshing() {
-                    afp.requestData(kind);
+                public void refresh() {
+
+                    Log.e("refresh","...");
+                  afp.refreshData(kind);
+
                 }
 
                 @Override
-                public void onRefreshComplete() {
-                    afp.update();
-                }
+                public void loadMore() {
+                    Log.e("load more","...");
+                    afp.loadMoreData(kind);
 
+                }
             });
+
+
+
+
 
         }
 
@@ -111,14 +120,13 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
 
     @Override
-    public void upDate(ArrayList<ArticleModel> al) {
+    public void upDate( ) {
 
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
                         aad.notifyDataSetChanged();
-                        Toasty.success(getContext(), getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -165,5 +173,31 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     @Override
     public void onSaveEvent() {
         afp.saveToDatabase(getContext());//储存数据
+    }
+
+    @Override
+    public void onfinishRefresh() {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        // 结束刷新
+                        pullToRefreshLayout.finishRefresh();
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onfinishLoadmore() {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        // 结束
+                        pullToRefreshLayout.finishLoadMore();
+                    }
+                }
+        );
     }
 }

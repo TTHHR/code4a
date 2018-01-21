@@ -10,6 +10,9 @@ import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 
+import static cn.atd3.code4a.Constant.ERROR;
+import static cn.atd3.code4a.Constant.privateString;
+
 /**
  * Created by harry on 2018/1/14.
  */
@@ -18,6 +21,8 @@ public class ArticleFragmentPresenter {
     private ArticleFragmentInterface afi;
 
     private ArrayList<ArticleModel> al = null;
+
+    private int page=1;
 
     public ArticleFragmentPresenter(ArticleFragmentInterface afi) {
         this.afi = afi;
@@ -53,23 +58,54 @@ public class ArticleFragmentPresenter {
     }
 
 
-    public void update() {
-        if (al != null && al.size() != 0)
-            afi.upDate(al);
+    public void loadMoreData(final int kind)
+    {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        page++;
+                      requestData(kind);
+                            afi.upDate();//通知UI刷新
+                            afi.onfinishLoadmore();
+
+                    }
+                }
+        ).start();
+
     }
 
-    public void requestData(final int kind)//Refresh 库自带异步
+    public void refreshData(final int kind)
+    {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        page=1;
+                        requestData(kind);
+                        afi.upDate();//通知UI刷新
+                        afi.onfinishRefresh();
+
+                    }
+                }
+        ).start();
+
+    }
+
+    private boolean requestData(final int kind)
     {
   //先清空数据会导致还在请求网络数据时，用户滑动LIST，数组越界错误      al.clear();//清空之前数据
+
 
         try {
             Object articleList =null;
             if (kind ==0 ) {
                articleList = Remote.article.method("getList", ArticleModel.class).call( 1, 10);
             }else{
-                articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind , 1, 10);
+                articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind , page, 10);
             }
             if (articleList.getClass().equals(ArrayList.class)) {
+                if(page==1)//就是刷新
                 al.clear();//清空之前数据
                 for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
                     Log.e("recdata", am.toString());
@@ -78,8 +114,10 @@ public class ArticleFragmentPresenter {
             }
         } catch (Exception e) {
             Log.e("requestdata", "" + e);
+            afi.showToast(ERROR,e.toString());
+            return false;
         }
-        afi.upDate(al);//通知UI刷新
+        return true;
 
     }
 

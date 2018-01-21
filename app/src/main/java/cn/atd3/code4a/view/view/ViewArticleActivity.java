@@ -25,6 +25,7 @@ import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.ViewArticlePresenter;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
+import cn.carbs.android.library.MDDialog;
 import es.dmoral.toasty.Toasty;
 
 import static cn.atd3.code4a.Constant.ERROR;
@@ -37,7 +38,7 @@ import static cn.atd3.code4a.Constant.categoryListFile;
 public class ViewArticleActivity extends AppCompatActivity implements ArticleViewInterface {
     private TextView articleText;
     private ViewArticlePresenter vap;
-    private BootstrapButton copyButton;
+    private BootstrapButton copyButton,mycomment;
     AlertDialog md;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,34 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 }
             }
         } );
+        mycomment=findViewById(R.id.mycomment);
+        mycomment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               new MDDialog.Builder(ViewArticleActivity.this)
+                    .setTitle("Edit my comment")
+                        .setContentView(R.layout.dialog_mycomment)
+                        .setNegativeButton(R.string.button_cancel,new View.OnClickListener() {
 
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        })
+                   .setPositiveButton(R.string.button_ok,new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+
+                       }
+                   })
+
+                    .setWidthMaxDp(600)
+                    .setShowTitle(true)
+                    .setShowButtons(true)
+                    .create()
+                    .show();
+            }
+        });
 
 
     }
@@ -231,7 +259,6 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                     public void run() {
                             articleText.setText( Html.fromHtml(text, imageGetter, null));
                             copyButton.setClickable(true);
-                            vap.dismissWaitDialog();//取消等待
                     }
                 }
         );

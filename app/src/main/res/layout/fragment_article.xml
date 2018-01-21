@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
-    <com.hitomi.refresh.view.FunGameRefreshView
-        android:layout_alignParentTop="true"
-        android:id="@+id/refresh"
+<!-- 第三方控件-->
+    <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
+        android:id="@+id/pulltorefresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:game_type="hit_block">
+        android:layout_height="match_parent"
+        app:view_error="@layout/layout_error"
+        app:view_empty="@layout/layout_empty"
+        app:view_loading="@layout/layout_loading"
+        >
 
         <ListView
             android:id="@+id/list_view"
@@ -18,7 +20,8 @@
             android:layout_height="wrap_content"
             android:divider="@color/bootstrap_gray_lighter"
             android:dividerHeight="8dp"
-            android:scrollbars="none"></ListView>
+            >
+        </ListView>
 
-    </com.hitomi.refresh.view.FunGameRefreshView>
+    </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
 </RelativeLayout>
