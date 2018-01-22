@@ -15,5 +15,6 @@ internal interface ArticleFragmentInterface {
     fun onSaveEvent()
     fun onfinishRefresh()
     fun onfinishLoadmore()
-
+    fun showTouch()
+    fun showList()
 }

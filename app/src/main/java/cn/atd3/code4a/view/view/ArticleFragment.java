@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -48,7 +49,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     private ListView listView;
     private ArticleFragmentPresenter afp;
     private PullToRefreshLayout pullToRefreshLayout;
-
+    private LinearLayout touchView;
     public void init(int kind) {
         this.kind = kind;
     }
@@ -66,7 +67,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             Log.e("kind", "" + kind);
 
             pullToRefreshLayout = view.findViewById(R.id.pulltorefresh_layout);
-
+            touchView=view.findViewById(R.id.itemShow);
             pullToRefreshLayout.setHeaderView(new HeadRefreshView(getContext()));////加载的视图
 
             listView = view.findViewById(R.id.list_view);
@@ -83,6 +84,18 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     startActivity(intent);
                 }
             });
+
+            touchView.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d("touchView","onTouch");
+                            view.findViewById(R.id.showCircle).setVisibility(View.VISIBLE);
+                            view.findViewById(R.id.showText).setVisibility(View.GONE);
+                            afp.refreshData(kind);
+                        }
+                    }
+            );
 
             pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
                 @Override
@@ -123,6 +136,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     @Override
                     public void run() {
                         aad.notifyDataSetChanged();
+                        showList();
                     }
                 }
         );
@@ -198,5 +212,17 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     }
                 }
         );
+    }
+
+    @Override
+    public void showTouch() {
+        pullToRefreshLayout.setVisibility(View.GONE);
+        touchView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showList() {
+        pullToRefreshLayout.setVisibility(View.VISIBLE);
+        touchView.setVisibility(View.GONE);
     }
 }
