@@ -9,6 +9,7 @@
     <string name="setting_tieba_summary">goto c4droid Tieba</string>
     <string name="setting_language">Language</string>
     <string name="setting_language_select">Select A Language</string>
+    <string name="setting_debug">Debug mode</string>
     <string name="setting_auth">TTHHR</string>
     <string name="setting_auth_summary">Donate to authors</string>
     <string name="setting_update">update</string>
@@ -64,11 +65,6 @@
         <item>sign</item>
         <item>password</item>
     </string-array>
-    <string name="info_loadingtext">have a game</string>
-    <string name="info_gaveover">game over</string>
-    <string name="info_loadingfinish">loading finished</string>
-    <string name="info_pulltorefresh">Pull to refresh</string>
-    <string name="info_howtogame">Up and down sliding control game</string>
     <string name="wanning_storage">Please ensure that App is allowed to store permissions！</string>
     <string name="info_changelanguage">After changing the language, restart the App manually</string>
     <string name="error_network">Net Error：</string>
@@ -94,4 +90,14 @@
     <string name="password_empty">password empty</string>
 
     <string name="title_activity_splash">SplashActivity</string>
+
+    <!--Signin-->
+    <string name="account_empty">account empty</string>
+    <string name="account_invalid">account error</string>
+    <string name="password_invalid">password error</string>
+    <string name="code_invalid">code error</string>
+    <string name="remote_error">Some Error:</string>
+    <string name="signing">signing</string>
+    <string name="signin_successful">Login success</string>
+
 </resources>

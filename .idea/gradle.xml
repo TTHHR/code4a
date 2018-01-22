@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/feelback" />
-            <option value="$PROJECT_DIR$/fungamerefresh" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

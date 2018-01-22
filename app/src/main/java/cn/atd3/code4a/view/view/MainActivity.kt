@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         bindListener()//绑定事件
 
         // 异常报告
+        if(Constant.debugmodeinfo)
         DebugManager.askIfCrash(this, R.drawable.ic_launcher)
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        var cateListFile = File(Constant.getCategoryListFilePath())
+        val cateListFile = File(Constant.getCategoryListFilePath())
 
         val catelist: List<CategoryModel>
 
@@ -134,7 +135,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         myViewPager.adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
 
         //写新文章按钮
-        newarticle.setOnClickListener(View.OnClickListener { view ->
+        newarticle.setOnClickListener(View.OnClickListener { _ ->
             val i = Intent(this, EditArticleActivity::class.java)
             startActivity(i)
         })
@@ -231,6 +232,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(Intent.createChooser(intent, title))
             }
+            R.id.nav_feedback->
+            {
+                val i=Intent(this@MainActivity,FeedbackActivity::class.java)
+                startActivity(i)
+            }
+
+
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true

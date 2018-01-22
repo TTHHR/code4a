@@ -12,14 +12,16 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.model.model.DownFileModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
 import cn.atd3.proxy.Param;
@@ -38,6 +40,7 @@ public class ViewArticlePresenter {
 
     private String content="";//原始文章数据
 
+    private List<DownFileModel> fileList;
     private int create=0;//文章创建时间
     private int articleid=-1;
     private int userid=-1;
@@ -70,10 +73,6 @@ public int getArticleid()
     {
         avi.showWaitDialog();
     }
-    public void dismissWaitDialog()
-    {
-        avi.dismissWaitDialog();
-    }
 
     public void checkArticle(int articleid,int userid)
     {
@@ -89,6 +88,13 @@ public int getArticleid()
 
     public void deleteArticle()
     {
+        /*
+
+        为了减轻服务器压力，之后这里需要对作者进行本地检查
+        现在的方法有服务器进行验证，不会误删的
+
+         */
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -108,6 +114,21 @@ public int getArticleid()
 
     }
 
+public String[] getDownFileList()
+    {
+        ArrayList<String> al=new ArrayList<>();
+        if(fileList!=null&&fileList.size()!=0)
+        for(DownFileModel d:fileList)
+            al.add(d.getName());
+        else
+            return new String[]{};
+        return al.toArray(new String[al.size()]);
+    }
+
+    public String getFileUrl(int p)
+    {
+        return fileList.get(p).getUrl();
+    }
 
 
     public void loadArticle()
@@ -139,31 +160,37 @@ public int getArticleid()
 
                         try {
                             Object a = Remote.article.method("getArticleById", ArticleModel.class).call(articleid);
-                            if(a instanceof ArticleModel)
-                            {
-                                Log.i("obj","is article");
-                                if(((ArticleModel) a).getContent()!=null)
-                                {
-                                    create=((ArticleModel) a).getCreate();
+                            if (a instanceof ArticleModel) {
+                                Log.i("obj", "is article");
+                                if (((ArticleModel) a).getContent() != null) {
+                                    create = ((ArticleModel) a).getCreate();
                                     // fix: kotlin keywords abstract error
-                                    content= ((ArticleModel) a).getContent();   // abstract 属于关键字，不能用作属性名直接获取
-                                    Set<String> imgSet= getImgStr(content);
-                                    for(String imgurl : imgSet)
-                                    {
-                                        Log.e("img",""+imgurl);
-                                        content=content.replace(imgurl, Constant.serverAddress+imgurl);//地址转换成绝对地址
+                                    content = ((ArticleModel) a).getContent();   // abstract 属于关键字，不能用作属性名直接获取
+                                    Set<String> imgSet = getImgStr(content);
+                                    for (String imgurl : imgSet) {
+                                        Log.e("img", "" + imgurl);
+                                        content = content.replace(imgurl, Constant.serverAddress + imgurl);//地址转换成绝对地址
                                     }
-                                    Log.e("final",content);
-                                }
-                                else
-                                {
-                                    Log.e("obj","null");
-                                    content="";
+                                    Log.e("final", content);
+                                } else {
+                                    Log.e("obj", "null");
+                                    content = "";
                                 }
                             }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("net error",""+e);
+                            avi.showToast(ERROR,e.toString());
+                        }
 
                             avi.loadArticle(content,urlImageParser);//显示文章
 
+                            try {
+                                Object a= Remote.article.method("getAttachments", DownFileModel.class).call(articleid);
+                                if(a instanceof List) {
+                                    fileList=(List<DownFileModel>)a;
+                                }
                         }
                         catch (Exception e)
                         {

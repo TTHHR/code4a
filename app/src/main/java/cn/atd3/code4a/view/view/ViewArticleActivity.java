@@ -5,6 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,7 +49,8 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
         vap=new ViewArticlePresenter(this);//控制器
 
-
+        // 固定横屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         md = new AlertDialog.Builder(ViewArticleActivity.this)
                 .setTitle(R.string.please_waiting)
@@ -144,6 +147,24 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
             case R.id.action_downloadfile : {
                 //下载附件
+
+                new MDDialog.Builder(ViewArticleActivity.this)
+                        .setMessages(vap.getDownFileList())
+                        .setOnItemClickListener(new MDDialog.OnItemClickListener() {
+                            @Override
+                            public void onItemClicked(int index) {
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                Uri content_url = Uri.parse(vap.getFileUrl(index));
+                                intent.setData(content_url);
+                                startActivity(intent);
+                            }
+                        })
+                        .setWidthMaxDp(600)
+                        .create()
+                        .show();
+
+
                 break;
             }
 
@@ -208,7 +229,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                                 Toasty.warning(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                Toasty.error(getApplicationContext(), Constant.debugmodeinfo==true?info:getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 

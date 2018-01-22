@@ -7,6 +7,7 @@
     <string name="setting_tieba_summary">访问c4droid贴吧</string>
     <string name="setting_language">语言</string>
     <string name="setting_language_select">选择一个语言</string>
+    <string name="setting_debug">调试模式</string>
     <string name="setting_auth">TTHHR</string>
     <string name="setting_auth_summary">向作者捐赠</string>
     <string name="setting_update">检查更新</string>
@@ -65,11 +66,6 @@
         <item>登陆</item>
         <item>密码</item>
     </string-array>
-    <string name="info_loadingtext">玩个游戏</string>
-    <string name="info_gaveover">游戏结束</string>
-    <string name="info_loadingfinish">加载完成</string>
-    <string name="info_pulltorefresh">下拉刷新</string>
-    <string name="info_howtogame">上下滑动控制游戏</string>
     <string name="wanning_storage">请确保允许App有储存权限！</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="info_changelanguage">改变语言后，请手动重启App</string>

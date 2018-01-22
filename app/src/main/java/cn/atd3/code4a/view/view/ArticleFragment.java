@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.adapter.ArticleAdapter;
 import cn.atd3.code4a.model.model.ArticleModel;
@@ -141,6 +142,9 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
     @Override
     public void showToast(final int infotype, final String info) {
+
+
+
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
@@ -159,7 +163,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                                 Toasty.warning(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getContext(), info, Toast.LENGTH_SHORT).show();
+                                Toasty.error(getContext(), Constant.debugmodeinfo==true?info:getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 

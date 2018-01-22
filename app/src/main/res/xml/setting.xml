@@ -8,6 +8,11 @@
             android:dialogTitle="@string/setting_language_select"
             android:entries="@array/language_list_key"
             android:entryValues="@array/language_list_value"/>
+        <CheckBoxPreference
+            android:checked="false"
+            android:defaultValue="false"
+            android:key="debug"
+            android:title="@string/setting_debug" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_about" >
