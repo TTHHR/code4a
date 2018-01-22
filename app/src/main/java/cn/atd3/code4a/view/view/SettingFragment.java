@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.SettingFragmentPresenter;
 import cn.atd3.code4a.view.inter.SettingFragmentInterface;
@@ -70,7 +71,7 @@ public class SettingFragment extends PreferenceFragment implements SettingFragme
                                 Toasty.warning(getActivity(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getActivity(), info, Toast.LENGTH_SHORT).show();
+                                Toasty.error(getActivity(), Constant.debugmodeinfo==true?info:getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 

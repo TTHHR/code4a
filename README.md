@@ -11,7 +11,7 @@ a code share platform
 - 富文本编辑：https://github.com/huzhenjie/RichTextEditor
 - 文件浏览：https://github.com/WeiMei-Tian/FileBrowser
 - 弹窗：https://github.com/Carbs0126/MDDialog
-- 下拉刷新： https://github.com/Hitomis/FunGameRefresh
+-上拉下拉刷新 https://github.com/823546371/PullToRefresh
 
 ## 服务器程序
 Code4A Server: https://github.com/DXkite/DxSite

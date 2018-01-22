@@ -38,6 +38,7 @@ public final class Constant {
     private static String adUrl = File.separator + "adUrl.txt";
     private static String userData = File.separator + "user.data";
 
+    public static boolean debugmodeinfo=false;
 
     private static boolean debug;
 

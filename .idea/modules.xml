@@ -6,7 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/code4a.iml" filepath="$PROJECT_DIR$/code4a.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/feelback/feelback.iml" filepath="$PROJECT_DIR$/feelback/feelback.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fungamerefresh/fungamerefresh.iml" filepath="$PROJECT_DIR$/fungamerefresh/fungamerefresh.iml" />
+      <module fileurl="file://F:\workspace\code4a\fungamerefresh\fungamerefresh.iml" filepath="F:\workspace\code4a\fungamerefresh\fungamerefresh.iml" />
     </modules>
   </component>
 </project>

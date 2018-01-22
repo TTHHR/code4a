@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
 
         sp.setSplashAdListener(this,sad);//设置广告监听
 
-        sp.showAd(5000);//显示广告5秒
+        sp.showAd(3000);//显示广告3秒
 
     }
 

@@ -18,26 +18,27 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import cn.atd3.code4a.Constant
 import cn.atd3.code4a.Constant.*
 import cn.atd3.code4a.R
 import cn.atd3.code4a.library.fileselect.FileSelectActivity
+import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.model.model.FileListModel
 import cn.atd3.code4a.presenter.EditArticlePresenter
 import cn.atd3.code4a.view.inter.EditArticleActivityInterface
 import cn.carbs.android.library.MDDialog
+import cn.dxkite.common.StorageData
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapEditText
 import com.scrat.app.richtext.RichEditText
 import es.dmoral.toasty.Toasty
+import java.io.File
 
 class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
     private val REQUEST_CODE_GET_CONTENT = 666
     private val SELECTFILE = 555
     private val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444
-
 
 
     private  var message:TextView?=null
@@ -97,9 +98,32 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
                 })
                 .create()
 
+
+        val cateListFile = File(getCategoryListFilePath())
+
+        var catelist: List<CategoryModel>
+        if (cateListFile.exists()) {
+            catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
+        } else {
+            Log.i("EditActivity","load from network faild, load from assets!")
+            catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
+        }
+
+        val spinnerstring=ArrayList<String>()
+
+        for (cate: CategoryModel in catelist) {
+           spinnerstring.add(cate.name)
+        }
+
+        val sad= ArrayAdapter(this@EditArticleActivity,android.R.layout.simple_list_item_1,spinnerstring)
+
+        kind.adapter=sad
+
         kind.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                Log.e("select kind",""+p2+1)
                 eap.setArticleCategory(p2+1)
+
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
@@ -190,7 +214,7 @@ runOnUiThread {
         INFO -> Toasty.info(applicationContext, info, Toast.LENGTH_LONG).show()
         NORMAL -> Toasty.normal(applicationContext, info, Toast.LENGTH_LONG).show()
         WARNING -> Toasty.warning(applicationContext, info, Toast.LENGTH_LONG).show()
-        ERROR -> Toasty.error(applicationContext, info, Toast.LENGTH_LONG).show()
+        ERROR -> Toasty.error(applicationContext, if (Constant.debugmodeinfo) info else getString(R.string.remote_error), Toast.LENGTH_LONG).show()
     }
 }
 

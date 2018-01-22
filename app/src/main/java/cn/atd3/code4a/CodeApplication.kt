@@ -25,6 +25,7 @@ class CodeApplication : Application() {
         initCrashManager()
         initProxyManager()
         initLanguage()
+        initDebugModeInfo()
         // 初始化图片加载
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this))
     }
@@ -57,5 +58,10 @@ class CodeApplication : Application() {
         else
             conf.locale = Locale(language)
         res.updateConfiguration(conf, dm)
+    }
+
+    private fun initDebugModeInfo()
+    {
+       Constant.debugmodeinfo = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("debug", false)
     }
 }

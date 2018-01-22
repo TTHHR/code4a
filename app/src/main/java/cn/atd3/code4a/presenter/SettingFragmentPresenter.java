@@ -25,6 +25,7 @@ public class SettingFragmentPresenter {
         {
             sfi.showToast(Constant.INFO,sfi.getXmlString(R.string.info_changelanguage));
         }
+
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_loginout))
         {
            //退出登录
