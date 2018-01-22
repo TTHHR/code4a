@@ -1,64 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bootstrap_gray_lighter"
-    >
+    android:background="@android:color/white"
+    android:padding="10dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:layout_marginTop="10dp"
-        android:background="@drawable/shape_corners"
-        android:padding="8dp">
-
-
-        <TextView
-            android:id="@+id/articletitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_margin="8dp"
-            android:text="标题"
-            android:textColor="@color/bootstrap_brand_primary"
-            android:textSize="@dimen/bootstrap_h5_text_size" />
+            android:gravity="center_vertical|center_horizontal|fill_horizontal|center"
+            android:orientation="horizontal"
+            android:padding="@dimen/eight_dp">
 
+            <ImageView
+                android:id="@+id/itemAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/article_item_padding"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:cropToPadding="false"
+                app:srcCompat="@mipmap/logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/itemUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/username" />
+
+                <TextView
+                    android:id="@+id/itemModify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/articleabstract"
-            android:layout_width="wrap_content"
+            android:id="@+id/itemTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/articletitle"
-            android:layout_centerHorizontal="true"
-            android:text="概述"
-            android:textSize="@dimen/bootstrap_h6_text_size" />
+            android:padding="@dimen/article_item_padding"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <TextView
-            android:id="@+id/articleuser"
-            android:layout_width="wrap_content"
+            android:id="@+id/itemAbstract"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/articleabstract"
-            android:layout_margin="8dp"
-            android:text="用户名"
-            android:textColor="@color/bootstrap_brand_info" />
+            android:text="TextView" />
 
-        <TextView
-            android:id="@+id/articlemodify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/articleuser"
-            android:layout_margin="8dp"
-            android:text="时间"
-            android:textColor="@color/bootstrap_brand_info" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/itemCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/article_item_padding"
+                android:text="TextView" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical|center_horizontal|center|end"
+                android:orientation="horizontal"
+                android:padding="@dimen/article_item_padding">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="16dp"
+                    android:adjustViewBounds="true"
+                    android:cropToPadding="false"
+                    app:srcCompat="@mipmap/eye" />
+
+                <TextView
+                    android:id="@+id/itemViews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

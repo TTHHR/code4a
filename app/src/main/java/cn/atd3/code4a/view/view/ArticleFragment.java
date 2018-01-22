@@ -3,7 +3,6 @@ package cn.atd3.code4a.view.view;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -53,9 +52,9 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     public void init(int kind) {
         this.kind = kind;
     }
-    public ArticleFragment()
-    {
-        if(afp==null)
+
+    public ArticleFragment() {
+        if (afp == null)
             afp = new ArticleFragmentPresenter(this);
     }
 
@@ -66,12 +65,12 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
-             pullToRefreshLayout=view.findViewById(R.id.pulltorefresh_layout);
+            pullToRefreshLayout = view.findViewById(R.id.pulltorefresh_layout);
 
             pullToRefreshLayout.setHeaderView(new HeadRefreshView(getContext()));////加载的视图
 
             listView = view.findViewById(R.id.list_view);
-            afp.setAdapterData(getContext(),kind);//设置适配器
+            afp.setAdapterData(getContext(), kind);//设置适配器
 
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,29 +88,25 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                 @Override
                 public void refresh() {
 
-                    Log.e("refresh","...");
-                  afp.refreshData(kind);
+                    Log.e("refresh", "...");
+                    afp.refreshData(kind);
 
                 }
 
                 @Override
                 public void loadMore() {
-                    Log.e("load more","...");
+                    Log.e("load more", "...");
                     afp.loadMoreData(kind);
 
                 }
             });
 
 
-
-
-
         }
 
-        ViewGroup parent= (ViewGroup) view.getParent();
+        ViewGroup parent = (ViewGroup) view.getParent();
 
-        if(parent!=null)
-        {
+        if (parent != null) {
             parent.removeView(view);
         }
 
@@ -121,7 +116,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
 
     @Override
-    public void upDate( ) {
+    public void upDate() {
 
         getActivity().runOnUiThread(
                 new Runnable() {
@@ -137,12 +132,12 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     @Override
     public void setAdapter(@NotNull ArrayList<ArticleModel> al) {
         aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
+        aad.setShowCategory(kind==0);
         listView.setAdapter(aad);
     }
 
     @Override
     public void showToast(final int infotype, final String info) {
-
 
 
         getActivity().runOnUiThread(
@@ -163,7 +158,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                                 Toasty.warning(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getContext(), Constant.debugmodeinfo==true?info:getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                Toasty.error(getContext(), Constant.debugmodeinfo == true ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 
