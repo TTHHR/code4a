@@ -15,6 +15,7 @@ import java.util.List;
 
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.model.model.CategoryModel;
 
 /**
  * Created by harry on 2018/1/14.
@@ -59,7 +60,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         TextView category = view.findViewById(R.id.itemCategory);
         if (showCategory) {
-            category.setText(String.valueOf(a.getCategory()));
+            category.setText(category(a.getCategory()));
         } else {
             category.setVisibility(View.INVISIBLE);
         }
@@ -89,5 +90,14 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
             showTime =rTime;
         }
         return showTime;
+    }
+
+    public String category(int id){
+        CategoryModel model=CategoryModel.getById(id);
+        if (model == null) {
+            return "默认分类";
+        }else{
+            return  model.getName();
+        }
     }
 }

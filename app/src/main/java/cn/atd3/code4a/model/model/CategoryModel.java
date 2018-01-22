@@ -1,5 +1,10 @@
 package cn.atd3.code4a.model.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import cn.dxkite.common.StorageData;
 
 /**
@@ -10,7 +15,7 @@ import cn.dxkite.common.StorageData;
 public class CategoryModel extends StorageData {
 
     private static final long serialVersionUID = 0x60d4b6bc997429e1L;
-
+    private static Map<Integer,CategoryModel> categoryModelMap=new HashMap<>();
     private int id;
     private String name;
     private String slug;
@@ -23,6 +28,7 @@ public class CategoryModel extends StorageData {
 
     public void setId(int id) {
         this.id = id;
+        categoryModelMap.put(id,this);
     }
 
     public String getName() {
@@ -66,5 +72,9 @@ public class CategoryModel extends StorageData {
                 ", count=" + count +
                 ", parent=" + parent +
                 '}';
+    }
+
+    public static CategoryModel getById(int id){
+        return categoryModelMap.get(id);
     }
 }
