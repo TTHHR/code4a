@@ -94,9 +94,7 @@ public class ArticleFragmentPresenter {
 
     private boolean requestData(final int kind)
     {
-  //先清空数据会导致还在请求网络数据时，用户滑动LIST，数组越界错误      al.clear();//清空之前数据
-
-
+        //先清空数据会导致还在请求网络数据时，用户滑动LIST，数组越界错误      al.clear();//清空之前数据
         try {
             Object articleList =null;
             if (kind ==0 ) {

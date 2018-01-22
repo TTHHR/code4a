@@ -21,4 +21,5 @@
     <dimen name="six_dp">6dp</dimen>
     <dimen name="forty_eight_dp">48dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="article_item_padding">2dp</dimen>
 </resources>
