@@ -5,23 +5,43 @@
     android:layout_height="match_parent"
     >
     <!-- 第三方控件-->
+    <LinearLayout
+        android:id="@+id/itemShow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:orientation="horizontal">
+
+        <ProgressBar
+            android:id="@+id/showCircle"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/showText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击刷新"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+    </LinearLayout>
+
     <com.jwenfeng.library.pulltorefresh.PullToRefreshLayout
         android:id="@+id/pulltorefresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:view_error="@layout/layout_error"
         app:view_empty="@layout/layout_empty"
-        app:view_loading="@layout/layout_loading"
-        >
+        app:view_error="@layout/layout_error"
+        app:view_loading="@layout/layout_loading">
 
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/bootstrap_gray_lighter"
-            android:dividerHeight="1dp"
-            >
-        </ListView>
+            android:dividerHeight="1dp"></ListView>
 
     </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
 </RelativeLayout>
