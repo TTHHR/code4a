@@ -146,14 +146,11 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             startActivity(i)
         })
 
-
         //策划栏点击事件
         nav_view.setNavigationItemSelectedListener(this)
 
-
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
-
                 for ((index, btn: Button) in tagList.withIndex()) {
                     if (index == position) {
                         btn.setBackgroundColor(resources.getColor(R.color.btn_unable))

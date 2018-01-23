@@ -163,9 +163,9 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
         if (passTime < 60){
             showTime="刚刚";
         }else if (passTime < 60*60 ){
-            showTime = Math.floor(passTime/60)+"分钟前";
+            showTime = ((int)Math.floor(passTime/60))+"分钟前";
         }else if (passTime < 60*60*24){
-            showTime= Math.floor(passTime/(60*60)) + "小时前 "+hTime;
+            showTime= ((int)Math.floor(passTime/(60*60))) + "小时前 "+hTime;
         }else if (passTime < 60*60*24*3) {
             double day=Math.floor(passTime/(60*60*24));
             if (day == 1) {

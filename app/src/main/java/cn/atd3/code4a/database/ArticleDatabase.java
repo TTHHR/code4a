@@ -185,4 +185,11 @@ public class ArticleDatabase {
             e.printStackTrace();
         }
     }
+
+    public boolean isEmpty() {
+        SQLiteDatabase db = database.getReadableDatabase();
+        String[] columns = {"id"};
+        Cursor cursor = db.query(TBL_NAME, columns, null, null, null, null, null);
+        return cursor.getCount() == 0 ;
+    }
 }
