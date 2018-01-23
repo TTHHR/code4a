@@ -172,7 +172,10 @@ public class SplashPresenter {
                     Object list = Remote.category.method("getList", CategoryModel.class).call();
                     if (list instanceof ArrayList) {
                         // 下载第一屏文章列表
-                        new ArticleDatabase(context).fetchPages(0, 1);
+                        ArticleDatabase a=new ArticleDatabase(context);
+                        if(a.isEmpty()){
+                            a.fetchPages(0, 1);
+                        }
                         StorageData.saveObject(new File(Constant.getCategoryListFilePath()), list);
                         Log.i(TAG, list.toString());
                     }
