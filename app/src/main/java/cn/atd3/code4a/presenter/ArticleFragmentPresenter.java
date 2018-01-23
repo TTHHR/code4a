@@ -1,11 +1,11 @@
 package cn.atd3.code4a.presenter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
 
+import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
@@ -13,44 +13,41 @@ import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 import static cn.atd3.code4a.Constant.ERROR;
 
 /**
+ * 文章列表处理
  * Created by harry on 2018/1/14.
  */
 
 public class ArticleFragmentPresenter {
     private ArticleFragmentInterface afi;
-
+    private static ArticleDatabase databasePresenter;
     private ArrayList<ArticleModel> al = null;
 
     private int page = 1;
 
-    public ArticleFragmentPresenter(ArticleFragmentInterface afi) {
+    public ArticleFragmentPresenter(ArticleFragmentInterface afi, ArticleDatabase databasePresenter) {
         this.afi = afi;
         al = new ArrayList<>();
+        ArticleFragmentPresenter.databasePresenter = databasePresenter;
     }
 
     public void setIntentData(Intent i, int p) {
         i.putExtra("articleid", al.get(p).getId());
         i.putExtra("userid", al.get(p).getUser());
-        i.putExtra("article",al.get(p));
+        i.putExtra("article", al.get(p));
         i.putExtra("title", al.get(p).getTitle());
     }
 
-    public void setAdapterData(ArticleDatabasePresenter databasePresenter, int category) {
+    public void setAdapterData(int category) {
         Log.e("al", "" + al.hashCode());
         al = databasePresenter.getArticles(category);
-        Log.d("Article","category "+category+" list size = "+al.size());
+        Log.d("Article", "category " + category + " list size = " + al.size());
         if (al.size() == 0) {
             afi.showTouch();
-        }else{
+        } else {
             afi.showList();
         }
         afi.setAdapter(al);
     }
-
-    public void saveToDatabase(ArticleDatabasePresenter databasePresenter) {
-        databasePresenter.saveArticles(al);
-    }
-
 
     public void loadMoreData(final int kind) {
         new Thread(
@@ -93,15 +90,15 @@ public class ArticleFragmentPresenter {
                 articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind, page, 10);
             }
             if (articleList.getClass().equals(ArrayList.class)) {
-                if (page == 1)//就是刷新
-                    al.clear();//清空之前数据
                 for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
                     Log.e("recdata", am.toString());
-                    al.add(am);
+                    databasePresenter.saveArticle(am);
                 }
+                al.clear();
+                al.addAll(databasePresenter.getArticles(kind));
             }
         } catch (Exception e) {
-            Log.e("requestdata", "" + e);
+            Log.e("Article", "refersh list", e);
             afi.showToast(ERROR, e.toString());
             return false;
         }
