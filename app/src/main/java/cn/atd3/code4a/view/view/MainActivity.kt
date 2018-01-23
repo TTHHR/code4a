@@ -23,7 +23,6 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import cn.atd3.code4a.model.model.CategoryModel
-import cn.atd3.code4a.presenter.DatabasePresenter
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
@@ -247,7 +246,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     override fun onDestroy() {
         //清空之前数据库
-        //DatabasePresenter().clearArticles(this)
+        //ArticleDatabasePresenter().clearArticles(this)
 
         for (f in fragmentList) {
             f.onSaveEvent()//储存数据

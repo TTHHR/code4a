@@ -35,9 +35,9 @@ public class ArticleFragmentPresenter {
         i.putExtra("title", al.get(p).getTitle());
     }
 
-    public void setAdapterData(Context c, int category) {
+    public void setAdapterData(ArticleDatabasePresenter databasePresenter, int category) {
         Log.e("al", "" + al.hashCode());
-        al = new DatabasePresenter().getArticles(c, category);
+        al = databasePresenter.getArticles(category);
         Log.d("Article","category "+category+" list size = "+al.size());
         if (al.size() == 0) {
             afi.showTouch();
@@ -47,8 +47,8 @@ public class ArticleFragmentPresenter {
         afi.setAdapter(al);
     }
 
-    public void saveToDatabase(Context c) {
-        new DatabasePresenter().saveArticles(c, al);
+    public void saveToDatabase(ArticleDatabasePresenter databasePresenter) {
+        databasePresenter.saveArticles(al);
     }
 
 
