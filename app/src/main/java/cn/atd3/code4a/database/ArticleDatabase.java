@@ -6,10 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.util.DbHelper;
+import cn.atd3.proxy.exception.PermissionException;
+import cn.atd3.proxy.exception.ServerException;
 
 /**
  * Created by harry on 2018/1/18.
@@ -160,5 +164,25 @@ public class ArticleDatabase {
         return c;
     }
 
-
+    /**
+     * 预加载
+     * @param category
+     * @param pages
+     */
+    public void fetchPages(int category,int pages) {
+        try {
+            Object articleList = Remote.category.method("getArticleById", ArticleModel.class).call(category, 1, pages*10);
+            if (articleList instanceof ArrayList){
+                for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
+                    this.saveArticle(am);
+                }
+            }
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (PermissionException e) {
+            e.printStackTrace();
+        }
+    }
 }

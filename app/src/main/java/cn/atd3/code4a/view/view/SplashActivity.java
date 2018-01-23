@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
 
         sad=findViewById(R.id.splash_ad);
 
-        sp=new SplashPresenter(this);//实例化，并将自身做参数
+        sp=new SplashPresenter(this,this);//实例化，并将自身做参数
 
         sp.requestPermissions(this);//请求权限
 
