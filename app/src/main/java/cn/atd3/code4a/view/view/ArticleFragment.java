@@ -26,6 +26,7 @@ import cn.atd3.code4a.R;
 import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.adapter.ArticleAdapter;
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.model.model.CategoryModel;
 import cn.atd3.code4a.presenter.ArticleFragmentPresenter;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 import cn.atd3.code4a.view.inter.HeadRefreshView;
@@ -64,6 +65,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             if (articleDatabase ==null){
                 articleDatabase =new ArticleDatabase(getContext());
             }
+
             afp = new ArticleFragmentPresenter(this,articleDatabase);
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
@@ -75,9 +77,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             listView = view.findViewById(R.id.list_view);
             afp.setAdapterData(kind);//设置适配器
 
-
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent();

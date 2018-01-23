@@ -77,4 +77,8 @@ public class CategoryModel extends StorageData {
     public static CategoryModel getById(int id){
         return categoryModelMap.get(id);
     }
+
+    public static Map<Integer, CategoryModel> getCategories() {
+        return categoryModelMap;
+    }
 }
