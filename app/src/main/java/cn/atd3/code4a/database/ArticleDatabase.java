@@ -1,4 +1,4 @@
-package cn.atd3.code4a.presenter;
+package cn.atd3.code4a.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,13 +15,13 @@ import cn.atd3.code4a.util.DbHelper;
  * Created by harry on 2018/1/18.
  */
 
-public class ArticleDatabasePresenter {
+public class ArticleDatabase {
     DbHelper database =null;
     public static String TBL_NAME = "article_info";
     private String CLEAR = "drop table if exists " + TBL_NAME;
     private String QUERY = "select * from " + TBL_NAME;
 
-    public ArticleDatabasePresenter(Context context) {
+    public ArticleDatabase(Context context) {
         database = new DbHelper(context);
     }
 
@@ -30,20 +30,7 @@ public class ArticleDatabasePresenter {
         Log.d("Article", "save list " + listData);
         try {
             for (ArticleModel article : listData) {
-                ContentValues cv = new ContentValues();//实例化一个ContentValues用来装载待插入的数据
-                cv.put("id", article.getId()); //添加数据
-                cv.put("title", article.getTitle()); //添加数据
-                cv.put("slug", article.getSlug()); //添加数据
-                cv.put("user", article.getUser());//添加数据
-                cv.put("created", article.getCreate()); //添加数据
-                cv.put("modify", article.getModify()); //添加数据
-                cv.put("category", article.getCategory()); //添加数据
-                cv.put("cover", article.getCover()); //添加数据
-                cv.put("views", article.getViews()); //添加数据
-                cv.put("status", article.getStatus()); //添加数据
-                cv.put("abstract", article.getAbstract()); //添加数据
-                Log.d("Article", "insert " + cv);
-                replace(cv);//执行插入操作
+                saveArticle(article);
             }
         } catch (Exception e) {
             Log.e("Article", "" + e);
@@ -53,6 +40,24 @@ public class ArticleDatabasePresenter {
             database.close();
         }
         return true;
+    }
+
+    public void saveArticle(ArticleModel article)
+    {
+        ContentValues cv = new ContentValues();//实例化一个ContentValues用来装载待插入的数据
+        cv.put("id", article.getId()); //添加数据
+        cv.put("title", article.getTitle()); //添加数据
+        cv.put("slug", article.getSlug()); //添加数据
+        cv.put("user", article.getUser());//添加数据
+        cv.put("created", article.getCreate()); //添加数据
+        cv.put("modify", article.getModify()); //添加数据
+        cv.put("category", article.getCategory()); //添加数据
+        cv.put("cover", article.getCover()); //添加数据
+        cv.put("views", article.getViews()); //添加数据
+        cv.put("status", article.getStatus()); //添加数据
+        cv.put("abstract", article.getAbstract()); //添加数据
+        Log.d("Article", "insert " + cv);
+        replace(cv);//执行插入操作
     }
 
     public ArrayList<ArticleModel> getArticles(int category) {
@@ -137,13 +142,13 @@ public class ArticleDatabasePresenter {
 
         Cursor cursor = null;
         if (category == 0) {
-            cursor = db.query(TBL_NAME, columns, null, null, null, null, null);
+            cursor = db.query(TBL_NAME, columns, null, null, null, null, "modify desc");
         } else {
             String select = "category = ?";
             String[] selectWhere = {
                     String.valueOf(category)
             };
-            cursor = db.query(TBL_NAME, columns, select, selectWhere, null, null, null);
+            cursor = db.query(TBL_NAME, columns, select, selectWhere, null, null, "modify desc");
         }
 
         return cursor;

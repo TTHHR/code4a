@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
+import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.adapter.ArticleAdapter;
 import cn.atd3.code4a.model.model.ArticleModel;
-import cn.atd3.code4a.presenter.ArticleDatabasePresenter;
 import cn.atd3.code4a.presenter.ArticleFragmentPresenter;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 import cn.atd3.code4a.view.inter.HeadRefreshView;
@@ -54,20 +54,17 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     public void init(int kind) {
         this.kind = kind;
     }
-    public static ArticleDatabasePresenter articleDatabasePresenter;
-    public ArticleFragment() {
-        if (afp == null){
-            afp = new ArticleFragmentPresenter(this);
-        }
-    }
+    public static ArticleDatabase articleDatabase;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
-            if (articleDatabasePresenter ==null){
-                articleDatabasePresenter=new ArticleDatabasePresenter(getContext());
+            if (articleDatabase ==null){
+                articleDatabase =new ArticleDatabase(getContext());
             }
+            afp = new ArticleFragmentPresenter(this,articleDatabase);
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
@@ -76,7 +73,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             pullToRefreshLayout.setHeaderView(new HeadRefreshView(getContext()));////加载的视图
 
             listView = view.findViewById(R.id.list_view);
-            afp.setAdapterData(articleDatabasePresenter, kind);//设置适配器
+            afp.setAdapterData(kind);//设置适配器
 
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -186,11 +183,6 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                 }
         );
 
-    }
-
-    @Override
-    public void onSaveEvent() {
-        afp.saveToDatabase(articleDatabasePresenter);//储存数据
     }
 
     @Override

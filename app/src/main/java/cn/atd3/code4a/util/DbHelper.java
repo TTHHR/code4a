@@ -5,14 +5,12 @@ package cn.atd3.code4a.util;
  * Created by harrytit on 2017/10/10.
  */
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import cn.atd3.code4a.presenter.ArticleDatabasePresenter;
+import cn.atd3.code4a.database.ArticleDatabase;
 
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -21,7 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     //TOOD: 数据库外部存储
 
-    private String CREATE_TBL = "create table " + ArticleDatabasePresenter.TBL_NAME
+    private String CREATE_TBL = "create table " + ArticleDatabase.TBL_NAME
             + "( " +
             "id integer primary key," +
             "title text," +

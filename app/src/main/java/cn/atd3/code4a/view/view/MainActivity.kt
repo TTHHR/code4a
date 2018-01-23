@@ -242,18 +242,4 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
-
-
-    override fun onDestroy() {
-        //清空之前数据库
-        //ArticleDatabasePresenter().clearArticles(this)
-
-        for (f in fragmentList) {
-            f.onSaveEvent()//储存数据
-        }
-
-        super.onDestroy()
-    }
-
-
 }
