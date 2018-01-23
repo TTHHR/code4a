@@ -3,20 +3,17 @@ package cn.atd3.code4a.view.view;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,19 +32,19 @@ import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.NORMAL;
 import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
-import static cn.atd3.code4a.Constant.categoryListFile;
 
 public class ViewArticleActivity extends AppCompatActivity implements ArticleViewInterface {
     private TextView articleText;
     private ViewArticlePresenter vap;
-    private BootstrapButton copyButton,mycomment;
+    private BootstrapButton copyButton, mycomment;
     AlertDialog md;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_article);
 
-        vap=new ViewArticlePresenter(this);//控制器
+        vap = new ViewArticlePresenter(this);//控制器
 
         // 固定横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -65,33 +62,32 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         int articleid = i.getIntExtra("articleid", -1);
         int userid = i.getIntExtra("userid", -1);
 
-        vap.checkArticle(articleid,userid);//检查数据是否正常
+        vap.checkArticle(articleid, userid);//检查数据是否正常
 
 
-        getSupportActionBar().setTitle(i.getStringExtra("title")==null?"error":i.getStringExtra("title"));
+        getSupportActionBar().setTitle(i.getStringExtra("title") == null ? "error" : i.getStringExtra("title"));
 
 
         articleText = findViewById(R.id.rich_text);
-                Log.e("id",""+articleid);
-        if(articleText != null) {
+        Log.e("id", "" + articleid);
+        if (articleText != null) {
             vap.initImageGetter(articleText);//初始化图片加载器
-
         }
-
 
 
         copyButton = findViewById(R.id.copy);//复制按钮
         copyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(articleText !=null)
-                {
-                    ClipboardManager cm = (ClipboardManager)getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setPrimaryClip( ClipData.newPlainText("code", articleText.getText()));
-                    Toasty.info(getApplicationContext(),getString(R.string.info_success), Toast.LENGTH_SHORT).show();
+                if (articleText != null) {
+                    ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(ClipData.newPlainText("code", articleText.getText()));
+                    Toasty.info(getApplicationContext(), getString(R.string.info_success), Toast.LENGTH_SHORT).show();
                 }
             }
-        } );
+        });
+
+        /*
         mycomment=findViewById(R.id.mycomment);
         mycomment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +117,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
             }
         });
 
-
+*/
     }
 
 
@@ -132,6 +128,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
         super.onStart();
     }
+
     //创建菜单
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,10 +139,9 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
 
-            case R.id.action_downloadfile : {
+            case R.id.action_downloadfile: {
                 //下载附件
 
                 new MDDialog.Builder(ViewArticleActivity.this)
@@ -168,29 +164,29 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 break;
             }
 
-            case R.id.del:{
+            case R.id.del: {
                 //删除文章
-                    vap.deleteArticle();
+                vap.deleteArticle();
                 break;
             }
 
-            case R.id.share:{
+            case R.id.share: {
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType( "text/plain");
+                intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Share");
-                intent.putExtra(Intent.EXTRA_TEXT, articleText.getText()+ Constant.shareUrl);
+                intent.putExtra(Intent.EXTRA_TEXT, articleText.getText() + Constant.shareUrl);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(intent, getTitle()));
                 break;
             }
 
-            case R.id.edit : {
-           //编辑文章
-                Intent i=new Intent(this,EditArticleActivity.class);
+            case R.id.edit: {
+                //编辑文章
+                Intent i = new Intent(this, EditArticleActivity.class);
 
-                i.putExtra("content",vap.getContent());
-                i.putExtra("create",vap.getCreate());
-                i.putExtra("id",vap.getArticleid());
+                i.putExtra("content", vap.getContent());
+                i.putExtra("create", vap.getCreate());
+                i.putExtra("id", vap.getArticleid());
                 startActivity(i);
                 break;
 
@@ -199,14 +195,8 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         }
 
 
-
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
 
 
     @Override
@@ -229,7 +219,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                                 Toasty.warning(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getApplicationContext(), Constant.debugmodeinfo==true?info:getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                Toasty.error(getApplicationContext(), Constant.debugmodeinfo == true ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 
@@ -247,15 +237,15 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
     @Override
     public void showWaitDialog() {
-                runOnUiThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!md.isShowing())
-                                 md.show();
-                            }
-                        }
-                );
+        runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!md.isShowing())
+                            md.show();
+                    }
+                }
+        );
     }
 
     @Override
@@ -264,7 +254,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 new Runnable() {
                     @Override
                     public void run() {
-                        if(md.isShowing())
+                        if (md.isShowing())
                             md.dismiss();
                     }
                 }
@@ -278,8 +268,8 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 new Runnable() {
                     @Override
                     public void run() {
-                            articleText.setText( Html.fromHtml(text, imageGetter, null));
-                            copyButton.setClickable(true);
+                        articleText.setText(Html.fromHtml(text, imageGetter, null));
+                        copyButton.setClickable(true);
                     }
                 }
         );

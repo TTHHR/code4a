@@ -31,22 +31,18 @@ public class ArticleFragmentPresenter {
     public void setIntentData(Intent i, int p) {
         i.putExtra("articleid", al.get(p).getId());
         i.putExtra("userid", al.get(p).getUser());
+        i.putExtra("article",al.get(p));
         i.putExtra("title", al.get(p).getTitle());
     }
 
     public void setAdapterData(Context c, int category) {
         Log.e("al", "" + al.hashCode());
         al = new DatabasePresenter().getArticles(c, category);
+        Log.d("Article","category "+category+" list size = "+al.size());
         if (al.size() == 0) {
-            //初始数据
-            ArticleModel refresh0 = new ArticleModel();
-            refresh0.setTitle("下拉刷新~(●'◡'●)");
-            refresh0.setAbstract("按住我下拉刷新");
-            refresh0.setUser(123);
-            refresh0.setModify(456);
-            refresh0.setCategory(0);
-            al.add(refresh0);
             afi.showTouch();
+        }else{
+            afi.showList();
         }
         afi.setAdapter(al);
     }

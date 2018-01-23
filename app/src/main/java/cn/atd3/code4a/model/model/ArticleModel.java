@@ -1,12 +1,16 @@
 package cn.atd3.code4a.model.model;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+
 import cn.atd3.code4a.model.inter.ArticleModelInterface;
 
 /**
+ * 文章模块
  * Created by DXkite on 2017/11/4 0004.
  */
 
-public class ArticleModel implements ArticleModelInterface{
+public class ArticleModel implements ArticleModelInterface ,Serializable {
     Integer id;
     String title;
     String slug;
@@ -20,7 +24,7 @@ public class ArticleModel implements ArticleModelInterface{
     Integer status;
     String content;
     String visibility;
-    String visibilitypassword;
+    String visibilityPassword;
 
     public Integer getId() {
         return id;
@@ -122,12 +126,12 @@ public class ArticleModel implements ArticleModelInterface{
     public void setVisibility(String visibility) {
         this.visibility = visibility;
     }
-    public String getVisibilitypassword() {
-        return visibilitypassword;
+    public String getVisibilityPassword() {
+        return visibilityPassword;
     }
 
-    public void setVisibilitypassword(String visibilitypassword) {
-        this.visibilitypassword = visibilitypassword;
+    public void setVisibilityPassword(String visibilityPassword) {
+        this.visibilityPassword = visibilityPassword;
     }
 
     @Override
@@ -146,5 +150,41 @@ public class ArticleModel implements ArticleModelInterface{
                 ", status=" + status +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+
+
+    public static String time(int unix) {
+        long time=Long.valueOf(unix) * 1000;
+        String showTime=null;
+        String hTime=new SimpleDateFormat("H:mm").format(time);
+        String rTime=new SimpleDateFormat("M-d H:mm").format(time);
+        long passTime=(System.currentTimeMillis() - time)/1000;
+        if (passTime < 60){
+            showTime="刚刚";
+        }else if (passTime < 60*60 ){
+            showTime = Math.floor(passTime/60)+"分钟前";
+        }else if (passTime < 60*60*24){
+            showTime= Math.floor(passTime/(60*60)) + "小时前 "+hTime;
+        }else if (passTime < 60*60*24*3) {
+            double day=Math.floor(passTime/(60*60*24));
+            if (day == 1) {
+                showTime = "昨天 "+hTime;
+            }else{
+                showTime = "前天 "+hTime;
+            }
+        }else{
+            showTime =rTime;
+        }
+        return showTime;
+    }
+
+    public static String category(int id){
+        CategoryModel model=CategoryModel.getById(id);
+        if (model == null) {
+            return "默认分类";
+        }else{
+            return  model.getName();
+        }
     }
 }
