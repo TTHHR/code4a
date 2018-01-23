@@ -1,9 +1,7 @@
 package cn.atd3.code4a.presenter;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -75,7 +73,7 @@ public class EditArticlePresenter {
     }
     public void setArticlePassword(String passwd)
     {
-        article.setVisibilitypassword(passwd);
+        article.setVisibilityPassword(passwd);
     }
     public void setArticleContent(String c)
     {
@@ -114,7 +112,7 @@ public class EditArticlePresenter {
         }
          if(article.getVisibility().equals("password"))
          {
-             if(article.getVisibilitypassword()==null)
+             if(article.getVisibilityPassword()==null)
              {
                     eai.showToast(ERROR,eai.getXmlString(R.string.password_empty));
                     return;
@@ -299,7 +297,7 @@ public class EditArticlePresenter {
             modify.setAttribute("value", "" + article.getModify());
             visibility.setAttribute("name", "visibility");
             visibility.setAttribute("value", article.getVisibility());
-            visibility.setAttribute("password", article.getVisibilitypassword());
+            visibility.setAttribute("password", article.getVisibilityPassword());
             abstracts.setAttribute("name", "abstract");
             abstracts.setTextContent(base64.encode(article.getAbstract().getBytes()));
             status.setAttribute("name", "status");

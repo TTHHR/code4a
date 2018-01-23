@@ -246,8 +246,8 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
 
     override fun onDestroy() {
-
-        DatabasePresenter().clearArticles(this)//清空之前数据库
+        //清空之前数据库
+        //DatabasePresenter().clearArticles(this)
 
         for (f in fragmentList) {
             f.onSaveEvent()//储存数据

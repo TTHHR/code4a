@@ -52,7 +52,7 @@ public interface ArticleModelInterface {
     String getVisibility();
 
     void setVisibility(String visibility);
-    String getVisibilitypassword() ;
+    String getVisibilityPassword() ;
 
-    void setVisibilitypassword(String visibilitypassword) ;
+    void setVisibilityPassword(String visibilityPassword) ;
 }

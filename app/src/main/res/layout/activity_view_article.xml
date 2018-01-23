@@ -5,23 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="1"
         android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
-                android:autoLink="web"
                 android:id="@+id/rich_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autoLink="web"
                 android:background="@android:color/transparent"
                 android:gravity="top|start"
                 android:paddingEnd="16dp"
@@ -44,45 +51,5 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fillViewport="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/bootstrap_gray_lighter"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:background="@android:color/transparent"
-                    android:gravity="top|start"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:scrollbars="vertical"
-                    android:text="comment list\n11111\n22222\n333333" />
-
-                <com.beardedhen.androidbootstrap.BootstrapButton
-                    android:id="@+id/mycomment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="my comment"
-                    app:bootstrapBrand="success"
-                    app:buttonMode="regular"
-                    app:roundedCorners="true" />
-
-            </LinearLayout>
-        </ScrollView>
 
 </LinearLayout>

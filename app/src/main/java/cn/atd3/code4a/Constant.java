@@ -19,7 +19,7 @@ public final class Constant {
     public final static String shareUrl = "http://github.com/tthhr/code4a";
     public final static String remoteAdImg = "http://code4a.atd3.cn/ad.png";
     public final static String remoteAdUrl = "http://code4a.atd3.cn/adurl.txt";
-    public final static String categoryListFile= "categories";
+    public final static String categoryListFile = "categories";
 
     public final static int SUCCESS = 0;
     public final static int INFO = 1;
@@ -38,7 +38,7 @@ public final class Constant {
     private static String adUrl = File.separator + "adUrl.txt";
     private static String userData = File.separator + "user.data";
 
-    public static boolean debugmodeinfo=false;
+    public static boolean debugmodeinfo = false;
 
     private static boolean debug;
 
@@ -92,6 +92,6 @@ public final class Constant {
     }
 
     public static String getCategoryListFilePath() {
-        return getPrivateFilePath() +File.separator +categoryListFile;
+        return getPrivateFilePath() + File.separator + categoryListFile;
     }
 }

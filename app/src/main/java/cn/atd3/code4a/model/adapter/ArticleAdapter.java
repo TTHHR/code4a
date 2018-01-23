@@ -46,7 +46,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         // 用户名
         user.setText("User" + a.getUser().toString());
-        modify.setText(timeString(a.getModify()));
+        modify.setText(ArticleModel.time(a.getModify()));
 
         TextView itemTitle = view.findViewById(R.id.itemTitle);
         TextView itemAbstract = view.findViewById(R.id.itemAbstract);
@@ -60,44 +60,10 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         TextView category = view.findViewById(R.id.itemCategory);
         if (showCategory) {
-            category.setText(category(a.getCategory()));
+            category.setText(ArticleModel.category(a.getCategory()));
         } else {
             category.setVisibility(View.INVISIBLE);
         }
         return view;
-    }
-
-    private String timeString(int unix) {
-        long time=Long.valueOf(unix) * 1000;
-        String showTime=null;
-        String hTime=new SimpleDateFormat("H:m").format(time);
-        String rTime=new SimpleDateFormat("M-d H:m").format(time);
-        long passTime=(System.currentTimeMillis() - time)/1000;
-        if (passTime < 60){
-            showTime="刚刚";
-        }else if (passTime < 60*60 ){
-            showTime = Math.floor(passTime/60)+"分钟前";
-        }else if (passTime < 60*60*24){
-            showTime= Math.floor(passTime/(60*60)) + "小时前 "+hTime;
-        }else if (passTime < 60*60*24*3) {
-            double day=Math.floor(passTime/(60*60*24));
-            if (day == 1) {
-                showTime = "昨天 "+hTime;
-            }else{
-                showTime = "前天 "+hTime;
-            }
-        }else{
-            showTime =rTime;
-        }
-        return showTime;
-    }
-
-    public String category(int id){
-        CategoryModel model=CategoryModel.getById(id);
-        if (model == null) {
-            return "默认分类";
-        }else{
-            return  model.getName();
-        }
     }
 }

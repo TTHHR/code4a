@@ -93,7 +93,7 @@
                     android:layout_height="16dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="false"
-                    app:srcCompat="@mipmap/eye" />
+                    app:srcCompat="@drawable/eye" />
 
                 <TextView
                     android:id="@+id/itemViews"
