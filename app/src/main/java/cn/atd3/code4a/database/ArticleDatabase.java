@@ -166,12 +166,10 @@ public class ArticleDatabase {
 
     /**
      * 预加载
-     * @param category
-     * @param pages
      */
-    public void fetchPages(int category,int pages) {
+    public void fetchFirst() {
         try {
-            Object articleList = Remote.category.method("getArticleById", ArticleModel.class).call(category, 1, pages*10);
+            Object articleList = Remote.article.method("getList", ArticleModel.class).call(1, 10);
             if (articleList instanceof ArrayList){
                 for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
                     this.saveArticle(am);

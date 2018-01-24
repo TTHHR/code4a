@@ -88,6 +88,7 @@ public class SplashPresenter {
             Log.d(TAG, "init applications");
             onDirInit();
             onInitArticleData();
+            collection();
         }
     }
 
@@ -163,7 +164,24 @@ public class SplashPresenter {
             svi.showToast(ERROR, svi.getXmlString(R.string.wanning_storage));
         }
     }
-
+    private void collection() {
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    //TDDO: 获取驱动ID
+                    String deviceId = "android test";
+                    Remote.collection.method("android").call(android.os.Build.MODEL,deviceId,context.getPackageName(),this.getName());
+                } catch (ServerException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (PermissionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
     private void onInitArticleData() {
         new Thread() {
             @Override
@@ -174,7 +192,7 @@ public class SplashPresenter {
                         // 下载第一屏文章列表
                         ArticleDatabase a=new ArticleDatabase(context);
                         if(a.isEmpty()){
-                            a.fetchPages(0, 1);
+                            a.fetchFirst();
                         }
                         StorageData.saveObject(new File(Constant.getCategoryListFilePath()), list);
                         Log.i(TAG, list.toString());

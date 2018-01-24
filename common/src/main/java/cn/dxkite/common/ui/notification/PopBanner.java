@@ -62,7 +62,7 @@ public class PopBanner extends View {
     public void update() {
         Adapter adapter = getMessageAdapter();
         if (adapter != null) {
-            information = adapter.refersh();
+            information = adapter.refresh();
         } else {
             Log.e(TAG, "adapter is null");
         }
@@ -80,7 +80,7 @@ public class PopBanner extends View {
             }
         };
 
-        if (!popupWindow.isShowing()) {
+        if (!popupWindow.isShowing() && information!=null) {
             imageView.setImageResource(imageResource);
             if (information.getBackgroundColor() != null && !TextUtils.isEmpty(information.getBackgroundColor())) {
                 layout.setBackgroundColor(Color.parseColor(information.getBackgroundColor()));
