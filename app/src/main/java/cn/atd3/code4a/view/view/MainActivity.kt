@@ -3,6 +3,7 @@ package cn.atd3.code4a.view.view
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
@@ -26,6 +27,8 @@ import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
+import cn.atd3.proxy.exception.PermissionException
+import cn.atd3.proxy.exception.ServerException
 import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
@@ -34,6 +37,7 @@ import cn.dxkite.debug.DebugManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
 
@@ -68,6 +72,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         showMessageBanner()
+        collection()
     }
 
     private fun initView() {
@@ -128,6 +133,29 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
 
+    }
+
+    private fun collection() {
+        val deviceId = "android test"
+        val deviceName = Build.MODEL
+        val packageName = applicationContext.packageName
+        val activityName = MainActivity::class.java.name
+        object : Thread() {
+            override fun run() {
+                name = "collectingInfo"
+                try {
+                    // TDDO: 获取驱动ID
+                    Remote.collection.method("android").call(deviceName, deviceId, packageName, activityName)
+                } catch (e: ServerException) {
+                    e.printStackTrace()
+                } catch (e: PermissionException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }.start()
     }
 
     private fun bindListener() {
