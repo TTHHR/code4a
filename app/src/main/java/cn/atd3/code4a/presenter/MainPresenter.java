@@ -18,8 +18,7 @@ public class MainPresenter {
 
     private void showMessageBanner()
     {
-        if(mm.getMessge()!=null&&mm.getUrl()!=null)
-            mvi.showMessageBanner(mm);
+
     }
 
 }

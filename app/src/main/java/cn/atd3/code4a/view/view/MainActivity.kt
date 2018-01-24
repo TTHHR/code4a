@@ -23,6 +23,7 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import cn.atd3.code4a.model.model.CategoryModel
+import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
@@ -35,7 +36,6 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
 
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
-
 
     lateinit var myViewPager: ViewPager
     lateinit var head_iv: ImageView
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         DebugManager.askIfCrash(this, R.drawable.ic_launcher)
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        showMessageBanner()
     }
 
     private fun initView() {
@@ -169,20 +170,23 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         myViewPager.addOnPageChangeListener(PageChange())//滑动事件
     }
 
-    override fun showMessageBanner(m: MessageModelInterface) {//显示通知消息
+    override fun showMessageBanner(text: MessageModelInterface) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
+    fun showMessageBanner() {//显示通知消息
         Thread(Runnable {
             val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
+
             bar.messageAdapter = Adapter {
-                // 模拟从服务器获取信息
-                val info = Information()
-                info.message = m.messge
-                info.url = m.url
-                info.isTouchable = true
-                info.time = 5000
-                info.color = "#222222"
-                info.backgroundColor = "#cccccc"
-                info
+                val msg= Remote.androidMessage.method("pull",Information::class.java).call();
+                if (msg is Information) {
+                    return@Adapter msg
+                }
+                null
             }
+
             bar.update()
             runOnUiThread {
                 bar.show()

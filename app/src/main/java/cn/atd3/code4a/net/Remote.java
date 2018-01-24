@@ -66,4 +66,24 @@ public class Remote {
             return apiInterface +"/baidu-user";
         }
     };
+
+    /**
+     * Android 信息接口
+     */
+    public static ProxyObject androidMessage=new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface +"/android-message";
+        }
+    };
+
+    /**
+     *  启动信息收集接口
+     */
+    public static ProxyObject collection=new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface +"/collection";
+        }
+    };
 }
