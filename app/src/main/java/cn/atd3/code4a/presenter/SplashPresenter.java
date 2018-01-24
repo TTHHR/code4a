@@ -24,6 +24,7 @@ import cn.atd3.code4a.model.model.SplashAdModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.SplashViewInterface;
 import cn.atd3.code4a.view.view.MainActivity;
+import cn.atd3.code4a.view.view.SplashActivity;
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
 import cn.dxkite.common.StorageData;
@@ -42,6 +43,7 @@ public class SplashPresenter {
     SplashViewInterface svi;
 
     private boolean isPermission = false;
+    private boolean init = false;
 
     private Context context;
 
@@ -85,10 +87,8 @@ public class SplashPresenter {
         }
 
         if (isPermission) {
-            Log.d(TAG, "init applications");
-            onDirInit();
-            onInitArticleData();
-            collection();
+
+            initApp();
         }
     }
 
@@ -97,9 +97,18 @@ public class SplashPresenter {
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)// 获取到权限，作相应处理
         {
             isPermission = true;
-            onDirInit();//创建文件夹
+            initApp();
         }
 
+    }
+
+    private void initApp() {
+        if (!init) {
+            Log.d(TAG, "init applications");
+            onDirInit();//创建文件夹
+            onInitArticleData();
+            init = true;
+        }
     }
 
     //绑定广告监听
@@ -164,34 +173,18 @@ public class SplashPresenter {
             svi.showToast(ERROR, svi.getXmlString(R.string.wanning_storage));
         }
     }
-    private void collection() {
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    //TDDO: 获取驱动ID
-                    String deviceId = "android test";
-                    Remote.collection.method("android").call(android.os.Build.MODEL,deviceId,context.getPackageName(),this.getName());
-                } catch (ServerException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (PermissionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
+
     private void onInitArticleData() {
         new Thread() {
             @Override
             public void run() {
                 try {
+                    setName("fetch list data");
                     Object list = Remote.category.method("getList", CategoryModel.class).call();
                     if (list instanceof ArrayList) {
                         // 下载第一屏文章列表
-                        ArticleDatabase a=new ArticleDatabase(context);
-                        if(a.isEmpty()){
+                        ArticleDatabase a = new ArticleDatabase(context);
+                        if (a.isEmpty()) {
                             a.fetchFirst();
                         }
                         StorageData.saveObject(new File(Constant.getCategoryListFilePath()), list);

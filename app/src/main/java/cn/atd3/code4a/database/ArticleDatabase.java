@@ -30,8 +30,6 @@ public class ArticleDatabase {
     }
 
     public boolean saveArticles(ArrayList<ArticleModel> listData) {
-
-        Log.d("Article", "save list " + listData);
         try {
             for (ArticleModel article : listData) {
                 saveArticle(article);
@@ -60,7 +58,6 @@ public class ArticleDatabase {
         cv.put("views", article.getViews()); //添加数据
         cv.put("status", article.getStatus()); //添加数据
         cv.put("abstract", article.getAbstract()); //添加数据
-        Log.d("Article", "insert " + cv);
         replace(cv);//执行插入操作
     }
 
@@ -86,26 +83,22 @@ public class ArticleDatabase {
             }
 
         } catch (Exception e) {
-            Log.e("Article", e.toString());
             e.printStackTrace();
         } finally {
             database.close();
         }
-        Log.d("Aritcle", "query from db " + articleModels);
         return articleModels;
     }
 
 
     public void insert(ContentValues values) {
         SQLiteDatabase db = database.getWritableDatabase();
-        Log.d("Article", "insert into database " + values);
         db.insert(TBL_NAME, null, values);
         db.close();
     }
 
     public void update(ContentValues values) {
         String whereClause = "id =?";
-        Log.d("Article", "id " + values.getAsString("id") + " update  " + values);
         String[] whereArgs = {values.getAsString("id")};
         SQLiteDatabase db = database.getWritableDatabase();
         db.update(TBL_NAME, values, whereClause, whereArgs);
@@ -116,7 +109,6 @@ public class ArticleDatabase {
         SQLiteDatabase db = database.getReadableDatabase();
         String[] whereArgs = {values.getAsString("id")};
         String[] columns = {"id"};
-        Log.d("Article", "insert " + values.getAsString("id"));
         Cursor cursor = db.query(TBL_NAME, columns, "id=?", whereArgs, null, null, null);
         if (cursor.getCount() == 0) {
             insert(values);
@@ -125,7 +117,6 @@ public class ArticleDatabase {
         }
         cursor.close();
         db.close();
-        Log.d("Article", "end " + values.getAsString("id"));
     }
 
     public Cursor getListByCategory(int category) {
