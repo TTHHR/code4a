@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -38,6 +39,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
 
@@ -136,7 +138,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     }
 
     private fun collection() {
-        val deviceId = "android test"
+        val deviceId = Constant.getUuid();
         val deviceName = Build.MODEL
         val packageName = applicationContext.packageName
         val activityName = MainActivity::class.java.name

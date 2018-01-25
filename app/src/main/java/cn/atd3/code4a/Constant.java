@@ -1,11 +1,16 @@
 package cn.atd3.code4a;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.io.File;
+import java.util.UUID;
 
 
 /**
@@ -41,7 +46,7 @@ public final class Constant {
     public static boolean debugmodeinfo = false;
 
     private static boolean debug;
-
+    private static String uuid;
 
     private Constant(Context context) {
         Constant.debug = judgeDebug(context);
@@ -55,6 +60,7 @@ public final class Constant {
         adUrl = privateFilePath + File.separator + "adUrl.txt";
         userData = privateFilePath + File.separator + "user.data";
         init = true;
+
     }
 
     private boolean judgeDebug(Context context) {
@@ -93,5 +99,13 @@ public final class Constant {
 
     public static String getCategoryListFilePath() {
         return getPrivateFilePath() + File.separator + categoryListFile;
+    }
+
+    public static String getUuid() {
+        return uuid;
+    }
+
+    public static void setUuid(String uuid) {
+        Constant.uuid = uuid;
     }
 }

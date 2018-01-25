@@ -2,12 +2,12 @@ package cn.qingyuyu.commom.service;
 
 import android.util.Log;
 
-import com.alibaba.fastjson.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -19,16 +19,16 @@ import java.net.URLConnection;
 
 public class FileDealService {
 
-    public static FileDealService fdl=new FileDealService();
+    public static FileDealService fdl = new FileDealService();
 
-    public static FileDealService getInstance()
-    {
+    public static FileDealService getInstance() {
         return fdl;
     }
 
-   private FileDealService(){
+    private FileDealService() {
 
     }
+
     public boolean delFile(String filePath) {//删除文件
 
         File f = new File(filePath);
@@ -45,7 +45,7 @@ public class FileDealService {
 //删除文件夹
 //param folderPath 文件夹完整绝对路径
 
-    public  void delFolder(String folderPath) {
+    public void delFolder(String folderPath) {
         try {
             delAllFile(folderPath); //删除完里面所有内容
             String filePath = folderPath;
@@ -59,7 +59,7 @@ public class FileDealService {
 
     //删除指定文件夹下所有文件
 //param path 文件夹完整绝对路径
-    private  boolean delAllFile(String path) {
+    private boolean delAllFile(String path) {
         boolean flag = false;
         File file = new File(path);
         if (!file.exists()) {
@@ -87,26 +87,25 @@ public class FileDealService {
         }
         return flag;
     }
-    public    boolean   copyFile(String     oldPath,     String     newPath)
-    {
-        Log.e("copyFile","old"+oldPath+"  new"+newPath);
-        try     {
-            File newFile=new File(newPath);
-            if(!newFile.exists())
+
+    public boolean copyFile(String oldPath, String newPath) {
+        Log.e("copyFile", "old" + oldPath + "  new" + newPath);
+        try {
+            File newFile = new File(newPath);
+            if (!newFile.exists())
                 newFile.createNewFile();
-            int    bytesum    =    0;
-            int    byteread    =    0;
-                InputStream    inStream    =    new    FileInputStream(oldPath);
-                FileOutputStream    fs    =    new    FileOutputStream(newPath);
-                byte[]   buffer    =    new    byte[1024];
-                while    (   (byteread    =    inStream.read(buffer))    !=    -1)    {
-                    bytesum   +=    byteread;
-                    fs.write(buffer,   0,   byteread);
-                }
-                inStream.close();
-        }
-        catch     (Exception     e)     {
-            Log.e("copyFile",e.toString());
+            int bytesum = 0;
+            int byteread = 0;
+            InputStream inStream = new FileInputStream(oldPath);
+            FileOutputStream fs = new FileOutputStream(newPath);
+            byte[] buffer = new byte[1024];
+            while ((byteread = inStream.read(buffer)) != -1) {
+                bytesum += byteread;
+                fs.write(buffer, 0, byteread);
+            }
+            inStream.close();
+        } catch (Exception e) {
+            Log.e("copyFile", e.toString());
             return false;
         }
         return true;
@@ -115,7 +114,7 @@ public class FileDealService {
     /*
     通过网址保存文件
      */
-    public void saveFile(String filepath,String http)//暂时保存文件
+    public void saveFile(String filepath, String http)//暂时保存文件
     {
         try {
             // 构造URL
@@ -124,7 +123,7 @@ public class FileDealService {
             URLConnection con = url.openConnection();
             //设置请求超时为5s
             con.setConnectTimeout(5000);
-            save(filepath,con.getInputStream());
+            save(filepath, con.getInputStream());
         } catch (Exception e) {
             Log.e("saveFile", e.toString());
         }
@@ -155,7 +154,7 @@ public class FileDealService {
     /*
     将流保存文件
      */
-    private void save(String filePath,InputStream is) {
+    private void save(String filePath, InputStream is) {
         File f = null;
 
         try {
@@ -175,9 +174,38 @@ public class FileDealService {
             fos.close();
 
         } catch (Exception e) {
-            Log.e("save inputstream",filePath+":"+e.toString());
+            Log.e("save inputstream", filePath + ":" + e.toString());
         }
     }
 
+    public static boolean putContent(File fileName, String content) {
+        if (!fileName.exists()) {
+            if (!fileName.getParentFile().exists()) {
+                fileName.mkdirs();
+            }
+            try {
+                fileName.createNewFile();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                return false;
+            }
 
+        }
+        try {
+            FileOutputStream fileOutputStream = null;
+            try {
+                fileOutputStream = new FileOutputStream(fileName);
+                fileOutputStream.write(content.getBytes());
+                fileOutputStream.close();
+                return true;
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+                return false;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
