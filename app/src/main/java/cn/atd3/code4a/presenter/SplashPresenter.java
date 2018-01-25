@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
@@ -107,6 +108,7 @@ public class SplashPresenter {
             Log.d(TAG, "init applications");
             onDirInit();//创建文件夹
             onInitArticleData();
+            createUuid();
             init = true;
         }
     }
@@ -152,6 +154,13 @@ public class SplashPresenter {
             }
         }).start();
 
+    }
+
+    private void createUuid() {
+        String uuid= UUID.randomUUID().toString();
+        File uuidFile=new File(Constant.getPrivateFilePath()+File.separator +"installID");
+        FileDealService.putContent(uuidFile,uuid);
+        Constant.setUuid(uuid);
     }
 
     private void onDirInit()//初始化应用文件夹
