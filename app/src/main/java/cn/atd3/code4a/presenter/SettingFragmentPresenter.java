@@ -25,7 +25,10 @@ public class SettingFragmentPresenter {
         {
             sfi.showToast(Constant.INFO,sfi.getXmlString(R.string.info_changelanguage));
         }
-
+        if(preference.getTitle()==sfi.getXmlString(R.string.setting_collection))
+        {
+            sfi.showToast(Constant.INFO,sfi.getXmlString(R.string.about_collection));
+        }
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_loginout))
         {
            //退出登录
@@ -34,7 +37,6 @@ public class SettingFragmentPresenter {
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_software_info))
         {
             sfi.openWebActivity("https://github.com/TTHHR/code4a/blob/dev/开源说明.txt");
-
         }
     }
 

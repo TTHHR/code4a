@@ -1,10 +1,13 @@
 package cn.atd3.code4a.view.view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -33,6 +36,7 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
         wp=new WebPresenter(this);
 
         wp.setWebClient();
+        wv.setDownloadListener(new MyWebViewDownLoadListener());
 
         Intent i=getIntent();
 
@@ -132,5 +136,18 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
         );
     }
 
+    private class MyWebViewDownLoadListener implements DownloadListener {
 
+        @Override
+        public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype,long contentLength) {
+            Log.e("downurl",url);
+            Uri uri = Uri.parse(url);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+            startActivity(intent);
+
+        }
+
+    }
 }

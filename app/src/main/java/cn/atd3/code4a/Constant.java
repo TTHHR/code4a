@@ -39,11 +39,13 @@ public final class Constant {
     private static String privateFilePath;
     private static String publicFilePath;
 
+    public static String downloadPath=null;
     private static String adImg = null;
     private static String adUrl = File.separator + "adUrl.txt";
     private static String userData = File.separator + "user.data";
 
     public static boolean debugmodeinfo = false;
+    public static boolean collectioninfo = false;
 
     private static boolean debug;
     private static String uuid;
@@ -60,7 +62,7 @@ public final class Constant {
         adUrl = privateFilePath + File.separator + "adUrl.txt";
         userData = privateFilePath + File.separator + "user.data";
         init = true;
-
+        downloadPath=publicFilePath+File.separator+"download";
     }
 
     private boolean judgeDebug(Context context) {

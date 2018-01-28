@@ -8,6 +8,8 @@
     <string name="setting_language">语言</string>
     <string name="setting_language_select">选择一个语言</string>
     <string name="setting_debug">调试模式</string>
+    <string name="setting_collection">提交信息</string>
+    <string name="about_collection">收集手机信息帮助APP的改进，信息不包含个人隐私</string>
     <string name="setting_auth">TTHHR</string>
     <string name="setting_auth_summary">向作者捐赠</string>
     <string name="setting_update">检查更新</string>

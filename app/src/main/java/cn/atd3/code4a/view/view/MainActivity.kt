@@ -3,9 +3,7 @@ package cn.atd3.code4a.view.view
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -25,20 +23,15 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import cn.atd3.code4a.model.model.CategoryModel
-import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
-import cn.atd3.proxy.exception.PermissionException
-import cn.atd3.proxy.exception.ServerException
 import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
-import cn.dxkite.common.ui.notification.popbanner.Information
 import cn.dxkite.debug.DebugManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
-import java.io.IOException
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
@@ -59,7 +52,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)//title bar
         val i = intent
-        if (i != null && i.getStringExtra("url") != null) {
+        if (i.getStringExtra("url") != null) {
             val intent = Intent(this, WebActivity::class.java)
             intent.putExtra("url", i.getStringExtra("url"))
             startActivity(intent)
@@ -73,8 +66,8 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         DebugManager.askIfCrash(this, R.drawable.ic_launcher)
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        showMessageBanner()
-        collection()
+        mp.collection(this)  //收集装机信息
+        mp.showMessageBanner()//拉取信息
     }
 
     private fun initView() {
@@ -137,28 +130,6 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     }
 
-    private fun collection() {
-        val deviceId = Constant.getUuid();
-        val deviceName = Build.MODEL
-        val packageName = applicationContext.packageName
-        val activityName = MainActivity::class.java.name
-        object : Thread() {
-            override fun run() {
-                name = "collectingInfo"
-                try {
-                    // TDDO: 获取驱动ID
-                    Remote.collection.method("android").call(deviceName, deviceId, packageName, activityName)
-                } catch (e: ServerException) {
-                    e.printStackTrace()
-                } catch (e: PermissionException) {
-                    e.printStackTrace()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-
-            }
-        }.start()
-    }
 
     private fun bindListener() {
         //绑定adapter
@@ -200,29 +171,16 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         myViewPager.addOnPageChangeListener(PageChange())//滑动事件
     }
 
-    override fun showMessageBanner(text: MessageModelInterface) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showMessageBanner(a:Adapter) {
+        val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
+        bar.messageAdapter=a
+
+        bar.update()
+        runOnUiThread{
+            bar.show()
+        }
     }
 
-
-    fun showMessageBanner() {//显示通知消息
-        Thread(Runnable {
-            val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
-
-            bar.messageAdapter = Adapter {
-                val msg= Remote.androidMessage.method("pull",Information::class.java).call();
-                if (msg is Information) {
-                    return@Adapter msg
-                }
-                null
-            }
-
-            bar.update()
-            runOnUiThread {
-                bar.show()
-            }
-        }).start()
-    }
 
     //返回键
     override fun onBackPressed() {

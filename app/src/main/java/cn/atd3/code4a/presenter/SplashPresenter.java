@@ -20,6 +20,7 @@ import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.inter.SplashAdModelInterface;
+import cn.atd3.code4a.model.model.AdInfo;
 import cn.atd3.code4a.model.model.CategoryModel;
 import cn.atd3.code4a.model.model.SplashAdModel;
 import cn.atd3.code4a.net.Remote;
@@ -215,9 +216,9 @@ public class SplashPresenter {
 
         try {
 
-            final File adImg = new File(Constant.getAdImg());//本地图片文件
+             File adImg = new File(Constant.getAdImg());//本地图片文件
 
-            final File adUrl = new File(Constant.getAdUrl());//本地链接文件
+             File adUrl = new File(Constant.getAdUrl());//本地链接文件
 
             if (adImg.exists() && adUrl.exists())//设置Uri
             {
@@ -234,29 +235,13 @@ public class SplashPresenter {
 
                 if (!(formatter.format(cal.getTime()).equals(lastTime)))//ad图片老旧
                 {//下载开屏广告
-                    new Thread(
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    FileDealService fdl = FileDealService.getInstance();
-                                    fdl.saveFile(Constant.getAdImg(), Constant.remoteAdImg);//从网络保存文件
-                                    fdl.saveFile(Constant.getAdUrl(), Constant.remoteAdUrl);
-                                }
-                            }
-                    ).start();
-
+                  downAd();
                 }
 
 
-            } else//新开线程下载广告，因为带宽问题，广告下次显示
+            } else//因为带宽问题，广告下次显示
             {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        FileDealService.getInstance().saveFile(adImg.getAbsolutePath(), Constant.remoteAdImg);
-                        FileDealService.getInstance().saveFile(adUrl.getAbsolutePath(), Constant.remoteAdUrl);
-                    }
-                }).start();
+               downAd();
             }
 
         } catch (Exception e) {
@@ -264,6 +249,29 @@ public class SplashPresenter {
         } finally {
 
         }
+
+    }
+    private void downAd()
+    {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Object msg = Remote.androidMessage.method("pullAd", AdInfo.class).call();
+                            if(msg instanceof AdInfo)
+                            {
+                                FileDealService.getInstance().saveFile(Constant.getAdImg(),((AdInfo) msg).getImage());
+                                FileDealService.getInstance().saveFile(Constant.getAdUrl(), ((AdInfo) msg).getUrl());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("downAd",""+e);
+                        }
+                    }
+                }
+        ).start();
 
     }
 }

@@ -1,6 +1,7 @@
 package cn.atd3.code4a
 
 import android.app.Application
+import android.preference.Preference
 import android.preference.PreferenceManager
 import cn.code4a.ProxyController
 import cn.atd3.proxy.ProxyConfig
@@ -24,8 +25,7 @@ class CodeApplication : Application() {
         Constant.init(applicationContext)
         initCrashManager()
         initProxyManager()
-        initLanguage()
-        initDebugModeInfo()
+        initSetting()
         // 初始化图片加载
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this))
     }
@@ -47,7 +47,11 @@ class CodeApplication : Application() {
                 .setDebug(Constant.isDebug()))
     }
 
-    private fun initLanguage() {
+
+    private fun initSetting()
+    {
+
+        //语言设置
         val language: String? = PreferenceManager.getDefaultSharedPreferences(this).getString("language", null)
         // 本地语言设置
         val res = this.resources
@@ -58,10 +62,12 @@ class CodeApplication : Application() {
         else
             conf.locale = Locale(language)
         res.updateConfiguration(conf, dm)
-    }
 
-    private fun initDebugModeInfo()
-    {
+
+        //debug模式
        Constant.debugmodeinfo = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("debug", false)
+
+        //收集信息
+        Constant.collectioninfo=PreferenceManager.getDefaultSharedPreferences(this).getBoolean("collection",false)
     }
 }

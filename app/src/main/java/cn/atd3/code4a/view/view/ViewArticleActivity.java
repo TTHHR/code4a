@@ -1,5 +1,6 @@
 package cn.atd3.code4a.view.view;
 
+import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+
+import java.io.File;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
@@ -149,11 +152,32 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                         .setOnItemClickListener(new MDDialog.OnItemClickListener() {
                             @Override
                             public void onItemClicked(int index) {
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(vap.getFileUrl(index));
-                                intent.setData(content_url);
-                                startActivity(intent);
+                                //创建下载任务,downloadUrl就是下载链接
+                                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(vap.getFileUrl(index)));
+                                //指定下载路径和下载文件名
+                                File downpath=new File(Constant.downloadPath+"/"+vap.getArticleid());
+                                if(downpath.exists())
+                                request.setDestinationInExternalPublicDir(downpath.getAbsolutePath(), vap.getDownFileList()[index]);
+                                else
+                                    try{
+                                    downpath.mkdirs();
+                                        request.setDestinationInExternalPublicDir(downpath.getAbsolutePath(), "filename");
+                                    }
+                                    catch (final Exception e)
+                                    {
+                                        runOnUiThread(
+                                                new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toasty.error(ViewArticleActivity.this,Constant.debugmodeinfo==true?""+e:"error",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                        );
+                                    }
+                    //获取下载管理器
+                                DownloadManager downloadManager= (DownloadManager) ViewArticleActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
+                    //将下载任务加入下载队列，否则不会进行下载
+                                downloadManager.enqueue(request);
                             }
                         })
                         .setWidthMaxDp(600)
