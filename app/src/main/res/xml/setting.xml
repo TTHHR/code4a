@@ -13,6 +13,11 @@
             android:defaultValue="false"
             android:key="debug"
             android:title="@string/setting_debug" />
+        <CheckBoxPreference
+            android:checked="true"
+            android:defaultValue="true"
+            android:key="collection"
+            android:title="@string/setting_collection" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_about" >
