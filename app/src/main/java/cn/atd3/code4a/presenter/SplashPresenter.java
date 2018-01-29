@@ -26,7 +26,6 @@ import cn.atd3.code4a.model.model.SplashAdModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.SplashViewInterface;
 import cn.atd3.code4a.view.view.MainActivity;
-import cn.atd3.code4a.view.view.SplashActivity;
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
 import cn.dxkite.common.StorageData;
@@ -34,6 +33,8 @@ import cn.qingyuyu.commom.service.FileDealService;
 import cn.qingyuyu.commom.ui.SplashAd;
 
 import static cn.atd3.code4a.Constant.ERROR;
+
+//import cn.atd3.code4a.model.model.AdInfo;
 
 /**
  * Created by harry on 2018/1/12.
