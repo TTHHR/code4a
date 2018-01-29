@@ -154,28 +154,30 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                             public void onItemClicked(int index) {
                                 //创建下载任务,downloadUrl就是下载链接
                                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(vap.getFileUrl(index)));
+                                // 设置Title
+                                request.setTitle(vap.getDownFileList()[index]);
+                                // 设置描述
+                                request.setDescription(getString(R.string.info_down)+vap.getDownFileList()[index]);
+                                //默认只显示下载中通知
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                                 //指定下载路径和下载文件名
-                                File downpath=new File(Constant.downloadPath+"/"+vap.getArticleid());
-                                if(downpath.exists())
-                                request.setDestinationInExternalPublicDir(downpath.getAbsolutePath(), vap.getDownFileList()[index]);
-                                else
-                                    try{
-                                    downpath.mkdirs();
-                                        request.setDestinationInExternalPublicDir(downpath.getAbsolutePath(), "filename");
-                                    }
-                                    catch (final Exception e)
-                                    {
-                                        runOnUiThread(
-                                                new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Toasty.error(ViewArticleActivity.this,Constant.debugmodeinfo==true?""+e:"error",Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                        );
-                                    }
+
+                                request.setDestinationInExternalPublicDir(Constant.downloadPath+"/"+vap.getArticleid()+"/", vap.getDownFileList()[index]);
+
+//                                        runOnUiThread(
+//                                                new Runnable() {
+//                                                    @Override
+//                                                    public void run() {
+//                                                        Toasty.error(ViewArticleActivity.this,Constant.debugmodeinfo==true?""+e:"error",Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                }
+//                                        );
+
+                                    Log.e("down path",Constant.downloadPath+"/"+vap.getArticleid()+"/");
+                                Log.e("file",vap.getDownFileList()[index]);
                     //获取下载管理器
                                 DownloadManager downloadManager= (DownloadManager) ViewArticleActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
+
                     //将下载任务加入下载队列，否则不会进行下载
                                 downloadManager.enqueue(request);
                             }
@@ -310,4 +312,5 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 }
         );
     }
+
 }
