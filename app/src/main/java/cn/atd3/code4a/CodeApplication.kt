@@ -1,7 +1,6 @@
 package cn.atd3.code4a
 
 import android.app.Application
-import android.preference.Preference
 import android.preference.PreferenceManager
 import cn.code4a.ProxyController
 import cn.atd3.proxy.ProxyConfig
