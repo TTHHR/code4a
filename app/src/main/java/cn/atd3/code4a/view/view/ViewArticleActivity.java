@@ -25,6 +25,7 @@ import java.io.File;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
+import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.presenter.ViewArticlePresenter;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
 import cn.carbs.android.library.MDDialog;
@@ -40,14 +41,14 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
     private TextView articleText;
     private ViewArticlePresenter vap;
     private BootstrapButton copyButton, mycomment;
-    AlertDialog md;
-
+    private AlertDialog md;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_article);
+        Intent i = this.getIntent();
+        ArticleModel article=(ArticleModel) i.getSerializableExtra("article");
 
-        vap = new ViewArticlePresenter(this);//控制器
 
         // 固定横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -58,21 +59,21 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 .setCancelable(false)//不可跳过
                 .create();
 
+        vap = new ViewArticlePresenter(this,this,article);//控制器
+
+
+
         vap.shouWaitDialog();//等待
 
 
-        Intent i = this.getIntent();
-        int articleid = i.getIntExtra("articleid", -1);
-        int userid = i.getIntExtra("userid", -1);
-
-        vap.checkArticle(articleid, userid);//检查数据是否正常
+        vap.checkArticle();//检查数据是否正常
 
 
-        getSupportActionBar().setTitle(i.getStringExtra("title") == null ? "error" : i.getStringExtra("title"));
+        getSupportActionBar().setTitle(article.getTitle()== null ? "error" : article.getTitle());
 
 
         articleText = findViewById(R.id.rich_text);
-        Log.e("id", "" + articleid);
+
         if (articleText != null) {
             vap.initImageGetter(articleText);//初始化图片加载器
         }
@@ -313,4 +314,11 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         );
     }
 
+    @Override
+    protected void onDestroy() {
+
+        vap.saveToDatabase(this);
+        //获得文章详情保存到本地
+        super.onDestroy();
+    }
 }

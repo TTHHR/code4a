@@ -22,26 +22,10 @@ import cn.atd3.proxy.exception.ServerException;
 public class ArticleDatabase {
     DbHelper database =null;
     public static String TBL_NAME = "article_info";
-    private String CLEAR = "drop table if exists " + TBL_NAME;
     private String QUERY = "select * from " + TBL_NAME;
 
     public ArticleDatabase(Context context) {
         database = new DbHelper(context);
-    }
-
-    public boolean saveArticles(ArrayList<ArticleModel> listData) {
-        try {
-            for (ArticleModel article : listData) {
-                saveArticle(article);
-            }
-        } catch (Exception e) {
-            Log.e("Article", "" + e);
-            e.printStackTrace();
-            return false;
-        } finally {
-            database.close();
-        }
-        return true;
     }
 
     public void saveArticle(ArticleModel article)
@@ -58,6 +42,8 @@ public class ArticleDatabase {
         cv.put("views", article.getViews()); //添加数据
         cv.put("status", article.getStatus()); //添加数据
         cv.put("abstract", article.getAbstract()); //添加数据
+        if(article.getContent()!=null)
+            cv.put("content", article.getContent()); //添加数据
         replace(cv);//执行插入操作
     }
 
@@ -89,7 +75,53 @@ public class ArticleDatabase {
         }
         return articleModels;
     }
+    public ArticleModel getArticle(int id) {
+        ArticleModel a = null;
 
+        try {
+            SQLiteDatabase db = database.getReadableDatabase();
+            String select = "id = ?";
+            String[] columns = {
+                    "id",
+                    "category",
+                    "title",
+                    "slug",
+                    "abstract",
+                    "user",
+                    "created",
+                    "modify",
+                    "cover",
+                    "views",
+                    "status",
+                    "content"
+            };
+            String[] selectWhere = {
+                    String.valueOf(id)
+            };
+            Cursor cursor = db.query(TBL_NAME, columns, select, selectWhere, null, null, null);
+            while (cursor.moveToNext()) {
+                a=new ArticleModel();
+                a.setCategory(cursor.getInt(cursor.getColumnIndex("category")));//读取分类
+                a.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
+                a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
+                a.setAbstract(cursor.getString(cursor.getColumnIndex("abstract")));
+                a.setUser(cursor.getInt(cursor.getColumnIndex("user")));
+                a.setCreate(cursor.getInt(cursor.getColumnIndex("created")));
+                a.setModify(cursor.getInt(cursor.getColumnIndex("modify")));
+                a.setCover(cursor.getInt(cursor.getColumnIndex("cover")));
+                a.setViews(cursor.getInt(cursor.getColumnIndex("views")));
+                a.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
+                a.setContent(cursor.getString(cursor.getColumnIndex("content")));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            database.close();
+        }
+        return a;
+    }
 
     public void insert(ContentValues values) {
         SQLiteDatabase db = database.getWritableDatabase();

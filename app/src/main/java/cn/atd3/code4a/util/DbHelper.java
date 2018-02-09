@@ -31,6 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "cover integer," +
             "views integer," +
             "status integer," +
+            "content text,"+
             "abstract text);";
 
     public DbHelper(Context context) {
