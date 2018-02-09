@@ -7,10 +7,10 @@
     android:scrollbars="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:orientation="vertical"
         android:background="#ffffff"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
 
         <com.beardedhen.androidbootstrap.AwesomeTextView
             android:layout_width="wrap_content"
@@ -20,12 +20,8 @@
             android:textSize="@dimen/bootstrap_h1_text_size"
             app:bootstrapBrand="success" />
 
-        <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_width="0px"
-            android:layout_height="0px" />
         <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/feedback_hide"
