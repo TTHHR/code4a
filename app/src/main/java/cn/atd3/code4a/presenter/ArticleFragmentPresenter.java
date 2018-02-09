@@ -31,10 +31,7 @@ public class ArticleFragmentPresenter {
     }
 
     public void setIntentData(Intent i, int p) {
-        i.putExtra("articleid", al.get(p).getId());
-        i.putExtra("userid", al.get(p).getUser());
         i.putExtra("article", al.get(p));
-        i.putExtra("title", al.get(p).getTitle());
     }
 
     public void setAdapterData(int category) {

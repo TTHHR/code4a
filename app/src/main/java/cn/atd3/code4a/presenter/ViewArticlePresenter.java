@@ -1,5 +1,6 @@
 package cn.atd3.code4a.presenter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,6 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.atd3.code4a.Constant;
+import cn.atd3.code4a.R;
+import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.model.model.DownFileModel;
 import cn.atd3.code4a.net.Remote;
@@ -27,7 +30,9 @@ import cn.atd3.code4a.view.inter.ArticleViewInterface;
 import cn.atd3.proxy.Param;
 
 import static cn.atd3.code4a.Constant.ERROR;
+import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.SUCCESS;
+import static cn.atd3.code4a.Constant.WARNING;
 
 /**
  * Created by harry on 2018/1/15.
@@ -42,12 +47,14 @@ public class ViewArticlePresenter {
 
     private List<DownFileModel> fileList;
     private int create = 0;//文章创建时间
-    private int articleid = -1;
-    private int userid = -1;
+   private ArticleModel article=null;
     private static final String TAG = "ViewArticle";
+    private ArticleDatabase databasePresenter=null;
 
-    public ViewArticlePresenter(ArticleViewInterface avi) {
+    public ViewArticlePresenter(Context c,ArticleViewInterface avi,ArticleModel article) {
         this.avi = avi;
+        this.article=article;
+        databasePresenter=new ArticleDatabase(c);
     }
 
     public void initImageGetter(TextView tv) {
@@ -66,23 +73,28 @@ public class ViewArticlePresenter {
     }
 
     public int getArticleid() {
-        return articleid;
+        return article.getId();
     }
 
     public void shouWaitDialog() {
         avi.showWaitDialog();
     }
 
-    public void checkArticle(int articleid, int userid) {
-        if (articleid == -1 || userid == -1) {
+    public void checkArticle() {
+        if (article.getId() == null || article.getUser() == null) {
             avi.showToast(ERROR, "error");
             avi.dismissWaitDialog();//错误，取消弹窗
             return;
         }
-        this.articleid = articleid;
-        this.userid = userid;
-    }
 
+    }
+    public void saveToDatabase(Context c)
+    {
+        if(databasePresenter==null)
+            databasePresenter=new ArticleDatabase(c);
+        databasePresenter.saveArticle(article);
+        Log.e("save base",""+article);
+    }
 
     public void deleteArticle() {
         /*
@@ -97,7 +109,7 @@ public class ViewArticlePresenter {
             public void run() {
                 try {
                     Remote.article.method("delete").call(
-                            new Param("id", articleid)
+                            new Param("id", article.getId())
                     );
                 } catch (Exception e) {
                     avi.showToast(ERROR, "" + e);
@@ -131,13 +143,12 @@ public class ViewArticlePresenter {
                     public void run() {
                         String usern = "";
                         try {
-                            Object username = Remote.user.method("id2name", String.class).call(userid);
+                            Object username = Remote.user.method("id2name", String.class).call(article.getUser());
                             if (username instanceof String) {
                                 usern = (String) username;
                             } else {
                                 usern = "error";
                             }
-
                             Log.e("username", "" + username);
                         } catch (Exception e) {
                             Log.e("userid", e.toString());
@@ -146,13 +157,12 @@ public class ViewArticlePresenter {
                         avi.loadUser(usern);//UI加载用户名
 
                         try {
-                            Object a = Remote.article.method("getArticleById", ArticleModel.class).call(articleid);
+                            Object a = Remote.article.method("getArticleById", ArticleModel.class).call(article.getId());
                             if (a instanceof ArticleModel) {
                                 Log.i("obj", "is article");
                                 if (((ArticleModel) a).getContent() != null) {
-
-                                    create = ((ArticleModel) a).getCreate();
-                                    content = ((ArticleModel) a).getContent();
+                                    article=(ArticleModel)a;
+                                    content = article.getContent();
                                     Log.d(TAG, "article abstract = " + ((ArticleModel) a).getAbstract());
                                     Log.d(TAG, "article content = " + content);
                                     Set<String> imgSet = getImgStr(content);
@@ -161,6 +171,7 @@ public class ViewArticlePresenter {
                                         content = content.replace(imgurl, Constant.serverAddress + imgurl);//地址转换成绝对地址
                                     }
                                     Log.e("final", content);
+                                    article.setContent(content);
                                 } else {
                                     Log.e("obj", "null");
                                     content = "";
@@ -168,19 +179,29 @@ public class ViewArticlePresenter {
                             }
                         } catch (Exception e) {
                             Log.e("net error", "" + e);
-                            avi.showToast(ERROR, e.toString());
+                            ArticleModel am=databasePresenter.getArticle(article.getId());
+                            if(am!=null)
+                            {
+                                article=am;
+                                content=article.getContent();
+                                avi.showToast(SUCCESS, avi.getXmlString(R.string.error_network_use_local));
+                            }
+                            else
+                            {
+                                Log.e("local","article not cache");
+                                avi.showToast(WARNING, avi.getXmlString(R.string.error_network));
+                            }
                         }
 
                         avi.loadArticle(content, urlImageParser);//显示文章
 
                         try {
-                            Object a = Remote.article.method("getAttachments", DownFileModel.class).call(articleid);
+                            Object a = Remote.article.method("getAttachments", DownFileModel.class).call(article.getId());
                             if (a instanceof List) {
                                 fileList = (List<DownFileModel>) a;
                             }
                         } catch (Exception e) {
-                            Log.e("net error", "" + e);
-                            avi.showToast(ERROR, e.toString());
+                            Log.e("get Attach", "" + e);
                         } finally {
                             avi.dismissWaitDialog();//取消等待
                         }
