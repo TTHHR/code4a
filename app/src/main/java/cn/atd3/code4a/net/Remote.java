@@ -86,4 +86,13 @@ public class Remote {
             return apiInterface +"/collection";
         }
     };
+    /**
+     * 反馈
+     */
+    public static ProxyObject report=new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface +"/report";
+        }
+    };
 }

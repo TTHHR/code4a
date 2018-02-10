@@ -17,14 +17,16 @@ class FeedbackActivity : AppCompatActivity() ,FeedbackInterface{
     private  lateinit var fbp:FeedbackPresenter
     private lateinit var feedbackButton:BootstrapButton
     private lateinit var contentView:BootstrapEditText
+    private lateinit var contactView:BootstrapEditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback)
         fbp= FeedbackPresenter(this)
         feedbackButton=findViewById(R.id.feedbacakbutton)
         contentView=findViewById(R.id.content)
+        contactView=findViewById(R.id.contact)
         feedbackButton.setOnClickListener(View.OnClickListener {
-            fbp.upToServer(contentView.text.toString())
+            fbp.upToServer(contentView.text.toString(),contactView.text.toString())
         })
     }
 

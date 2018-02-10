@@ -21,6 +21,15 @@
             app:bootstrapBrand="success" />
 
         <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/feedback_contact"
+            android:lines="1"
+            app:bootstrapBrand="info"
+            app:bootstrapSize="md" />
+
+        <com.beardedhen.androidbootstrap.BootstrapEditText
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

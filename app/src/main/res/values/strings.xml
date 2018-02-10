@@ -20,6 +20,7 @@
     <string name="setting_loginout">退出登陆</string>
     <string name="username">未登录</string>
     <string name="feedback_title">意见反馈</string>
+    <string name="feedback_contact">请输入您的联系方式</string>
     <string name="feedback_hide">请输入您的反馈意见(字数200以内)！</string>
     <string name="info_upload_slow">文件大小:%1$s 上传缓慢, 请等待</string>
     <string name="feedback_send">发送</string>
