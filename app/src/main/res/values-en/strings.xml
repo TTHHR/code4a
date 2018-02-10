@@ -29,6 +29,8 @@
     <string name="username">Not logged in</string>
     <string name="check_confirm_fail"> Inconsistency of ciphers </string>
     <string name="feedback_title">Feedback your suggests</string>
+    <string name="feedback_contact"> Please enter your contact information</string>
+
     <string name="feedback_hide">Please input(limit:600)!</string>
     <string name="feedback_send">Send</string>
     <string name="info_upload_slow">File size:%1$s slow upload, please wait</string>
