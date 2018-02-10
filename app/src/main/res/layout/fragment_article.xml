@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@color/bootstrap_gray_lighter">
     <!-- 第三方控件-->
     <LinearLayout
         android:id="@+id/itemShow"
@@ -32,6 +32,9 @@
         android:id="@+id/pulltorefresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
         app:view_empty="@layout/layout_empty"
         app:view_error="@layout/layout_error"
         app:view_loading="@layout/layout_loading">
