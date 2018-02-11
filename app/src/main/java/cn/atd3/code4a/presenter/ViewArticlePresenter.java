@@ -44,12 +44,12 @@ public class ViewArticlePresenter {
     private URLImageParser urlImageParser;
 
     private String content = "";//原始文章数据
-
+    public boolean deleteArticle=false;
     private List<DownFileModel> fileList;
     private int create = 0;//文章创建时间
-   private ArticleModel article=null;
+   private ArticleModel article;
     private static final String TAG = "ViewArticle";
-    private ArticleDatabase databasePresenter=null;
+    private ArticleDatabase databasePresenter;
 
     public ViewArticlePresenter(Context c,ArticleViewInterface avi,ArticleModel article) {
         this.avi = avi;
@@ -88,10 +88,15 @@ public class ViewArticlePresenter {
         }
 
     }
-    public void saveToDatabase(Context c)
+    private void saveToDatabase(Context c)
     {
         if(databasePresenter==null)
             databasePresenter=new ArticleDatabase(c);
+        if(deleteArticle)
+        {
+            databasePresenter.deleteArticle(article.getId());
+        }
+       else
         databasePresenter.saveArticle(article);
         Log.e("save base",""+article);
     }
@@ -111,10 +116,12 @@ public class ViewArticlePresenter {
                     Remote.article.method("delete").call(
                             new Param("id", article.getId())
                     );
+                    avi.showToast(SUCCESS, "success");
+                    deleteArticle=true;
                 } catch (Exception e) {
                     avi.showToast(ERROR, "" + e);
                 }
-                avi.showToast(SUCCESS, "success");
+
             }
         }).start();
 
@@ -133,6 +140,15 @@ public class ViewArticlePresenter {
 
     public String getFileUrl(int p) {
         return fileList.get(p).getUrl();
+    }
+
+
+    public void onDestory(Context c)
+    {
+        saveToDatabase(c);
+        fileList=null;
+        article=null;
+        databasePresenter=null;
     }
 
 
@@ -177,6 +193,11 @@ public class ViewArticlePresenter {
                                     content = "";
                                 }
                             }
+                            else//服务器已删除这篇文章
+                            {
+                                deleteArticle=true;
+                                avi.showToast(WARNING,avi.getXmlString(R.string.no_article_error));
+                            }
                         } catch (Exception e) {
                             Log.e("net error", "" + e);
                             ArticleModel am=databasePresenter.getArticle(article.getId());
@@ -216,7 +237,7 @@ public class ViewArticlePresenter {
     /**
      * 得到网页中图片的地址
      *
-     * @param
+     * @param htmlStr
      */
     private Set<String> getImgStr(String htmlStr) {
         HashSet pics = new HashSet<String>();

@@ -86,7 +86,7 @@
     <string name="need_nickname">need nickname</string>
     <string name="action_sign_in">register</string>
     <string name="action_login_in">Login</string>
-
+    <string name="no_article_error">Server does not have this article！</string>
     <string name="prompt_user_name">username</string>
     <string name="prompt_email">email</string>
     <string name="copyright">Copyright © ATDStudio All Rights Reserved</string>

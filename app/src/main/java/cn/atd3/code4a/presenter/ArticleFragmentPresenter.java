@@ -46,6 +46,15 @@ public class ArticleFragmentPresenter {
         afi.setAdapter(al);
     }
 
+    public void removeItem(int item)
+    {
+        if(al!=null&&al.size()>=item) {
+            al.remove(item);
+            afi.upDate();//通知UI刷新
+        }
+    }
+
+
     public void loadMoreData(final int kind) {
         new Thread(
                 new Runnable() {
@@ -55,7 +64,6 @@ public class ArticleFragmentPresenter {
                         requestData(kind);
                         afi.upDate();//通知UI刷新
                         afi.onfinishLoadmore();
-
                     }
                 }
         ).start();

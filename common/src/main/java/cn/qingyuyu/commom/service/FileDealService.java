@@ -19,7 +19,7 @@ import java.net.URLConnection;
 
 public class FileDealService {
 
-    public static FileDealService fdl = new FileDealService();
+    private  static FileDealService fdl = new FileDealService();
 
     public static FileDealService getInstance() {
         return fdl;
@@ -39,6 +39,9 @@ public class FileDealService {
             } catch (Exception e) {
                 return false;
             }
+            finally {
+                f=null;
+            }
         }
         return false;
     }
@@ -49,7 +52,6 @@ public class FileDealService {
         try {
             delAllFile(folderPath); //删除完里面所有内容
             String filePath = folderPath;
-            filePath = filePath.toString();
             java.io.File myFilePath = new java.io.File(filePath);
             myFilePath.delete(); //删除空文件夹
         } catch (Exception e) {
@@ -88,10 +90,11 @@ public class FileDealService {
         return flag;
     }
 
-    public boolean copyFile(String oldPath, String newPath) {
+    public boolean copyFile(String oldPath, String newPath,boolean delOldFile) {
         Log.e("copyFile", "old" + oldPath + "  new" + newPath);
+        File newFile;
         try {
-            File newFile = new File(newPath);
+             newFile= new File(newPath);
             if (!newFile.exists())
                 newFile.createNewFile();
             int bytesum = 0;
@@ -104,28 +107,59 @@ public class FileDealService {
                 fs.write(buffer, 0, byteread);
             }
             inStream.close();
+            fs.close();
+            if(delOldFile)
+                new File(oldPath).delete();
         } catch (Exception e) {
             Log.e("copyFile", e.toString());
             return false;
         }
+        finally {
+            newFile=null;
+        }
         return true;
     }
+public void renameFile(String old,String neww)
+{
+    File oldFile=new File(old);
+    if(oldFile.exists())
+    {
+        renameFile(oldFile,neww);
+    }
+}
+public void renameFile(File f,String neww)
+{
+    if(f!=null&&f.exists())
+    {
+        File newFile=new File(neww);
+        if(newFile.exists())
+            newFile.delete();
+        f.renameTo(newFile);
 
+        f=null;
+        newFile=null;
+    }
+}
     /*
     通过网址保存文件
      */
     public void saveFile(String filepath, String http)//暂时保存文件
     {
+        URLConnection con;
         try {
             // 构造URL
             URL url = new URL(http);
             // 打开连接
-            URLConnection con = url.openConnection();
+             con = url.openConnection();
             //设置请求超时为5s
             con.setConnectTimeout(5000);
             save(filepath, con.getInputStream());
         } catch (Exception e) {
             Log.e("saveFile", e.toString());
+        }
+        finally {
+            con=null;
+
         }
     }
 
@@ -156,13 +190,13 @@ public class FileDealService {
      */
     private void save(String filePath, InputStream is) {
         File f = null;
-
+        FileOutputStream fos=null;
         try {
             f = new File(filePath);
             if (f.exists())
                 f.delete();
             f.createNewFile();
-            FileOutputStream fos = new FileOutputStream(f);
+             fos= new FileOutputStream(f);
 
             int len = 0;
             byte[] buffer = new byte[1024];
@@ -170,11 +204,21 @@ public class FileDealService {
                 fos.write(buffer, 0, len);
             }
 
-            is.close();
-            fos.close();
+
 
         } catch (Exception e) {
             Log.e("save inputstream", filePath + ":" + e.toString());
+        }
+        finally {
+            try {
+                is.close();
+                if(fos!=null)
+                fos.close();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
     }
 

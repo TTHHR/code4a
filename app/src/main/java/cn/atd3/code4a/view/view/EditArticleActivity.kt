@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -23,6 +24,7 @@ import cn.atd3.code4a.library.fileselect.FileSelectActivity
 import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.model.model.FileListModel
 import cn.atd3.code4a.presenter.EditArticlePresenter
+import cn.atd3.code4a.util.UriRealPath
 import cn.atd3.code4a.view.inter.EditArticleActivityInterface
 import cn.carbs.android.library.MDDialog
 import cn.dxkite.common.StorageData
@@ -30,9 +32,13 @@ import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapEditText
 import com.scrat.app.richtext.RichEditText
 import es.dmoral.toasty.Toasty
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
 import java.io.File
 
 class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
+
+
     private val REQUEST_CODE_GET_CONTENT = 666
     private val SELECTFILE = 555
     private val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444
@@ -98,7 +104,7 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
 
         val cateListFile = File(getCategoryListFilePath())
 
-        var catelist: List<CategoryModel>
+        val catelist: List<CategoryModel>
         if (cateListFile.exists()) {
             catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
         } else {
@@ -183,8 +189,6 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
     }
 
 
-
-
     override fun prgoressOfUpload(info: String) {
         runOnUiThread(
                 Runnable {
@@ -223,10 +227,18 @@ return getString(resourceId)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE||data==null|| data.data==null)
             return
-        val uri = data.data
-        Log.e("image uri",""+uri)
-        val width = richEditText.measuredWidth - richEditText.paddingLeft - richEditText.paddingRight
-        richEditText.image(uri, width)
+        val uri=data.data
+        Log.e("image uri", "" + uri)
+        Thread(Runnable {
+           val f= Luban.with(this).setTargetDir(Constant.getPublicFilePath()).get(UriRealPath.getRealPathFromUri(this,uri))
+            val u=Uri.fromFile(f)
+            Log.e("zip image uri",u.toString())
+            runOnUiThread {
+                val width = richEditText.measuredWidth - richEditText.paddingLeft - richEditText.paddingRight
+                richEditText.image(u, width)
+            }
+        }).start()
+
     }
 
     /**
