@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.beardedhen:androidbootstrap:2.0.1'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //加载图片
-    implementation 'com.github.huzhenjie:RichTextEditor:1.0.3'
+    implementation 'com.github.huzhenjie:RichTextEditor:1.0.4'
     //富文本编辑,BindView工具
     implementation 'com.jakewharton:butterknife:8.5.1'
     //文件
