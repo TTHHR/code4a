@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
-
-import java.io.File;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
@@ -122,6 +121,26 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         });
 
 */
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            vap.onDestory(this);
+            //获得文章详情保存到本地
+
+            //数据是使用Intent返回
+            Intent intent = new Intent();
+            //设置返回数据
+            this.setResult(vap.deleteArticle?1:0, intent);
+            //关闭Activity
+            this.finish();
+
+            return true;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 
 
@@ -246,7 +265,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                                 Toasty.warning(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getApplicationContext(), Constant.debugmodeinfo == true ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                Toasty.error(getApplicationContext(), Constant.debugmodeinfo ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 
@@ -314,11 +333,4 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         );
     }
 
-    @Override
-    protected void onDestroy() {
-
-        vap.saveToDatabase(this);
-        //获得文章详情保存到本地
-        super.onDestroy();
-    }
 }

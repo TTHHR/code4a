@@ -36,10 +36,9 @@ public class PictureListModel {
         else
             return al.get(index);
     }
-    public String[] toArray()
+    public ArrayList<String> getLists()
     {
-        return  al.toArray(new String[al.size()]);
-
+        return  al;
     }
 
 }

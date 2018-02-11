@@ -57,6 +57,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     }
     public static ArticleDatabase articleDatabase;
 
+    private int requestId=-1;
 
     @Nullable
     @Override
@@ -83,7 +84,8 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), ViewArticleActivity.class);
                     afp.setIntentData(intent, i);
-                    startActivity(intent);
+                    requestId=i;
+                    startActivityForResult(intent,requestId);
                 }
             });
 
@@ -129,10 +131,20 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==requestId)
+        {
+            if(resultCode==1)
+            {
+                afp.removeItem(requestId);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void upDate() {
-
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
@@ -219,7 +231,9 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
     @Override
     public void showList() {
-        pullToRefreshLayout.setVisibility(View.VISIBLE);
-        touchView.setVisibility(View.GONE);
+        if(pullToRefreshLayout!=null&&touchView!=null) {
+            pullToRefreshLayout.setVisibility(View.VISIBLE);
+            touchView.setVisibility(View.GONE);
+        }
     }
 }

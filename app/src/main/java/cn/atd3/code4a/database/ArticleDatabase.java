@@ -151,6 +151,17 @@ public class ArticleDatabase {
         db.close();
     }
 
+    public boolean deleteArticle(int id)
+    {
+        SQLiteDatabase db = database.getReadableDatabase();
+        String[] whereArgs = {""+id};
+        int amount=db.delete(TBL_NAME,"id=?",whereArgs);
+        db.close();
+        if(amount==0)
+            return false;
+        return true;
+    }
+
     public Cursor getListByCategory(int category) {
         SQLiteDatabase db = database.getReadableDatabase();
         String[] columns = {
@@ -198,11 +209,7 @@ public class ArticleDatabase {
                     this.saveArticle(am);
                 }
             }
-        } catch (ServerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (PermissionException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -23,6 +23,7 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.inter.MessageModelInterface
 import cn.atd3.code4a.model.model.CategoryModel
+import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
@@ -144,7 +145,18 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
         //测试登陆
         head_iv.setOnClickListener(View.OnClickListener {
-            var i = Intent(this, SigninActivity::class.java)
+            Thread(
+                    Runnable {
+                        try {
+                           // Remote.user.method("signin").call("TTHHR", "", true)
+                        }
+                        catch (e:Exception)
+                        {
+                            Log.e("login",e.toString())
+                        }
+                    }
+            ).start()
+            val i = Intent(this, SigninActivity::class.java)
             startActivity(i)
         })
 

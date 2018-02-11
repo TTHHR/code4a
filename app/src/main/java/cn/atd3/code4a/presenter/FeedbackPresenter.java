@@ -22,7 +22,7 @@ public class FeedbackPresenter {
                     @Override
                     public void run() {
                         try {
-                            Object o = Remote.report.method("send", ArticleModel.class).call(fbi.getXmlString(R.string.app_name), text, contact);
+                            Object o = Remote.report.method("send").call(fbi.getXmlString(R.string.app_name), text, contact);
                         } catch (Exception e) {
                             Log.e("send feedback",""+e);
                             fbi.showToast(ERROR,e.toString());

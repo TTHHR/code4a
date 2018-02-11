@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.beardedhen:androidbootstrap:2.0.1'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //加载图片
-    implementation 'com.github.huzhenjie:RichTextEditor:1.0.2'
+    implementation 'com.github.huzhenjie:RichTextEditor:1.0.3'
     //富文本编辑,BindView工具
     implementation 'com.jakewharton:butterknife:8.5.1'
     //文件
@@ -74,4 +74,6 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     //上拉下拉刷新库
     implementation 'com.jwenfeng.pulltorefresh:library:1.2.7'
+    //图片压缩
+    implementation 'top.zibin:Luban:1.1.3'
 }
