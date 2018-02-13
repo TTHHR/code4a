@@ -92,7 +92,7 @@
     <string name="action_sign_in">注册</string>
     <string name="action_login_in">登录</string>
     <string name="copyright"> ©ATDStudio 版权所有</string>
-
+    <string name="double_click_exit">再按一次退出程序</string>
 
     <string name="title_activity_splash">SplashActivity</string>
 

@@ -90,7 +90,7 @@
     <string name="prompt_user_name">username</string>
     <string name="prompt_email">email</string>
     <string name="copyright">Copyright © ATDStudio All Rights Reserved</string>
-
+    <string name="double_click_exit">double click to exit</string>
     <string name="password_empty">password empty</string>
 
     <string name="title_activity_splash">SplashActivity</string>
