@@ -29,6 +29,7 @@ import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.model.model.FileListModel;
 import cn.atd3.code4a.model.model.PictureListModel;
 import cn.atd3.code4a.net.Remote;
+import cn.atd3.code4a.util.ReplaceCHeadInHtml;
 import cn.atd3.code4a.util.UriRealPath;
 import cn.atd3.code4a.view.inter.EditArticleActivityInterface;
 import cn.atd3.proxy.Param;
@@ -300,9 +301,12 @@ public class EditArticlePresenter {
 
             Element content = document.createElement("content");
             content.setAttribute("type", "html");
+
+            //替换头文件中的<>字符
+            article.setContent(ReplaceCHeadInHtml.getIns().getHtml(article.getContent()));
             Log.e("xml content", article.getContent());
             content.setTextContent(base64.encode(article.getContent().getBytes()));
-
+            Log.e("base64 content", base64.encode(article.getContent().getBytes()));
             articles.appendChild(content);
 
             Element attachments = document.createElement("attachments");
@@ -330,6 +334,7 @@ public class EditArticlePresenter {
             tf.transform(new DOMSource(document), new StreamResult(xmlFile));
 
         } catch (Exception e) {
+            Log.e("article to xml",e.toString());
             eai.showToast(ERROR, e.toString());
             return false;
         }

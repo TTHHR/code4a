@@ -11,17 +11,14 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
-import cn.atd3.code4a.model.inter.MessageModelInterface
 import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
@@ -30,6 +27,7 @@ import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
@@ -41,6 +39,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     lateinit var head_iv: ImageView
     lateinit var uname: TextView
     private var tagList: List<Button> = ArrayList<Button>()
+   private var exitTime=0L
 
     private lateinit var newarticle: FloatingActionButton
     //把Fragment添加到List集合里面
@@ -148,7 +147,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             Thread(
                     Runnable {
                         try {
-                           // Remote.user.method("signin").call("TTHHR", "", true)
+                   //         Remote.user.method("signin").call("TTHHR", "", true)
                         }
                         catch (e:Exception)
                         {
@@ -242,5 +241,22 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+
+            when (keyCode)
+            {
+                 KeyEvent.KEYCODE_BACK-> {
+                     if ((System.currentTimeMillis() - exitTime) > 2000) {
+                         Toasty.info(this,getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
+                         exitTime = System.currentTimeMillis()
+                     } else {
+                         finish()
+                     }
+                 }
+            }
+
+        return super.onKeyDown(keyCode, event)
     }
 }
