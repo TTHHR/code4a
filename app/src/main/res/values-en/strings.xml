@@ -12,7 +12,7 @@
     <string name="setting_debug">Debug mode</string>
     <string name="setting_collection">push info</string>
     <string name="about_collection">Collect mobile information to help APP improvement, information does not contain personal privacy</string>
-    <string name="setting_auth">TTHHR</string>
+    <string name="setting_auth_donation">donation</string>
     <string name="setting_auth_summary">Donate to authors</string>
     <string name="setting_update">update</string>
     <string name="nav_share">Share</string>

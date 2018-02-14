@@ -21,30 +21,20 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_about" >
+        <PreferenceScreen android:title="@string/setting_software_info"
 
+            >
+        </PreferenceScreen>
         <PreferenceScreen
             android:summary="@string/setting_tieba_summary"
             android:title="@string/setting_tieba" >
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="http://www.baidu.com" />
+
         </PreferenceScreen>
         <PreferenceScreen
             android:summary="@string/setting_auth_summary"
-            android:title="@string/setting_auth">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://github.com/TTHHR/code4a/blob/dev/donation.jpg" />
+            android:title="@string/setting_auth_donation">
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/setting_update">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="http://www.baidu.com" />
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/setting_loginout">
-
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/setting_software_info">
         </PreferenceScreen>
     </PreferenceCategory>
 
