@@ -1,16 +1,11 @@
 package cn.atd3.code4a;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.io.File;
-import java.util.UUID;
 
 
 /**
@@ -22,8 +17,9 @@ public final class Constant {
 
     public final static String serverAddress = "http://code4a.atd3.cn/";
     public final static String shareUrl = "http://github.com/tthhr/code4a";
-    public final static String remoteAdImg = "http://code4a.atd3.cn/ad.png";
-    public final static String remoteAdUrl = "http://code4a.atd3.cn/adurl.txt";
+    public final static String donationUrl = "https://github.com/TTHHR/code4a/blob/master/docs/assets/donation.jpg";
+    public final static String softwareInfoUrl = "https://github.com/TTHHR/code4a/blob/master/README.md";
+    public final static String tiebaUrl = "http://tieba.baidu.com/f?kw=c4droid";
     public final static String categoryListFile = "categories";
 
     public final static int SUCCESS = 0;

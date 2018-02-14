@@ -24,19 +24,27 @@ public class SettingFragmentPresenter {
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_language))
         {
             sfi.showToast(Constant.INFO,sfi.getXmlString(R.string.info_changelanguage));
+            return;
         }
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_collection))
         {
             sfi.showToast(Constant.INFO,sfi.getXmlString(R.string.about_collection));
+            return;
         }
-        if(preference.getTitle()==sfi.getXmlString(R.string.setting_loginout))
+        if(preference.getTitle()==sfi.getXmlString(R.string.setting_auth_donation))
         {
-           //退出登录
-            sfi.showToast(Constant.SUCCESS,"退出登陆成功，Success");
+            sfi.openWebActivity(Constant.donationUrl);
+            return;
         }
         if(preference.getTitle()==sfi.getXmlString(R.string.setting_software_info))
         {
-            sfi.openWebActivity("https://github.com/TTHHR/code4a/blob/dev/开源说明.txt");
+            sfi.openWebActivity(Constant.softwareInfoUrl);
+            return;
+        }
+        if(preference.getTitle()==sfi.getXmlString(R.string.setting_tieba))
+        {
+            sfi.openWebActivity(Constant.tiebaUrl);
+            return;
         }
     }
 
