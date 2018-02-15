@@ -157,10 +157,18 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     }
 
     @Override
-    public void setAdapter(@NotNull ArrayList<ArticleModel> al) {
-        aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
-        aad.setShowCategory(kind==0);
-        listView.setAdapter(aad);
+    public void setAdapter(@NotNull final ArrayList<ArticleModel> al) {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
+                        aad.setShowCategory(kind==0);
+                        listView.setAdapter(aad);
+                    }
+                }
+        );
+
     }
 
     @Override
@@ -185,7 +193,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                                 Toasty.warning(getContext(), info, Toast.LENGTH_SHORT).show();
                                 break;
                             case ERROR:
-                                Toasty.error(getContext(), Constant.debugmodeinfo == true ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                Toasty.error(getContext(), Constant.debugmodeinfo ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
                                 break;
                             default:
 
@@ -224,15 +232,31 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
     @Override
     public void showTouch() {
-        pullToRefreshLayout.setVisibility(View.GONE);
-        touchView.setVisibility(View.VISIBLE);
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefreshLayout.setVisibility(View.GONE);
+                        touchView.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
+
     }
 
     @Override
     public void showList() {
-        if(pullToRefreshLayout!=null&&touchView!=null) {
-            pullToRefreshLayout.setVisibility(View.VISIBLE);
-            touchView.setVisibility(View.GONE);
-        }
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if(pullToRefreshLayout!=null&&touchView!=null) {
+                            pullToRefreshLayout.setVisibility(View.VISIBLE);
+                            touchView.setVisibility(View.GONE);
+                        }
+                    }
+                }
+        );
+
     }
 }
