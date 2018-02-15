@@ -26,7 +26,6 @@ import cn.atd3.code4a.R;
 import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.adapter.ArticleAdapter;
 import cn.atd3.code4a.model.model.ArticleModel;
-import cn.atd3.code4a.model.model.CategoryModel;
 import cn.atd3.code4a.presenter.ArticleFragmentPresenter;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 import cn.atd3.code4a.view.inter.HeadRefreshView;
