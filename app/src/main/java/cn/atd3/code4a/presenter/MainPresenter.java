@@ -1,14 +1,21 @@
 package cn.atd3.code4a.presenter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import cn.atd3.code4a.Constant;
+import cn.atd3.code4a.model.model.AdInfo;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.MainViewInterface;
 import cn.dxkite.common.ui.notification.popbanner.Adapter;
 import cn.dxkite.common.ui.notification.popbanner.Information;
+import cn.qingyuyu.commom.service.FileDealService;
 
 /**
  * Created by harry on 2018/1/13.
@@ -63,5 +70,61 @@ public class MainPresenter {
                 }
             }
         }).start();
+    }
+public void updateAd()
+{
+    try {
+
+        File adImg = new File(Constant.getAdImg());//本地图片文件
+
+        File adUrl = new File(Constant.getAdUrl());//本地链接文件
+
+        if (adImg.exists() && adUrl.exists())//文件存在
+        {
+
+            Calendar cal = Calendar.getInstance();
+            long time = adImg.lastModified();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            cal.setTimeInMillis(time);
+            String lastTime = formatter.format(cal.getTime());
+            cal.setTimeInMillis(System.currentTimeMillis());
+            if (!(formatter.format(cal.getTime()).equals(lastTime)))//ad图片老旧
+            {//下载开屏广告
+                downAd();
+            }
+        }
+        else
+        {
+            downAd();
+        }
+    }catch (Exception e)
+    {
+
+    }
+
+
+}
+    private void downAd()
+    {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Object msg = Remote.androidMessage.method("pullAd", AdInfo.class).call();
+                            if(msg instanceof AdInfo)
+                            {
+                                FileDealService.getInstance().saveFile(Constant.getAdImg(),((AdInfo) msg).getImage());
+                                FileDealService.getInstance().saveFile(Constant.getAdUrl(), ((AdInfo) msg).getUrl());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("downAd",""+e);
+                        }
+                    }
+                }
+        ).start();
+
     }
 }

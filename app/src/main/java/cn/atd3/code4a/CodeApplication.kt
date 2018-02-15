@@ -30,8 +30,8 @@ class CodeApplication : Application() {
     }
 
     private fun initProxyManager() {
-        // 设置RPC请求超时 5秒
-        ProxyConfig.setTimeOut(5000)
+        // 设置RPC请求超时 3秒
+        ProxyConfig.setTimeOut(3000)
         // 设置RPC控制器
         ProxyConfig.setCookiePath(Constant.getPrivateFilePath()+File.separator + "cookies")
         ProxyConfig.setController(ProxyController())

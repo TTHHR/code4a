@@ -20,7 +20,6 @@ import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.model.CategoryModel
-import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     private lateinit var newarticle: FloatingActionButton
     //把Fragment添加到List集合里面
-    var fragmentList: List<ArticleFragment> = ArrayList<ArticleFragment>()
+    var fragmentList: List<ArticleFragment> = ArrayList()
 
     private lateinit var mp: MainPresenter
     private  val TAG="MainActivity"
@@ -51,12 +50,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)//title bar
-        val i = intent
-        if (i.getStringExtra("url") != null) {
-            val intent = Intent(this, WebActivity::class.java)
-            intent.putExtra("url", i.getStringExtra("url"))
-            startActivity(intent)
-        }
+
         mp = MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
@@ -70,6 +64,15 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         mp.showMessageBanner()//拉取信息
     }
 
+    override fun onStart() {
+        val i = intent
+        if (i.getStringExtra("url") != null) {
+            val intent = Intent(this, WebActivity::class.java)
+            intent.putExtra("url", i.getStringExtra("url"))
+            startActivity(intent)
+        }
+        super.onStart()
+    }
     private fun initView() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -249,9 +252,12 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             {
                  KeyEvent.KEYCODE_BACK-> {
                      if ((System.currentTimeMillis() - exitTime) > 2000) {
-                         Toasty.info(this,getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
+                         runOnUiThread {
+                             Toasty.info(this,getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
+                         }
                          exitTime = System.currentTimeMillis()
                      } else {
+                         mp.updateAd()
                          finish()
                      }
                  }

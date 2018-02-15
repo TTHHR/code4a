@@ -81,9 +81,8 @@ public class SettingFragment extends PreferenceFragment implements SettingFragme
     }
 
     @Override
-    public void openWebActivity(String url) {
-        Intent i=new Intent(getActivity(),WebActivity.class);
-        i.putExtra("url",url);
+    public void openAboutActivity() {
+        Intent i=new Intent(getActivity(),AboutActivity.class);
         startActivity(i);
     }
 }

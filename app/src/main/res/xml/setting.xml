@@ -20,22 +20,8 @@
             android:title="@string/setting_collection" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/setting_about" >
-        <PreferenceScreen android:title="@string/setting_software_info"
-
+        <PreferenceScreen android:title="@string/setting_about"
             >
         </PreferenceScreen>
-        <PreferenceScreen
-            android:summary="@string/setting_tieba_summary"
-            android:title="@string/setting_tieba" >
-
-        </PreferenceScreen>
-        <PreferenceScreen
-            android:summary="@string/setting_auth_summary"
-            android:title="@string/setting_auth_donation">
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/setting_update">
-        </PreferenceScreen>
-    </PreferenceCategory>
-
+    
 </PreferenceScreen>
