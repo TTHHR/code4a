@@ -31,19 +31,10 @@ public class SettingFragmentPresenter {
             sfi.showToast(Constant.INFO,sfi.getXmlString(R.string.about_collection));
             return;
         }
-        if(preference.getTitle()==sfi.getXmlString(R.string.setting_auth_donation))
+
+        if(preference.getTitle()==sfi.getXmlString(R.string.setting_about))
         {
-            sfi.openWebActivity(Constant.donationUrl);
-            return;
-        }
-        if(preference.getTitle()==sfi.getXmlString(R.string.setting_software_info))
-        {
-            sfi.openWebActivity(Constant.softwareInfoUrl);
-            return;
-        }
-        if(preference.getTitle()==sfi.getXmlString(R.string.setting_tieba))
-        {
-            sfi.openWebActivity(Constant.tiebaUrl);
+            sfi.openAboutActivity();
             return;
         }
     }

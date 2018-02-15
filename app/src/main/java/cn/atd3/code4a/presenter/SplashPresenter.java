@@ -119,7 +119,6 @@ public class SplashPresenter {
     public void setSplashAdListener(final Activity activity, final SplashAd sad) {
         SplashAd.SplashAdListener sal = new SplashAd.SplashAdListener() {
             Intent intent = new Intent(activity, MainActivity.class);
-
             @Override
             public void onAdImageClicked() {
                 intent.putExtra("url", sami.getUrl() == null ? "http://blog.qingyuyu.cn/" : sami.getUrl());
@@ -202,18 +201,14 @@ public class SplashPresenter {
                         Log.i(TAG, list.toString());
                     }
 
-                } catch (ServerException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (PermissionException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }.start();
     }
 
-    private void getAd() {//从本地和网络加载广告信息
+    private void getAd() {//从本地加载广告信息
 
         try {
 
@@ -227,22 +222,6 @@ public class SplashPresenter {
                 setAd(Uri.fromFile(adImg), u);
                 //通知View层改变视图
                 updateImage();
-                Calendar cal = Calendar.getInstance();
-                long time = adImg.lastModified();
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                cal.setTimeInMillis(time);
-                String lastTime = formatter.format(cal.getTime());
-                cal.setTimeInMillis(System.currentTimeMillis());
-
-                if (!(formatter.format(cal.getTime()).equals(lastTime)))//ad图片老旧
-                {//下载开屏广告
-                  downAd();
-                }
-
-
-            } else//因为带宽问题，广告下次显示
-            {
-               downAd();
             }
 
         } catch (Exception e) {
@@ -250,29 +229,6 @@ public class SplashPresenter {
         } finally {
 
         }
-
-    }
-    private void downAd()
-    {
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Object msg = Remote.androidMessage.method("pullAd", AdInfo.class).call();
-                            if(msg instanceof AdInfo)
-                            {
-                                FileDealService.getInstance().saveFile(Constant.getAdImg(),((AdInfo) msg).getImage());
-                                FileDealService.getInstance().saveFile(Constant.getAdUrl(), ((AdInfo) msg).getUrl());
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e("downAd",""+e);
-                        }
-                    }
-                }
-        ).start();
 
     }
 }
