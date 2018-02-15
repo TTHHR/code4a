@@ -1,7 +1,6 @@
 package cn.atd3.code4a.presenter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 

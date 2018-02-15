@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.*
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
+import cn.atd3.code4a.R.color.bootstrap_gray_lighter
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.presenter.MainPresenter
@@ -47,7 +48,10 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     private lateinit var mp: MainPresenter
     private  val TAG="MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        //将window的背景图设置为空
+        window.setBackgroundDrawableResource(bootstrap_gray_lighter)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)//title bar
 
@@ -79,48 +83,49 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val cateListFile = File(Constant.getCategoryListFilePath())
-
-        val catelist: List<CategoryModel>
-
-        if (cateListFile.exists()) {
-            catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
-        } else {
-            Log.i(TAG,"load from network faild, load from assets!")
-            catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
-        }
-
         val tagListLayout = findViewById<LinearLayout>(R.id.tagList)
-        val defaultButton: Button = Button(applicationContext)
-        defaultButton.text = "首页"
-        defaultButton.id = 0
-        defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
-        tagList = tagList.plus(defaultButton)
+            val cateListFile = File(Constant.getCategoryListFilePath())
+            val catelist: List<CategoryModel>
 
-        for (cate: CategoryModel in catelist) {
-            val button = Button(applicationContext)
-            button.text = cate.name
-            button.id = cate.id
-            button.setBackgroundColor(resources.getColor(R.color.btn_enable))
-            tagList = tagList.plus(button)
-        }
+            if (cateListFile.exists()) {
+                catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
+            } else {
+                Log.i(TAG, "load from network faild, load from assets!")
+                catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
+            }
 
-        for (btn: Button in tagList) {
-            val af = ArticleFragment()
-            af.init(btn.id)
-            fragmentList = fragmentList.plus(af)
-            btn.setOnClickListener { view ->
-                for ((index, btn: Button) in tagList.withIndex()) {
-                    if (btn.id == view.id) {
-                        btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
-                        myViewPager.currentItem = index
-                    } else {
-                        btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
+
+            val defaultButton: Button = Button(applicationContext)
+            defaultButton.text = "首页"
+            defaultButton.id = 0
+            defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
+            tagList = tagList.plus(defaultButton)
+
+            for (cate: CategoryModel in catelist) {
+                val button = Button(applicationContext)
+                button.text = cate.name
+                button.id = cate.id
+                button.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                tagList = tagList.plus(button)
+            }
+
+            for (btn: Button in tagList) {
+                val af = ArticleFragment()
+                af.init(btn.id)
+                fragmentList = fragmentList.plus(af)
+                btn.setOnClickListener { view ->
+                    for ((index, btn: Button) in tagList.withIndex()) {
+                        if (btn.id == view.id) {
+                            btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                            myViewPager.currentItem = index
+                        } else {
+                            btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
+                        }
                     }
                 }
+                tagListLayout.addView(btn)
             }
-            tagListLayout.addView(btn)
-        }
+
 
 
         myViewPager = findViewById(R.id.myViewPager)
@@ -201,7 +206,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                    Toasty.info(this,getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
+                exitTime = System.currentTimeMillis()
+            } else {
+                mp.updateAd()
+                super.onBackPressed()
+            }
         }
     }
 
@@ -246,23 +257,4 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         return true
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-
-            when (keyCode)
-            {
-                 KeyEvent.KEYCODE_BACK-> {
-                     if ((System.currentTimeMillis() - exitTime) > 2000) {
-                         runOnUiThread {
-                             Toasty.info(this,getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
-                         }
-                         exitTime = System.currentTimeMillis()
-                     } else {
-                         mp.updateAd()
-                         finish()
-                     }
-                 }
-            }
-
-        return super.onKeyDown(keyCode, event)
-    }
 }

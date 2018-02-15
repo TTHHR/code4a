@@ -34,16 +34,20 @@ public class ArticleFragmentPresenter {
         i.putExtra("article", al.get(p));
     }
 
-    public void setAdapterData(int category) {
-        Log.e("al", "" + al.hashCode());
-        al = databasePresenter.getArticles(category);
-        Log.d("Article", "category " + category + " list size = " + al.size());
-        if (al.size() == 0) {
-            afi.showTouch();
-        } else {
-            afi.showList();
-        }
-        afi.setAdapter(al);
+    public void setAdapterData(final int category) {
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+               al = databasePresenter.getArticles(category);
+               Log.d("Article", "category " + category + " list size = " + al.size());
+               if (al.size() == 0) {
+                   afi.showTouch();
+               } else {
+                   afi.showList();
+               }
+               afi.setAdapter(al);
+           }
+       }).start();
     }
 
     public void removeItem(int item)

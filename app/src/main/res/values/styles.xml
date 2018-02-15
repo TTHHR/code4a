@@ -9,6 +9,7 @@
     </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar" parent="@style/AppTheme" >
+        <item name="android:windowBackground">@mipmap/splash</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

@@ -30,6 +30,8 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //将window的背景图设置为空
+        getWindow().setBackgroundDrawableResource(android.R.color.white);
         setContentView(R.layout.activity_splash);
         View mContentView = findViewById(R.id.splash_view);
         mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
