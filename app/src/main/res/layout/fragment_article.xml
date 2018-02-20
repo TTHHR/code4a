@@ -41,9 +41,9 @@
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:divider="@color/bootstrap_gray_lighter"
-            android:dividerHeight="10px"></ListView>
+            android:dividerHeight="4dp"/>
 
     </com.jwenfeng.library.pulltorefresh.PullToRefreshLayout>
 </RelativeLayout>

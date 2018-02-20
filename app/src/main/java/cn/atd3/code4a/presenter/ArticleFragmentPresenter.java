@@ -35,6 +35,7 @@ public class ArticleFragmentPresenter {
     }
 
     public void setAdapterData(final int category) {
+
        new Thread(new Runnable() {
            @Override
            public void run() {
