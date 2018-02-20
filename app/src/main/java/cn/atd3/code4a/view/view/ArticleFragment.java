@@ -55,7 +55,6 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
         this.kind = kind;
     }
     public static ArticleDatabase articleDatabase;
-
     private int requestId=-1;
 
     @Nullable
@@ -65,7 +64,6 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
             if (articleDatabase ==null){
                 articleDatabase =new ArticleDatabase(getContext());
             }
-
             afp = new ArticleFragmentPresenter(this,articleDatabase);
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
@@ -125,7 +123,6 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
         if (parent != null) {
             parent.removeView(view);
         }
-
 
         return view;
     }
@@ -203,7 +200,6 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
         );
 
     }
-
     @Override
     public void onfinishRefresh() {
         getActivity().runOnUiThread(

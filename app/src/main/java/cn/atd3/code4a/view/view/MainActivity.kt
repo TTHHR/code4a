@@ -21,6 +21,7 @@ import cn.atd3.code4a.R
 import cn.atd3.code4a.R.color.bootstrap_gray_lighter
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.model.CategoryModel
+import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
@@ -155,7 +156,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             Thread(
                     Runnable {
                         try {
-                   //         Remote.user.method("signin").call("TTHHR", "", true)
+       //                     Remote.user.method("signin").call("TTHHR", "", true)
                         }
                         catch (e:Exception)
                         {

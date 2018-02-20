@@ -10,6 +10,7 @@
     <string name="setting_language_select">Select A Language</string>
     <string name="setting_debug">Debug mode</string>
     <string name="setting_collection">push info</string>
+    <string name="info_loading">Loading</string>
     <string name="about_collection">Collect mobile information to help APP improvement, information does not contain personal privacy</string>
     <string name="setting_auth_donation">donation</string>
     <string name="setting_auth_summary">Donate to authors</string>

@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
@@ -40,7 +44,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
     private TextView articleText;
     private ViewArticlePresenter vap;
     private BootstrapButton copyButton, mycomment;
-    private AlertDialog md;
+    private QMUITipDialog  md;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +56,9 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         // 固定横屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        md = new AlertDialog.Builder(ViewArticleActivity.this)
-                .setTitle(R.string.please_waiting)
-                .setView(new ProgressBar(ViewArticleActivity.this))
-                .setCancelable(false)//不可跳过
+        md = new QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord(getString(R.string.info_loading))
                 .create();
 
         vap = new ViewArticlePresenter(this,this,article);//控制器
@@ -167,44 +170,48 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
             case R.id.action_downloadfile: {
                 //下载附件
 
-                new MDDialog.Builder(ViewArticleActivity.this)
-                        .setMessages(vap.getDownFileList())
-                        .setOnItemClickListener(new MDDialog.OnItemClickListener() {
+                final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(this)
+                        .addItems(vap.getDownFileList(), new DialogInterface.OnClickListener() {
                             @Override
-                            public void onItemClicked(int index) {
-                                //创建下载任务,downloadUrl就是下载链接
-                                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(vap.getFileUrl(index)));
-                                // 设置Title
-                                request.setTitle(vap.getDownFileList()[index]);
-                                // 设置描述
-                                request.setDescription(getString(R.string.info_down)+vap.getDownFileList()[index]);
-                                //默认只显示下载中通知
-                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                //指定下载路径和下载文件名
+                            public void onClick(DialogInterface dialog, int which) {
 
-                                request.setDestinationInExternalPublicDir(Constant.downloadPath+"/"+vap.getArticleid()+"/", vap.getDownFileList()[index]);
-
-//                                        runOnUiThread(
-//                                                new Runnable() {
-//                                                    @Override
-//                                                    public void run() {
-//                                                        Toasty.error(ViewArticleActivity.this,Constant.debugmodeinfo==true?""+e:"error",Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                }
-//                                        );
-
-                                    Log.e("down path",Constant.downloadPath+"/"+vap.getArticleid()+"/");
-                                Log.e("file",vap.getDownFileList()[index]);
-                    //获取下载管理器
-                                DownloadManager downloadManager= (DownloadManager) ViewArticleActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
-
-                    //将下载任务加入下载队列，否则不会进行下载
-                                downloadManager.enqueue(request);
                             }
-                        })
-                        .setWidthMaxDp(600)
-                        .create()
-                        .show();
+                        });
+                builder.addAction(getString(R.string.button_cancel), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.addAction(getString(R.string.button_ok), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+
+                        for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
+                            //创建下载任务,downloadUrl就是下载链接
+                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(vap.getFileUrl(i)));
+                            // 设置Title
+                            request.setTitle(vap.getDownFileList()[i]);
+                            // 设置描述
+                            request.setDescription(getString(R.string.info_down)+vap.getDownFileList()[i]);
+                            //默认只显示下载中通知
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            //指定下载路径和下载文件名
+
+                            request.setDestinationInExternalPublicDir(Constant.downloadPath+"/"+vap.getArticleid()+"/", vap.getDownFileList()[i]);
+                            Log.e("down path",Constant.downloadPath+"/"+vap.getArticleid()+"/");
+                            Log.e("file",vap.getDownFileList()[i]);
+                            //获取下载管理器
+                            DownloadManager downloadManager= (DownloadManager) ViewArticleActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
+
+                            //将下载任务加入下载队列，否则不会进行下载
+                            downloadManager.enqueue(request);
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
 
 
                 break;
