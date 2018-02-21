@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.SplashPresenter;
 import cn.atd3.code4a.view.inter.SplashViewInterface;
 import cn.qingyuyu.commom.ui.SplashAd;
-import es.dmoral.toasty.Toasty;
 
 import static android.view.KeyEvent.KEYCODE_BACK;
 import static cn.atd3.code4a.Constant.ERROR;
@@ -23,10 +25,11 @@ import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
 
-public class SplashActivity extends AppCompatActivity  implements SplashViewInterface {
+public class SplashActivity extends AppCompatActivity implements SplashViewInterface {
 
     private SplashPresenter sp;
     private SplashAd sad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +44,15 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        sad=findViewById(R.id.splash_ad);
+        sad = findViewById(R.id.splash_ad);
 
-        sp=new SplashPresenter(this,this);//实例化，并将自身做参数
+        sp = new SplashPresenter(this, this);//实例化，并将自身做参数
 
         sp.requestPermissions(this);//请求权限
 
         sp.requestAdInfo();//请求广告信息
 
-        sp.setSplashAdListener(this,sad);//设置广告监听
+        sp.setSplashAdListener(this, sad);//设置广告监听
 
         sp.showAd(3000);//显示广告3秒
 
@@ -58,11 +61,12 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        sp.onRequestPermissionsResult(requestCode,grantResults);//Presenter处理请求权限结果
+        sp.onRequestPermissionsResult(requestCode, grantResults);//Presenter处理请求权限结果
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KEYCODE_BACK) ) {
+        if ((keyCode == KEYCODE_BACK)) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -74,41 +78,77 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(sad!=null)
-                sad.setAdImageURI(imguri);
-               //设置图片
+                if (sad != null)
+                    sad.setAdImageURI(imguri);
+                //设置图片
             }
         });
 
     }
 
 
-
     @Override
     public void showToast(final int infotype, final String info) {
+
         runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
+                        final  QMUITipDialog tipDialog ;
                         switch (infotype) {
                             case SUCCESS:
-                                Toasty.success(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(SplashActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case INFO:
-                                Toasty.info(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(SplashActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case NORMAL:
-                                Toasty.normal(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(SplashActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case WARNING:
-                                Toasty.warning(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(SplashActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case ERROR:
-                                Toasty.error(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog =  new QMUITipDialog.Builder(SplashActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(Constant.debugmodeinfo?info:getString(R.string.remote_error))
+                                        .create();
                                 break;
                             default:
-
+                                tipDialog = new QMUITipDialog.Builder(SplashActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                         }
+                        tipDialog.show();
+                        new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        finally {
+                                            tipDialog.dismiss();
+                                        }
+
+                                    }
+                                }
+                        ).start();
                     }
                 }
         );
@@ -122,7 +162,7 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
 
     @Override
     public void setSplashAdListener(SplashAd.SplashAdListener sal) {
-        if(sad!=null)
+        if (sad != null)
             sad.setSplashAdListener(sal);
     }
 
@@ -132,8 +172,8 @@ public class SplashActivity extends AppCompatActivity  implements SplashViewInte
                 new Runnable() {
                     @Override
                     public void run() {
-                        if(sad!=null)
-                            sad.show(SplashActivity.this,showtime);
+                        if (sad != null)
+                            sad.show(SplashActivity.this, showtime);
                     }
                 }
         );

@@ -6,15 +6,13 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.SettingFragmentPresenter;
 import cn.atd3.code4a.view.inter.SettingFragmentInterface;
-import es.dmoral.toasty.Toasty;
 
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
@@ -34,7 +32,7 @@ public class SettingFragment extends PreferenceFragment implements SettingFragme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
-        sfp=new SettingFragmentPresenter(this);
+        sfp = new SettingFragmentPresenter(this);
     }
 
     @Override
@@ -45,44 +43,83 @@ public class SettingFragment extends PreferenceFragment implements SettingFragme
         return super.onPreferenceTreeClick(preferenceScreen, preference);
 
     }
+
     @Override
     public String getXmlString(int resourceId) {
         return getString(resourceId);
     }
 
     @Override
-    public void showToast(final int infotype, @NotNull final String info) {
+    public void showToast(final int infotype, final String info) {
+
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
+                        final  QMUITipDialog tipDialog ;
                         switch (infotype) {
                             case SUCCESS:
-                                Toasty.success(getActivity(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case INFO:
-                                Toasty.info(getActivity(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case NORMAL:
-                                Toasty.normal(getActivity(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case WARNING:
-                                Toasty.warning(getActivity(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case ERROR:
-                                Toasty.error(getActivity(), Constant.debugmodeinfo?info:getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                tipDialog =  new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(Constant.debugmodeinfo?info:getString(R.string.remote_error))
+                                        .create();
                                 break;
                             default:
-
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                         }
+                        tipDialog.show();
+                        new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        finally {
+                                            tipDialog.dismiss();
+                                        }
+
+                                    }
+                                }
+                        ).start();
                     }
                 }
         );
+
     }
 
     @Override
     public void openAboutActivity() {
-        Intent i=new Intent(getActivity(),AboutActivity.class);
+        Intent i = new Intent(getActivity(), AboutActivity.class);
         startActivity(i);
     }
 }

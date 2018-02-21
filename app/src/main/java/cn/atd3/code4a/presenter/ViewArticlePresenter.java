@@ -76,6 +76,10 @@ public class ViewArticlePresenter {
         return article.getId();
     }
 
+    public ArticleModel getArticle() {
+        return article;
+    }
+
     public void shouWaitDialog() {
         avi.showWaitDialog();
     }

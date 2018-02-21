@@ -1,14 +1,10 @@
 package cn.atd3.code4a.view.view
 
-import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatSpinner
 import android.util.Log
@@ -30,69 +26,63 @@ import cn.carbs.android.library.MDDialog
 import cn.dxkite.common.StorageData
 import com.beardedhen.androidbootstrap.BootstrapButton
 import com.beardedhen.androidbootstrap.BootstrapEditText
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.scrat.app.richtext.RichEditText
-import es.dmoral.toasty.Toasty
 import top.zibin.luban.Luban
-import top.zibin.luban.OnCompressListener
 import java.io.File
 
-class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
+class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
 
     private val REQUEST_CODE_GET_CONTENT = 666
-    private val SELECTFILE = 555
-    private val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444
 
 
-    private  var message:TextView?=null
+    private var message: TextView? = null
     private lateinit var richEditText: RichEditText
-    private lateinit var eap:EditArticlePresenter
-    private lateinit var md:AlertDialog
+    private lateinit var eap: EditArticlePresenter
+    private lateinit var md: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editarticle)
 
-        eap=EditArticlePresenter(this)
+        eap = EditArticlePresenter(this)
 
         initView()
 
     }
 
 
-
-    fun initView()
-    {
+    fun initView() {
         richEditText = findViewById(R.id.rich_text)
-        val i=intent
+        val i = intent
         if (i.getStringExtra("content") != null) {
-            Log.e("content","内蓉为:"+i.getStringExtra("content"))
+            Log.e("content", "内蓉为:" + i.getStringExtra("content"))
             richEditText.fromHtml(i.getStringExtra("content"))
 
             //如果有create表示为编辑文章而不是新建文章
-            if(i.getIntExtra("create",-1)!=-1) {
+            if (i.getIntExtra("create", -1) != -1) {
                 eap.setArticleCreateTime(i.getIntExtra("create", (System.currentTimeMillis() / 1000).toInt()))
             }
-            if(i.getIntExtra("id",-1)!=-1) {
-                eap.setArticleId(i.getIntExtra("id",-1))
+            if (i.getIntExtra("id", -1) != -1) {
+                eap.setArticleId(i.getIntExtra("id", -1))
             }
 
         }
         val inflater = layoutInflater
         val dialoglayout = inflater.inflate(R.layout.dialog_articleproperty, null)
-        val titleEdit=dialoglayout.findViewById<BootstrapEditText>(R.id.title)
-        val okButton=dialoglayout.findViewById<BootstrapButton>(R.id.okbutton)
-        val kind=dialoglayout.findViewById<AppCompatSpinner>(R.id.classspinner)
-        val power=dialoglayout.findViewById<AppCompatSpinner>(R.id.powerspinner)
-        val passwordEdit=dialoglayout.findViewById<BootstrapEditText>(R.id.password)
+        val titleEdit = dialoglayout.findViewById<BootstrapEditText>(R.id.title)
+        val okButton = dialoglayout.findViewById<BootstrapButton>(R.id.okbutton)
+        val kind = dialoglayout.findViewById<AppCompatSpinner>(R.id.classspinner)
+        val power = dialoglayout.findViewById<AppCompatSpinner>(R.id.powerspinner)
+        val passwordEdit = dialoglayout.findViewById<BootstrapEditText>(R.id.password)
 
-         md= AlertDialog.Builder(this@EditArticleActivity)
+        md = AlertDialog.Builder(this@EditArticleActivity)
                 .setTitle(R.string.title_articleproperty)
                 .setView(dialoglayout)
                 .setCancelable(false)//不可跳过
-                .setOnKeyListener(object : DialogInterface.OnKeyListener{
+                .setOnKeyListener(object : DialogInterface.OnKeyListener {
                     override fun onKey(p0: DialogInterface?, keyCode: Int, p2: KeyEvent?): Boolean {
-                        if (keyCode == KeyEvent.KEYCODE_BACK)
-                        {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
                             this@EditArticleActivity.finish()
                             return true
                         }
@@ -108,53 +98,54 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
         if (cateListFile.exists()) {
             catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
         } else {
-            Log.i("EditActivity","load from network faild, load from assets!")
+            Log.i("EditActivity", "load from network faild, load from assets!")
             catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
         }
 
-        val spinnerstring=ArrayList<String>()
+        val spinnerstring = ArrayList<String>()
 
         for (cate: CategoryModel in catelist) {
-           spinnerstring.add(cate.name)
+            spinnerstring.add(cate.name)
         }
 
-        val sad= ArrayAdapter(this@EditArticleActivity,android.R.layout.simple_list_item_1,spinnerstring)
+        val sad = ArrayAdapter(this@EditArticleActivity, android.R.layout.simple_list_item_1, spinnerstring)
 
-        kind.adapter=sad
+        kind.adapter = sad
 
-        kind.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
+        kind.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.e("select kind",""+p2+1)
-                eap.setArticleCategory(p2+1)
+                Log.e("select kind", "" + p2 + 1)
+                eap.setArticleCategory(p2 + 1)
 
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
-        power.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
+        power.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                when(p2)
-                {
-                    0->eap.setArticleVisibility("public")
-                    1->eap.setArticleVisibility("sign")
-                    2->eap.setArticleVisibility("password")
+                when (p2) {
+                    0 -> eap.setArticleVisibility("public")
+                    1 -> eap.setArticleVisibility("sign")
+                    2 -> eap.setArticleVisibility("password")
                 }
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
 
-        okButton.setOnClickListener{
+        okButton.setOnClickListener {
             eap.setArticleTitle(titleEdit.text.toString())
 
             eap.setArticlePassword(passwordEdit.text.toString())
 
             eap.checkArticleInfo()//检查文章属性
 
-            }
-        md .show()
+        }
+        md.show()
 
-        if(richEditText.text.isEmpty())
+        if (richEditText.text.isEmpty())
             richEditText.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
                     "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n")
 
@@ -169,11 +160,11 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
         when (item.itemId) {
             R.id.undo -> richEditText.undo()
             R.id.redo -> richEditText.redo()
-            R.id.export-> {
+            R.id.export -> {
                 val inflater = layoutInflater
                 val dialoglayout = inflater.inflate(R.layout.dialog_uploadarticle, null)
-                 message = dialoglayout.findViewById<TextView>(R.id.message)
-                 md = AlertDialog.Builder(this@EditArticleActivity)
+                message = dialoglayout.findViewById<TextView>(R.id.message)
+                md = AlertDialog.Builder(this@EditArticleActivity)
                         .setTitle(R.string.title_article)
                         .setView(dialoglayout)
                         .setCancelable(false)
@@ -192,8 +183,8 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
     override fun prgoressOfUpload(info: String) {
         runOnUiThread(
                 Runnable {
-                    if(message!=null)
-                        message!!.text=info
+                    if (message != null)
+                        message!!.text = info
                 }
         )
     }
@@ -202,37 +193,72 @@ class EditArticleActivity : AppCompatActivity() ,EditArticleActivityInterface {
     override fun dismissArticleInfoDialog() {
         runOnUiThread(
                 Runnable {
-                    if(md.isShowing)
+                    if (md.isShowing)
                         md.dismiss()
                 }
         )
 
     }
+
       override fun showToast(infotype:Int, info:String) {
+
 runOnUiThread {
+    val tipDialog:QMUITipDialog
     when (infotype) {
-        SUCCESS -> Toasty.success(applicationContext, info, Toast.LENGTH_LONG).show()
-        INFO -> Toasty.info(applicationContext, info, Toast.LENGTH_LONG).show()
-        NORMAL -> Toasty.normal(applicationContext, info, Toast.LENGTH_LONG).show()
-        WARNING -> Toasty.warning(applicationContext, info, Toast.LENGTH_LONG).show()
-        ERROR -> Toasty.error(applicationContext, if (Constant.debugmodeinfo) info else getString(R.string.remote_error), Toast.LENGTH_LONG).show()
+        SUCCESS -> tipDialog = QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                .setTipWord(info)
+                .create()
+        INFO -> tipDialog = QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                .setTipWord(info)
+                .create()
+        NORMAL -> tipDialog = QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                .setTipWord(info)
+                .create()
+        WARNING -> tipDialog = QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                .setTipWord(info)
+                .create()
+        ERROR -> tipDialog = QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                .setTipWord(if (Constant.debugmodeinfo) info else getString(R.string.remote_error))
+                .create()
+        else -> tipDialog = QMUITipDialog.Builder(this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                .setTipWord(info)
+                .create()
     }
+    tipDialog.show()
+    Thread(
+            Runnable {
+                try {
+                    Thread.sleep(1500)
+                } catch (e:InterruptedException) {
+                    e.printStackTrace()
+                } finally {
+                    tipDialog.dismiss()
+                }
+            }
+    ).start()
 }
 
       }
 
-    override fun getXmlString(resourceId:Int):String {
-return getString(resourceId)
-}
+    override fun getXmlString(resourceId: Int): String {
+        return getString(resourceId)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE||data==null|| data.data==null)
+        if (data == null || data.data == null)
             return
-        val uri=data.data
+        val uri = data.data
         Log.e("image uri", "" + uri)
         Thread(Runnable {
-           val f= Luban.with(this).setTargetDir(Constant.getPublicFilePath()).get(UriRealPath.getRealPathFromUri(this,uri))
-            val u=Uri.fromFile(f)
-            Log.e("zip image uri",u.toString())
+            val f = Luban.with(this).setTargetDir(Constant.getPublicFilePath()).get(UriRealPath.getRealPathFromUri(this, uri))
+            val u = Uri.fromFile(f)
+            Log.e("zip image uri", u.toString())
             runOnUiThread {
                 val width = richEditText.measuredWidth - richEditText.paddingLeft - richEditText.paddingRight
                 richEditText.image(u, width)
@@ -287,11 +313,6 @@ return getString(resourceId)
     插入图片
      */
     fun insertImg(v: View) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
-        }
-
         val getImage = Intent(Intent.ACTION_GET_CONTENT)
         getImage.addCategory(Intent.CATEGORY_OPENABLE)
         getImage.type = "image/*"
@@ -302,21 +323,20 @@ return getString(resourceId)
      * 添加附件
      */
     fun insertFile(v: View) {
-        val files =FileListModel.getIns().toArray()
+        val files = FileListModel.getIns().toArray()
         MDDialog.Builder(this@EditArticleActivity)
                 .setMessages(files)
                 .setTitle(R.string.title_showfile)
-                .setPositiveButton(R.string.button_add,View.OnClickListener {
-                    Toasty.info(this@EditArticleActivity, getString(R.string.select_file_info) , Toast.LENGTH_LONG, true).show()
-                    val i=Intent(this@EditArticleActivity, FileSelectActivity::class.java)
+                .setPositiveButton(R.string.button_add, View.OnClickListener {
+                    val i = Intent(this@EditArticleActivity, FileSelectActivity::class.java)
                     startActivity(i)
                 })
-                .setOnItemClickListener(object:MDDialog.OnItemClickListener {
+                .setOnItemClickListener(object : MDDialog.OnItemClickListener {
                     override fun onItemClicked(index: Int) {
-                        Toasty.warning(this@EditArticleActivity, getString(R.string.click_file_remove)+FileListModel.getIns().get(index) , Toast.LENGTH_SHORT, true).show()
+
                         FileListModel.getIns().removeFile(index)
                     }
-                } )
+                })
                 .setWidthMaxDp(600)
                 .setShowTitle(true)
                 .setShowButtons(true)

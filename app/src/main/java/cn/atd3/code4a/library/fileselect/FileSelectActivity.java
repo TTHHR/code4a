@@ -2,7 +2,6 @@ package cn.atd3.code4a.library.fileselect;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -15,16 +14,13 @@ import butterknife.ButterKnife;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.library.fileselect.ui.fragment.FileFragment;
 import cn.atd3.code4a.model.model.FileListModel;
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by harrytit on 2017/10/14.
  */
 
 public class FileSelectActivity extends AppCompatActivity{
-    Long exitTime=0l;
-    private int SELECTFILE = 555;
-    private int SELECTFILE_CANCLE = 0;
+    Long exitTime=0L;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +65,8 @@ public class FileSelectActivity extends AppCompatActivity{
             case KeyEvent.KEYCODE_BACK:
                 if ((System.currentTimeMillis() - exitTime) > 2000)
                 {
-                    Toasty.warning(getApplicationContext(), getString(R.string.click_file_exit), Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(this,getString(R.string.click_file_exit),Toast.LENGTH_SHORT).show();
                     exitTime = System.currentTimeMillis();
                 }
                 else
