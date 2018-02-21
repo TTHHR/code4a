@@ -27,10 +27,12 @@ public interface ArticleModelInterface {
     Integer getModify() ;
 
     void setModify(Integer modify) ;
+    Integer getCategoryId() ;
 
-    Integer getCategory() ;
+    void setCategoryId(Integer categoryId) ;
+    String getCategory() ;
 
-    void setCategory(Integer category) ;
+    void setCategory(String category) ;
     String getAbstract();
 
     void setAbstract(String mAbstract) ;

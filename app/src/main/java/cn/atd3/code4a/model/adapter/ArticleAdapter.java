@@ -60,7 +60,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         TextView category = view.findViewById(R.id.itemCategory);
         if (showCategory) {
-            category.setText(ArticleModel.category(a.getCategory()));
+            category.setText(ArticleModel.category(a.getCategoryId()));
         } else {
             category.setVisibility(View.INVISIBLE);
         }

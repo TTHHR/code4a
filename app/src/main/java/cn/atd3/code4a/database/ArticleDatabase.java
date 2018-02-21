@@ -54,7 +54,7 @@ public class ArticleDatabase {
             Cursor cursor = getListByCategory(category);
             while (cursor.moveToNext()) {
                 ArticleModel a = new ArticleModel();
-                a.setCategory(cursor.getInt(cursor.getColumnIndex("category")));//读取分类
+                a.setCategoryId(cursor.getInt(cursor.getColumnIndex("categoryId")));//读取分类
                 a.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
                 a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
@@ -101,7 +101,7 @@ public class ArticleDatabase {
             Cursor cursor = db.query(TBL_NAME, columns, select, selectWhere, null, null, null);
             while (cursor.moveToNext()) {
                 a=new ArticleModel();
-                a.setCategory(cursor.getInt(cursor.getColumnIndex("category")));//读取分类
+                a.setCategoryId(cursor.getInt(cursor.getColumnIndex("categoryId")));//读取分类
                 a.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
                 a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
@@ -157,16 +157,15 @@ public class ArticleDatabase {
         String[] whereArgs = {""+id};
         int amount=db.delete(TBL_NAME,"id=?",whereArgs);
         db.close();
-        if(amount==0)
-            return false;
-        return true;
+        return amount != 0;
     }
 
-    public Cursor getListByCategory(int category) {
+    public Cursor getListByCategory(int categoryId) {
         SQLiteDatabase db = database.getReadableDatabase();
         String[] columns = {
                 "id",
                 "category",
+                "categoryId",
                 "title",
                 "slug",
                 "abstract",
@@ -179,12 +178,12 @@ public class ArticleDatabase {
         };
 
         Cursor cursor = null;
-        if (category == 0) {
+        if (categoryId == 0) {
             cursor = db.query(TBL_NAME, columns, null, null, null, null, "modify desc");
         } else {
-            String select = "category = ?";
+            String select = "categoryId = ?";
             String[] selectWhere = {
-                    String.valueOf(category)
+                    String.valueOf(categoryId)
             };
             cursor = db.query(TBL_NAME, columns, select, selectWhere, null, null, "modify desc");
         }

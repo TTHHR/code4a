@@ -241,7 +241,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 .setCheckedIndex(0)
                 .addItems(items.toTypedArray(), object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, which: Int) {
-                        eap.setArticleCategory(which + 1)
+                        eap.setArticleCategoryId(which + 1)
                         dialog!!.dismiss()
                     }
 

@@ -17,7 +17,8 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     Integer user;
     Integer create;
     Integer modify;
-    Integer category;
+    Integer categoryId;
+    String category;
     String mAbstract;
     Integer cover;
     Integer  views;
@@ -74,12 +75,19 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
         this.modify = modify;
     }
 
-    public Integer getCategory() {
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Integer category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
     public String getAbstract() {
         return mAbstract;
@@ -144,6 +152,7 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
                 ", create=" + create +
                 ", modify=" + modify +
                 ", category=" + category +
+                ", categoryId=" + categoryId +
                 ", abstract='" + mAbstract + '\'' +
                 ", cover=" + cover +
                 ", views=" + views +
