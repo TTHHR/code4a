@@ -57,8 +57,8 @@ public class EditArticlePresenter {
         article = new ArticleModel();
     }
 
-    public void setArticleCategory(int c) {
-        article.setCategory(c);
+    public void setArticleCategoryId(int c) {
+        article.setCategoryId(c);
     }
 
     public boolean isEditModel()
@@ -104,8 +104,8 @@ public String getTitle()
         if (article.getTitle() == null || article.getSlug() == null) {
             return false;
         }
-        if (article.getCategory() == null) {
-            article.setCategory(1);//默认分类
+        if (article.getCategoryId() == null) {
+            article.setCategoryId(1);//默认分类
         }
         if (article.getVisibility() == null) {
             article.setVisibility("public");//默认公开

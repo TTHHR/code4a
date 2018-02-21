@@ -92,11 +92,12 @@ public class ArticleFragmentPresenter {
 
     private boolean requestData(final int kind) {
         try {
+            Log.e("request kind",""+kind);
             Object articleList = null;
             if (kind == 0) {
-                articleList = Remote.article.method("getList", ArticleModel.class).call(1, 10);
+                articleList = Remote.article.method("getPublicList", ArticleModel.class).call(1, 10);
             } else {
-                articleList = Remote.category.method("getArticleById", ArticleModel.class).call(kind, page, 10);
+                articleList = Remote.category.method("getListByCategoryId", ArticleModel.class).call(kind, page, 10);
             }
             if (articleList.getClass().equals(ArrayList.class)) {
                 for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
