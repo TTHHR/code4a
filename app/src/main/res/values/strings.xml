@@ -41,6 +41,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sd_notready_tip">你手机的sd卡没有准备好</string>
     <string name="error_title">标题不能为空</string>
+    <string name="input_title">请输入文章标题</string>
     <string name="click_file_tip">长按选择 %1$s</string>
     <string name="click_file_exit">再按一次退出选择文件</string>
     <string name="click_file_remove"> 成功移除 </string>
@@ -54,8 +55,8 @@
     <string name="button_cancel">取消</string>
     <string name="button_del">删除</string>
     <string name="button_edit">编辑</string>
-    <string name="title_article">上传文章</string>
-    <string name="title_articleproperty">文章属性</string>
+    <string name="title_upload_article">上传文章</string>
+    <string name="title_article">标题</string>
     <string name="title_upfile">上传文件</string>
     <string name="action_packfile">打包文件</string>
     <string name="action_upfinish">上传完成</string>
@@ -66,11 +67,7 @@
     </string-array>
     <string name="info_selectclass">分类：</string>
     <string name="info_selectpower">选择权限：</string>
-    <string-array name="power_list_key">
-        <item>公开</item>
-        <item>登陆</item>
-        <item>密码</item>
-    </string-array>
+    <string name="wanning_visibility">当前版本只支持公开权限！</string>
     <string name="wanning_storage">请确保允许App有储存权限！</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="info_changelanguage">改变语言后，请手动重启App</string>

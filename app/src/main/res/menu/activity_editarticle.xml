@@ -20,5 +20,17 @@
         android:icon="@mipmap/ic_action_send"
         android:title="发送"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/addTitle"
+        android:title="@string/title_article"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/addCategory"
+        android:title="@string/info_selectclass"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/addPower"
+        android:title="@string/info_selectpower"
+        app:showAsAction="ifRoom" />
 
 </menu>

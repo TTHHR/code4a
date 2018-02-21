@@ -6,9 +6,8 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.AppCompatSpinner
+import android.text.InputType
 import android.util.Log
-import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +16,7 @@ import cn.atd3.code4a.Constant
 import cn.atd3.code4a.Constant.*
 import cn.atd3.code4a.R
 import cn.atd3.code4a.library.fileselect.FileSelectActivity
+import cn.atd3.code4a.model.model.ArticleModel
 import cn.atd3.code4a.model.model.CategoryModel
 import cn.atd3.code4a.model.model.FileListModel
 import cn.atd3.code4a.presenter.EditArticlePresenter
@@ -24,8 +24,8 @@ import cn.atd3.code4a.util.UriRealPath
 import cn.atd3.code4a.view.inter.EditArticleActivityInterface
 import cn.carbs.android.library.MDDialog
 import cn.dxkite.common.StorageData
-import com.beardedhen.androidbootstrap.BootstrapButton
-import com.beardedhen.androidbootstrap.BootstrapEditText
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.scrat.app.richtext.RichEditText
 import top.zibin.luban.Luban
@@ -55,99 +55,15 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     fun initView() {
         richEditText = findViewById(R.id.rich_text)
         val i = intent
-        if (i.getStringExtra("content") != null) {
-            Log.e("content", "内蓉为:" + i.getStringExtra("content"))
-            richEditText.fromHtml(i.getStringExtra("content"))
-
-            //如果有create表示为编辑文章而不是新建文章
-            if (i.getIntExtra("create", -1) != -1) {
-                eap.setArticleCreateTime(i.getIntExtra("create", (System.currentTimeMillis() / 1000).toInt()))
-            }
-            if (i.getIntExtra("id", -1) != -1) {
-                eap.setArticleId(i.getIntExtra("id", -1))
-            }
-
+        val a = i.getSerializableExtra("article")
+        if (a != null && a is ArticleModel)//说明不是新建文章，是编辑文章
+        {
+            eap.setArticle(a)
+            richEditText.fromHtml(a.content)
         }
-        val inflater = layoutInflater
-        val dialoglayout = inflater.inflate(R.layout.dialog_articleproperty, null)
-        val titleEdit = dialoglayout.findViewById<BootstrapEditText>(R.id.title)
-        val okButton = dialoglayout.findViewById<BootstrapButton>(R.id.okbutton)
-        val kind = dialoglayout.findViewById<AppCompatSpinner>(R.id.classspinner)
-        val power = dialoglayout.findViewById<AppCompatSpinner>(R.id.powerspinner)
-        val passwordEdit = dialoglayout.findViewById<BootstrapEditText>(R.id.password)
-
-        md = AlertDialog.Builder(this@EditArticleActivity)
-                .setTitle(R.string.title_articleproperty)
-                .setView(dialoglayout)
-                .setCancelable(false)//不可跳过
-                .setOnKeyListener(object : DialogInterface.OnKeyListener {
-                    override fun onKey(p0: DialogInterface?, keyCode: Int, p2: KeyEvent?): Boolean {
-                        if (keyCode == KeyEvent.KEYCODE_BACK) {
-                            this@EditArticleActivity.finish()
-                            return true
-                        }
-                        return false
-                    }
-                })
-                .create()
-
-
-        val cateListFile = File(getCategoryListFilePath())
-
-        val catelist: List<CategoryModel>
-        if (cateListFile.exists()) {
-            catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
-        } else {
-            Log.i("EditActivity", "load from network faild, load from assets!")
-            catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
-        }
-
-        val spinnerstring = ArrayList<String>()
-
-        for (cate: CategoryModel in catelist) {
-            spinnerstring.add(cate.name)
-        }
-
-        val sad = ArrayAdapter(this@EditArticleActivity, android.R.layout.simple_list_item_1, spinnerstring)
-
-        kind.adapter = sad
-
-        kind.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.e("select kind", "" + p2 + 1)
-                eap.setArticleCategory(p2 + 1)
-
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
-        power.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                when (p2) {
-                    0 -> eap.setArticleVisibility("public")
-                    1 -> eap.setArticleVisibility("sign")
-                    2 -> eap.setArticleVisibility("password")
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
-
-        okButton.setOnClickListener {
-            eap.setArticleTitle(titleEdit.text.toString())
-
-            eap.setArticlePassword(passwordEdit.text.toString())
-
-            eap.checkArticleInfo()//检查文章属性
-
-        }
-        md.show()
-
-        if (richEditText.text.isEmpty())
-            richEditText.fromHtml("<blockquote>Android 端的富文本编辑器</blockquote>" +
-                    "<ul><li>支持实时编辑</li><li>支持图片插入,加粗,斜体,下划线,删除线,列表,引用块,撤销与恢复等</li><li>使用<u>Glide</u>加载图片</li></ul>\n")
+        addArticleVisibility()
+        addArticleCategory()
+        addArticleTitle()
 
     }
 
@@ -164,8 +80,8 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 val inflater = layoutInflater
                 val dialoglayout = inflater.inflate(R.layout.dialog_uploadarticle, null)
                 message = dialoglayout.findViewById<TextView>(R.id.message)
-                md = AlertDialog.Builder(this@EditArticleActivity)
-                        .setTitle(R.string.title_article)
+                md=AlertDialog.Builder(this@EditArticleActivity)
+                        .setTitle(R.string.title_upload_article)
                         .setView(dialoglayout)
                         .setCancelable(false)
                         .create()
@@ -175,6 +91,12 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
                 eap.uploadArticle(this@EditArticleActivity)
             }
+            R.id.addTitle->
+                    addArticleTitle()
+            R.id.addCategory->
+                    addArticleCategory()
+            R.id.addPower->
+                    addArticleVisibility()
         }
         return true
     }
@@ -193,58 +115,58 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     override fun dismissArticleInfoDialog() {
         runOnUiThread(
                 Runnable {
-                    if (md.isShowing)
+                    if (md!=null&&md.isShowing)
                         md.dismiss()
                 }
         )
 
     }
 
-      override fun showToast(infotype:Int, info:String) {
+    override fun showToast(infotype: Int, info: String) {
 
-runOnUiThread {
-    val tipDialog:QMUITipDialog
-    when (infotype) {
-        SUCCESS -> tipDialog = QMUITipDialog.Builder(this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
-                .setTipWord(info)
-                .create()
-        INFO -> tipDialog = QMUITipDialog.Builder(this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
-                .setTipWord(info)
-                .create()
-        NORMAL -> tipDialog = QMUITipDialog.Builder(this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
-                .setTipWord(info)
-                .create()
-        WARNING -> tipDialog = QMUITipDialog.Builder(this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
-                .setTipWord(info)
-                .create()
-        ERROR -> tipDialog = QMUITipDialog.Builder(this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
-                .setTipWord(if (Constant.debugmodeinfo) info else getString(R.string.remote_error))
-                .create()
-        else -> tipDialog = QMUITipDialog.Builder(this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
-                .setTipWord(info)
-                .create()
-    }
-    tipDialog.show()
-    Thread(
-            Runnable {
-                try {
-                    Thread.sleep(1500)
-                } catch (e:InterruptedException) {
-                    e.printStackTrace()
-                } finally {
-                    tipDialog.dismiss()
-                }
+        runOnUiThread {
+            val tipDialog: QMUITipDialog
+            when (infotype) {
+                SUCCESS -> tipDialog = QMUITipDialog.Builder(this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                        .setTipWord(info)
+                        .create()
+                INFO -> tipDialog = QMUITipDialog.Builder(this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                        .setTipWord(info)
+                        .create()
+                NORMAL -> tipDialog = QMUITipDialog.Builder(this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                        .setTipWord(info)
+                        .create()
+                WARNING -> tipDialog = QMUITipDialog.Builder(this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                        .setTipWord(info)
+                        .create()
+                ERROR -> tipDialog = QMUITipDialog.Builder(this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                        .setTipWord(if (Constant.debugmodeinfo) info else getString(R.string.remote_error))
+                        .create()
+                else -> tipDialog = QMUITipDialog.Builder(this)
+                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                        .setTipWord(info)
+                        .create()
             }
-    ).start()
-}
+            tipDialog.show()
+            Thread(
+                    Runnable {
+                        try {
+                            Thread.sleep(1500)
+                        } catch (e: InterruptedException) {
+                            e.printStackTrace()
+                        } finally {
+                            tipDialog.dismiss()
+                        }
+                    }
+            ).start()
+        }
 
-      }
+    }
 
     override fun getXmlString(resourceId: Int): String {
         return getString(resourceId)
@@ -265,6 +187,106 @@ runOnUiThread {
             }
         }).start()
 
+    }
+
+
+    private fun addArticleTitle() {
+        val builder = QMUIDialog.EditTextDialogBuilder(this)
+        builder.setTitle(getString(R.string.input_title))
+        if (eap.isEditModel)
+            builder.setPlaceholder(eap.title)
+        builder.setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction(getString(R.string.button_cancel), object : QMUIDialogAction.ActionListener {
+                    override fun onClick(dialog: QMUIDialog?, index: Int) {
+                        dialog!!.dismiss()
+                        if(eap.title==null||eap.title.isEmpty())
+                        finish()
+                    }
+
+                })
+                .addAction(getString(R.string.button_ok), object : QMUIDialogAction.ActionListener {
+                    override fun onClick(dialog: QMUIDialog?, index: Int) {
+                        val title = builder.editText.text
+                        if (title.isEmpty())
+                            Toast.makeText(this@EditArticleActivity, getString(R.string.error_title), Toast.LENGTH_SHORT).show()
+                        else {
+                            eap.setArticleTitle(title.toString())
+                            dialog!!.dismiss()
+                        }
+                    }
+
+                })
+                .show()
+    }
+
+    private fun addArticleCategory() {
+
+        val cateListFile = File(getCategoryListFilePath())
+
+        val catelist: List<CategoryModel>
+        if (cateListFile.exists()) {
+            catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
+        } else {
+            Log.i("EditActivity", "load from network faild, load from assets!")
+            catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
+        }
+
+        val items = ArrayList<String>()
+
+        for (cate: CategoryModel in catelist) {
+            items.add(cate.name)
+        }
+
+        val builder = QMUIDialog.CheckableDialogBuilder(this)
+                .setCheckedIndex(0)
+                .addItems(items.toTypedArray(), object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        eap.setArticleCategory(which + 1)
+                        dialog!!.dismiss()
+                    }
+
+                })
+        builder.show()
+    }
+
+    private fun addArticleVisibility() {
+        val items = resources.getStringArray(R.array.power_list_key)
+
+        val builder = QMUIDialog.CheckableDialogBuilder(this)
+                .setCheckedIndex(0)
+                .addItems(items, object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        eap.setArticleVisibility(items[0])
+                        Toast.makeText(this@EditArticleActivity, getString(R.string.wanning_visibility), Toast.LENGTH_SHORT).show()
+                        dialog!!.dismiss()
+                        if(which==2)
+                        {
+                           val passBuilder= QMUIDialog.EditTextDialogBuilder(this@EditArticleActivity)
+                            passBuilder .setInputType(InputType.TYPE_CLASS_TEXT)
+                                    .addAction(getString(R.string.button_cancel), object : QMUIDialogAction.ActionListener {
+                                        override fun onClick(dialog: QMUIDialog?, index: Int) {
+                                            Toast.makeText(this@EditArticleActivity,getString(R.string.password_empty),Toast.LENGTH_SHORT).show()
+                                        }
+
+                                    })
+                                    .addAction(getString(R.string.button_ok), object : QMUIDialogAction.ActionListener {
+                                        override fun onClick(dialog: QMUIDialog?, index: Int) {
+                                            val passwd = passBuilder.editText.text
+                                            if (passwd.isEmpty())
+                                                Toast.makeText(this@EditArticleActivity, getString(R.string.password_empty), Toast.LENGTH_SHORT).show()
+                                            else {
+                                                eap.setArticlePassword(passwd.toString())
+                                                dialog!!.dismiss()
+                                            }
+                                        }
+
+                                    })
+                                    .show()
+                        }
+                    }
+
+                })
+        builder.show()
     }
 
     /**
