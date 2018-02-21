@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
@@ -24,7 +26,6 @@ import cn.atd3.code4a.R;
 import cn.atd3.code4a.library.fileselect.event.ViewEvent;
 import cn.atd3.code4a.library.fileselect.model.domain.FileData;
 import cn.atd3.code4a.model.model.FileListModel;
-import es.dmoral.toasty.Toasty;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -84,7 +85,7 @@ public class FileItemBinder extends ItemViewBinder<FileData, FileItemBinder.File
                     } else {
                         String tip = context.getResources().getString(R.string.click_file_tip);
                         tip = String.format(tip, fileData.getName());
-                        Toasty.success(context, tip, Toast.LENGTH_SHORT, true).show();
+                        Toast.makeText(context,tip,Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -98,7 +99,7 @@ public class FileItemBinder extends ItemViewBinder<FileData, FileItemBinder.File
                         EventBus.getDefault().post(
                                 new ViewEvent(ViewEvent.EvenType.gotoFileClickPosition, bundle));
                     } else {
-                        Toasty.success(context, fileData.getName(), Toast.LENGTH_SHORT, true).show();
+                        Toast.makeText(context,fileData.getName(),Toast.LENGTH_SHORT).show();
                         FileListModel.getIns().addFile(fileData.getPath());
                     }
 

@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,26 +27,24 @@ import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
-import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
 import java.util.*
-
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var myViewPager: ViewPager
     lateinit var head_iv: ImageView
     lateinit var uname: TextView
     private var tagList: List<Button> = ArrayList<Button>()
-   private var exitTime=0L
+    private var exitTime = 0L
 
     private lateinit var newarticle: FloatingActionButton
     //把Fragment添加到List集合里面
     var fragmentList: List<ArticleFragment> = ArrayList()
 
     private lateinit var mp: MainPresenter
-    private  val TAG="MainActivity"
+    private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -55,14 +52,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         window.setBackgroundDrawableResource(bootstrap_gray_lighter)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)//title bar
-
         mp = MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
 
         // 异常报告
-        if(Constant.debugmodeinfo)
-        DebugManager.askIfCrash(this, R.drawable.ic_launcher)
+        if (Constant.debugmodeinfo)
+            DebugManager.askIfCrash(this, R.drawable.ic_launcher)
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         mp.collection(this)  //收集装机信息
@@ -78,6 +74,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
         super.onStart()
     }
+
     private fun initView() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -85,47 +82,47 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         toggle.syncState()
 
         val tagListLayout = findViewById<LinearLayout>(R.id.tagList)
-            val cateListFile = File(Constant.getCategoryListFilePath())
-            val catelist: List<CategoryModel>
+        val cateListFile = File(Constant.getCategoryListFilePath())
+        val catelist: List<CategoryModel>
 
-            if (cateListFile.exists()) {
-                catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
-            } else {
-                Log.i(TAG, "load from network faild, load from assets!")
-                catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
-            }
+        if (cateListFile.exists()) {
+            catelist = StorageData.loadObject(cateListFile) as List<CategoryModel>
+        } else {
+            Log.i(TAG, "load from network faild, load from assets!")
+            catelist = StorageData.loadObject(resources.assets.open(Constant.categoryListFile)) as List<CategoryModel>
+        }
 
 
-            val defaultButton: Button = Button(applicationContext)
-            defaultButton.text = "首页"
-            defaultButton.id = 0
-            defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
-            tagList = tagList.plus(defaultButton)
+        val defaultButton: Button = Button(applicationContext)
+        defaultButton.text = "首页"
+        defaultButton.id = 0
+        defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
+        tagList = tagList.plus(defaultButton)
 
-            for (cate: CategoryModel in catelist) {
-                val button = Button(applicationContext)
-                button.text = cate.name
-                button.id = cate.id
-                button.setBackgroundColor(resources.getColor(R.color.btn_enable))
-                tagList = tagList.plus(button)
-            }
+        for (cate: CategoryModel in catelist) {
+            val button = Button(applicationContext)
+            button.text = cate.name
+            button.id = cate.id
+            button.setBackgroundColor(resources.getColor(R.color.btn_enable))
+            tagList = tagList.plus(button)
+        }
 
-            for (btn: Button in tagList) {
-                val af = ArticleFragment()
-                af.init(btn.id)
-                fragmentList = fragmentList.plus(af)
-                btn.setOnClickListener { view ->
-                    for ((index, btn: Button) in tagList.withIndex()) {
-                        if (btn.id == view.id) {
-                            btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
-                            myViewPager.currentItem = index
-                        } else {
-                            btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
-                        }
+        for (btn: Button in tagList) {
+            val af = ArticleFragment()
+            af.init(btn.id)
+            fragmentList = fragmentList.plus(af)
+            btn.setOnClickListener { view ->
+                for ((index, btn: Button) in tagList.withIndex()) {
+                    if (btn.id == view.id) {
+                        btn.setBackgroundColor(resources.getColor(R.color.btn_unable))
+                        myViewPager.currentItem = index
+                    } else {
+                        btn.setBackgroundColor(resources.getColor(R.color.btn_enable))
                     }
                 }
-                tagListLayout.addView(btn)
             }
+            tagListLayout.addView(btn)
+        }
 
 
 
@@ -156,11 +153,9 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             Thread(
                     Runnable {
                         try {
-       //                     Remote.user.method("signin").call("TTHHR", "", true)
-                        }
-                        catch (e:Exception)
-                        {
-                            Log.e("login",e.toString())
+                            //                     Remote.user.method("signin").call("TTHHR", "", true)
+                        } catch (e: Exception) {
+                            Log.e("login", e.toString())
                         }
                     }
             ).start()
@@ -168,8 +163,6 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             startActivity(i)
         })
 
-        //策划栏点击事件
-        nav_view.setNavigationItemSelectedListener(this)
 
         class PageChange : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
@@ -191,12 +184,12 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         myViewPager.addOnPageChangeListener(PageChange())//滑动事件
     }
 
-    override fun showMessageBanner(a:Adapter) {
+    override fun showMessageBanner(a: Adapter) {
         val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
-        bar.messageAdapter=a
+        bar.messageAdapter = a
 
         bar.update()
-        runOnUiThread{
+        runOnUiThread {
             bar.show()
         }
     }
@@ -204,17 +197,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     //返回键
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                    Toasty.info(this,getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
+               Toast.makeText(this,getString(R.string.double_click_exit),Toast.LENGTH_SHORT).show()
                 exitTime = System.currentTimeMillis()
             } else {
                 mp.updateAd()
                 super.onBackPressed()
             }
-        }
     }
 
     //创建菜单
@@ -236,25 +225,22 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     //右侧列表点击事件
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        when(item.itemId)
-        {
-            R.id.nav_share->{
+        when (item.itemId) {
+            R.id.nav_share -> {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Share")
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_content)+Constant.shareUrl)
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_content) + Constant.shareUrl)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(Intent.createChooser(intent, title))
             }
-            R.id.nav_feedback->
-            {
-                val i=Intent(this@MainActivity,FeedbackActivity::class.java)
+            R.id.nav_feedback -> {
+                val i = Intent(this@MainActivity, FeedbackActivity::class.java)
                 startActivity(i)
             }
 
 
         }
-        drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 

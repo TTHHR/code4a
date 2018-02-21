@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +29,6 @@ import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.presenter.ArticleFragmentPresenter;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
 import cn.atd3.code4a.view.inter.HeadRefreshView;
-import es.dmoral.toasty.Toasty;
 
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
@@ -51,25 +50,27 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     private ArticleFragmentPresenter afp;
     private PullToRefreshLayout pullToRefreshLayout;
     private LinearLayout touchView;
+
     public void init(int kind) {
         this.kind = kind;
     }
+
     public static ArticleDatabase articleDatabase;
-    private int requestId=-1;
+    private int requestId = -1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
-            if (articleDatabase ==null){
-                articleDatabase =new ArticleDatabase(getContext());
+            if (articleDatabase == null) {
+                articleDatabase = new ArticleDatabase(getContext());
             }
-            afp = new ArticleFragmentPresenter(this,articleDatabase);
+            afp = new ArticleFragmentPresenter(this, articleDatabase);
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
             pullToRefreshLayout = view.findViewById(R.id.pulltorefresh_layout);
-            touchView=view.findViewById(R.id.itemShow);
+            touchView = view.findViewById(R.id.itemShow);
             pullToRefreshLayout.setHeaderView(new HeadRefreshView(getContext()));////加载的视图
 
             listView = view.findViewById(R.id.list_view);
@@ -81,8 +82,8 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), ViewArticleActivity.class);
                     afp.setIntentData(intent, i);
-                    requestId=i;
-                    startActivityForResult(intent,requestId);
+                    requestId = i;
+                    startActivityForResult(intent, requestId);
                 }
             });
 
@@ -90,7 +91,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Log.d("touchView","onTouch");
+                            Log.d("touchView", "onTouch");
                             view.findViewById(R.id.showCircle).setVisibility(View.VISIBLE);
                             view.findViewById(R.id.showText).setVisibility(View.GONE);
                             afp.refreshData(kind);
@@ -129,10 +130,8 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==requestId)
-        {
-            if(resultCode==1)
-            {
+        if (requestCode == requestId) {
+            if (resultCode == 1) {
                 afp.removeItem(requestId);
             }
         }
@@ -160,7 +159,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                     @Override
                     public void run() {
                         aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
-                        aad.setShowCategory(kind==0);
+                        aad.setShowCategory(kind == 0);
                         listView.setAdapter(aad);
                     }
                 }
@@ -171,35 +170,71 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     @Override
     public void showToast(final int infotype, final String info) {
 
-
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
+                        final  QMUITipDialog tipDialog ;
                         switch (infotype) {
                             case SUCCESS:
-                                Toasty.success(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case INFO:
-                                Toasty.info(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case NORMAL:
-                                Toasty.normal(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case WARNING:
-                                Toasty.warning(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case ERROR:
-                                Toasty.error(getContext(), Constant.debugmodeinfo ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                tipDialog =  new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(Constant.debugmodeinfo?info:getString(R.string.remote_error))
+                                        .create();
                                 break;
                             default:
-
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                         }
+                        tipDialog.show();
+                        new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        finally {
+                                            tipDialog.dismiss();
+                                        }
+
+                                    }
+                                }
+                        ).start();
                     }
                 }
         );
 
     }
+
     @Override
     public void onfinishRefresh() {
         getActivity().runOnUiThread(
@@ -246,7 +281,7 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
                 new Runnable() {
                     @Override
                     public void run() {
-                        if(pullToRefreshLayout!=null&&touchView!=null) {
+                        if (pullToRefreshLayout != null && touchView != null) {
                             pullToRefreshLayout.setVisibility(View.VISIBLE);
                             touchView.setVisibility(View.GONE);
                         }

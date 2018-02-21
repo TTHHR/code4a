@@ -7,6 +7,8 @@ import android.os.Environment;
 import android.widget.Toast;
 
 
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -23,7 +25,6 @@ import cn.atd3.code4a.library.fileselect.model.DataModel;
 import cn.atd3.code4a.library.fileselect.model.domain.FileData;
 import cn.atd3.code4a.library.fileselect.model.domain.HeaderData;
 import cn.atd3.code4a.library.fileselect.tool.FileUtil;
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by liwei on 2017/4/28.
@@ -69,8 +70,7 @@ public class FileFragment extends ListBaseFragment implements android.app.Loader
             bundle.putSerializable(Constant.FILE_DATA_TYPE, FileDataType.init);
             initLoader(bundle);
         }else {
-            Toasty.error(context, context.getResources().getString(R.string.sd_notready_tip),
-                    Toast.LENGTH_SHORT,true).show();
+            Toast.makeText(context,context.getString(R.string.click_file_exit),Toast.LENGTH_SHORT).show();
         }
     }
 

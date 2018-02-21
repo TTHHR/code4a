@@ -9,19 +9,15 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
@@ -31,8 +27,6 @@ import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.presenter.ViewArticlePresenter;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
-import cn.carbs.android.library.MDDialog;
-import es.dmoral.toasty.Toasty;
 
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
@@ -44,13 +38,14 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
     private TextView articleText;
     private ViewArticlePresenter vap;
     private BootstrapButton copyButton, mycomment;
-    private QMUITipDialog  md;
+    private QMUITipDialog md;
+    private QMUITopBarLayout mTopBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_article);
         Intent i = this.getIntent();
-        ArticleModel article=(ArticleModel) i.getSerializableExtra("article");
+        ArticleModel article = (ArticleModel) i.getSerializableExtra("article");
 
 
         // 固定横屏
@@ -61,8 +56,7 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 .setTipWord(getString(R.string.info_loading))
                 .create();
 
-        vap = new ViewArticlePresenter(this,this,article);//控制器
-
+        vap = new ViewArticlePresenter(this, this, article);//控制器
 
 
         vap.shouWaitDialog();//等待
@@ -70,9 +64,24 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
 
         vap.checkArticle();//检查数据是否正常
 
+        mTopBar=findViewById(R.id.topbar);
+        mTopBar.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+        mTopBar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        getSupportActionBar().setTitle(article.getTitle()== null ? "error" : article.getTitle());
+        mTopBar.setTitle(article.getTitle() == null ? "error" : article.getTitle());
 
+        // 菜单按钮
+        mTopBar.addRightImageButton(R.mipmap.topbar_menu,1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBottomSheetList();
+            }
+        });
 
         articleText = findViewById(R.id.rich_text);
 
@@ -88,61 +97,29 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 if (articleText != null) {
                     ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                     cm.setPrimaryClip(ClipData.newPlainText("code", articleText.getText()));
-                    Toasty.info(getApplicationContext(), getString(R.string.info_success), Toast.LENGTH_SHORT).show();
+                    new QMUITipDialog.Builder(getApplicationContext())
+                            .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                            .setTipWord(getString(R.string.button_ok))
+                            .create()
+                            .show();
                 }
             }
         });
 
-        /*
-        mycomment=findViewById(R.id.mycomment);
-        mycomment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               new MDDialog.Builder(ViewArticleActivity.this)
-                    .setTitle("Edit my comment")
-                        .setContentView(R.layout.dialog_mycomment)
-                        .setNegativeButton(R.string.button_cancel,new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View view) {
-
-                            }
-                        })
-                   .setPositiveButton(R.string.button_ok,new View.OnClickListener() {
-                       @Override
-                       public void onClick(View view) {
-
-                       }
-                   })
-
-                    .setWidthMaxDp(600)
-                    .setShowTitle(true)
-                    .setShowButtons(true)
-                    .create()
-                    .show();
-            }
-        });
-
-*/
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            vap.onDestory(this);
-            //获得文章详情保存到本地
+    public void onBackPressed() {
 
-            //数据是使用Intent返回
-            Intent intent = new Intent();
-            //设置返回数据
-            this.setResult(vap.deleteArticle?1:0, intent);
-            //关闭Activity
-            this.finish();
+        vap.onDestory(this);
+        //获得文章详情保存到本地
 
-            return true;
-        }else {
-            return super.onKeyDown(keyCode, event);
-        }
+        //数据是使用Intent返回
+        Intent intent = new Intent();
+        //设置返回数据
+        this.setResult(vap.deleteArticle ? 1 : 0, intent);
+        //关闭Activity
+        this.finish();
 
     }
 
@@ -155,129 +132,71 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
         super.onStart();
     }
 
-    //创建菜单
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_viewarticle, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.action_downloadfile: {
-                //下载附件
-
-                final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(this)
-                        .addItems(vap.getDownFileList(), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                builder.addAction(getString(R.string.button_cancel), new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.addAction(getString(R.string.button_ok), new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-
-                        for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
-                            //创建下载任务,downloadUrl就是下载链接
-                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(vap.getFileUrl(i)));
-                            // 设置Title
-                            request.setTitle(vap.getDownFileList()[i]);
-                            // 设置描述
-                            request.setDescription(getString(R.string.info_down)+vap.getDownFileList()[i]);
-                            //默认只显示下载中通知
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            //指定下载路径和下载文件名
-
-                            request.setDestinationInExternalPublicDir(Constant.downloadPath+"/"+vap.getArticleid()+"/", vap.getDownFileList()[i]);
-                            Log.e("down path",Constant.downloadPath+"/"+vap.getArticleid()+"/");
-                            Log.e("file",vap.getDownFileList()[i]);
-                            //获取下载管理器
-                            DownloadManager downloadManager= (DownloadManager) ViewArticleActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
-
-                            //将下载任务加入下载队列，否则不会进行下载
-                            downloadManager.enqueue(request);
-                        }
-
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
-
-
-                break;
-            }
-
-            case R.id.del: {
-                //删除文章
-                vap.deleteArticle();
-                break;
-            }
-
-            case R.id.share: {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Share");
-                intent.putExtra(Intent.EXTRA_TEXT, articleText.getText() + Constant.shareUrl);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(Intent.createChooser(intent, getTitle()));
-                break;
-            }
-
-            case R.id.edit: {
-                //编辑文章
-                Intent i = new Intent(this, EditArticleActivity.class);
-
-                i.putExtra("content", vap.getContent());
-                i.putExtra("create", vap.getCreate());
-                i.putExtra("id", vap.getArticleid());
-                startActivity(i);
-                break;
-
-            }
-
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     @Override
     public void showToast(final int infotype, final String info) {
+
         runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
+                       final  QMUITipDialog tipDialog ;
                         switch (infotype) {
                             case SUCCESS:
-                                Toasty.success(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(ViewArticleActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case INFO:
-                                Toasty.info(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(ViewArticleActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case NORMAL:
-                                Toasty.normal(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(ViewArticleActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case WARNING:
-                                Toasty.warning(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(ViewArticleActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case ERROR:
-                                Toasty.error(getApplicationContext(), Constant.debugmodeinfo ? info : getString(R.string.remote_error), Toast.LENGTH_SHORT).show();
+                                tipDialog =  new QMUITipDialog.Builder(ViewArticleActivity.this)
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(Constant.debugmodeinfo?info:getString(R.string.remote_error))
+                                        .create();
                                 break;
-                            default:
-
+                                default:
+                                    tipDialog = new QMUITipDialog.Builder(ViewArticleActivity.this)
+                                            .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                            .setTipWord(info)
+                                            .create();
                         }
-                    }
+                            tipDialog.show();
+                            new Thread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            finally {
+                                                tipDialog.dismiss();
+                                            }
+
+                                        }
+                                    }
+                            ).start();
+                        }
                 }
         );
 
@@ -334,10 +253,91 @@ public class ViewArticleActivity extends AppCompatActivity implements ArticleVie
                 new Runnable() {
                     @Override
                     public void run() {
-                        getSupportActionBar().setSubtitle(un);
+                     mTopBar.setSubTitle(un);
                     }
                 }
         );
     }
+    private void showBottomSheetList() {
+        new QMUIBottomSheet.BottomListSheetBuilder(this)
+                .addItem(getString(R.string.nav_share))
+                .addItem(getString(R.string.button_edit))
+                .addItem(getString(R.string.download_file))
+                .addItem(getString(R.string.button_del))
+                .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                        dialog.dismiss();
+                        switch (position) {
+                            case 0:
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Share");
+                intent.putExtra(Intent.EXTRA_TEXT, articleText.getText() + Constant.shareUrl);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(intent, getTitle()));
+                                break;
+                            case 1:
+                                //编辑文章
+                Intent i = new Intent(ViewArticleActivity.this, EditArticleActivity.class);
 
+                i.putExtra("article", vap.getArticle());
+                startActivity(i);
+                                break;
+                            case 2:
+                final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(ViewArticleActivity.this)
+                        .addItems(vap.getDownFileList(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.addAction(getString(R.string.button_cancel), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.addAction(getString(R.string.button_ok), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+
+                        for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
+                            //创建下载任务,downloadUrl就是下载链接
+                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(vap.getFileUrl(i)));
+                            // 设置Title
+                            request.setTitle(vap.getDownFileList()[i]);
+                            // 设置描述
+                            request.setDescription(getString(R.string.info_down) + vap.getDownFileList()[i]);
+                            //默认只显示下载中通知
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            //指定下载路径和下载文件名
+
+                            request.setDestinationInExternalPublicDir(Constant.downloadPath + "/" + vap.getArticleid() + "/", vap.getDownFileList()[i]);
+                            Log.e("down path", Constant.downloadPath + "/" + vap.getArticleid() + "/");
+                            Log.e("file", vap.getDownFileList()[i]);
+                            //获取下载管理器
+                            DownloadManager downloadManager = (DownloadManager) ViewArticleActivity.this.getSystemService(Context.DOWNLOAD_SERVICE);
+
+                            //将下载任务加入下载队列，否则不会进行下载
+                            downloadManager.enqueue(request);
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                                break;
+
+                            case 3:
+                                //删除文章
+                vap.deleteArticle();
+                                break;
+
+                        }
+                    }
+                })
+                .build()
+                .show();
+    }
 }

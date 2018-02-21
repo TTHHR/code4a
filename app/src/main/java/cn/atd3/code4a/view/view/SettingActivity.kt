@@ -28,7 +28,7 @@ class SettingActivity : AppCompatActivity() {
         //用户可能修改了DEBUG模式
         Constant.debugmodeinfo = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("debug", false)
         //同上
-        Constant.collectioninfo= PreferenceManager.getDefaultSharedPreferences(this).getBoolean("collection", false)
+        Constant.collectioninfo = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("collection", false)
     }
 }
 

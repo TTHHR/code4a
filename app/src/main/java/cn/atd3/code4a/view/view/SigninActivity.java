@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import butterknife.BindView;
 import cn.atd3.code4a.R;
@@ -16,7 +17,7 @@ import cn.atd3.code4a.mvpbase.BaseActivity;
 import cn.atd3.code4a.mvpbase.BaseView;
 import cn.atd3.code4a.presenter.SigninPresenter;
 import cn.atd3.code4a.presenter.interfaces.SigninContract;
-import es.dmoral.toasty.Toasty;
+
 
 /**
  * 作者：YGL
@@ -27,7 +28,7 @@ import es.dmoral.toasty.Toasty;
  * 备注消息：
  * 创建时间：2018/01/10   20:18
  **/
-public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> implements SigninContract.View{
+public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> implements SigninContract.View {
     private static final String TAG = "SigninActivity";
     @BindView(R.id.account)
     BootstrapEditText account;
@@ -40,18 +41,18 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
     private ProgressDialog progressDialog;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showProgressDialog();
-                mPresenter.signinButtonClick(account.getText().toString(),password.getText().toString());
+                mPresenter.signinButtonClick(account.getText().toString(), password.getText().toString());
             }
         });
 
-        final Intent i=new Intent(this,SignupActivity.class);
+        final Intent i = new Intent(this, SignupActivity.class);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,13 +85,13 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
     @Override
     public void remoteError(String message) {
         closeProgressDialog();
-        Toasty.error(this,message,Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void signinSuccessful() {
         closeProgressDialog();
-        Toasty.success(this,getResources().getString(R.string.signin_successful), Toast.LENGTH_SHORT).show();
+
         finish();
     }
 
@@ -104,7 +105,9 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
 
     }
 
-    /**   * 显示进度对话框   */
+    /**
+     * 显示进度对话框
+     */
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
@@ -113,7 +116,10 @@ public class SigninActivity extends BaseActivity<SignModel,SigninPresenter> impl
         }
         progressDialog.show();
     }
-    /**   * 关闭进度对话框   */
+
+    /**
+     * 关闭进度对话框
+     */
     private void closeProgressDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();

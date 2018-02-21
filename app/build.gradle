@@ -57,11 +57,7 @@ dependencies {
     //文件
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //文件
-    implementation 'com.orhanobut:logger:1.15'
-    //文件
     implementation 'org.greenrobot:eventbus:3.0.0'
-    //Toast
-    implementation 'com.github.GrenderG:Toasty:1.2.0'
     //文件
     implementation('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'

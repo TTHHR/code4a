@@ -24,31 +24,32 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
     private WebView wv;
     private ProgressBar pb;
     private WebPresenter wp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
 
-        wv=findViewById(R.id.webview);
+        wv = findViewById(R.id.webview);
 
-        pb=findViewById(R.id.progressBar);
+        pb = findViewById(R.id.progressBar);
 
-        wp=new WebPresenter(this);
+        wp = new WebPresenter(this);
 
         wp.setWebClient();
         wv.setDownloadListener(new MyWebViewDownLoadListener());
 
-        Intent i=getIntent();
+        Intent i = getIntent();
 
-        if(i.getStringExtra("url")!=null)
-        {
+        if (i.getStringExtra("url") != null) {
             wp.loadPage(i.getStringExtra("url"));
         }
 
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KEYCODE_BACK) ) {
+        if ((keyCode == KEYCODE_BACK)) {
             wp.goBack(wv);
             return true;
         }
@@ -57,14 +58,14 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
 
     @Override
     public void onPageLoading(final int pro) {
-            runOnUiThread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            pb.setProgress(pro);
-                        }
+        runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        pb.setProgress(pro);
                     }
-            );
+                }
+        );
     }
 
     @Override
@@ -116,7 +117,7 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
                 new Runnable() {
                     @Override
                     public void run() {
-                        if(pb.getVisibility()== View.INVISIBLE)
+                        if (pb.getVisibility() == View.INVISIBLE)
                             pb.setVisibility(View.VISIBLE);
                     }
                 }
@@ -129,7 +130,7 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
                 new Runnable() {
                     @Override
                     public void run() {
-                        if(pb.getVisibility()== View.VISIBLE)
+                        if (pb.getVisibility() == View.VISIBLE)
                             pb.setVisibility(View.INVISIBLE);
                     }
                 }
@@ -139,8 +140,8 @@ public class WebActivity extends AppCompatActivity implements WebViewInterface {
     private class MyWebViewDownLoadListener implements DownloadListener {
 
         @Override
-        public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype,long contentLength) {
-            Log.e("downurl",url);
+        public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+            Log.e("downurl", url);
             Uri uri = Uri.parse(url);
 
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
