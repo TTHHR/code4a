@@ -20,7 +20,7 @@ import cn.atd3.proxy.exception.ServerException;
  */
 
 public class ArticleDatabase {
-    DbHelper database =null;
+    private DbHelper database ;
     public static String TBL_NAME = "article_info";
     private String QUERY = "select * from " + TBL_NAME;
 
@@ -35,9 +35,11 @@ public class ArticleDatabase {
         cv.put("title", article.getTitle()); //添加数据
         cv.put("slug", article.getSlug()); //添加数据
         cv.put("user", article.getUser());//添加数据
+        cv.put("userId", article.getUserId());//添加数据
         cv.put("created", article.getCreate()); //添加数据
         cv.put("modify", article.getModify()); //添加数据
         cv.put("category", article.getCategory()); //添加数据
+        cv.put("categoryId", article.getCategoryId()); //添加数据
         cv.put("cover", article.getCover()); //添加数据
         cv.put("views", article.getViews()); //添加数据
         cv.put("status", article.getStatus()); //添加数据
@@ -59,7 +61,8 @@ public class ArticleDatabase {
                 a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
                 a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
                 a.setAbstract(cursor.getString(cursor.getColumnIndex("abstract")));
-                a.setUser(cursor.getInt(cursor.getColumnIndex("user")));
+                a.setUserId(cursor.getInt(cursor.getColumnIndex("userId")));
+                a.setUser(cursor.getString(cursor.getColumnIndex("user")));
                 a.setCreate(cursor.getInt(cursor.getColumnIndex("created")));
                 a.setModify(cursor.getInt(cursor.getColumnIndex("modify")));
                 a.setCover(cursor.getInt(cursor.getColumnIndex("cover")));
@@ -83,11 +86,13 @@ public class ArticleDatabase {
             String select = "id = ?";
             String[] columns = {
                     "id",
+                    "categoryId",
                     "category",
                     "title",
                     "slug",
                     "abstract",
                     "user",
+                    "userId",
                     "created",
                     "modify",
                     "cover",
@@ -106,7 +111,8 @@ public class ArticleDatabase {
                 a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
                 a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
                 a.setAbstract(cursor.getString(cursor.getColumnIndex("abstract")));
-                a.setUser(cursor.getInt(cursor.getColumnIndex("user")));
+                a.setUserId(cursor.getInt(cursor.getColumnIndex("userId")));
+                a.setUser(cursor.getString(cursor.getColumnIndex("user")));
                 a.setCreate(cursor.getInt(cursor.getColumnIndex("created")));
                 a.setModify(cursor.getInt(cursor.getColumnIndex("modify")));
                 a.setCover(cursor.getInt(cursor.getColumnIndex("cover")));
@@ -114,6 +120,7 @@ public class ArticleDatabase {
                 a.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
                 a.setContent(cursor.getString(cursor.getColumnIndex("content")));
             }
+            cursor.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,13 +130,13 @@ public class ArticleDatabase {
         return a;
     }
 
-    public void insert(ContentValues values) {
+    private  void insert(ContentValues values) {
         SQLiteDatabase db = database.getWritableDatabase();
         db.insert(TBL_NAME, null, values);
         db.close();
     }
 
-    public void update(ContentValues values) {
+    private void update(ContentValues values) {
         String whereClause = "id =?";
         String[] whereArgs = {values.getAsString("id")};
         SQLiteDatabase db = database.getWritableDatabase();
@@ -137,7 +144,7 @@ public class ArticleDatabase {
         db.close();
     }
 
-    public void replace(ContentValues values) {
+    private void replace(ContentValues values) {
         SQLiteDatabase db = database.getReadableDatabase();
         String[] whereArgs = {values.getAsString("id")};
         String[] columns = {"id"};
@@ -160,7 +167,7 @@ public class ArticleDatabase {
         return amount != 0;
     }
 
-    public Cursor getListByCategory(int categoryId) {
+    private Cursor getListByCategory(int categoryId) {
         SQLiteDatabase db = database.getReadableDatabase();
         String[] columns = {
                 "id",
@@ -170,6 +177,7 @@ public class ArticleDatabase {
                 "slug",
                 "abstract",
                 "user",
+                "userId",
                 "created",
                 "modify",
                 "cover",
@@ -177,7 +185,7 @@ public class ArticleDatabase {
                 "status"
         };
 
-        Cursor cursor = null;
+        Cursor cursor ;
         if (categoryId == 0) {
             cursor = db.query(TBL_NAME, columns, null, null, null, null, "modify desc");
         } else {
@@ -204,8 +212,11 @@ public class ArticleDatabase {
         try {
             Object articleList = Remote.article.method("getList", ArticleModel.class).call(1, 10);
             if (articleList instanceof ArrayList){
-                for (ArticleModel am : (ArrayList<ArticleModel>) articleList) {
-                    this.saveArticle(am);
+                for(int i=0;i<((ArrayList) articleList).size();i++)
+                {
+                    Object am=((ArrayList) articleList).get(i);
+                    if(am instanceof ArticleModel)
+                        this.saveArticle((ArticleModel)am);
                 }
             }
         } catch (Exception e) {
@@ -217,6 +228,8 @@ public class ArticleDatabase {
         SQLiteDatabase db = database.getReadableDatabase();
         String[] columns = {"id"};
         Cursor cursor = db.query(TBL_NAME, columns, null, null, null, null, null);
-        return cursor.getCount() == 0 ;
+        boolean b=cursor.getCount() == 0;
+        cursor.close();
+        return b;
     }
 }

@@ -1,6 +1,6 @@
 package cn.atd3.code4a.util;
 
-/**
+/*
  * 文章数据库存储器
  * Created by harrytit on 2017/10/10.
  */
@@ -15,7 +15,7 @@ import cn.atd3.code4a.database.ArticleDatabase;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private final static  String DATABASE_NAME="code4a.db";
+    private final static String DATABASE_NAME = "code4a.db";
 
     //TOOD: 数据库外部存储
 
@@ -24,19 +24,21 @@ public class DbHelper extends SQLiteOpenHelper {
             "id integer primary key," +
             "title text," +
             "slug text," +
-            "user integer," +
+            "user varchar(255)," +
+            "userId integer, " +
             "created integer," +
             "modify integer," +
-            "category integer, " +
+            "category varchar(255)," +
+            "categoryId integer, " +
             "cover integer," +
             "views integer," +
             "status integer," +
-            "content text,"+
+            "content text," +
             "abstract text);";
 
     public DbHelper(Context context) {
-        super(context,DATABASE_NAME, null, 3);
-        Log.d("Article","Context is "+context);
+        super(context, DATABASE_NAME, null, 3);
+        Log.d("Article", "Context is " + context);
     }
 
     @Override

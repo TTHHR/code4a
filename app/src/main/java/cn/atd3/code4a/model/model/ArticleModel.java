@@ -2,6 +2,7 @@ package cn.atd3.code4a.model.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import cn.atd3.code4a.model.inter.ArticleModelInterface;
 
@@ -10,22 +11,23 @@ import cn.atd3.code4a.model.inter.ArticleModelInterface;
  * Created by DXkite on 2017/11/4 0004.
  */
 
-public class ArticleModel implements ArticleModelInterface ,Serializable {
-    Integer id;
-    String title;
-    String slug;
-    Integer user;
-    Integer create;
-    Integer modify;
-    Integer categoryId;
-    String category;
-    String mAbstract;
-    Integer cover;
-    Integer  views;
-    Integer status;
-    String content;
-    String visibility;
-    String visibilityPassword;
+public class ArticleModel implements ArticleModelInterface, Serializable {
+    private Integer id;
+    private String title;
+    private String slug;
+    private Integer userId;
+    private String user;
+    private Integer create;
+    private Integer modify;
+    private Integer categoryId;
+    private String category;
+    private String mAbstract;
+    private Integer cover;
+    private Integer views;
+    private Integer status;
+    private String content;
+    private String visibility;
+    private String visibilityPassword;
 
     public Integer getId() {
         return id;
@@ -51,11 +53,19 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
         this.slug = slug;
     }
 
-    public Integer getUser() {
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Integer user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -82,6 +92,7 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     public void setCategory(String category) {
         this.category = category;
     }
+
     public String getCategory() {
         return category;
     }
@@ -89,6 +100,7 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
     public String getAbstract() {
         return mAbstract;
     }
@@ -96,6 +108,7 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     public void setAbstract(String mAbstract) {
         this.mAbstract = mAbstract;
     }
+
     public Integer getCover() {
         return cover;
     }
@@ -119,6 +132,7 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
     public String getContent() {
         return content;
     }
@@ -134,6 +148,7 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     public void setVisibility(String visibility) {
         this.visibility = visibility;
     }
+
     public String getVisibilityPassword() {
         return visibilityPassword;
     }
@@ -148,7 +163,8 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", slug='" + slug + '\'' +
-                ", user=" + user +
+                ", user='" + user + '\'' +
+                ", userId=" + userId +
                 ", create=" + create +
                 ", modify=" + modify +
                 ", category=" + category +
@@ -162,38 +178,37 @@ public class ArticleModel implements ArticleModelInterface ,Serializable {
     }
 
 
-
     public static String time(int unix) {
-        long time=Long.valueOf(unix) * 1000;
-        String showTime=null;
-        String hTime=new SimpleDateFormat("H:mm").format(time);
-        String rTime=new SimpleDateFormat("M-d H:mm").format(time);
-        long passTime=(System.currentTimeMillis() - time)/1000;
-        if (passTime < 60){
-            showTime="刚刚";
-        }else if (passTime < 60*60 ){
-            showTime = ((int)Math.floor(passTime/60))+"分钟前";
-        }else if (passTime < 60*60*24){
-            showTime= ((int)Math.floor(passTime/(60*60))) + "小时前 "+hTime;
-        }else if (passTime < 60*60*24*3) {
-            double day=Math.floor(passTime/(60*60*24));
+        long time = unix * 1000;
+        String showTime;
+        String hTime = new SimpleDateFormat("H:mm", Locale.getDefault()).format(time);
+        String rTime = new SimpleDateFormat("M-d H:mm", Locale.getDefault()).format(time);
+        long passTime = (System.currentTimeMillis() - time) / 1000;
+        if (passTime < 60) {
+            showTime = "刚刚";
+        } else if (passTime < 60 * 60) {
+            showTime = ((int) Math.floor(passTime / 60)) + "分钟前";
+        } else if (passTime < 60 * 60 * 24) {
+            showTime = ((int) Math.floor(passTime / (60 * 60))) + "小时前 " + hTime;
+        } else if (passTime < 60 * 60 * 24 * 3) {
+            double day = Math.floor(passTime / (60 * 60 * 24));
             if (day == 1) {
-                showTime = "昨天 "+hTime;
-            }else{
-                showTime = "前天 "+hTime;
+                showTime = "昨天 " + hTime;
+            } else {
+                showTime = "前天 " + hTime;
             }
-        }else{
-            showTime =rTime;
+        } else {
+            showTime = rTime;
         }
         return showTime;
     }
 
-    public static String category(int id){
-        CategoryModel model=CategoryModel.getById(id);
+    public static String category(int id) {
+        CategoryModel model = CategoryModel.getById(id);
         if (model == null) {
             return "默认分类";
-        }else{
-            return  model.getName();
+        } else {
+            return model.getName();
         }
     }
 }

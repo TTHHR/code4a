@@ -80,7 +80,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 val inflater = layoutInflater
                 val dialoglayout = inflater.inflate(R.layout.dialog_uploadarticle, null)
                 message = dialoglayout.findViewById<TextView>(R.id.message)
-                md=AlertDialog.Builder(this@EditArticleActivity)
+                md = AlertDialog.Builder(this@EditArticleActivity)
                         .setTitle(R.string.title_upload_article)
                         .setView(dialoglayout)
                         .setCancelable(false)
@@ -91,12 +91,12 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
                 eap.uploadArticle(this@EditArticleActivity)
             }
-            R.id.addTitle->
-                    addArticleTitle()
-            R.id.addCategory->
-                    addArticleCategory()
-            R.id.addPower->
-                    addArticleVisibility()
+            R.id.addTitle ->
+                addArticleTitle()
+            R.id.addCategory ->
+                addArticleCategory()
+            R.id.addPower ->
+                addArticleVisibility()
         }
         return true
     }
@@ -115,7 +115,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     override fun dismissArticleInfoDialog() {
         runOnUiThread(
                 Runnable {
-                    if (md!=null&&md.isShowing)
+                    if (md != null && md.isShowing)
                         md.dismiss()
                 }
         )
@@ -199,8 +199,8 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 .addAction(getString(R.string.button_cancel), object : QMUIDialogAction.ActionListener {
                     override fun onClick(dialog: QMUIDialog?, index: Int) {
                         dialog!!.dismiss()
-                        if(eap.title==null||eap.title.isEmpty())
-                        finish()
+                        if (eap.title == null || eap.title.isEmpty())
+                            finish()
                     }
 
                 })
@@ -259,13 +259,12 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                         eap.setArticleVisibility(items[0])
                         Toast.makeText(this@EditArticleActivity, getString(R.string.wanning_visibility), Toast.LENGTH_SHORT).show()
                         dialog!!.dismiss()
-                        if(which==2)
-                        {
-                           val passBuilder= QMUIDialog.EditTextDialogBuilder(this@EditArticleActivity)
-                            passBuilder .setInputType(InputType.TYPE_CLASS_TEXT)
+                        if (which == 2) {
+                            val passBuilder = QMUIDialog.EditTextDialogBuilder(this@EditArticleActivity)
+                            passBuilder.setInputType(InputType.TYPE_CLASS_TEXT)
                                     .addAction(getString(R.string.button_cancel), object : QMUIDialogAction.ActionListener {
                                         override fun onClick(dialog: QMUIDialog?, index: Int) {
-                                            Toast.makeText(this@EditArticleActivity,getString(R.string.password_empty),Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@EditArticleActivity, getString(R.string.password_empty), Toast.LENGTH_SHORT).show()
                                         }
 
                                     })

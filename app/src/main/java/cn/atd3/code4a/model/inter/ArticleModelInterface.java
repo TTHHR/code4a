@@ -17,9 +17,12 @@ public interface ArticleModelInterface {
 
     void setSlug(String slug) ;
 
-    Integer getUser() ;
+    Integer getUserId() ;
 
-    void setUser(Integer user) ;
+    void setUserId(Integer userId) ;
+    String getUser() ;
+
+    void setUser(String user) ;
 
     Integer getCreate();
     void setCreate(Integer create) ;
