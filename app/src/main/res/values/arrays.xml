@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="power_list_key">
+        <item>公开</item>
+        <item>登陆</item>
+        <item>密码</item>
+    </string-array>
+</resources>

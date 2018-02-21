@@ -51,6 +51,7 @@ public class EditArticlePresenter {
 
     private ArticleModel article;
 
+    private boolean editModel=false;
     public EditArticlePresenter(EditArticleActivityInterface eai) {
         this.eai = eai;
         article = new ArticleModel();
@@ -58,6 +59,11 @@ public class EditArticlePresenter {
 
     public void setArticleCategory(int c) {
         article.setCategory(c);
+    }
+
+    public boolean isEditModel()
+    {
+        return editModel;
     }
 
     public void setArticleVisibility(String visibility) {
@@ -69,8 +75,9 @@ public class EditArticlePresenter {
         article.setSlug(title);
     }
 
-    public void setArticleId(int id) {
-        article.setId(id);
+    public void setArticle(ArticleModel article) {
+        this.article=article;
+        editModel=true;
     }
 
     public void setArticlePassword(String passwd) {
@@ -85,18 +92,17 @@ public class EditArticlePresenter {
             article.setAbstract(c);
     }
 
-    public void setArticleCreateTime(int time) {
-        article.setCreate(time);//创建时间
-    }
-
+public String getTitle()
+{
+    return article.getTitle();
+}
     public void setArticleModifyTime() {
         article.setModify((int) System.currentTimeMillis() / 1000);//修改时间
     }
 
-    public void checkArticleInfo() {
+    public boolean checkArticleInfo() {
         if (article.getTitle() == null || article.getSlug() == null) {
-            eai.showToast(ERROR, eai.getXmlString(R.string.error_title));
-            return;
+            return false;
         }
         if (article.getCategory() == null) {
             article.setCategory(1);//默认分类
@@ -110,14 +116,14 @@ public class EditArticlePresenter {
         if (article.getVisibility().equals("password")) {
             if (article.getVisibilityPassword() == null) {
                 eai.showToast(ERROR, eai.getXmlString(R.string.password_empty));
-                return;
+                return false;
             }
         }
         if (article.getStatus() == null) {
             article.setStatus(2);//默认为发布状态
         }
 
-        eai.dismissArticleInfoDialog();//检查无误
+        return true;
     }
 
 
@@ -170,6 +176,9 @@ public class EditArticlePresenter {
                     @Override
                     public void run() {
 
+                       if(!checkArticleInfo())
+                           //检查文章不通过
+                        return;
                         eai.prgoressOfUpload(eai.getXmlString(R.string.action_packfile));
 
 

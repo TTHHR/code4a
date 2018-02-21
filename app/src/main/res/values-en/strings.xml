@@ -23,6 +23,7 @@
     <string name="info_fail"> fail </string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
+    <string name="input_title">please input article title</string>
     <string name="setting_software_info">software info</string>
     <string name="error_title">The title can not be empty</string>
     <string name="setting_loginout">login out</string>
@@ -53,7 +54,6 @@
     <string name="button_copy">Copy</string>
     <string name="button_cancel">Cancel</string>
     <string name="title_article">upload article</string>
-    <string name="title_articleproperty">property article</string>
     <string name="title_upfile">upload files</string>
     <string name="action_packfile">packing files</string>
     <string name="action_upfinish">upload finished</string>
@@ -64,11 +64,7 @@
     </string-array>
     <string name="info_selectclass"> classify</string>
     <string name="info_selectpower">select power</string>
-    <string-array name="power_list_key">
-        <item>public</item>
-        <item>sign</item>
-        <item>password</item>
-    </string-array>
+    <string name="wanning_visibility">The current version only supports public permissions！</string>
     <string name="wanning_storage">Please ensure that App is allowed to store permissions！</string>
     <string name="info_changelanguage">After changing the language, restart the App manually</string>
     <string name="error_network">Net Error：</string>
