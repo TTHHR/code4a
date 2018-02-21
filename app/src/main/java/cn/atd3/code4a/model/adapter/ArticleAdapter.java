@@ -45,7 +45,8 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
         ImageView avatar = view.findViewById(R.id.itemAvatar);
 
         // 用户名
-        user.setText("User" + a.getUser().toString());
+        if (a.getUser() != null)
+            user.setText(a.getUser());
         modify.setText(ArticleModel.time(a.getModify()));
 
         TextView itemTitle = view.findViewById(R.id.itemTitle);

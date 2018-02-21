@@ -42,8 +42,8 @@ import static cn.atd3.code4a.Constant.ERROR;
 
 public class SplashPresenter {
     private static final String TAG = "SplashPresenter";
-    SplashAdModelInterface sami;
-    SplashViewInterface svi;
+    private SplashAdModelInterface sami;
+    private SplashViewInterface svi;
 
     private boolean isPermission = false;
     private boolean init = false;
@@ -119,6 +119,7 @@ public class SplashPresenter {
     public void setSplashAdListener(final Activity activity, final SplashAd sad) {
         SplashAd.SplashAdListener sal = new SplashAd.SplashAdListener() {
             Intent intent = new Intent(activity, MainActivity.class);
+
             @Override
             public void onAdImageClicked() {
                 intent.putExtra("url", sami.getUrl() == null ? "http://blog.qingyuyu.cn/" : sami.getUrl());
@@ -158,9 +159,9 @@ public class SplashPresenter {
     }
 
     private void createUuid() {
-        String uuid= UUID.randomUUID().toString();
-        File uuidFile=new File(Constant.getPrivateFilePath()+File.separator +"installID");
-        FileDealService.putContent(uuidFile,uuid);
+        String uuid = UUID.randomUUID().toString();
+        File uuidFile = new File(Constant.getPrivateFilePath() + File.separator + "installID");
+        FileDealService.putContent(uuidFile, uuid);
         Constant.setUuid(uuid);
     }
 
@@ -190,7 +191,7 @@ public class SplashPresenter {
             public void run() {
                 try {
                     setName("fetch list data");
-                    Object list = Remote.category.method("getList", CategoryModel.class).call();
+                    Object list = Remote.category.method("getCategoryListByParentId", CategoryModel.class).call(0);
                     if (list instanceof ArrayList) {
                         // 下载第一屏文章列表
                         ArticleDatabase a = new ArticleDatabase(context);
@@ -212,9 +213,9 @@ public class SplashPresenter {
 
         try {
 
-             File adImg = new File(Constant.getAdImg());//本地图片文件
+            File adImg = new File(Constant.getAdImg());//本地图片文件
 
-             File adUrl = new File(Constant.getAdUrl());//本地链接文件
+            File adUrl = new File(Constant.getAdUrl());//本地链接文件
 
             if (adImg.exists() && adUrl.exists())//设置Uri
             {
@@ -226,8 +227,6 @@ public class SplashPresenter {
 
         } catch (Exception e) {
             Log.e(TAG, "" + e);
-        } finally {
-
         }
 
     }

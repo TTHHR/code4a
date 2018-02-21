@@ -40,6 +40,7 @@ import sun.misc.BASE64Encoder;
 import top.zibin.luban.Luban;
 
 import static cn.atd3.code4a.Constant.ERROR;
+import static cn.atd3.code4a.Constant.WARNING;
 
 /**
  * Created by harry on 2018/1/17.
@@ -51,7 +52,8 @@ public class EditArticlePresenter {
 
     private ArticleModel article;
 
-    private boolean editModel=false;
+    private boolean editModel = false;
+
     public EditArticlePresenter(EditArticleActivityInterface eai) {
         this.eai = eai;
         article = new ArticleModel();
@@ -61,8 +63,7 @@ public class EditArticlePresenter {
         article.setCategoryId(c);
     }
 
-    public boolean isEditModel()
-    {
+    public boolean isEditModel() {
         return editModel;
     }
 
@@ -76,8 +77,8 @@ public class EditArticlePresenter {
     }
 
     public void setArticle(ArticleModel article) {
-        this.article=article;
-        editModel=true;
+        this.article = article;
+        editModel = true;
     }
 
     public void setArticlePassword(String passwd) {
@@ -92,15 +93,15 @@ public class EditArticlePresenter {
             article.setAbstract(c);
     }
 
-public String getTitle()
-{
-    return article.getTitle();
-}
+    public String getTitle() {
+        return article.getTitle();
+    }
+
     public void setArticleModifyTime() {
         article.setModify((int) System.currentTimeMillis() / 1000);//修改时间
     }
 
-    public boolean checkArticleInfo() {
+    private boolean checkArticleInfo() {
         if (article.getTitle() == null || article.getSlug() == null) {
             return false;
         }
@@ -113,6 +114,7 @@ public String getTitle()
         if (article.getCreate() == null) {
             article.setCreate((int) System.currentTimeMillis() / 1000);//创建时间
         }
+
         if (article.getVisibility().equals("password")) {
             if (article.getVisibilityPassword() == null) {
                 eai.showToast(ERROR, eai.getXmlString(R.string.password_empty));
@@ -122,7 +124,10 @@ public String getTitle()
         if (article.getStatus() == null) {
             article.setStatus(2);//默认为发布状态
         }
-
+        if (article.getContent() == null || article.getContent().isEmpty()) {
+            eai.showToast(WARNING, eai.getXmlString(R.string.empty));
+            return false;
+        }
         return true;
     }
 
@@ -130,11 +135,11 @@ public String getTitle()
     /**
      * 得到网页中图片的地址
      *
-     * @param htmlStr
+     * @param htmlStr 文本
      */
     private Set<String> getImgStr(String htmlStr) {
         HashSet pics = new HashSet<String>();
-        String img = null;
+        String img;
         Pattern p_image;
         Matcher m_image;
         String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
@@ -176,9 +181,11 @@ public String getTitle()
                     @Override
                     public void run() {
 
-                       if(!checkArticleInfo())
-                           //检查文章不通过
-                        return;
+                        if (!checkArticleInfo()) {
+                            //检查文章不通过
+                            eai.dismissArticleInfoDialog();
+                            return;
+                        }
                         eai.prgoressOfUpload(eai.getXmlString(R.string.action_packfile));
 
 
@@ -257,6 +264,10 @@ public String getTitle()
             }
 
         try {
+
+            Log.e("article status", article.toString());
+
+
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.newDocument();
@@ -281,7 +292,7 @@ public String getTitle()
             slug.setAttribute("name", "slug");
             slug.setTextContent(base64.encode(article.getSlug().getBytes()));
             category.setAttribute("name", "category");
-            category.setAttribute("value", "" + article.getCategory());
+            category.setAttribute("value", "" + article.getCategoryId());
             tag.setAttribute("name", "tag");
             create.setAttribute("name", "create");
             create.setAttribute("value", "" + article.getCreate());
@@ -289,7 +300,7 @@ public String getTitle()
             modify.setAttribute("value", "" + article.getModify());
             visibility.setAttribute("name", "visibility");
             visibility.setAttribute("value", article.getVisibility());
-            visibility.setAttribute("password", article.getVisibilityPassword());
+            visibility.setAttribute("password", article.getVisibilityPassword() == null ? "code4a" : article.getVisibilityPassword());
             abstracts.setAttribute("name", "abstract");
             abstracts.setTextContent(base64.encode(article.getAbstract().getBytes()));
             status.setAttribute("name", "status");
@@ -315,16 +326,16 @@ public String getTitle()
             article.setContent(ReplaceCHeadInHtml.getIns().getHtml(article.getContent()));
             Log.e("xml content", article.getContent());
             content.setTextContent(base64.encode(article.getContent().getBytes()));
-            Log.e("base64 content", base64.encode(article.getContent().getBytes()));
+            Log.e("base64 content", content.getTextContent());
             articles.appendChild(content);
 
             Element attachments = document.createElement("attachments");
-
             for (int i = 0; ; i++) {
                 String filepath = FileListModel.getIns().get(i);
                 if (filepath == null) {
                     break;//退出循环
                 }
+                Log.e("file to xml", filepath);
                 Element attachment = document.createElement("attachment");
                 attachment.setAttribute("name", filepath.substring(filepath.lastIndexOf("/") + 1));
                 attachment.setAttribute("src", "attachment/" + filepath.substring(filepath.lastIndexOf("/") + 1));
@@ -333,7 +344,9 @@ public String getTitle()
             }
             articles.appendChild(attachments);
 
+
             document.appendChild(articles);
+
 
             TransformerFactory tff = TransformerFactory.newInstance();
             Transformer tf = tff.newTransformer();
@@ -343,7 +356,7 @@ public String getTitle()
             tf.transform(new DOMSource(document), new StreamResult(xmlFile));
 
         } catch (Exception e) {
-            Log.e("article to xml",e.toString());
+            Log.e("article to xml", e.toString());
             eai.showToast(ERROR, e.toString());
             return false;
         }
@@ -371,7 +384,7 @@ public String getTitle()
             }
         }
 
-        fds.copyFile(Constant.getPublicFilePath() + "/index.xml", zipDir.getAbsolutePath() + "/index.xml",true);//复制xml
+        fds.copyFile(Constant.getPublicFilePath() + "/index.xml", zipDir.getAbsolutePath() + "/index.xml", true);//复制xml
 
         File zipFile = new File(Constant.getPublicFilePath() + Constant.zipFile);   //zip
 
@@ -390,19 +403,10 @@ public String getTitle()
                 String f = PictureListModel.getIns().get(i);
                 if (f == null)
                     break;
-                fds.copyFile(f, assetsDir.getAbsolutePath() + "/" + f.substring(f.lastIndexOf("/") + 1),true);
+                fds.copyFile(f, assetsDir.getAbsolutePath() + "/" + f.substring(f.lastIndexOf("/") + 1), true);
             }
-//            List<File> pics=Luban.with(c).setTargetDir(assetsDir.getAbsolutePath()).load(PictureListModel.getIns().getLists()).get();
-//            for(int i=0;i<pics.size();i++)
-//            {
-//                File f=pics.get(i);
-//                Log.e("Pic zip",f.getAbsolutePath());
-//                String newPic=PictureListModel.getIns().get(i);
-//                newPic=newPic.substring(newPic.lastIndexOf("/") + 1);
-//                FileDealService.getInstance().renameFile(f,assetsDir.getAbsolutePath()+"/"+newPic);
-//            }
         } catch (Exception e) {
-            Log.e("assets",e.toString());
+            Log.e("assets", e.toString());
             eai.showToast(ERROR, e.toString());
             return false;
         }
@@ -414,10 +418,10 @@ public String getTitle()
                 String f = FileListModel.getIns().get(i);
                 if (f == null)
                     break;
-                fds.copyFile(f, attachDir.getAbsolutePath() + "/" + f.substring(f.lastIndexOf("/") + 1),false);
+                fds.copyFile(f, attachDir.getAbsolutePath() + "/" + f.substring(f.lastIndexOf("/") + 1), false);
             }
         } catch (Exception e) {
-            Log.e("attach",e.toString());
+            Log.e("attach", e.toString());
             eai.showToast(ERROR, e.toString());
             return false;
         }

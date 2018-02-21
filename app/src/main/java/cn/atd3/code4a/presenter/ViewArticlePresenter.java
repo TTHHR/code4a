@@ -161,20 +161,6 @@ public class ViewArticlePresenter {
                 new Runnable() {
                     @Override
                     public void run() {
-                        String usern = "";
-                        try {
-                            Object username = Remote.user.method("id2name", String.class).call(article.getUser());
-                            if (username instanceof String) {
-                                usern = (String) username;
-                            } else {
-                                usern = "error";
-                            }
-                            Log.e("username", "" + username);
-                        } catch (Exception e) {
-                            Log.e("userid", e.toString());
-                        }
-
-                        avi.loadUser(usern);//UI加载用户名
 
                         try {
                             Object a = Remote.article.method("getArticleById", ArticleModel.class).call(article.getId());
@@ -214,14 +200,15 @@ public class ViewArticlePresenter {
                             else
                             {
                                 Log.e("local","article not cache");
+                                content="error";
                                 avi.showToast(WARNING, avi.getXmlString(R.string.error_network));
                             }
                         }
-
+                        avi.loadUser(article.getUser());//UI加载用户名
                         avi.loadArticle(content, urlImageParser);//显示文章
 
                         try {
-                            Object a = Remote.article.method("getAttachments", DownFileModel.class).call(article.getId());
+                            Object a = Remote.attachment.method("getAttachment", DownFileModel.class).call(article.getId());
                             if (a instanceof List) {
                                 fileList = (List<DownFileModel>) a;
                             }
@@ -241,11 +228,11 @@ public class ViewArticlePresenter {
     /**
      * 得到网页中图片的地址
      *
-     * @param htmlStr
+     * @param htmlStr 文本
      */
     private Set<String> getImgStr(String htmlStr) {
         HashSet pics = new HashSet<String>();
-        String img = "";
+        String img ;
         Pattern p_image;
         Matcher m_image;
         String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
@@ -257,7 +244,7 @@ public class ViewArticlePresenter {
             // 匹配<img>中的src数据
             Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
             while (m.find()) {
-                if (!m.group(1).startsWith("http:"))//图片为表情就跳过
+                if (!m.group(1).startsWith("http:"))//图片为完整网址就跳过
                     pics.add(m.group(1));
             }
         }
@@ -267,7 +254,7 @@ public class ViewArticlePresenter {
     class URLImageParser implements Html.ImageGetter {
         private TextView mTextView;
 
-        public URLImageParser(TextView mTextView) {
+        private URLImageParser(TextView mTextView) {
             this.mTextView = mTextView;
         }
 
