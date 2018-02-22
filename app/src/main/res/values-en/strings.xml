@@ -44,6 +44,8 @@
         <item>zh</item>
         <item>en</item>
     </string-array>
+    <string name="title_waring">Waring</string>
+    <string name="edit_waring">When the article is edited, all the attachments are empty. Please add it again!</string>
     <string name="sd_notready_tip">your phone SDCard not ready OK</string>
     <string name="click_file_tip">long click to select %1$s</string>
     <string name="click_file_exit"> click twice to exit select files</string>

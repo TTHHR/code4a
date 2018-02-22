@@ -62,8 +62,6 @@ dependencies {
     implementation('me.drakeet.multitype:multitype:2.5.0') {
         exclude group: 'com.android.support'
     }
-    //  弹窗
-    implementation 'cn.carbs.android:MDDialog:1.0.0'
     implementation project(':feelback')
     //RxJava and RxAndroid
     implementation 'io.reactivex:rxjava:1.2.0'

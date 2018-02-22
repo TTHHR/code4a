@@ -16,6 +16,7 @@ class SettingActivity : AppCompatActivity() {
         fragmentManager.beginTransaction()
                 .replace(android.R.id.content, SettingFragment())
                 .commit()
+
         language = PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao")
     }
 

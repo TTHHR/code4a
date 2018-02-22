@@ -10,7 +10,6 @@ a code share platform
 
 - 富文本编辑：https://github.com/huzhenjie/RichTextEditor
 - 文件浏览：https://github.com/WeiMei-Tian/FileBrowser
-- 弹窗：https://github.com/Carbs0126/MDDialog
 - 上拉下拉刷新： https://github.com/823546371/PullToRefresh
 - 图片压缩： https://github.com/Curzibn/Luban
 - UI框架：https://github.com/QMUI

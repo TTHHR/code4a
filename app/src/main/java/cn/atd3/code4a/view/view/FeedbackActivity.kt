@@ -2,7 +2,6 @@ package cn.atd3.code4a.view.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import cn.atd3.code4a.Constant
 
 import cn.atd3.code4a.Constant.*
@@ -25,7 +24,7 @@ class FeedbackActivity : AppCompatActivity(), FeedbackInterface {
         feedbackButton = findViewById(R.id.feedbacakbutton)
         contentView = findViewById(R.id.content)
         contactView = findViewById(R.id.contact)
-        feedbackButton.setOnClickListener(View.OnClickListener {
+        feedbackButton.setOnClickListener({
             fbp.upToServer(contentView.text.toString(), contactView.text.toString())
         })
     }
@@ -65,8 +64,7 @@ runOnUiThread {
                 .create()
     }
     tipDialog.show()
-    Thread(
-            Runnable {
+    Thread {
                 try {
                     Thread.sleep(1500)
                 } catch (e:InterruptedException) {
@@ -74,8 +72,7 @@ runOnUiThread {
                 } finally {
                     tipDialog.dismiss()
                 }
-            }
-    ).start()
+            }.start()
 }
 
      }
