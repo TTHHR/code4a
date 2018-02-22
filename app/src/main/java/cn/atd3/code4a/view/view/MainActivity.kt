@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     lateinit var myViewPager: ViewPager
     lateinit var head_iv: ImageView
     lateinit var uname: TextView
-    private var tagList: List<Button> = ArrayList<Button>()
+    private var tagList: List<Button> = ArrayList()
     private var exitTime = 0L
 
     private lateinit var newarticle: FloatingActionButton
@@ -130,6 +129,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
         newarticle = findViewById(R.id.newArticle)
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        navigationView.setNavigationItemSelectedListener ( this )
         val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
         uname = drawview.findViewById(R.id.uname)
         head_iv = drawview.findViewById(R.id.headImage)
@@ -142,23 +142,22 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         myViewPager.adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
 
         //写新文章按钮
-        newarticle.setOnClickListener(View.OnClickListener { _ ->
+        newarticle.setOnClickListener({ _ ->
+            //添加用户判断
             val i = Intent(this, EditArticleActivity::class.java)
             startActivity(i)
         })
 
 
         //测试登陆
-        head_iv.setOnClickListener(View.OnClickListener {
-            Thread(
-                    Runnable {
+        head_iv.setOnClickListener({
+            Thread {
                         try {
-                            //                     Remote.user.method("signin").call("TTHHR", "", true)
+                           //  Remote.user.method("signin").call("TTHHR", "", true)
                         } catch (e: Exception) {
                             Log.e("login", e.toString())
                         }
-                    }
-            ).start()
+                    }.start()
             val i = Intent(this, SigninActivity::class.java)
             startActivity(i)
         })
@@ -225,6 +224,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     //右侧列表点击事件
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
+        Log.e("item select",""+item.itemId)
         when (item.itemId) {
             R.id.nav_share -> {
                 val intent = Intent(Intent.ACTION_SEND)

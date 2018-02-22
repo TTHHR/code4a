@@ -33,12 +33,12 @@ class EggActivity : AppCompatActivity() {
                             .setTipWord("what are you 弄啥咧！")
                             .create()
                            d .show()
-                    Thread(Runnable {
+                    Thread {
                         Thread.sleep(1500)
                         runOnUiThread{
                             d.dismiss()
                         }
-                    }).start()
+                    }.start()
                     point = 0
                 }
             }

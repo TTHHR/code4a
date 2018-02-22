@@ -38,6 +38,8 @@
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="title_waring">警告</string>
+    <string name="edit_waring">编辑文章时，所有附件已清空，请重新添加！</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sd_notready_tip">你手机的sd卡没有准备好</string>
     <string name="error_title">标题不能为空</string>

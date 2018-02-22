@@ -3,7 +3,6 @@ package cn.atd3.code4a.view.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.Constant.*
 import cn.atd3.code4a.R
@@ -21,37 +20,21 @@ class AboutActivity : Activity(), AboutInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         topBar = findViewById(R.id.topbar)
-        topBar.addLeftBackImageButton().setOnClickListener(View.OnClickListener {
+        topBar.addLeftBackImageButton().setOnClickListener( {
             finish()
         })
-        topBar.setTitle("关于")
-
+        topBar.setTitle(getString(R.string.setting_about))
         topBar.setBackgroundColor(resources.getColor(android.R.color.holo_green_light))
 
         abp = AboutPresenter(this)
 
         aboutList = findViewById(R.id.about_list)
 
-        QMUIGroupListView.newSection(this).addItemView(aboutList.createItemView("检查更新"), object : View.OnClickListener {
-            override fun onClick(p0: View?) {
-                abp.onCheakUpdate()
-            }
-        })
-                .addItemView(aboutList.createItemView("软件信息"), object : View.OnClickListener {
-                    override fun onClick(p0: View?) {
-                        openWebActivity(Constant.softwareInfoUrl)
-                    }
-                })
-                .addItemView(aboutList.createItemView("访问贴吧"), object : View.OnClickListener {
-                    override fun onClick(p0: View?) {
-                        openWebActivity(Constant.tiebaUrl)
-                    }
-                })
-                .addItemView(aboutList.createItemView("捐赠"), object : View.OnClickListener {
-                    override fun onClick(p0: View?) {
-                        openWebActivity(Constant.donationUrl)
-                    }
-                })
+        QMUIGroupListView.newSection(this)
+                .addItemView(aboutList.createItemView("检查更新")){ abp.onCheakUpdate() }
+                .addItemView(aboutList.createItemView("软件信息")) { openWebActivity(Constant.softwareInfoUrl) }
+                .addItemView(aboutList.createItemView("访问贴吧")) { openWebActivity(Constant.tiebaUrl) }
+                .addItemView(aboutList.createItemView("捐赠")) { openWebActivity(Constant.donationUrl) }
                 .addTo(aboutList)
 
     }
@@ -83,7 +66,7 @@ class AboutActivity : Activity(), AboutInterface {
                         .create()
             }
             if (tipDialog != null)
-                tipDialog!!.show()
+                tipDialog.show()
         }
 
     }

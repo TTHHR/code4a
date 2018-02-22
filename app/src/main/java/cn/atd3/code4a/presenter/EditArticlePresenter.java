@@ -97,7 +97,7 @@ public class EditArticlePresenter {
         return article.getTitle();
     }
 
-    public void setArticleModifyTime() {
+    private void setArticleModifyTime() {
         article.setModify((int) System.currentTimeMillis() / 1000);//修改时间
     }
 
@@ -128,6 +128,7 @@ public class EditArticlePresenter {
             eai.showToast(WARNING, eai.getXmlString(R.string.empty));
             return false;
         }
+        setArticleModifyTime();
         return true;
     }
 

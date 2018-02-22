@@ -1,6 +1,5 @@
 package cn.atd3.code4a.view.view
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -22,7 +21,6 @@ import cn.atd3.code4a.model.model.FileListModel
 import cn.atd3.code4a.presenter.EditArticlePresenter
 import cn.atd3.code4a.util.UriRealPath
 import cn.atd3.code4a.view.inter.EditArticleActivityInterface
-import cn.carbs.android.library.MDDialog
 import cn.dxkite.common.StorageData
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
@@ -67,6 +65,19 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
     }
 
+    override fun onStart() {
+        if(eap.isEditModel)
+         QMUIDialog.MessageDialogBuilder(this)
+            .setTitle(getString(R.string.title_waring))
+            .setMessage(getString(R.string.edit_waring))
+                    .addAction(getString(R.string.button_ok), {
+                        dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    )
+                    .show()
+        super.onStart()
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {//创建菜单
         menuInflater.inflate(R.menu.activity_editarticle, menu)
         return super.onCreateOptionsMenu(menu)
@@ -87,7 +98,6 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                         .create()
                 md.show()
                 eap.setArticleContent(richEditText.toHtml())//设置内容
-                eap.setArticleModifyTime()//设置修改时间
 
                 eap.uploadArticle(this@EditArticleActivity)
             }
@@ -103,22 +113,19 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
 
     override fun prgoressOfUpload(info: String) {
-        runOnUiThread(
-                Runnable {
+        runOnUiThread {
                     if (message != null)
                         message!!.text = info
                 }
-        )
+
     }
 
 
     override fun dismissArticleInfoDialog() {
-        runOnUiThread(
-                Runnable {
-                    if (md != null && md.isShowing)
+        runOnUiThread{
+                    if ( md.isShowing)
                         md.dismiss()
-                }
-        )
+        }
 
     }
 
@@ -196,16 +203,15 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
         if (eap.isEditModel)
             builder.setPlaceholder(eap.title)
         builder.setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction(getString(R.string.button_cancel), object : QMUIDialogAction.ActionListener {
-                    override fun onClick(dialog: QMUIDialog?, index: Int) {
+                .addAction(getString(R.string.button_cancel), {
+                    dialog, _->
                         dialog!!.dismiss()
                         if (eap.title == null || eap.title.isEmpty())
                             finish()
-                    }
 
                 })
-                .addAction(getString(R.string.button_ok), object : QMUIDialogAction.ActionListener {
-                    override fun onClick(dialog: QMUIDialog?, index: Int) {
+                .addAction(getString(R.string.button_ok),  {
+                    dialog, _->
                         val title = builder.editText.text
                         if (title.isEmpty())
                             Toast.makeText(this@EditArticleActivity, getString(R.string.error_title), Toast.LENGTH_SHORT).show()
@@ -213,7 +219,6 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                             eap.setArticleTitle(title.toString())
                             dialog!!.dismiss()
                         }
-                    }
 
                 })
                 .show()
@@ -239,12 +244,10 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
         val builder = QMUIDialog.CheckableDialogBuilder(this)
                 .setCheckedIndex(0)
-                .addItems(items.toTypedArray(), object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                .addItems(items.toTypedArray(),  {
+                    dialog, which ->
                         eap.setArticleCategoryId(which + 1)
                         dialog!!.dismiss()
-                    }
-
                 })
         builder.show()
     }
@@ -254,35 +257,33 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
         val builder = QMUIDialog.CheckableDialogBuilder(this)
                 .setCheckedIndex(0)
-                .addItems(items, object : DialogInterface.OnClickListener {
-                    override fun onClick(dialog: DialogInterface?, which: Int) {
-                        eap.setArticleVisibility(items[0])
+                .addItems(items,  {
+                    dialog, which->
+                        eap.setArticleVisibility(resources.getStringArray(R.array.power_list_value)[0])
+                        //这里使用0
                         Toast.makeText(this@EditArticleActivity, getString(R.string.wanning_visibility), Toast.LENGTH_SHORT).show()
                         dialog!!.dismiss()
                         if (which == 2) {
                             val passBuilder = QMUIDialog.EditTextDialogBuilder(this@EditArticleActivity)
                             passBuilder.setInputType(InputType.TYPE_CLASS_TEXT)
-                                    .addAction(getString(R.string.button_cancel), object : QMUIDialogAction.ActionListener {
-                                        override fun onClick(dialog: QMUIDialog?, index: Int) {
+                                    .addAction(getString(R.string.button_cancel),  {
+                                        _, _->
                                             Toast.makeText(this@EditArticleActivity, getString(R.string.password_empty), Toast.LENGTH_SHORT).show()
-                                        }
 
                                     })
-                                    .addAction(getString(R.string.button_ok), object : QMUIDialogAction.ActionListener {
-                                        override fun onClick(dialog: QMUIDialog?, index: Int) {
-                                            val passwd = passBuilder.editText.text
-                                            if (passwd.isEmpty())
+                                    .addAction(getString(R.string.button_ok), {
+                                        dialog, _->
+                                            val password = passBuilder.editText.text
+                                            if (password.isEmpty())
                                                 Toast.makeText(this@EditArticleActivity, getString(R.string.password_empty), Toast.LENGTH_SHORT).show()
                                             else {
-                                                eap.setArticlePassword(passwd.toString())
+                                                eap.setArticlePassword(password.toString())
                                                 dialog!!.dismiss()
                                             }
-                                        }
 
                                     })
                                     .show()
                         }
-                    }
 
                 })
         builder.show()
@@ -345,25 +346,21 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
      */
     fun insertFile(v: View) {
         val files = FileListModel.getIns().toArray()
-        MDDialog.Builder(this@EditArticleActivity)
-                .setMessages(files)
-                .setTitle(R.string.title_showfile)
-                .setPositiveButton(R.string.button_add, View.OnClickListener {
-                    val i = Intent(this@EditArticleActivity, FileSelectActivity::class.java)
-                    startActivity(i)
-                })
-                .setOnItemClickListener(object : MDDialog.OnItemClickListener {
-                    override fun onItemClicked(index: Int) {
-
-                        FileListModel.getIns().removeFile(index)
-                    }
-                })
-                .setWidthMaxDp(600)
-                .setShowTitle(true)
-                .setShowButtons(true)
-                .create()
-                .show()
-
+        val builder = QMUIDialog.MultiCheckableDialogBuilder(this)
+                .addItems(files) { _, _ -> }
+        builder.addAction(0,getString(R.string.button_del),QMUIDialogAction.ACTION_PROP_NEGATIVE,
+        { dialog, _ ->
+            for (i in 0 until builder.checkedItemIndexes.size) {
+               FileListModel.getIns().removeFile(i)
+            }
+            dialog.dismiss()
+        })
+        builder.addAction(getString(R.string.button_add)) { dialog, _ ->
+            val i = Intent(this@EditArticleActivity, FileSelectActivity::class.java)
+            startActivity(i)
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     /**
