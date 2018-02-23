@@ -29,7 +29,7 @@
     <color name="dlg_pressed_bg_color">#cfD4D4D4</color>
     <color name="maintxt">#4c5763</color>
     <color name="fastscroll">#5CC87B</color>
-<color name="side_background">#FF16AB41</color>
+    <color name="side_background">#FF16AB41</color>
     <drawable name="menu_press_night">#f0f0f2</drawable>
     <color name="item_driver_bg_light">#f0f0f2</color>
 

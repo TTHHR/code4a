@@ -68,5 +68,9 @@ class CodeApplication : Application() {
 
         //收集信息
         Constant.collectioninfo=PreferenceManager.getDefaultSharedPreferences(this).getBoolean("collection",false)
+
+
+        Constant.themeColor=PreferenceManager.getDefaultSharedPreferences(this).getString("themeColor","#16AB41")
+
     }
 }

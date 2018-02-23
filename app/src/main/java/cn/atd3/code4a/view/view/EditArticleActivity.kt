@@ -1,10 +1,12 @@
 package cn.atd3.code4a.view.view
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.Toolbar
 import android.text.InputType
 import android.util.Log
 import android.view.Menu
@@ -34,7 +36,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
     private val REQUEST_CODE_GET_CONTENT = 666
 
-
+private lateinit var toolbar:Toolbar
     private var message: TextView? = null
     private lateinit var richEditText: RichEditText
     private lateinit var eap: EditArticlePresenter
@@ -42,7 +44,15 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editarticle)
-
+        toolbar=findViewById(R.id.toolbar)
+        try {
+            toolbar.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            toolbar.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
+        setSupportActionBar(toolbar)
         eap = EditArticlePresenter(this)
 
         initView()
@@ -50,7 +60,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     }
 
 
-    fun initView() {
+    private fun initView() {
         richEditText = findViewById(R.id.rich_text)
         val i = intent
         val a = i.getSerializableExtra("article")
@@ -90,7 +100,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
             R.id.export -> {
                 val inflater = layoutInflater
                 val dialoglayout = inflater.inflate(R.layout.dialog_uploadarticle, null)
-                message = dialoglayout.findViewById<TextView>(R.id.message)
+                message = dialoglayout.findViewById(R.id.message)
                 md = AlertDialog.Builder(this@EditArticleActivity)
                         .setTitle(R.string.title_upload_article)
                         .setView(dialoglayout)
@@ -112,7 +122,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     }
 
 
-    override fun prgoressOfUpload(info: String) {
+    override fun progressOfUpload(info: String) {
         runOnUiThread {
                     if (message != null)
                         message!!.text = info

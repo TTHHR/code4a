@@ -4,6 +4,10 @@
     <string name="editarticle_name">Edit Article</string>
     <string name="setting">Setting</string>
     <string name="setting_about">About</string>
+    <string name="setting_theme_color">Theme color</string>
+    <string name="setting_theme_summary">change theme color</string>
+    <string name="dialog_theme_summary">Input the color code, such as：#1d97f5</string>
+    <string name="waring_error_color">The color code is incorrect, please reset it</string>
     <string name="setting_tieba">Tieba</string>
     <string name="setting_tieba_summary">goto c4droid Tieba</string>
     <string name="setting_language">Language</string>

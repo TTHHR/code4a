@@ -44,13 +44,15 @@
             android:label="@string/action_sign_in"
             android:theme="@style/AppTheme" />
         <activity android:name=".view.view.SettingActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".view.view.ViewArticleActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".library.fileselect.FileSelectActivity" />
-        <activity android:name=".view.view.EditArticleActivity" />
+        <activity android:name=".view.view.EditArticleActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".view.view.EggActivity" />
         <activity android:name=".view.view.FeedbackActivity" />
         <activity android:name=".view.view.AboutActivity"/>

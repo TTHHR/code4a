@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
     <PreferenceCategory android:title="@string/setting" >
         <ListPreference
             android:key="language"
@@ -7,6 +8,12 @@
             android:dialogTitle="@string/setting_language_select"
             android:entries="@array/language_list_key"
             android:entryValues="@array/language_list_value"/>
+        <!-- 通过输入框填写主题颜色 -->
+        <EditTextPreference
+            android:key="themeColor"
+            android:title="@string/setting_theme_color"
+            android:summary="@string/setting_theme_summary"
+            android:dialogTitle="@string/dialog_theme_summary" />
         <CheckBoxPreference
             android:checked="false"
             android:defaultValue="false"

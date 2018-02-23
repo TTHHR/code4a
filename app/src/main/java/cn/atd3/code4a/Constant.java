@@ -27,8 +27,8 @@ public final class Constant {
     public final static int NORMAL = 2;
     public final static int WARNING = 3;
     public final static int ERROR = 4;
-    public final static String sdcardName = File.separator + "code4a";
-    public final static String privateString = File.separator + ".private";
+    private final static String sdcardName = File.separator + "code4a";
+    private final static String privateString = File.separator + ".private";
     public final static String zipDir = File.separator + "zip";
     public final static String zipFile = File.separator + "code.zip";
     private static boolean init = false;
@@ -42,6 +42,8 @@ public final class Constant {
 
     public static boolean debugmodeinfo = false;
     public static boolean collectioninfo = false;
+    public static String themeColor = "";
+    public static String defaultThemeColor = "#99cc00";
 
     private static boolean debug;
     private static String uuid;

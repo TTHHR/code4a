@@ -13,7 +13,7 @@ interface EditArticleActivityInterface {
 
     fun getXmlString(resourceId: Int): String
 
-    fun prgoressOfUpload(info:String)
+    fun progressOfUpload(info:String)
 
 
 }
