@@ -8,18 +8,17 @@ import cn.atd3.code4a.Constant.*
 import cn.atd3.code4a.R
 import cn.atd3.code4a.presenter.AboutPresenter
 import cn.atd3.code4a.view.inter.AboutInterface
-import com.qmuiteam.qmui.widget.QMUITopBarLayout
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+import kotlinx.android.synthetic.main.activity_about.*
 
 class AboutActivity : Activity(), AboutInterface {
     private lateinit var abp: AboutPresenter
-    private lateinit var aboutList: QMUIGroupListView
-    private lateinit var topBar: QMUITopBarLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_about)
-        topBar = findViewById(R.id.topbar)
         topBar.addLeftBackImageButton().setOnClickListener( {
             finish()
         })
@@ -28,7 +27,6 @@ class AboutActivity : Activity(), AboutInterface {
 
         abp = AboutPresenter(this)
 
-        aboutList = findViewById(R.id.about_list)
 
         QMUIGroupListView.newSection(this)
                 .addItemView(aboutList.createItemView("检查更新")){ abp.onCheakUpdate() }

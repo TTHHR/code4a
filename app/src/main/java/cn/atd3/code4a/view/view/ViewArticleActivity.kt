@@ -12,10 +12,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.util.Log
-import android.widget.TextView
-
-import com.beardedhen.androidbootstrap.BootstrapButton
-import com.qmuiteam.qmui.widget.QMUITopBarLayout
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 
@@ -30,16 +26,19 @@ import cn.atd3.code4a.Constant.INFO
 import cn.atd3.code4a.Constant.NORMAL
 import cn.atd3.code4a.Constant.SUCCESS
 import cn.atd3.code4a.Constant.WARNING
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
+import kotlinx.android.synthetic.main.activity_view_article.*
 
 class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
-    private var articleText: TextView? = null
+
     private var vap: ViewArticlePresenter? = null
-    private var copyButton: BootstrapButton? = null
+
     private var md: QMUITipDialog? = null
-    private var mTopBar: QMUITopBarLayout? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        QMUIStatusBarHelper.translucent(this)//沉浸式状态栏
         setContentView(R.layout.activity_view_article)
         val i = this.intent
         val article = i.getSerializableExtra("article") as ArticleModel
@@ -61,27 +60,24 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
 
         vap!!.checkArticle()//检查数据是否正常
 
-        mTopBar = findViewById(R.id.topbar)
 
-        mTopBar!!.addLeftBackImageButton().setOnClickListener { finish() }
+        topBar!!.addLeftBackImageButton().setOnClickListener { finish() }
 
-        mTopBar!!.setTitle(if (article.title == null) "error" else article.title)
+        topBar!!.setTitle(if (article.title == null) "error" else article.title)
 
         // 菜单按钮
-        mTopBar!!.addRightImageButton(R.mipmap.topbar_menu, 1).setOnClickListener { showBottomSheetList() }
+        topBar!!.addRightImageButton(R.mipmap.topbar_menu, 1).setOnClickListener { showBottomSheetList() }
 
-        articleText = findViewById(R.id.rich_text)
 
-        if (articleText != null) {
-            vap!!.initImageGetter(articleText)//初始化图片加载器
+        if (richText != null) {
+            vap!!.initImageGetter(richText)//初始化图片加载器
         }
 
 
-        copyButton = findViewById(R.id.copy)//复制按钮
         copyButton!!.setOnClickListener {
-            if (articleText != null) {
+            if (richText != null) {
                 val cm = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                cm.primaryClip = ClipData.newPlainText("code", articleText!!.text)
+                cm.primaryClip = ClipData.newPlainText("code", richText!!.text)
                 QMUITipDialog.Builder(applicationContext)
                         .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
                         .setTipWord(getString(R.string.button_ok))
@@ -109,12 +105,12 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
 
     override fun onStart() {
         try {
-            mTopBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
         }
         catch (e:Exception)
         {
             showToast(WARNING,getString(R.string.waring_error_color))
-            mTopBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
         vap!!.loadArticle()//加载文章
 
@@ -187,13 +183,13 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
     override fun loadArticle(text: String, imageGetter: Html.ImageGetter) {
 
         runOnUiThread {
-            articleText!!.text = Html.fromHtml(text, imageGetter, null)
+            richText!!.text = Html.fromHtml(text, imageGetter, null)
             copyButton!!.isClickable = true
         }
     }
 
     override fun loadUser(un: String) {
-        runOnUiThread { mTopBar!!.setSubTitle(un) }
+        runOnUiThread { topBar!!.setSubTitle(un) }
     }
 
     private fun showBottomSheetList() {
@@ -209,7 +205,7 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
                             val intent = Intent(Intent.ACTION_SEND)
                             intent.type = "text/plain"
                             intent.putExtra(Intent.EXTRA_SUBJECT, "Share")
-                            intent.putExtra(Intent.EXTRA_TEXT, articleText!!.text.toString() + Constant.shareUrl)
+                            intent.putExtra(Intent.EXTRA_TEXT, richText!!.text.toString() + Constant.shareUrl)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(Intent.createChooser(intent, title))
                         }

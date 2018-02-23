@@ -10,10 +10,8 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.DownloadListener
 import android.webkit.WebChromeClient
-import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ProgressBar
-import com.qmuiteam.qmui.widget.QMUITopBarLayout
+
 
 import cn.atd3.code4a.R
 import cn.atd3.code4a.presenter.WebPresenter
@@ -22,18 +20,18 @@ import cn.atd3.code4a.view.inter.WebViewInterface
 import android.view.KeyEvent.KEYCODE_BACK
 import android.widget.Toast
 import cn.atd3.code4a.Constant
-
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import kotlinx.android.synthetic.main.activity_web.*
 
 class WebActivity : AppCompatActivity(), WebViewInterface {
-    private var wv: WebView? = null
-    private var pb: ProgressBar? = null
+
     private var wp: WebPresenter? = null
-    private var topBar: QMUITopBarLayout? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        QMUIStatusBarHelper.translucent(this)//沉浸式状态栏
         setContentView(R.layout.activity_web)
-        topBar = findViewById(R.id.topbar)
         topBar!!.addLeftBackImageButton().setOnClickListener { finish() }
         topBar!!.setTitle(getString(R.string.app_name))
 
@@ -45,14 +43,11 @@ class WebActivity : AppCompatActivity(), WebViewInterface {
             Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
             topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
-        wv = findViewById(R.id.webview)
-
-        pb = findViewById(R.id.progressBar)
 
         wp = WebPresenter(this)
 
         wp!!.setWebClient()
-        wv!!.setDownloadListener(MyWebViewDownLoadListener())
+        webView!!.setDownloadListener(MyWebViewDownLoadListener())
 
         val i = intent
 
@@ -64,29 +59,29 @@ class WebActivity : AppCompatActivity(), WebViewInterface {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KEYCODE_BACK) {
-            wp!!.goBack(wv)
+            wp!!.goBack(webView)
             return true
         }
         return super.onKeyDown(keyCode, event)
     }
 
     override fun onPageLoading(pro: Int) {
-        runOnUiThread { pb!!.progress = pro }
+        runOnUiThread { progressBar!!.progress = pro }
     }
 
     override fun loadPage(url: String) {
-        runOnUiThread { wv!!.loadUrl(url) }
+        runOnUiThread { webView!!.loadUrl(url) }
 
     }
 
     override fun goBack() {
-        runOnUiThread { wv!!.goBack() }
+        runOnUiThread { webView!!.goBack() }
     }
 
     override fun setWebClient(wvc: WebViewClient, wcc: WebChromeClient) {
         runOnUiThread {
-            wv!!.webViewClient = wvc
-            wv!!.webChromeClient = wcc
+            webView!!.webViewClient = wvc
+            webView!!.webChromeClient = wcc
         }
     }
 
@@ -96,15 +91,15 @@ class WebActivity : AppCompatActivity(), WebViewInterface {
 
     override fun showProgressBar() {
         runOnUiThread {
-            if (pb!!.visibility == View.INVISIBLE)
-                pb!!.visibility = View.VISIBLE
+            if (progressBar!!.visibility == View.INVISIBLE)
+                progressBar!!.visibility = View.VISIBLE
         }
     }
 
     override fun dismissProgressBar() {
         runOnUiThread {
-            if (pb!!.visibility == View.VISIBLE)
-                pb!!.visibility = View.INVISIBLE
+            if (progressBar!!.visibility == View.VISIBLE)
+                progressBar!!.visibility = View.INVISIBLE
         }
     }
 

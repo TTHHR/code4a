@@ -102,6 +102,7 @@ public class EditArticlePresenter {
 
     private boolean checkArticleInfo() {
         if (article.getTitle() == null || article.getSlug() == null) {
+            eai.showToast(WARNING, eai.getXmlString(R.string.error_title));
             return false;
         }
         if (article.getCategoryId() == null) {
@@ -124,7 +125,7 @@ public class EditArticlePresenter {
             article.setStatus(2);//默认为发布状态
         }
         if (article.getContent() == null || article.getContent().isEmpty()) {
-            eai.showToast(WARNING, eai.getXmlString(R.string.empty));
+            eai.showToast(WARNING, eai.getXmlString(R.string.error_content));
             return false;
         }
         setArticleModifyTime();

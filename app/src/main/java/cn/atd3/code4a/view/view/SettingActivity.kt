@@ -5,18 +5,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import kotlinx.android.synthetic.main.activity_setting.*
 
 var language = ""
 class SettingActivity : AppCompatActivity() {
-    lateinit var toolbar:Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_setting)
-
-        toolbar=findViewById(R.id.toolbar)
         try {
             toolbar.setBackgroundColor(Color.parseColor(Constant.themeColor))
         }

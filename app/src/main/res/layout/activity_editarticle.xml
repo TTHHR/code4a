@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     >
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -103,7 +103,7 @@
                 android:src="@mipmap/ic_format_clear"
                 android:scaleType="center"
                 android:onClick="clearFormat"
-                android:background="?android:selectableItemBackground"></ImageButton>
+                android:background="?android:selectableItemBackground"/>
 
         </LinearLayout>
 
@@ -112,11 +112,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolBar"
+        android:layout_above="@+id/tools"
         android:fillViewport="true">
 
         <com.scrat.app.richtext.RichEditText
-            android:id="@+id/rich_text"
+            android:id="@+id/richText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

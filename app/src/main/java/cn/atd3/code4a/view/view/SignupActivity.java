@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import cn.atd3.code4a.R;
@@ -42,7 +43,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @Override
     public void onCreate(Bundle s) {
         super.onCreate(s);
-
+        QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

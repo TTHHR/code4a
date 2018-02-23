@@ -35,7 +35,7 @@
                 android:textSize="16sp"/>
 
             <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
-                android:id="@+id/about_list"
+                android:id="@+id/aboutList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"/>
@@ -59,7 +59,7 @@
     </ScrollView>
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/topbar"
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"/>

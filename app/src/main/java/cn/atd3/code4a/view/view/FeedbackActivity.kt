@@ -8,24 +8,20 @@ import cn.atd3.code4a.Constant.*
 import cn.atd3.code4a.R
 import cn.atd3.code4a.presenter.FeedbackPresenter
 import cn.atd3.code4a.view.inter.FeedbackInterface
-import com.beardedhen.androidbootstrap.BootstrapButton
-import com.beardedhen.androidbootstrap.BootstrapEditText
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import kotlinx.android.synthetic.main.activity_feedback.*
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 
 class FeedbackActivity : AppCompatActivity(), FeedbackInterface {
     private lateinit var fbp: FeedbackPresenter
-    private lateinit var feedbackButton: BootstrapButton
-    private lateinit var contentView: BootstrapEditText
-    private lateinit var contactView: BootstrapEditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_feedback)
         fbp = FeedbackPresenter(this)
-        feedbackButton = findViewById(R.id.feedbacakbutton)
-        contentView = findViewById(R.id.content)
-        contactView = findViewById(R.id.contact)
-        feedbackButton.setOnClickListener({
-            fbp.upToServer(contentView.text.toString(), contactView.text.toString())
+        feedBackButton.setOnClickListener({
+            fbp.upToServer(content.text.toString(), contact.text.toString())
         })
     }
 
