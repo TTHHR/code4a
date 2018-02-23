@@ -22,27 +22,25 @@ import cn.atd3.code4a.Constant.INFO
 import cn.atd3.code4a.Constant.NORMAL
 import cn.atd3.code4a.Constant.SUCCESS
 import cn.atd3.code4a.Constant.WARNING
+import kotlinx.android.synthetic.main.activity_splash.*
 
 
 class SplashActivity : AppCompatActivity(), SplashViewInterface {
 
     private var sp: SplashPresenter? = null
-    private var sad: SplashAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //将window的背景图设置为空
         window.setBackgroundDrawableResource(android.R.color.white)
         setContentView(R.layout.activity_splash)
-        val mContentView = findViewById<View>(R.id.splash_view)
-        mContentView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+        splashView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
 
-        sad = findViewById(R.id.splash_ad)
 
         sp = SplashPresenter(this, this)//实例化，并将自身做参数
 
@@ -50,7 +48,7 @@ class SplashActivity : AppCompatActivity(), SplashViewInterface {
 
         sp!!.requestAdInfo()//请求广告信息
 
-        sp!!.setSplashAdListener(this, sad)//设置广告监听
+        sp!!.setSplashAdListener(this, splashAd)//设置广告监听
 
         sp!!.showAd(3000)//显示广告3秒
 
@@ -70,8 +68,8 @@ class SplashActivity : AppCompatActivity(), SplashViewInterface {
     override fun onImageUpdate(imguri: Uri) {
 
         runOnUiThread {
-            if (sad != null)
-                sad!!.setAdImageURI(imguri)
+            if (splashAd!= null)
+                splashAd!!.setAdImageURI(imguri)
             //设置图片
         }
 
@@ -127,14 +125,14 @@ class SplashActivity : AppCompatActivity(), SplashViewInterface {
     }
 
     override fun setSplashAdListener(sal: SplashAd.SplashAdListener) {
-        if (sad != null)
-            sad!!.setSplashAdListener(sal)
+        if (splashAd != null)
+            splashAd!!.setSplashAdListener(sal)
     }
 
     override fun showAd(showtime: Int) {
         runOnUiThread {
-            if (sad != null)
-                sad!!.show(this@SplashActivity, showtime)
+            if (splashAd != null)
+                splashAd!!.show(this@SplashActivity, showtime)
         }
     }
 

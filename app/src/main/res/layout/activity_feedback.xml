@@ -48,7 +48,7 @@
             android:padding="8dp">
 
             <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/feedbacakbutton"
+                android:id="@+id/feedBackButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/feedback_send"

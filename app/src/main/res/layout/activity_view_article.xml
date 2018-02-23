@@ -6,7 +6,7 @@
     android:background="@color/bootstrap_gray_lighter"
     android:orientation="vertical">
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/topbar"
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"/>
@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/rich_text"
+                android:id="@+id/richText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
@@ -40,7 +40,7 @@
                 android:scrollbars="vertical" />
 
             <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/copy"
+                android:id="@+id/copyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"

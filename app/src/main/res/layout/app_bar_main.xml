@@ -17,7 +17,7 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
@@ -40,7 +40,7 @@
             android:background="@color/btn_enable">
 
             <LinearLayout
-                android:id="@+id/tagList"
+                android:id="@+id/tagListLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/btn_enable"
@@ -52,7 +52,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/newArticle"
+        android:id="@+id/newArticleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

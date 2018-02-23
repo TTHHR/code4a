@@ -7,7 +7,7 @@
     >
 
     <LinearLayout
-        android:id="@+id/splash_view"
+        android:id="@+id/splashView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="0dp">
 
         <cn.qingyuyu.commom.ui.SplashAd
-            android:id="@+id/splash_ad"
+            android:id="@+id/splashAd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".3"

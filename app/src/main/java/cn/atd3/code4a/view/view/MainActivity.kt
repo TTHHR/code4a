@@ -3,8 +3,8 @@ package cn.atd3.code4a.view.view
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
@@ -26,22 +26,19 @@ import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import java.io.File
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var myViewPager: ViewPager
-    lateinit var head_iv: ImageView
-    lateinit var uname: TextView
     private var tagList: List<Button> = ArrayList()
     private var exitTime = 0L
 
-    private lateinit var newarticle: FloatingActionButton
     //把Fragment添加到List集合里面
     var fragmentList: List<ArticleFragment> = ArrayList()
-
     private lateinit var mp: MainPresenter
     private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +46,17 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         super.onCreate(savedInstanceState)
         //将window的背景图设置为空
         window.setBackgroundDrawableResource(bootstrap_gray_lighter)
+        QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)//title bar
+        try {
+            toolBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
+            toolBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
+        setSupportActionBar(toolBar)//title bar
         mp = MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
@@ -76,11 +82,10 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     private fun initView() {
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawer_layout, toolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val tagListLayout = findViewById<LinearLayout>(R.id.tagList)
         val cateListFile = File(Constant.getCategoryListFilePath())
         val catelist: List<CategoryModel>
 
@@ -92,7 +97,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
 
 
-        val defaultButton: Button = Button(applicationContext)
+        val defaultButton = Button(applicationContext)
         defaultButton.text = "首页"
         defaultButton.id = 0
         defaultButton.setBackgroundColor(resources.getColor(R.color.btn_unable))
@@ -124,17 +129,11 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
 
 
-
-        myViewPager = findViewById(R.id.myViewPager)
-
-        newarticle = findViewById(R.id.newArticle)
-        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
-        navigationView.setNavigationItemSelectedListener ( this )
-        val drawview = navigationView.inflateHeaderView(R.layout.nav_header_main)
-        uname = drawview.findViewById(R.id.uname)
-        head_iv = drawview.findViewById(R.id.headImage)
+        nav_view.setNavigationItemSelectedListener ( this )
 
     }
+
+
 
 
     private fun bindListener() {
@@ -142,15 +141,23 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         myViewPager.adapter = TabFragmentAdapter(supportFragmentManager, fragmentList)
 
         //写新文章按钮
-        newarticle.setOnClickListener({ _ ->
+        newArticleButton.setOnClickListener({ _ ->
             //添加用户判断
             val i = Intent(this, EditArticleActivity::class.java)
             startActivity(i)
         })
 
-
+        val navHeadMain=nav_view.inflateHeaderView(R.layout.nav_header_main)
+        try {
+            navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
+        val headImage=navHeadMain.findViewById<ImageView>(R.id.headImage)
         //测试登陆
-        head_iv.setOnClickListener({
+        headImage.setOnClickListener({
             Thread {
                         try {
                            //  Remote.user.method("signin").call("TTHHR", "", true)
@@ -184,7 +191,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     }
 
     override fun showMessageBanner(a: Adapter) {
-        val bar = PopBanner(this@MainActivity, toolbar, R.mipmap.broadcast)
+        val bar = PopBanner(this@MainActivity, toolBar, R.mipmap.broadcast)
         bar.messageAdapter = a
 
         bar.update()

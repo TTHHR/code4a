@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import butterknife.BindView;
@@ -43,7 +44,7 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
