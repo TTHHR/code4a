@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -61,7 +62,7 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
         vap!!.checkArticle()//检查数据是否正常
 
         mTopBar = findViewById(R.id.topbar)
-        mTopBar!!.setBackgroundColor(resources.getColor(android.R.color.holo_green_light,theme))
+
         mTopBar!!.addLeftBackImageButton().setOnClickListener { finish() }
 
         mTopBar!!.setTitle(if (article.title == null) "error" else article.title)
@@ -107,7 +108,14 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
 
 
     override fun onStart() {
-
+        try {
+            mTopBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            showToast(WARNING,getString(R.string.waring_error_color))
+            mTopBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
         vap!!.loadArticle()//加载文章
 
         super.onStart()

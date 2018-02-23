@@ -3,6 +3,10 @@
     <string name="version_name">V1.0</string>
     <string name="editarticle_name">编辑文章</string>
     <string name="setting">设置</string>
+    <string name="setting_theme_color">主题颜色</string>
+    <string name="setting_theme_summary">更改主题颜色</string>
+    <string name="dialog_theme_summary">输入颜色代码，如：#1d97f5</string>
+    <string name="waring_error_color">颜色代码不正确，请重新设置</string>
     <string name="setting_about">关于</string>
     <string name="setting_tieba">贴吧</string>
     <string name="setting_tieba_summary">访问c4droid贴吧</string>

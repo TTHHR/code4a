@@ -1,6 +1,7 @@
 package cn.atd3.code4a.view.view
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -19,6 +20,8 @@ import cn.atd3.code4a.presenter.WebPresenter
 import cn.atd3.code4a.view.inter.WebViewInterface
 
 import android.view.KeyEvent.KEYCODE_BACK
+import android.widget.Toast
+import cn.atd3.code4a.Constant
 
 
 class WebActivity : AppCompatActivity(), WebViewInterface {
@@ -34,7 +37,14 @@ class WebActivity : AppCompatActivity(), WebViewInterface {
         topBar!!.addLeftBackImageButton().setOnClickListener { finish() }
         topBar!!.setTitle(getString(R.string.app_name))
 
-        topBar!!.setBackgroundColor(resources.getColor(android.R.color.holo_green_light,theme))
+        try {
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
         wv = findViewById(R.id.webview)
 
         pb = findViewById(R.id.progressBar)

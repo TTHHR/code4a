@@ -10,7 +10,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -187,7 +186,7 @@ public class EditArticlePresenter {
                             eai.dismissArticleInfoDialog();
                             return;
                         }
-                        eai.prgoressOfUpload(eai.getXmlString(R.string.action_packfile));
+                        eai.progressOfUpload(eai.getXmlString(R.string.action_packfile));
 
 
                         getPictureList(context);
@@ -202,7 +201,7 @@ public class EditArticlePresenter {
                             eai.dismissArticleInfoDialog();
                             return;
                         } else {
-                            eai.prgoressOfUpload(eai.getXmlString(R.string.title_upfile));//进入上传阶段
+                            eai.progressOfUpload(eai.getXmlString(R.string.title_upfile));//进入上传阶段
 
                             //上传
                             try {
@@ -220,7 +219,7 @@ public class EditArticlePresenter {
                                 );
 
 
-                                eai.prgoressOfUpload(eai.getXmlString(R.string.action_upfinish));
+                                eai.progressOfUpload(eai.getXmlString(R.string.action_upfinish));
 
                                 Thread.sleep(1000);
 
