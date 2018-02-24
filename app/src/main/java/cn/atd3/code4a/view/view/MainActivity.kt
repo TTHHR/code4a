@@ -79,10 +79,6 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         mp.collection(this)  //收集装机信息
-
-    }
-
-    override fun onStart() {
         val i = intent
         if (i.getStringExtra("url") != null) {
             val intent = Intent(this, WebActivity::class.java)
@@ -93,7 +89,6 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         {
             mp.showMessageBanner()//拉取通知
         }
-        super.onStart()
     }
 
     private fun initView() {

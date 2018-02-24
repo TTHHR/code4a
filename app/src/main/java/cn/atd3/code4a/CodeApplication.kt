@@ -70,7 +70,9 @@ class CodeApplication : Application() {
         Constant.collectioninfo=PreferenceManager.getDefaultSharedPreferences(this).getBoolean("collection",false)
 
 
-        Constant.themeColor=PreferenceManager.getDefaultSharedPreferences(this).getString("themeColor","#16AB41")
+        Constant.themeColor=PreferenceManager.getDefaultSharedPreferences(this).getString("themeColor","")
+        if(Constant.themeColor=="")
+            Constant.themeColor=Constant.defaultThemeColor
 
     }
 }

@@ -97,7 +97,7 @@ public class EditArticlePresenter {
     }
 
     private void setArticleModifyTime() {
-        article.setModify((int) System.currentTimeMillis() / 1000);//修改时间
+        article.setModify((int) (System.currentTimeMillis() / 1000));//修改时间
     }
 
     private boolean checkArticleInfo() {
@@ -112,7 +112,7 @@ public class EditArticlePresenter {
             article.setVisibility("public");//默认公开
         }
         if (article.getCreate() == null) {
-            article.setCreate((int) System.currentTimeMillis() / 1000);//创建时间
+            article.setCreate((int) (System.currentTimeMillis() / 1000));//创建时间
         }
 
         if (article.getVisibility().equals("password")) {
@@ -292,7 +292,7 @@ public class EditArticlePresenter {
 
             slug.setAttribute("name", "slug");
             slug.setTextContent(base64.encode(article.getSlug().getBytes()));
-            category.setAttribute("name", "category");
+            category.setAttribute("name", "categoryId");
             category.setAttribute("value", "" + article.getCategoryId());
             tag.setAttribute("name", "tag");
             create.setAttribute("name", "create");
