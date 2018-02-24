@@ -18,6 +18,15 @@ public class Remote {
         }
     };
     /**
+     * 超级用户接口
+     */
+    public static ProxyObject superUser = new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface + "/android-super-user";
+        }
+    };
+    /**
      * 文章接口
      */
     public static ProxyObject article = new ProxyObject() {
@@ -36,15 +45,6 @@ public class Remote {
         }
     };
 
-    /**
-     * 标签接口
-     */
-    public static ProxyObject tag = new ProxyObject() {
-        @Override
-        public String getCallUrl() {
-            return apiInterface + "/tags";
-        }
-    };
 
     /**
      * 类别接口
@@ -53,16 +53,6 @@ public class Remote {
         @Override
         public String getCallUrl() {
             return apiInterface + "/category";
-        }
-    };
-
-    /**
-     * 文章上传接口
-     */
-    public static ProxyObject upload = new ProxyObject() {
-        @Override
-        public String getCallUrl() {
-            return apiInterface + "/upload";
         }
     };
 
@@ -92,7 +82,7 @@ public class Remote {
     public static ProxyObject collection = new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return apiInterface + "/collection";
+            return apiInterface + "/android-collection";
         }
     };
     /**
@@ -101,7 +91,7 @@ public class Remote {
     public static ProxyObject report = new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return apiInterface + "/report";
+            return apiInterface + "/android-report";
         }
     };
 }

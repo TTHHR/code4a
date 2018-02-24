@@ -214,18 +214,23 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 .addAction(getString(R.string.button_cancel), {
                     dialog, _->
                         dialog!!.dismiss()
-                        if (eap.title == null || eap.title.isEmpty())
-                            finish()
+                    if (title.isEmpty()&&eap.title.isEmpty())
+                        Toast.makeText(this@EditArticleActivity, getString(R.string.error_title), Toast.LENGTH_SHORT).show()
 
                 })
                 .addAction(getString(R.string.button_ok),  {
                     dialog, _->
                         val title = builder.editText.text
-                        if (title.isEmpty())
+                    if(!eap.title.isEmpty()) {
+                        dialog.dismiss()
+                    }
+                    else if(!title.isEmpty())
+                    {
+                        eap.setArticleTitle(title.toString())
+                        dialog!!.dismiss()
+                    }
+                    else {
                             Toast.makeText(this@EditArticleActivity, getString(R.string.error_title), Toast.LENGTH_SHORT).show()
-                        else {
-                            eap.setArticleTitle(title.toString())
-                            dialog!!.dismiss()
                         }
 
                 })

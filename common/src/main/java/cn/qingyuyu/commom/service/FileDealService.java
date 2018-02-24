@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -183,7 +184,31 @@ public void renameFile(File f,String neww)
         }
         return null;
     }
-
+public void save(String filePath,String content)
+{
+    OutputStream os=null;
+    try {
+      File f=new File(filePath);
+        if(!f.exists())
+            f.createNewFile();
+        os=new FileOutputStream(f);
+        os.write(content.getBytes());
+        os.flush();
+    }
+   catch (Exception e)
+   {
+       Log.e("save string",""+e);
+   }
+   finally {
+            if(os!=null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+    }
+}
 
     /*
     将流保存文件
