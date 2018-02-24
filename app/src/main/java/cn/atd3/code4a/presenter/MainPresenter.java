@@ -34,13 +34,32 @@ public class MainPresenter {
                 try {
                     final Object msg = Remote.androidMessage.method("pull", Information.class).call();
                     if (msg instanceof Information){
-                        Adapter a=new Adapter() {
-                            @Override
-                            public Information refresh() {
-                                return (Information) msg;
-                            }
-                        };
-                       mvi.showMessageBanner(a);
+                       String create=FileDealService.getInstance().readFile(Constant.getPrivateFilePath()+"/message");
+                       if(create==null)
+                       {
+                           Adapter a=new Adapter() {
+                               @Override
+                               public Information refresh() {
+                                   return (Information) msg;
+                               }
+                           };
+                           mvi.showMessageBanner(a);
+                           FileDealService.getInstance().save(Constant.getPrivateFilePath()+"/message",""+((Information) msg).getCreate());
+                       }
+                       else
+                       {
+                           if(Integer.parseInt(create)<((Information) msg).getCreate())
+                           {
+                               Adapter a=new Adapter() {
+                                   @Override
+                                   public Information refresh() {
+                                       return (Information) msg;
+                                   }
+                               };
+                               mvi.showMessageBanner(a);
+                           }
+                       }
+
                     }
                 } catch (Exception e) {
                     Log.e("get message",""+e);

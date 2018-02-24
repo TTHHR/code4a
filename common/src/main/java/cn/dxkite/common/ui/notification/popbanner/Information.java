@@ -13,7 +13,7 @@ public class Information {
     private int time = 2000;
     private String backgroundColor = null;
     private String color= null ;
-
+    private int create;
     public int getTime() {
         return time;
     }
@@ -60,5 +60,13 @@ public class Information {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public int getCreate() {
+        return create;
+    }
+
+    public void setCreate(int create) {
+        this.create = create;
     }
 }

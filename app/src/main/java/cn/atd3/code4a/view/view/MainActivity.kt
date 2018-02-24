@@ -1,18 +1,16 @@
 package cn.atd3.code4a.view.view
 
-
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
@@ -27,6 +25,7 @@ import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import java.io.File
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -49,14 +48,27 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_main)
         try {
-            toolBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
         }
         catch (e:Exception)
         {
             Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
-            toolBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
-        setSupportActionBar(toolBar)//title bar
+        topBar!!.addLeftImageButton(R.mipmap.top_more,1).setOnClickListener {
+            if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+                drawer_layout.closeDrawer(GravityCompat.START)
+            }
+            else
+            {
+                drawer_layout.openDrawer(GravityCompat.START)
+            }
+        }
+
+        topBar!!.setTitle(getString(R.string.app_name))
+
+        // 菜单按钮
+        topBar!!.addRightImageButton(R.mipmap.topbar_menu, 1).setOnClickListener { showBottomSheetList() }
         mp = MainPresenter(this)//Presenter
         initView()//初始化控件
         bindListener()//绑定事件
@@ -67,7 +79,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         // 固定横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         mp.collection(this)  //收集装机信息
-        mp.showMessageBanner()//拉取信息
+
     }
 
     override fun onStart() {
@@ -77,14 +89,14 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             intent.putExtra("url", i.getStringExtra("url"))
             startActivity(intent)
         }
+        else
+        {
+            mp.showMessageBanner()//拉取通知
+        }
         super.onStart()
     }
 
     private fun initView() {
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
 
         val cateListFile = File(Constant.getCategoryListFilePath())
         val catelist: List<CategoryModel>
@@ -158,13 +170,14 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         val headImage=navHeadMain.findViewById<ImageView>(R.id.headImage)
         //测试登陆
         headImage.setOnClickListener({
-            Thread {
-                        try {
-                           //  Remote.user.method("signin").call("TTHHR", "", true)
-                        } catch (e: Exception) {
-                            Log.e("login", e.toString())
-                        }
-                    }.start()
+            //超级用户登陆
+//            Thread {
+//                        try {
+//                             Remote.superUser.method("su").call("", 3)
+//                        } catch (e: Exception) {
+//                            Log.e("login", e.toString())
+//                        }
+//                    }.start()
             val i = Intent(this, SigninActivity::class.java)
             startActivity(i)
         })
@@ -191,7 +204,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     }
 
     override fun showMessageBanner(a: Adapter) {
-        val bar = PopBanner(this@MainActivity, toolBar, R.mipmap.broadcast)
+        val bar = PopBanner(this@MainActivity, topBar, R.mipmap.broadcast)
         bar.messageAdapter = a
 
         bar.update()
@@ -203,6 +216,10 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     //返回键
     override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+            return
+        }
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                Toast.makeText(this,getString(R.string.double_click_exit),Toast.LENGTH_SHORT).show()
                 exitTime = System.currentTimeMillis()
@@ -250,5 +267,15 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
         return true
     }
-
+    private fun showBottomSheetList() {
+        QMUIBottomSheet.BottomListSheetBuilder(this)
+                .addItem(getString(R.string.setting))
+                .setOnSheetItemClickListener { dialog, _, _, _ ->
+                    dialog.dismiss()
+                    val i=Intent(this,SettingActivity::class.java)
+                    startActivity(i)
+                }
+                .build()
+                .show()
+    }
 }
