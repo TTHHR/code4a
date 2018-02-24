@@ -29,6 +29,8 @@ public class ReplaceCHeadInHtml {
         for (int i = 0; i <= html.lastIndexOf("#include"); i++) {
             i = html.indexOf("#include", i);
             int j = html.indexOf("<br>", i);
+            if(j==-1)
+                break;
             String findString = html.substring(i, j);
             System.out.println("find head" + findString);
             html = html.replace(findString, findString.replace("<", "&lt;").replace(">", "&gt;"));

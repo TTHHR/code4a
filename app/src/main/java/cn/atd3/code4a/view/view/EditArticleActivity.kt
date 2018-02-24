@@ -221,7 +221,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 .addAction(getString(R.string.button_ok),  {
                     dialog, _->
                         val title = builder.editText.text
-                    if(!eap.title.isEmpty()) {
+                    if(eap.title!=null&&!eap.title.isEmpty()) {
                         dialog.dismiss()
                     }
                     else if(!title.isEmpty())

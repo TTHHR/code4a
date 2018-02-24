@@ -34,7 +34,8 @@ public class MainPresenter {
                 try {
                     final Object msg = Remote.androidMessage.method("pull", Information.class).call();
                     if (msg instanceof Information){
-                       String create=FileDealService.getInstance().readFile(Constant.getPrivateFilePath()+"/message");
+                        File f=new File(Constant.getPrivateFilePath()+"/message");
+                       String create=FileDealService.getInstance().readFile(f.getAbsolutePath());
                        if(create==null)
                        {
                            Adapter a=new Adapter() {
@@ -44,7 +45,7 @@ public class MainPresenter {
                                }
                            };
                            mvi.showMessageBanner(a);
-                           FileDealService.getInstance().save(Constant.getPrivateFilePath()+"/message",""+((Information) msg).getCreate());
+                           FileDealService.putContent(f,""+((Information) msg).getCreate());
                        }
                        else
                        {
@@ -117,7 +118,7 @@ public void updateAd()
         }
     }catch (Exception e)
     {
-
+        Log.e("updateAd",e.toString());
     }
 
 
@@ -133,7 +134,7 @@ public void updateAd()
                             if(msg instanceof AdInfo)
                             {
                                 FileDealService.getInstance().saveFile(Constant.getAdImg(),((AdInfo) msg).getImage());
-                                FileDealService.getInstance().saveFile(Constant.getAdUrl(), ((AdInfo) msg).getUrl());
+                                FileDealService.putContent(new File(Constant.getAdUrl()), ((AdInfo) msg).getUrl());
                             }
                         }
                         catch (Exception e)

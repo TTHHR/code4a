@@ -10,9 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
+
 
 /**
  * Created by harrytit on 2017/11/4.
@@ -146,21 +146,18 @@ public void renameFile(File f,String neww)
      */
     public void saveFile(String filepath, String http)//暂时保存文件
     {
-        URLConnection con;
+        HttpURLConnection con;
         try {
             // 构造URL
             URL url = new URL(http);
             // 打开连接
-             con = url.openConnection();
+             con = (HttpURLConnection) url.openConnection();
+             con.setRequestMethod("GET");
             //设置请求超时为5s
             con.setConnectTimeout(5000);
             save(filepath, con.getInputStream());
         } catch (Exception e) {
             Log.e("saveFile", e.toString());
-        }
-        finally {
-            con=null;
-
         }
     }
 
@@ -184,31 +181,6 @@ public void renameFile(File f,String neww)
         }
         return null;
     }
-public void save(String filePath,String content)
-{
-    OutputStream os=null;
-    try {
-      File f=new File(filePath);
-        if(!f.exists())
-            f.createNewFile();
-        os=new FileOutputStream(f);
-        os.write(content.getBytes());
-        os.flush();
-    }
-   catch (Exception e)
-   {
-       Log.e("save string",""+e);
-   }
-   finally {
-            if(os!=null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-    }
-}
 
     /*
     将流保存文件
@@ -242,12 +214,12 @@ public void save(String filePath,String content)
             }
             catch (Exception e)
             {
-
+                e.printStackTrace();
             }
         }
     }
 
-    public static boolean putContent(File fileName, String content) {
+    public static void putContent(File fileName, String content) {
         if (!fileName.exists()) {
             if (!fileName.getParentFile().exists()) {
                 fileName.mkdirs();
@@ -256,7 +228,6 @@ public void save(String filePath,String content)
                 fileName.createNewFile();
             } catch (IOException e1) {
                 e1.printStackTrace();
-                return false;
             }
 
         }
@@ -266,15 +237,12 @@ public void save(String filePath,String content)
                 fileOutputStream = new FileOutputStream(fileName);
                 fileOutputStream.write(content.getBytes());
                 fileOutputStream.close();
-                return true;
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
-                return false;
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
     }
 }
