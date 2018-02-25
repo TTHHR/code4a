@@ -76,13 +76,16 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
 
         copyButton!!.setOnClickListener {
             if (richText != null) {
-                val cm = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                cm.primaryClip = ClipData.newPlainText("code", richText!!.text)
-                QMUITipDialog.Builder(applicationContext)
-                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
-                        .setTipWord(getString(R.string.button_ok))
-                        .create()
-                        .show()
+                try {
+                    val cm = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    cm.primaryClip = ClipData.newPlainText("code", richText!!.text)
+                    showToast(SUCCESS,getString(R.string.copy_success))
+                }
+                catch (e:Exception)
+                {
+                    showToast(WARNING,getString(R.string.copy_fail)+e)
+                }
+
             }
         }
 

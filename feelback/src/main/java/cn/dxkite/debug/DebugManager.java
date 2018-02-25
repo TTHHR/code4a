@@ -58,7 +58,7 @@ public class DebugManager {
                 // 保存到文件
                 instance.saveCrashInfomation(crashInfo);
                 Log.d(TAG, "uncaughtException  " + throwable.getClass().getName());
-                saveObject(new File(instance.config.getCrashDumpPath()), crashInfo);
+                saveObject(new File(DebugManager.config.getCrashDumpPath()), crashInfo);
                 new Thread() {
                     @Override
                     public void run() {
@@ -158,7 +158,7 @@ public class DebugManager {
     }
 
     public static boolean hasLastCrashInfomation() {
-        File crashDump = new File(instance.config.getCrashDumpPath());
+        File crashDump = new File(config.getCrashDumpPath());
         if (crashDump.exists()) {
             CrashInformation infomation = (CrashInformation) loadObject(crashDump);
             if (infomation == null) {
@@ -172,11 +172,14 @@ public class DebugManager {
         return false;
     }
 
-    public static void jumpToShow() {
+    public static void jumpToShow(Context c) {
+        if(c==null)
         instance.context.startActivity(new Intent(instance.context, ExceptionViewActivity.class));
+        else
+            c.startActivity(new Intent(c, ExceptionViewActivity.class));
     }
 
-    public static void askIfCrash(Context context, int iconRes) {
+    public static void askIfCrash(final Context context, int iconRes) {
         if (hasLastCrashInfomation()) {
             final AlertDialog.Builder normalDialog =
                     new AlertDialog.Builder(context);
@@ -187,7 +190,7 @@ public class DebugManager {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            jumpToShow();
+                            jumpToShow(context);
                         }
                     });
             normalDialog.setNegativeButton("否",

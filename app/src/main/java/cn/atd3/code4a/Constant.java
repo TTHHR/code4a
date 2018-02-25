@@ -43,7 +43,7 @@ public final class Constant {
     public static boolean debugmodeinfo = false;
     public static boolean collectioninfo = false;
     public static String themeColor = "";
-    public static String defaultThemeColor = "#C0FF3E";
+    public static String defaultThemeColor = "#99cc33";
 
     private static boolean debug;
     private static String uuid;

@@ -1,29 +1,24 @@
 <resources>
     <string name="app_name">Code4A</string>
     <string name="version_name">V1.0</string>
-    <string name="editarticle_name">编辑文章</string>
     <string name="setting">设置</string>
     <string name="setting_theme_color">主题颜色</string>
     <string name="setting_theme_summary">更改主题颜色</string>
     <string name="dialog_theme_summary">输入颜色代码，如：#1d97f5</string>
     <string name="waring_error_color">颜色代码不正确，请重新设置</string>
     <string name="setting_about">关于</string>
-    <string name="setting_tieba">贴吧</string>
-    <string name="setting_tieba_summary">访问c4droid贴吧</string>
+    <string name="setting_tieba_summary">访问贴吧</string>
     <string name="setting_language">语言</string>
     <string name="setting_language_select">选择一个语言</string>
     <string name="setting_debug">调试模式</string>
     <string name="setting_collection">提交信息</string>
     <string name="about_collection">收集手机信息帮助APP的改进，信息不包含个人隐私</string>
     <string name="setting_auth_donation">捐赠</string>
-    <string name="setting_auth_summary">向作者捐赠</string>
     <string name="setting_update">检查更新</string>
-    <string name="please_waiting">请等待</string>
     <string name="info_loading">正在加载</string>
     <string name="nav_share">分享</string>
     <string name="nav_feedback">反馈</string>
     <string name="nav_tool">工具</string>
-    <string name="setting_loginout">退出登陆</string>
     <string name="username">未登录</string>
     <string name="feedback_title">意见反馈</string>
     <string name="feedback_contact">请输入您的联系方式</string>
@@ -41,24 +36,20 @@
         <item>en</item>
     </string-array>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="title_waring">警告</string>
     <string name="edit_waring">编辑文章时，所有附件已清空，请重新添加！</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="sd_notready_tip">你手机的sd卡没有准备好</string>
+    <string name="version_waring">当前版本不能登陆！</string>
+    <string name="account_not_login">您没有登录！</string>
     <string name="error_title">标题不能为空</string>
     <string name="error_content">内容不能为空</string>
     <string name="input_title">请输入文章标题</string>
     <string name="click_file_tip">长按选择 %1$s</string>
     <string name="click_file_exit">再按一次退出选择文件</string>
-    <string name="click_file_remove"> 成功移除 </string>
-    <string name="info_success"> 成功 </string>
-    <string name="info_fail"> 失败 </string>
-    <string name="check_confirm_fail"> 两次密码不一致 </string>
-    <string name="title_showfile">查看文件 </string>
     <string name="button_add">添加</string>
     <string name="button_ok">确定</string>
     <string name="button_copy">复制</string>
+    <string name="copy_success">复制成功</string>
+    <string name="copy_fail">复制失败</string>
     <string name="button_cancel">取消</string>
     <string name="button_del">删除</string>
     <string name="button_edit">编辑</string>
@@ -67,11 +58,6 @@
     <string name="title_upfile">上传文件</string>
     <string name="action_packfile">打包文件</string>
     <string name="action_upfinish">上传完成</string>
-    <string name="select_file_info"> 可以选择多个文件，但是建议选择一个zip文件</string>
-    <string-array name="class_list_key">
-        <item>c4droid</item>
-        <item>aide</item>
-    </string-array>
     <string name="info_selectclass">分类：</string>
     <string name="info_selectpower">选择权限：</string>
     <string name="wanning_visibility">当前版本只支持公开权限！</string>
@@ -81,26 +67,17 @@
     <string name="error_network">网络错误：</string>
     <string name="error_network_use_local">网络错误，使用本地缓存</string>
     <string name="download_file">下载附件</string>
-    <string name="server_timeout">服务器链接超时！</string>
-    <string name="server_exception">服务器异常</string>
-    <string name="title_activity_login">登录</string>
     <string name="no_article_error">服务器没有该文章！</string>
     <!-- Strings related to login -->
     <string name="prompt_account">邮箱或用户名</string>
     <string name="prompt_user_name">用户名</string>
     <string name="prompt_email">邮箱</string>
-    <string name="prompt_form_check">密码或用户名不能为空</string>
     <string name="prompt_password">密码</string>
     <string name="prompt_password_confirm">确认密码</string>
-    <string name="need_password_confirm">需要确认密码</string>
-    <string name="need_email">需要邮箱地址</string>
-    <string name="need_nickname">需要用户名</string>
     <string name="action_sign_in">注册</string>
     <string name="action_login_in">登录</string>
     <string name="copyright"> ©ATDStudio 版权所有</string>
     <string name="double_click_exit">再按一次退出程序</string>
-
-    <string name="title_activity_splash">SplashActivity</string>
 
     <!--Signin-->
     <string name="account_empty">账户不能为空</string>
@@ -110,7 +87,6 @@
     <string name="code_invalid">验证码错误</string>
     <string name="remote_error">出现错误:</string>
     <string name="signing">登陆中</string>
-    <string name="signin_successful">登陆成功</string>
 
     <string name="info_down"> 正在下载 </string>
 </resources>
