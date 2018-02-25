@@ -96,7 +96,6 @@
                 android:src="@mipmap/ic_insert_file" />
 
             <ImageButton
-                android:id="@+id/clear"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

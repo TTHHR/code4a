@@ -47,7 +47,6 @@
             android:textSize="@dimen/fourteen_sp" />
 
         <ImageView
-            android:id="@+id/item_more"
             android:layout_width="@dimen/twenty_four_dp"
             android:layout_height="@dimen/twenty_four_dp"
             android:layout_centerVertical="true"
@@ -57,7 +56,6 @@
             />
 
         <View
-            android:id="@+id/divider_line"
             android:layout_toRightOf="@id/item_thumb"
             android:layout_marginLeft="@dimen/twenty_dp"
             android:layout_width="match_parent"

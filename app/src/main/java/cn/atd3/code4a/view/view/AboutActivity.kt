@@ -2,6 +2,7 @@ package cn.atd3.code4a.view.view
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.Constant.*
@@ -23,20 +24,29 @@ class AboutActivity : Activity(), AboutInterface {
             finish()
         })
         topBar.setTitle(getString(R.string.setting_about))
-        topBar.setBackgroundColor(resources.getColor(android.R.color.holo_green_light))
 
         abp = AboutPresenter(this)
 
 
         QMUIGroupListView.newSection(this)
-                .addItemView(aboutList.createItemView("检查更新")){ abp.onCheakUpdate() }
-                .addItemView(aboutList.createItemView("软件信息")) { openWebActivity(Constant.softwareInfoUrl) }
-                .addItemView(aboutList.createItemView("访问贴吧")) { openWebActivity(Constant.tiebaUrl) }
-                .addItemView(aboutList.createItemView("捐赠")) { openWebActivity(Constant.donationUrl) }
+                .addItemView(aboutList.createItemView(getString(R.string.setting_update))){ abp.onCheakUpdate() }
+                .addItemView(aboutList.createItemView(getString(R.string.setting_software_info))) { openWebActivity(Constant.softwareInfoUrl) }
+                .addItemView(aboutList.createItemView(getString(R.string.setting_tieba_summary))) { openWebActivity(Constant.tiebaUrl) }
+                .addItemView(aboutList.createItemView(getString(R.string.setting_auth_donation))) { openWebActivity(Constant.donationUrl) }
                 .addTo(aboutList)
 
     }
 
+    override fun onStart() {
+        try {
+            topBar.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            topBar.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
+        super.onStart()
+    }
     override fun showToast(infotype: Int, info: String) {
 
         runOnUiThread {

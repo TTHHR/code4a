@@ -207,6 +207,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
 
     private fun addArticleTitle() {
         val builder = QMUIDialog.EditTextDialogBuilder(this)
+
         builder.setTitle(getString(R.string.input_title))
         if (eap.isEditModel)
             builder.setPlaceholder(eap.title)
@@ -234,6 +235,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                         }
 
                 })
+
                 .show()
     }
 

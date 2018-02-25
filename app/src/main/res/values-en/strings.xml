@@ -1,15 +1,13 @@
 <resources>
     <string name="app_name">code4a</string>
     <string name="version_name">V1.0</string>
-    <string name="editarticle_name">Edit Article</string>
     <string name="setting">Setting</string>
     <string name="setting_about">About</string>
     <string name="setting_theme_color">Theme color</string>
     <string name="setting_theme_summary">change theme color</string>
     <string name="dialog_theme_summary">Input the color code, such as：#1d97f5</string>
     <string name="waring_error_color">The color code is incorrect, please reset it</string>
-    <string name="setting_tieba">Tieba</string>
-    <string name="setting_tieba_summary">goto c4droid Tieba</string>
+    <string name="setting_tieba_summary">goto  Tieba</string>
     <string name="setting_language">Language</string>
     <string name="setting_language_select">Select A Language</string>
     <string name="setting_debug">Debug mode</string>
@@ -17,25 +15,23 @@
     <string name="info_loading">Loading</string>
     <string name="about_collection">Collect mobile information to help APP improvement, information does not contain personal privacy</string>
     <string name="setting_auth_donation">donation</string>
-    <string name="setting_auth_summary">Donate to authors</string>
     <string name="setting_update">update</string>
     <string name="nav_share">Share</string>
-    <string name="please_waiting">please waiting</string>
-    <string name="info_success"> Success </string>
     <string name="button_del">delete</string>
     <string name="button_edit">edit</string>
-    <string name="info_fail"> fail </string>
     <string name="nav_feedback">Feedback</string>
     <string name="nav_tool">Tool</string>
     <string name="input_title">please input article title</string>
     <string name="setting_software_info">software info</string>
     <string name="error_title">The title can not be empty</string>
-    <string name="setting_loginout">login out</string>
     <string name="username">Not logged in</string>
-    <string name="check_confirm_fail"> Inconsistency of ciphers </string>
     <string name="feedback_title">Feedback your suggests</string>
     <string name="feedback_contact"> Please enter your contact information</string>
     <string name="error_content">The article can not be empty</string>
+    <string name="version_waring">The current version cannot be logged in！</string>
+    <string name="account_not_login">You are not logged in！</string>
+    <string name="copy_success">copy success</string>
+    <string name="copy_fail">copy fail</string>
     <string name="feedback_hide">Please input(limit:600)!</string>
     <string name="feedback_send">Send</string>
     <string name="info_upload_slow">File size:%1$s slow upload, please wait</string>
@@ -50,11 +46,8 @@
     </string-array>
     <string name="title_waring">Waring</string>
     <string name="edit_waring">When the article is edited, all the attachments are empty. Please add it again!</string>
-    <string name="sd_notready_tip">your phone SDCard not ready OK</string>
     <string name="click_file_tip">long click to select %1$s</string>
     <string name="click_file_exit"> click twice to exit select files</string>
-    <string name="click_file_remove"> Successfully removed </string>
-    <string name="title_showfile">view file </string>
     <string name="button_add">Add</string>
     <string name="button_ok">OK</string>
     <string name="button_copy">Copy</string>
@@ -63,11 +56,6 @@
     <string name="title_upfile">upload files</string>
     <string name="action_packfile">packing files</string>
     <string name="action_upfinish">upload finished</string>
-    <string name="select_file_info"> You can choose multiple files, but it is recommended to choose a zip file</string>
-    <string-array name="class_list_key">
-    <item>c4droid</item>
-    <item>aide</item>
-    </string-array>
     <string name="info_selectclass"> classify</string>
     <string name="info_selectpower">select power</string>
     <string name="wanning_visibility">The current version only supports public permissions！</string>
@@ -75,17 +63,10 @@
     <string name="info_changelanguage">After changing the language, restart the App manually</string>
     <string name="error_network">Net Error：</string>
     <string name="download_file">Down attachments</string>
-    <string name="server_timeout">server timeout！</string>
-    <string name="server_exception">server exception</string>
     <!-- Strings related to login -->
-    <string name="title_activity_login">Sign in</string>
     <string name="prompt_account">email or nickname</string>
-    <string name="prompt_form_check">account or password can not be null</string>
-    <string name="need_password_confirm">need confirm password</string>
     <string name="prompt_password">password</string>
     <string name="prompt_password_confirm">confirm password</string>
-    <string name="need_email">need email address</string>
-    <string name="need_nickname">need nickname</string>
     <string name="action_sign_in">register</string>
     <string name="action_login_in">Login</string>
     <string name="no_article_error">Server does not have this article！</string>
@@ -95,8 +76,6 @@
     <string name="double_click_exit">double click to exit</string>
     <string name="password_empty">password empty</string>
 
-    <string name="title_activity_splash">SplashActivity</string>
-
     <!--Signin-->
     <string name="account_empty">account empty</string>
     <string name="account_invalid">account error</string>
@@ -104,7 +83,6 @@
     <string name="code_invalid">code error</string>
     <string name="remote_error">Some Error:</string>
     <string name="signing">signing</string>
-    <string name="signin_successful">Login success</string>
     <string name="info_down"> downloading </string>
     <string name="error_network_use_local">Network error, using local cache</string>
 </resources>

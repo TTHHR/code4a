@@ -26,6 +26,7 @@ import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import java.io.File
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -47,14 +48,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         window.setBackgroundDrawableResource(bootstrap_gray_lighter)
         QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_main)
-        try {
-            topBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
-        }
-        catch (e:Exception)
-        {
-            Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
-            topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
-        }
+
         topBar!!.addLeftImageButton(R.mipmap.top_more,1).setOnClickListener {
             if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
                 drawer_layout.closeDrawer(GravityCompat.START)
@@ -91,6 +85,17 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
     }
 
+    override fun onStart() {
+        try {
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
+            topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
+        super.onStart()
+    }
     private fun initView() {
 
         val cateListFile = File(Constant.getCategoryListFilePath())
@@ -150,8 +155,17 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         //写新文章按钮
         newArticleButton.setOnClickListener({ _ ->
             //添加用户判断
-            val i = Intent(this, EditArticleActivity::class.java)
-            startActivity(i)
+            QMUIDialog.MessageDialogBuilder(this)
+                    .setTitle(getString(R.string.title_waring))
+                    .setMessage(getString(R.string.account_not_login))
+                    .addAction(getString(R.string.button_ok), {
+                        dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    )
+                    .show()
+//            val i = Intent(this, EditArticleActivity::class.java)
+//            startActivity(i)
         })
 
         val navHeadMain=nav_view.inflateHeaderView(R.layout.nav_header_main)
@@ -173,8 +187,20 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 //                            Log.e("login", e.toString())
 //                        }
 //                    }.start()
-            val i = Intent(this, SigninActivity::class.java)
-            startActivity(i)
+
+            QMUIDialog.MessageDialogBuilder(this)
+                    .setTitle(getString(R.string.title_waring))
+                    .setMessage(getString(R.string.version_waring))
+                    .addAction(getString(R.string.button_ok), {
+                        dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    )
+                    .show()
+
+
+//            val i = Intent(this, SigninActivity::class.java)
+//            startActivity(i)
         })
 
 

@@ -16,14 +16,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_setting)
-        try {
-            toolbar.setBackgroundColor(Color.parseColor(Constant.themeColor))
-        }
-        catch (e:Exception)
-        {
-            toolbar.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
-        }
-        setSupportActionBar(toolbar)
+
         fragmentManager.beginTransaction()
                 .replace(android.R.id.content, SettingFragment())
                 .commit()
@@ -31,6 +24,16 @@ class SettingActivity : AppCompatActivity() {
         language = PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao")
     }
 
+    override fun onStart() {
+        try {
+            topBar.setBackgroundColor(Color.parseColor(Constant.themeColor))
+        }
+        catch (e:Exception)
+        {
+            topBar.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
+        }
+        super.onStart()
+    }
     override fun onStop() {
         super.onStop()
         if (language != PreferenceManager.getDefaultSharedPreferences(this).getString("language", "miao"))//语言已经改变
@@ -41,7 +44,7 @@ class SettingActivity : AppCompatActivity() {
         Constant.debugmodeinfo = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("debug", false)
         //同上
         Constant.collectioninfo = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("collection", false)
-        Constant.themeColor = PreferenceManager.getDefaultSharedPreferences(this).getString("themeColor", "#16AB41")
+        Constant.themeColor = PreferenceManager.getDefaultSharedPreferences(this).getString("themeColor", Constant.defaultThemeColor)
     }
 }
 

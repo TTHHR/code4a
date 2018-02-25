@@ -122,7 +122,8 @@ public class SplashPresenter {
 
             @Override
             public void onAdImageClicked() {
-                intent.putExtra("url", sami.getUrl() == null ? "http://blog.qingyuyu.cn/" : sami.getUrl());
+                if(sami.getUrl()!=null&&!sami.getUrl().isEmpty())
+                intent.putExtra("url",sami.getUrl());
                 sad.dismiss();
             }
 

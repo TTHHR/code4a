@@ -53,9 +53,15 @@
         <activity android:name=".view.view.EditArticleActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
-        <activity android:name=".view.view.EggActivity" />
-        <activity android:name=".view.view.FeedbackActivity" />
-        <activity android:name=".view.view.AboutActivity"/>
+        <activity android:name=".view.view.EggActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.FeedbackActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>
