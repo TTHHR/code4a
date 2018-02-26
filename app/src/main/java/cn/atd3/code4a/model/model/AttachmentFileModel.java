@@ -1,18 +1,23 @@
 package cn.atd3.code4a.model.model;
 
 /**
+ * 附件控制
+ * TODO 附件内容保存
  * Created by harry on 2018/1/22.
  */
 
-public class DownFileModel {
+public class AttachmentFileModel {
+
     private int id;
+    private int article;
     private String type;
     private String url;
     private String fileName;
     private String visibility;
-    private String attachment;
+    private AttachmentInfo info;
     private int size;
     private int time;
+
     public String getUrl() {
         return url;
     }
@@ -27,19 +32,6 @@ public class DownFileModel {
 
     public void setName(String fileName) {
         this.fileName = fileName;
-    }
-    @Override
-    public String toString() {
-        return "DownFileModel{" +
-                "id=" + id +
-                " ,name='" + fileName + '\'' +
-                " ,type='" + type  +'\'' +
-                " ,size=" + size   +
-                " ,time=" + time   +
-                " ,visibility='" + visibility + '\'' +
-                " ,attachment='" + attachment + '\'' +
-                ",url='" + url + '\'' +
-                '}';
     }
 
     public int getId() {
@@ -82,11 +74,23 @@ public class DownFileModel {
         this.time = time;
     }
 
-    public String getAttachment() {
-        return attachment;
+
+
+
+    public int getArticle() {
+        return article;
     }
 
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
+    public void setArticle(int article) {
+        this.article = article;
+    }
+
+
+    public AttachmentInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(AttachmentInfo info) {
+        this.info = info;
     }
 }

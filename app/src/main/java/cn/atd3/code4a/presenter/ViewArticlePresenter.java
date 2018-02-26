@@ -6,13 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.model.ArticleModel;
-import cn.atd3.code4a.model.model.DownFileModel;
+import cn.atd3.code4a.model.model.AttachmentFileModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.util.Md5Util;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
@@ -48,17 +45,17 @@ public class ViewArticlePresenter {
     private URLImageParser urlImageParser;
 
     private String content = "";//原始文章数据
-    public boolean deleteArticle=false;
-    private List<DownFileModel> fileList;
+    public boolean deleteArticle = false;
+    private List<AttachmentFileModel> fileList;
     private int create = 0;//文章创建时间
-   private ArticleModel article;
+    private ArticleModel article;
     private static final String TAG = "ViewArticle";
     private ArticleDatabase databasePresenter;
 
-    public ViewArticlePresenter(Context c,ArticleViewInterface avi,ArticleModel article) {
+    public ViewArticlePresenter(Context c, ArticleViewInterface avi, ArticleModel article) {
         this.avi = avi;
-        this.article=article;
-        databasePresenter=new ArticleDatabase(c);
+        this.article = article;
+        databasePresenter = new ArticleDatabase(c);
     }
 
     public void initImageGetter(TextView tv) {
@@ -96,17 +93,15 @@ public class ViewArticlePresenter {
         }
 
     }
-    private void saveToDatabase(Context c)
-    {
-        if(databasePresenter==null)
-            databasePresenter=new ArticleDatabase(c);
-        if(deleteArticle)
-        {
+
+    private void saveToDatabase(Context c) {
+        if (databasePresenter == null)
+            databasePresenter = new ArticleDatabase(c);
+        if (deleteArticle) {
             databasePresenter.deleteArticle(article.getId());
-        }
-       else
-        databasePresenter.saveArticle(article);
-        Log.e("save base",""+article);
+        } else
+            databasePresenter.saveArticle(article);
+        Log.e("save base", "" + article);
     }
 
     public void deleteArticle() {
@@ -125,7 +120,7 @@ public class ViewArticlePresenter {
                             new Param("id", article.getId())
                     );
                     avi.showToast(SUCCESS, "success");
-                    deleteArticle=true;
+                    deleteArticle = true;
                 } catch (Exception e) {
                     avi.showToast(ERROR, "" + e);
                 }
@@ -139,7 +134,7 @@ public class ViewArticlePresenter {
     public String[] getDownFileList() {
         ArrayList<String> al = new ArrayList<>();
         if (fileList != null && fileList.size() != 0)
-            for (DownFileModel d : fileList)
+            for (AttachmentFileModel d : fileList)
                 al.add(d.getName());
         else
             return new String[]{};
@@ -151,12 +146,11 @@ public class ViewArticlePresenter {
     }
 
 
-    public void onDestory(Context c)
-    {
+    public void onDestory(Context c) {
         saveToDatabase(c);
-        fileList=null;
-        article=null;
-        databasePresenter=null;
+        fileList = null;
+        article = null;
+        databasePresenter = null;
     }
 
 
@@ -171,7 +165,7 @@ public class ViewArticlePresenter {
                             if (a instanceof ArticleModel) {
                                 Log.i("obj", "is article");
                                 if (((ArticleModel) a).getContent() != null) {
-                                    article=(ArticleModel)a;
+                                    article = (ArticleModel) a;
                                     content = article.getContent();
                                     Log.d(TAG, "article abstract = " + ((ArticleModel) a).getAbstract());
                                     Log.d(TAG, "article content = " + content);
@@ -186,25 +180,21 @@ public class ViewArticlePresenter {
                                     Log.e("obj", "null");
                                     content = "";
                                 }
-                            }
-                            else//服务器已删除这篇文章
+                            } else//服务器已删除这篇文章
                             {
-                                deleteArticle=true;
-                                avi.showToast(WARNING,avi.getXmlString(R.string.no_article_error));
+                                deleteArticle = true;
+                                avi.showToast(WARNING, avi.getXmlString(R.string.no_article_error));
                             }
                         } catch (Exception e) {
                             Log.e("net error", "" + e);
-                            ArticleModel am=databasePresenter.getArticle(article.getId());
-                            if(am!=null)
-                            {
-                                article=am;
-                                content=article.getContent();
+                            ArticleModel am = databasePresenter.getArticle(article.getId());
+                            if (am != null) {
+                                article = am;
+                                content = article.getContent();
                                 avi.showToast(SUCCESS, avi.getXmlString(R.string.error_network_use_local));
-                            }
-                            else
-                            {
-                                Log.e("local","article not cache");
-                                content="error";
+                            } else {
+                                Log.e("local", "article not cache");
+                                content = "error";
                                 avi.showToast(WARNING, avi.getXmlString(R.string.error_network));
                             }
                         }
@@ -212,9 +202,9 @@ public class ViewArticlePresenter {
                         avi.loadArticle(content, urlImageParser);//显示文章
 
                         try {
-                            Object a = Remote.attachment.method("getAttachment", DownFileModel.class).call(article.getId());
+                            Object a = Remote.attachment.method("getAttachment", AttachmentFileModel.class).call(article.getId());
                             if (a instanceof List) {
-                                fileList = (List<DownFileModel>) a;
+                                fileList = (List<AttachmentFileModel>) a;
                             }
                         } catch (Exception e) {
                             Log.e("get Attach", "" + e);
@@ -236,7 +226,7 @@ public class ViewArticlePresenter {
      */
     private Set<String> getImgStr(String htmlStr) {
         HashSet pics = new HashSet<String>();
-        String img ;
+        String img;
         Pattern p_image;
         Matcher m_image;
         String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
@@ -267,40 +257,39 @@ public class ViewArticlePresenter {
         public Drawable getDrawable(final String http) {
             final URLDrawable urlDrawable = new URLDrawable();
 
-            final File picFile=new File(Constant.getCachePath()+"/"+ Md5Util.encode(http));
+            final File picFile = new File(Constant.getCachePath() + "/" + Md5Util.encode(http));
 
-            if(picFile.exists())//曾经保存过
+            if (picFile.exists())//曾经保存过
             {
-                Bitmap bitmap=BitmapFactory.decodeFile(picFile.getAbsolutePath());
-                if(bitmap==null)
-                {
-                    Log.e("bit null",picFile.getAbsolutePath()+" "+http);
+                Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                if (bitmap == null) {
+                    Log.e("bit null", picFile.getAbsolutePath() + " " + http);
                     return null;
                 }
-                urlDrawable.drawBitmap =bitmap;
-                urlDrawable.setBounds(0, 0, bitmap.getWidth(),bitmap.getHeight());
+                urlDrawable.drawBitmap = bitmap;
+                urlDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
                 mTextView.invalidate();
                 mTextView.setText(mTextView.getText());
-            }
-            else
-            {
+            } else {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        File dir=new File(Constant.getCachePath());
-                        if(!dir.exists())
+                        File dir = new File(Constant.getCachePath());
+                        if (!dir.exists())
                             dir.mkdirs();
-                        FileDealService.getInstance().saveFile(picFile.getAbsolutePath(),http);
-                        Bitmap bitmap=BitmapFactory.decodeFile(picFile.getAbsolutePath());
-                        if(bitmap==null)
-                        {
-                            Log.e("bit null",picFile.getAbsolutePath()+" "+http);
-                            return ;
+                        FileDealService.getInstance().saveFile(picFile.getAbsolutePath(), http);
+                        Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                        if (bitmap == null) {
+                            Log.e("bit null", picFile.getAbsolutePath() + " " + http);
+                            return;
                         }
-                        urlDrawable.drawBitmap =bitmap;
-                        urlDrawable.setBounds(0, 0, bitmap.getWidth(),bitmap.getHeight());
+                        urlDrawable.drawBitmap = bitmap;
+                        urlDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                        // 主线程操控UI
+                        Looper.prepare();
                         mTextView.invalidate();
                         mTextView.setText(mTextView.getText());
+                        Looper.loop();
                     }
                 }).start();
 
