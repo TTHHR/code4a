@@ -131,6 +131,7 @@ public class ArticleDatabase {
                 a.setCover(cursor.getInt(cursor.getColumnIndex("cover")));
                 a.setViews(cursor.getInt(cursor.getColumnIndex("views")));
                 a.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
+                a.setContent(cursor.getString(cursor.getColumnIndex("content")));
             }
             cursor.close();
 

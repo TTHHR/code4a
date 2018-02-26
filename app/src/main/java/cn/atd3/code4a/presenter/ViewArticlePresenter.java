@@ -2,6 +2,7 @@ package cn.atd3.code4a.presenter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,11 +28,12 @@ import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.model.model.DownFileModel;
 import cn.atd3.code4a.net.Remote;
+import cn.atd3.code4a.util.Md5Util;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
 import cn.atd3.proxy.Param;
+import cn.qingyuyu.commom.service.FileDealService;
 
 import static cn.atd3.code4a.Constant.ERROR;
-import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
@@ -261,22 +264,50 @@ public class ViewArticlePresenter {
 
 
         @Override
-        public Drawable getDrawable(String s) {
+        public Drawable getDrawable(final String http) {
             final URLDrawable urlDrawable = new URLDrawable();
-            ImageLoader.getInstance().loadImage(s,
-                    new SimpleImageLoadingListener() {
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            urlDrawable.drawBitmap = loadedImage;
-                            urlDrawable.setBounds(0, 0, loadedImage.getWidth(), loadedImage.getHeight());
-                            mTextView.invalidate();
-                            mTextView.setText(mTextView.getText());
+
+            final File picFile=new File(Constant.getCachePath()+"/"+ Md5Util.encode(http));
+
+            if(picFile.exists())//曾经保存过
+            {
+                Bitmap bitmap=BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                if(bitmap==null)
+                {
+                    Log.e("bit null",picFile.getAbsolutePath()+" "+http);
+                    return null;
+                }
+                urlDrawable.drawBitmap =bitmap;
+                urlDrawable.setBounds(0, 0, bitmap.getWidth(),bitmap.getHeight());
+                mTextView.invalidate();
+                mTextView.setText(mTextView.getText());
+            }
+            else
+            {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File dir=new File(Constant.getCachePath());
+                        if(!dir.exists())
+                            dir.mkdirs();
+                        FileDealService.getInstance().saveFile(picFile.getAbsolutePath(),http);
+                        Bitmap bitmap=BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                        if(bitmap==null)
+                        {
+                            Log.e("bit null",picFile.getAbsolutePath()+" "+http);
+                            return ;
                         }
-                    });
+                        urlDrawable.drawBitmap =bitmap;
+                        urlDrawable.setBounds(0, 0, bitmap.getWidth(),bitmap.getHeight());
+                        mTextView.invalidate();
+                        mTextView.setText(mTextView.getText());
+                    }
+                }).start();
+
+            }
             return urlDrawable;
         }
     }
-
 
     class URLDrawable extends BitmapDrawable {
         Bitmap drawBitmap = null;
