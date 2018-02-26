@@ -46,7 +46,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         // 用户名
         if (a.getUser() != null)
-            user.setText(a.getUser());
+            user.setText(a.getUser().getName());
         modify.setText(ArticleModel.time(a.getModify()));
 
         TextView itemTitle = view.findViewById(R.id.itemTitle);
@@ -61,7 +61,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         TextView category = view.findViewById(R.id.itemCategory);
         if (showCategory) {
-            category.setText(ArticleModel.category(a.getCategoryId()));
+            category.setText(ArticleModel.category(a.getCategory().getId()));
         } else {
             category.setVisibility(View.INVISIBLE);
         }

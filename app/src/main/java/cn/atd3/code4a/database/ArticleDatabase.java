@@ -10,18 +10,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.model.model.CategoryModel;
+import cn.atd3.code4a.model.model.UserModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.util.DbHelper;
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
 
 /**
+ * 文章数据表
  * Created by harry on 2018/1/18.
  */
 
 public class ArticleDatabase {
     private DbHelper database ;
-    public static String TBL_NAME = "article_info";
+    public static String TBL_NAME = "articleList";
     private String QUERY = "select * from " + TBL_NAME;
 
     public ArticleDatabase(Context context) {
@@ -34,12 +37,12 @@ public class ArticleDatabase {
         cv.put("id", article.getId()); //添加数据
         cv.put("title", article.getTitle()); //添加数据
         cv.put("slug", article.getSlug()); //添加数据
-        cv.put("user", article.getUser());//添加数据
-        cv.put("userId", article.getUserId());//添加数据
+        cv.put("user", article.getUser().getName());//添加数据
+        cv.put("userId", article.getUser().getId());//添加数据
         cv.put("created", article.getCreate()); //添加数据
         cv.put("modify", article.getModify()); //添加数据
-        cv.put("category", article.getCategory()); //添加数据
-        cv.put("categoryId", article.getCategoryId()); //添加数据
+        cv.put("category", article.getCategory().getName()); //添加数据
+        cv.put("categoryId", article.getCategory().getId()); //添加数据
         cv.put("cover", article.getCover()); //添加数据
         cv.put("views", article.getViews()); //添加数据
         cv.put("status", article.getStatus()); //添加数据
@@ -56,13 +59,18 @@ public class ArticleDatabase {
             Cursor cursor = getListByCategory(category);
             while (cursor.moveToNext()) {
                 ArticleModel a = new ArticleModel();
-                a.setCategoryId(cursor.getInt(cursor.getColumnIndex("categoryId")));//读取分类
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setId(cursor.getInt(cursor.getColumnIndex("categoryId")));
+                categoryModel.setName(cursor.getString(cursor.getColumnIndex("category")));
+                a.setCategory(categoryModel);
                 a.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
                 a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
                 a.setAbstract(cursor.getString(cursor.getColumnIndex("abstract")));
-                a.setUserId(cursor.getInt(cursor.getColumnIndex("userId")));
-                a.setUser(cursor.getString(cursor.getColumnIndex("user")));
+                UserModel userModel= new UserModel();
+                userModel.setId(cursor.getInt(cursor.getColumnIndex("userId")));
+                userModel.setName(cursor.getString(cursor.getColumnIndex("user")));
+                a.setUser(userModel);
                 a.setCreate(cursor.getInt(cursor.getColumnIndex("created")));
                 a.setModify(cursor.getInt(cursor.getColumnIndex("modify")));
                 a.setCover(cursor.getInt(cursor.getColumnIndex("cover")));
@@ -106,19 +114,23 @@ public class ArticleDatabase {
             Cursor cursor = db.query(TBL_NAME, columns, select, selectWhere, null, null, null);
             while (cursor.moveToNext()) {
                 a=new ArticleModel();
-                a.setCategoryId(cursor.getInt(cursor.getColumnIndex("categoryId")));//读取分类
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setId(cursor.getInt(cursor.getColumnIndex("categoryId")));
+                categoryModel.setName(cursor.getString(cursor.getColumnIndex("category")));
+                a.setCategory(categoryModel);
                 a.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 a.setTitle(cursor.getString(cursor.getColumnIndex("title")));
                 a.setSlug(cursor.getString(cursor.getColumnIndex("slug")));
                 a.setAbstract(cursor.getString(cursor.getColumnIndex("abstract")));
-                a.setUserId(cursor.getInt(cursor.getColumnIndex("userId")));
-                a.setUser(cursor.getString(cursor.getColumnIndex("user")));
+                UserModel userModel= new UserModel();
+                userModel.setId(cursor.getInt(cursor.getColumnIndex("userId")));
+                userModel.setName(cursor.getString(cursor.getColumnIndex("user")));
+                a.setUser(userModel);
                 a.setCreate(cursor.getInt(cursor.getColumnIndex("created")));
                 a.setModify(cursor.getInt(cursor.getColumnIndex("modify")));
                 a.setCover(cursor.getInt(cursor.getColumnIndex("cover")));
                 a.setViews(cursor.getInt(cursor.getColumnIndex("views")));
                 a.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
-                a.setContent(cursor.getString(cursor.getColumnIndex("content")));
             }
             cursor.close();
 
