@@ -19,13 +19,34 @@ public class CategoryModel extends StorageData {
     private int id;
     private String name;
     private String slug;
+    private String url;
+
+
+    public CategoryModel() {
+    }
+
     private int count;
     private int parent;
+
+    public CategoryModel(int id) {
+        this.id = id;
+    }
+
+    public CategoryModel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public int getId() {
         return id;
     }
+    public String getUrl() {
+        return url;
+    }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
     public void setId(int id) {
         this.id = id;
         categoryModelMap.put(id,this);

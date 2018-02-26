@@ -25,6 +25,7 @@ import javax.xml.transform.stream.StreamResult;
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.model.model.CategoryModel;
 import cn.atd3.code4a.model.model.FileListModel;
 import cn.atd3.code4a.model.model.PictureListModel;
 import cn.atd3.code4a.net.Remote;
@@ -59,7 +60,7 @@ public class EditArticlePresenter {
     }
 
     public void setArticleCategoryId(int c) {
-        article.setCategoryId(c);
+        article.setCategory (new CategoryModel(c));
     }
 
     public boolean isEditModel() {
@@ -105,8 +106,8 @@ public class EditArticlePresenter {
             eai.showToast(WARNING, eai.getXmlString(R.string.error_title));
             return false;
         }
-        if (article.getCategoryId() == null) {
-            article.setCategoryId(1);//默认分类
+        if (article.getCategory() == null) {
+            article.setCategory (new CategoryModel(1));//默认分类
         }
         if (article.getVisibility() == null) {
             article.setVisibility("public");//默认公开
@@ -292,8 +293,8 @@ public class EditArticlePresenter {
 
             slug.setAttribute("name", "slug");
             slug.setTextContent(base64.encode(article.getSlug().getBytes()));
-            category.setAttribute("name", "categoryId");
-            category.setAttribute("value", "" + article.getCategoryId());
+            category.setAttribute("name", "category");
+            category.setAttribute("value", "" + article.getCategory().getId());
             tag.setAttribute("name", "tag");
             create.setAttribute("name", "create");
             create.setAttribute("value", "" + article.getCreate());

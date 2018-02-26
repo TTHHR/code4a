@@ -11,16 +11,15 @@ import cn.atd3.code4a.model.inter.ArticleModelInterface;
  * Created by DXkite on 2017/11/4 0004.
  */
 
-public class ArticleModel implements ArticleModelInterface, Serializable {
+public class ArticleModel implements Serializable {
+    private static final long serialVersionUID = -273862931388536187L;
     private Integer id;
     private String title;
     private String slug;
-    private Integer userId;
-    private String user;
+    private UserModel user;
     private Integer create;
     private Integer modify;
-    private Integer categoryId;
-    private String category;
+    private CategoryModel category;
     private String mAbstract;
     private Integer cover;
     private Integer views;
@@ -53,21 +52,6 @@ public class ArticleModel implements ArticleModelInterface, Serializable {
         this.slug = slug;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
 
     public Integer getCreate() {
         return create;
@@ -85,20 +69,22 @@ public class ArticleModel implements ArticleModelInterface, Serializable {
         this.modify = modify;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+
+    public UserModel getUser() {
+        return user;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 
-    public String getCategory() {
+
+    public CategoryModel getCategory() {
         return category;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(CategoryModel category) {
+        this.category = category;
     }
 
     public String getAbstract() {
@@ -159,24 +145,23 @@ public class ArticleModel implements ArticleModelInterface, Serializable {
 
     @Override
     public String toString() {
-        return "Article{" +
+        return "ArticleModel{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", slug='" + slug + '\'' +
-                ", user='" + user + '\'' +
-                ", userId=" + userId +
+                ", user=" + user +
                 ", create=" + create +
                 ", modify=" + modify +
                 ", category=" + category +
-                ", categoryId=" + categoryId +
-                ", abstract='" + mAbstract + '\'' +
+                ", mAbstract='" + mAbstract + '\'' +
                 ", cover=" + cover +
                 ", views=" + views +
                 ", status=" + status +
                 ", content='" + content + '\'' +
+                ", visibility='" + visibility + '\'' +
+                ", visibilityPassword='" + visibilityPassword + '\'' +
                 '}';
     }
-
 
     public static String time(int unix) {
         long time = unix * 1000;

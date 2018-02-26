@@ -35,6 +35,7 @@ import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
 /**
+ * 文章显示处理器
  * Created by harry on 2018/1/15.
  */
 
@@ -204,7 +205,7 @@ public class ViewArticlePresenter {
                                 avi.showToast(WARNING, avi.getXmlString(R.string.error_network));
                             }
                         }
-                        avi.loadUser(article.getUser());//UI加载用户名
+                        avi.loadUser(article.getUser().getName());//UI加载用户名
                         avi.loadArticle(content, urlImageParser);//显示文章
 
                         try {
