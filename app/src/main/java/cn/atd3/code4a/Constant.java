@@ -36,6 +36,7 @@ public final class Constant {
     private static String publicFilePath;
 
     public static String downloadPath="/code4a/download";
+    private static String cachePath=File.separator+"cache";
     private static String adImg = null;
     private static String adUrl = File.separator + "adUrl.txt";
     private static String userData = File.separator + "user.data";
@@ -59,6 +60,7 @@ public final class Constant {
         adImg = privateFilePath + File.separator + "adImg.png";
         adUrl = privateFilePath + File.separator + "adUrl.txt";
         userData = privateFilePath + File.separator + "user.data";
+        cachePath=publicFilePath+cachePath;
         init = true;
     }
 
@@ -71,6 +73,8 @@ public final class Constant {
             new Constant(context);
         }
     }
+
+    public static String getCachePath(){return  cachePath;}
 
     public static String getPrivateFilePath() {
         return privateFilePath;

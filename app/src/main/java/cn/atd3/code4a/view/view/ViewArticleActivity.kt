@@ -183,12 +183,15 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
         }
     }
 
-    override fun loadArticle(text: String, imageGetter: Html.ImageGetter) {
+    override fun loadArticle(text: String?, imageGetter: Html.ImageGetter) {
 
+        if(text!=null)
         runOnUiThread {
             richText!!.text = Html.fromHtml(text, imageGetter, null)
             copyButton!!.isClickable = true
         }
+        else
+            Log.e("view article","text is null")
     }
 
     override fun loadUser(un: String) {

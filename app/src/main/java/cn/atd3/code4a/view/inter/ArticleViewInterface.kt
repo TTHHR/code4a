@@ -8,7 +8,7 @@ import android.text.Html
 interface ArticleViewInterface {
     fun showWaitDialog()
     fun dismissWaitDialog()
-    fun loadArticle(text:String,ig:Html.ImageGetter)
+    fun loadArticle(text:String?,ig:Html.ImageGetter)
     fun loadUser( un:String)
     fun showToast(infotype: Int, info: String)
 
