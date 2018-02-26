@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,9 +29,9 @@ import cn.atd3.code4a.model.model.DownFileModel;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.view.inter.ArticleViewInterface;
 import cn.atd3.proxy.Param;
+import cn.dxkite.common.ui.support.CacheableImageGetter;
 
 import static cn.atd3.code4a.Constant.ERROR;
-import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
@@ -42,26 +43,25 @@ import static cn.atd3.code4a.Constant.WARNING;
 public class ViewArticlePresenter {
 
     private ArticleViewInterface avi;
-    private URLImageParser urlImageParser;
+    private CacheableImageGetter urlImageParser;
 
     private String content = "";//原始文章数据
-    public boolean deleteArticle=false;
+    public boolean deleteArticle = false;
     private List<DownFileModel> fileList;
     private int create = 0;//文章创建时间
-   private ArticleModel article;
+    private ArticleModel article;
     private static final String TAG = "ViewArticle";
     private ArticleDatabase databasePresenter;
 
-    public ViewArticlePresenter(Context c,ArticleViewInterface avi,ArticleModel article) {
+    public ViewArticlePresenter(Context c, ArticleViewInterface avi, ArticleModel article) {
         this.avi = avi;
-        this.article=article;
-        databasePresenter=new ArticleDatabase(c);
+        this.article = article;
+        databasePresenter = new ArticleDatabase(c);
     }
 
     public void initImageGetter(TextView tv) {
-
-        urlImageParser = new URLImageParser(tv);
-
+//        urlImageParser = new URLImageParser(tv);
+        urlImageParser = new CacheableImageGetter(tv, new File(Constant.getPublicFilePath(), "image_caches"));
 
     }
 
@@ -93,17 +93,15 @@ public class ViewArticlePresenter {
         }
 
     }
-    private void saveToDatabase(Context c)
-    {
-        if(databasePresenter==null)
-            databasePresenter=new ArticleDatabase(c);
-        if(deleteArticle)
-        {
+
+    private void saveToDatabase(Context c) {
+        if (databasePresenter == null)
+            databasePresenter = new ArticleDatabase(c);
+        if (deleteArticle) {
             databasePresenter.deleteArticle(article.getId());
-        }
-       else
-        databasePresenter.saveArticle(article);
-        Log.e("save base",""+article);
+        } else
+            databasePresenter.saveArticle(article);
+        Log.e("save base", "" + article);
     }
 
     public void deleteArticle() {
@@ -122,7 +120,7 @@ public class ViewArticlePresenter {
                             new Param("id", article.getId())
                     );
                     avi.showToast(SUCCESS, "success");
-                    deleteArticle=true;
+                    deleteArticle = true;
                 } catch (Exception e) {
                     avi.showToast(ERROR, "" + e);
                 }
@@ -148,12 +146,11 @@ public class ViewArticlePresenter {
     }
 
 
-    public void onDestory(Context c)
-    {
+    public void onDestory(Context c) {
         saveToDatabase(c);
-        fileList=null;
-        article=null;
-        databasePresenter=null;
+        fileList = null;
+        article = null;
+        databasePresenter = null;
     }
 
 
@@ -168,7 +165,7 @@ public class ViewArticlePresenter {
                             if (a instanceof ArticleModel) {
                                 Log.i("obj", "is article");
                                 if (((ArticleModel) a).getContent() != null) {
-                                    article=(ArticleModel)a;
+                                    article = (ArticleModel) a;
                                     content = article.getContent();
                                     Log.d(TAG, "article abstract = " + ((ArticleModel) a).getAbstract());
                                     Log.d(TAG, "article content = " + content);
@@ -183,25 +180,21 @@ public class ViewArticlePresenter {
                                     Log.e("obj", "null");
                                     content = "";
                                 }
-                            }
-                            else//服务器已删除这篇文章
+                            } else//服务器已删除这篇文章
                             {
-                                deleteArticle=true;
-                                avi.showToast(WARNING,avi.getXmlString(R.string.no_article_error));
+                                deleteArticle = true;
+                                avi.showToast(WARNING, avi.getXmlString(R.string.no_article_error));
                             }
                         } catch (Exception e) {
                             Log.e("net error", "" + e);
-                            ArticleModel am=databasePresenter.getArticle(article.getId());
-                            if(am!=null)
-                            {
-                                article=am;
-                                content=article.getContent();
+                            ArticleModel am = databasePresenter.getArticle(article.getId());
+                            if (am != null) {
+                                article = am;
+                                content = article.getContent();
                                 avi.showToast(SUCCESS, avi.getXmlString(R.string.error_network_use_local));
-                            }
-                            else
-                            {
-                                Log.e("local","article not cache");
-                                content="error";
+                            } else {
+                                Log.e("local", "article not cache");
+                                content = "error";
                                 avi.showToast(WARNING, avi.getXmlString(R.string.error_network));
                             }
                         }
@@ -233,7 +226,7 @@ public class ViewArticlePresenter {
      */
     private Set<String> getImgStr(String htmlStr) {
         HashSet pics = new HashSet<String>();
-        String img ;
+        String img;
         Pattern p_image;
         Matcher m_image;
         String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
