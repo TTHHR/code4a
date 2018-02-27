@@ -3,10 +3,9 @@ package cn.atd3.code4a.presenter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Looper;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
@@ -252,62 +251,61 @@ public class ViewArticlePresenter {
             this.mTextView = mTextView;
         }
 
-
         @Override
         public Drawable getDrawable(final String http) {
-            final URLDrawable urlDrawable = new URLDrawable();
-
+             Drawable drawable=null;
+            Bitmap bitmap=null;
             final File picFile = new File(Constant.getCachePath() + "/" + Md5Util.encode(http));
-
             if (picFile.exists())//曾经保存过
             {
-                Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
+                bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
                 if (bitmap == null) {
                     Log.e("bit null", picFile.getAbsolutePath() + " " + http);
                     return null;
                 }
-                urlDrawable.drawBitmap = bitmap;
-                urlDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                mTextView.invalidate();
-                mTextView.setText(mTextView.getText());
-            } else {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        File dir = new File(Constant.getCachePath());
-                        if (!dir.exists())
-                            dir.mkdirs();
-                        FileDealService.getInstance().saveFile(picFile.getAbsolutePath(), http);
-                        Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
-                        if (bitmap == null) {
-                            Log.e("bit null", picFile.getAbsolutePath() + " " + http);
-                            return;
-                        }
-                        urlDrawable.drawBitmap = bitmap;
-                        urlDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                        // 主线程操控UI
-                        Looper.prepare();
-                        mTextView.invalidate();
-                        mTextView.setText(mTextView.getText());
-                        Looper.loop();
-                    }
-                }).start();
-
+                drawable=new BitmapDrawable(bitmap);
+                drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
             }
-            return urlDrawable;
+            else
+            {
+                new ImageDownloader().execute(http);
+            }
+            return drawable;
         }
-    }
 
-    class URLDrawable extends BitmapDrawable {
-        Bitmap drawBitmap = null;
+
+    }
+    class ImageDownloader extends AsyncTask<String ,Void,Drawable>
+    {
+        @Override
+        protected void onPostExecute(Drawable drawable) {
+            if(drawable!=null)//再次执行一遍
+                avi.loadArticle(article.getContent(),urlImageParser);
+            super.onPostExecute(drawable);
+        }
 
         @Override
-        public void draw(Canvas canvas) {
-            if (drawBitmap != null) {
-                canvas.drawBitmap(drawBitmap, 0f, 0f, getPaint());
-            }
-        }
+        protected Drawable doInBackground(String... http) {
+            final Drawable drawable;
+            Bitmap bitmap=null;
+            final File picFile = new File(Constant.getCachePath() + "/" + Md5Util.encode(http[0]));
 
+            File dir = new File(Constant.getCachePath());
+            if (!dir.exists())
+                dir.mkdirs();
+            FileDealService.getInstance().saveFile(picFile.getAbsolutePath(), http[0]);
+            bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
+            if (bitmap == null) {
+                Log.e("bit null", picFile.getAbsolutePath() + " " + http[0]);
+                return null;
+            }
+
+
+            drawable=new BitmapDrawable(bitmap);
+            drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+            return drawable;
+        }
     }
 
 }
