@@ -40,10 +40,11 @@ public final class Constant {
     private static String adImg = null;
     private static String adUrl = File.separator + "adUrl.txt";
     private static String userData = File.separator + "user.data";
+    public static String settingFile = File.separator + "setting.xml";
 
     public static boolean debugmodeinfo = false;
     public static boolean collectioninfo = false;
-    public static String themeColor = "";
+    public static String themeColor = "#99cc33";
     public static String defaultThemeColor = "#99cc33";
 
     private static boolean debug;
@@ -61,6 +62,7 @@ public final class Constant {
         adUrl = privateFilePath + File.separator + "adUrl.txt";
         userData = privateFilePath + File.separator + "user.data";
         cachePath=publicFilePath+cachePath;
+        settingFile=privateFilePath+settingFile;
         init = true;
     }
 

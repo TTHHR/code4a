@@ -37,13 +37,13 @@ import cn.qingyuyu.commom.service.FileDealService;
 import cn.qingyuyu.zip.DirTraversal;
 import cn.qingyuyu.zip.ZipHelper;
 import sun.misc.BASE64Encoder;
-import top.zibin.luban.Luban;
 
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.WARNING;
 
 /**
  * Created by harry on 2018/1/17.
+ *
  */
 
 public class EditArticlePresenter {

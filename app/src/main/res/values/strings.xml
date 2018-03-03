@@ -27,15 +27,6 @@
     <string name="feedback_send">发送</string>
     <string name="setting_software_info">软件信息</string>
     <string name="share_content">我正在使用这个代码分享平台，超好用，你也来试试吧！</string>
-    <string-array name="language_list_key">
-        <item>中文</item>
-        <item>English</item>
-    </string-array>
-    <string-array name="language_list_value">
-        <item>zh</item>
-        <item>en</item>
-    </string-array>
-
     <string name="title_waring">警告</string>
     <string name="edit_waring">编辑文章时，所有附件已清空，请重新添加！</string>
     <string name="version_waring">当前版本不能登陆！</string>

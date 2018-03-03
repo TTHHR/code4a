@@ -36,14 +36,6 @@
     <string name="feedback_send">Send</string>
     <string name="info_upload_slow">File size:%1$s slow upload, please wait</string>
     <string name="share_content">I am using the code sharing platform, and you will try it </string>
-    <string-array name="language_list_key">
-        <item>中文</item>
-        <item>English</item>
-    </string-array>
-    <string-array name="language_list_value">
-        <item>zh</item>
-        <item>en</item>
-    </string-array>
     <string name="title_waring">Waring</string>
     <string name="edit_waring">When the article is edited, all the attachments are empty. Please add it again!</string>
     <string name="click_file_tip">long click to select %1$s</string>
