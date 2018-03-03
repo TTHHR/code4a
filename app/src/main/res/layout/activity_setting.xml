@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
         android:id="@+id/topBar"
@@ -10,9 +9,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:fitsSystemWindows="true"/>
-    <FrameLayout
-        android:layout_below="@id/topBar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar"
+        android:background="@color/qmui_config_color_background">
+
+        <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+            android:id="@+id/groupListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
 </RelativeLayout>
