@@ -40,6 +40,7 @@
     <string name="edit_waring">When the article is edited, all the attachments are empty. Please add it again!</string>
     <string name="click_file_tip">long click to select %1$s</string>
     <string name="click_file_exit"> click twice to exit select files</string>
+    <string name="title_upload_article">upload article</string>
     <string name="button_add">Add</string>
     <string name="button_ok">OK</string>
     <string name="button_copy">Copy</string>
