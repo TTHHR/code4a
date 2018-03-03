@@ -42,7 +42,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
     private lateinit var md: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        QMUIStatusBarHelper.translucent(this)
+       // QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_editarticle)
         try {
             toolBar.setBackgroundColor(Color.parseColor(Constant.themeColor))
@@ -53,7 +53,6 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
         }
         setSupportActionBar(toolBar)
         eap = EditArticlePresenter(this)
-
         initView()
 
     }
@@ -261,7 +260,7 @@ class EditArticleActivity : AppCompatActivity(), EditArticleActivityInterface {
                 .setCheckedIndex(0)
                 .addItems(items.toTypedArray(),  {
                     dialog, which ->
-                        eap.setArticleCategoryId(which + 1)
+                        eap.setArticleCategoryId( catelist[which].id)
                         dialog!!.dismiss()
                 })
         builder.show()
