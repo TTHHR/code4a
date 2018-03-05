@@ -10,8 +10,9 @@ a code share platform
 
 - 富文本编辑：https://github.com/huzhenjie/RichTextEditor
 - 文件浏览：https://github.com/WeiMei-Tian/FileBrowser
-- 弹窗：https://github.com/Carbs0126/MDDialog
-- 下拉刷新： https://github.com/Hitomis/FunGameRefresh
+- 上拉下拉刷新： https://github.com/823546371/PullToRefresh
+- 图片压缩： https://github.com/Curzibn/Luban
+- UI框架：https://github.com/QMUI
 
 ## 服务器程序
 Code4A Server: https://github.com/DXkite/DxSite
@@ -23,14 +24,14 @@ Code4A Server: https://github.com/DXkite/DxSite
     - [x] 分类浏览
     - [x] 浏览文章
     - [x] 上传文章
-    - [ ] 更新文章
-    - [ ] 附件上传下载
+    - [x] 更新文章
+    - [x] 附件上传下载
 - [ ] 消息功能
     - [x] 开屏图片
     - [x] 系统广播
-    - [ ] 通知推送
-    - [ ] 更新检查
-    - [ ] 错误反馈
+    - [x] 通知推送
+    - [x] 更新检查
+    - [x] 错误反馈
 - [ ] 用户功能
     - [ ] 用户登陆
     - [ ] 用户注册

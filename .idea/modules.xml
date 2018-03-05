@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Code4A.iml" filepath="$PROJECT_DIR$/Code4A.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/code4a.iml" filepath="$PROJECT_DIR$/code4a.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/feelback/feelback.iml" filepath="$PROJECT_DIR$/feelback/feelback.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fungamerefresh/fungamerefresh.iml" filepath="$PROJECT_DIR$/fungamerefresh/fungamerefresh.iml" />
     </modules>
   </component>
 </project>

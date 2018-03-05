@@ -10,7 +10,6 @@ import cn.qingyuyu.commom.ui.SplashAd
 
 interface SplashViewInterface {
 
-
     fun onImageUpdate(imguri: Uri)
 
     fun showToast(infotype: Int, info: String)

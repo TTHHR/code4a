@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        />
     <HorizontalScrollView
         android:id="@+id/tools"
         android:layout_width="match_parent"
@@ -92,14 +96,13 @@
                 android:src="@mipmap/ic_insert_file" />
 
             <ImageButton
-                android:id="@+id/clear"
                 android:contentDescription="@null"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@mipmap/ic_format_clear"
                 android:scaleType="center"
                 android:onClick="clearFormat"
-                android:background="?android:selectableItemBackground"></ImageButton>
+                android:background="?android:selectableItemBackground"/>
 
         </LinearLayout>
 
@@ -107,13 +110,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/tools"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolBar"
+        android:layout_above="@+id/tools"
         android:fillViewport="true">
 
         <com.scrat.app.richtext.RichEditText
-            android:id="@+id/rich_text"
+            android:id="@+id/richText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

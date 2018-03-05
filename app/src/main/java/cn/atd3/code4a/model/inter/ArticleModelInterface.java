@@ -17,9 +17,12 @@ public interface ArticleModelInterface {
 
     void setSlug(String slug) ;
 
-    Integer getUser() ;
+    Integer getUserId() ;
 
-    void setUser(Integer user) ;
+    void setUserId(Integer userId) ;
+    String getUser() ;
+
+    void setUser(String user) ;
 
     Integer getCreate();
     void setCreate(Integer create) ;
@@ -27,10 +30,12 @@ public interface ArticleModelInterface {
     Integer getModify() ;
 
     void setModify(Integer modify) ;
+    Integer getCategoryId() ;
 
-    Integer getCategory() ;
+    void setCategoryId(Integer categoryId) ;
+    String getCategory() ;
 
-    void setCategory(Integer category) ;
+    void setCategory(String category) ;
     String getAbstract();
 
     void setAbstract(String mAbstract) ;
@@ -52,7 +57,7 @@ public interface ArticleModelInterface {
     String getVisibility();
 
     void setVisibility(String visibility);
-    String getVisibilitypassword() ;
+    String getVisibilityPassword() ;
 
-    void setVisibilitypassword(String visibilitypassword) ;
+    void setVisibilityPassword(String visibilityPassword) ;
 }

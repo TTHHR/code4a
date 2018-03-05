@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import cn.atd3.code4a.R;
 import butterknife.BindView;
@@ -18,7 +20,6 @@ import cn.atd3.code4a.mvpbase.BaseActivity;
 import cn.atd3.code4a.mvpbase.BaseView;
 import cn.atd3.code4a.presenter.SignupPresenter;
 import cn.atd3.code4a.presenter.interfaces.SignupContract;
-import es.dmoral.toasty.Toasty;
 
 /**
  * 作者：YGL
@@ -29,7 +30,7 @@ import es.dmoral.toasty.Toasty;
  * 备注消息：
  * 创建时间：2018/01/12   9:37
  **/
-public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> implements SignupContract.View {
+public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> implements SignupContract.View {
 
     @BindView(R.id.user_name)
     BootstrapEditText userName;
@@ -50,15 +51,15 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     private ProgressDialog progressDialog;
 
     @Override
-    public void onCreate(Bundle s){
+    public void onCreate(Bundle s) {
         super.onCreate(s);
-
         mPresenter.checkCode();
+        QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showProgressDialog();
-                mPresenter.signupButtonClick(userName.getText().toString(),email.getText().toString(),password.getText().toString());
+                mPresenter.signupButtonClick(userName.getText().toString(), email.getText().toString(), password.getText().toString());
             }
         });
     }
@@ -71,19 +72,19 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     @Override
     public void userNameError(String message) {
         closeProgressDialog();
-        userName.setError("用户名错误:"+message);
+        userName.setError("用户名错误:" + message);
     }
 
     @Override
     public void emailError(String message) {
         closeProgressDialog();
-        email.setError("邮箱错误:"+message);
+        email.setError("邮箱错误:" + message);
     }
 
     @Override
     public void passwordError(String message) {
         closeProgressDialog();
-        password.setError("密码错误:"+message);
+        password.setError("密码错误:" + message);
     }
 
     @Override
@@ -95,7 +96,7 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     @Override
     public void remoteError(String message) {
         closeProgressDialog();
-        Toasty.error(this,"出现错误:"+message, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -107,7 +108,8 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     @Override
     public void signupSuccessful() {
         closeProgressDialog();
-        Toasty.success(this, "注册成功", Toast.LENGTH_SHORT).show();
+//        Toasty.success(this, "注册成功", Toast.LENGTH_SHORT).show();
+
         finish();
     }
 
@@ -120,7 +122,6 @@ public class SignupActivity extends BaseActivity<SignModel,SignupPresenter> impl
     protected BaseView getViewImp() {
         return this;
     }
-
     /**   * 显示进度对话框   */
     @Override
     public void showProgressDialog() {
