@@ -11,5 +11,5 @@ public interface Adapter {
      * 获取更新通知信息
      * @return 通知信息内容
      */
-    public Information refersh();
+    public Information refresh();
 }

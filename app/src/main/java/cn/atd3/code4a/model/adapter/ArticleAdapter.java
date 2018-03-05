@@ -7,14 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.model.ArticleModel;
+import cn.atd3.code4a.model.model.CategoryModel;
 
 /**
  * Created by harry on 2018/1/14.
@@ -23,26 +24,47 @@ import cn.atd3.code4a.model.model.ArticleModel;
 public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
     private int resourceId;
+    private boolean showCategory = false;
+
+    public void setShowCategory(boolean showCategory) {
+        this.showCategory = showCategory;
+    }
 
     public ArticleAdapter(@NonNull Context context, @LayoutRes int textViewResourceId, List<ArticleModel> objects) {
-        super(context,textViewResourceId,objects);
+        super(context, textViewResourceId, objects);
         resourceId = textViewResourceId;
     }
 
+
     public View getView(int position, View convertView, ViewGroup parent) {
         ArticleModel a = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceId,null);
-        TextView articleTitle = view.findViewById(R.id.articletitle);
-        articleTitle.setText(a.getTitle());
-        TextView articleAbstract = view.findViewById(R.id.articleabstract);
-        articleAbstract.setText(a.getAbstract());
-        TextView articleUser = view.findViewById(R.id.articleuser);
-        articleUser.setText(a.getUser().toString());
-        TextView articleModify = view.findViewById(R.id.articlemodify);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        long lt = new Long(a.getModify());
-        Date date = new Date(lt);
-        articleModify.setText(simpleDateFormat.format(date));
-        return  view;
+        View view = LayoutInflater.from(getContext()).inflate(resourceId, null);
+
+        TextView user = view.findViewById(R.id.itemUser);
+        TextView modify = view.findViewById(R.id.itemModify);
+        ImageView avatar = view.findViewById(R.id.itemAvatar);
+
+        // 用户名
+        if (a.getUser() != null)
+            user.setText(a.getUser().getName());
+        modify.setText(ArticleModel.time(a.getModify()));
+
+        TextView itemTitle = view.findViewById(R.id.itemTitle);
+        TextView itemAbstract = view.findViewById(R.id.itemAbstract);
+
+        itemTitle.setText(a.getTitle());
+        itemAbstract.setText(a.getAbstract());
+
+
+        TextView views = view.findViewById(R.id.itemViews);
+        views.setText(String.valueOf(a.getViews()));
+
+        TextView category = view.findViewById(R.id.itemCategory);
+        if (showCategory) {
+            category.setText(ArticleModel.category(a.getCategory().getId()));
+        } else {
+            category.setVisibility(View.INVISIBLE);
+        }
+        return view;
     }
 }

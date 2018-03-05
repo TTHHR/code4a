@@ -7,63 +7,91 @@ import cn.atd3.proxy.ProxyObject;
  */
 
 public class Remote {
-    public static String apiInterface ="http://code4a.atd3.cn/api/v1.0";
+    private static String apiInterface = "http://code4a.atd3.cn/api/v1.0";
     /**
      * 用户接口
      */
-    public static ProxyObject user=new ProxyObject() {
+    public static ProxyObject user = new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return apiInterface +"/user";
+            return apiInterface + "/user";
+        }
+    };
+    /**
+     * 超级用户接口
+     */
+    public static ProxyObject superUser = new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface + "/android-super-user";
         }
     };
     /**
      * 文章接口
      */
-    public static ProxyObject article=new ProxyObject() {
+    public static ProxyObject article = new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return apiInterface +"/article";
+            return apiInterface + "/article";
+        }
+    };
+    /**
+     * 附件接口
+     */
+    public static ProxyObject attachment = new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface + "/attachment";
         }
     };
 
-    /**
-     * 标签接口
-     */
-    public static ProxyObject tag=new ProxyObject() {
-        @Override
-        public String getCallUrl() {
-            return apiInterface +"/tags";
-        }
-    };
 
     /**
      * 类别接口
      */
-    public static ProxyObject category=new ProxyObject() {
+    public static ProxyObject category = new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return apiInterface +"/category";
-        }
-    };
-
-    /**
-     * 文章上传接口
-     */
-    public static ProxyObject upload=new ProxyObject() {
-        @Override
-        public String getCallUrl() {
-            return apiInterface +"/upload";
+            return apiInterface + "/category";
         }
     };
 
     /**
      * 百度用户接口
      */
-    public static ProxyObject baiduUser=new ProxyObject() {
+    public static ProxyObject baiduUser = new ProxyObject() {
         @Override
         public String getCallUrl() {
-            return apiInterface +"/baidu-user";
+            return apiInterface + "/baidu-user";
+        }
+    };
+
+    /**
+     * Android 信息接口
+     */
+    public static ProxyObject androidMessage = new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface + "/android-message";
+        }
+    };
+
+    /**
+     * 启动信息收集接口
+     */
+    public static ProxyObject collection = new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface + "/android-collection";
+        }
+    };
+    /**
+     * 反馈
+     */
+    public static ProxyObject report = new ProxyObject() {
+        @Override
+        public String getCallUrl() {
+            return apiInterface + "/android-report";
         }
     };
 }

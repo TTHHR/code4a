@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
@@ -33,7 +33,7 @@ dependencies {
     api files('libs/fastjson-1.2.2.jar')
     // proxy
     api files('libs/atd-proxy-1.2.6.jar')
-    //  implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     api files('libs/BASE64.jar')
 }

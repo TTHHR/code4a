@@ -19,8 +19,8 @@
         <activity
             android:name=".view.view.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Splash"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,16 +30,38 @@
         <activity
             android:name=".view.view.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.view.WebActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".view.view.SigninActivity"
-            android:label="@string/action_login_in" />
+            android:label="@string/action_login_in"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".view.view.SignupActivity"
-            android:label="@string/action_sign_in" />
-        <activity android:name=".view.view.SettingActivity" />
-        <activity android:name=".view.view.ViewArticleActivity"></activity>
+            android:label="@string/action_sign_in"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".view.view.SettingActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.ViewArticleActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".library.fileselect.FileSelectActivity" />
+        <activity android:name=".view.view.EditArticleActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.EggActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.FeedbackActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".view.view.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

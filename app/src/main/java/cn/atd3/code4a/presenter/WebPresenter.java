@@ -1,9 +1,13 @@
 package cn.atd3.code4a.presenter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 
 import cn.atd3.code4a.view.inter.WebViewInterface;
 
@@ -61,5 +65,6 @@ public class WebPresenter {
         wvi.setWebClient(wvc,wcc);
 
     }
+
 
 }

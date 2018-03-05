@@ -1,57 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ScrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:scrollbars="vertical">
+    android:orientation="vertical"
+    >
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:orientation="vertical"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#ffffff"
-        android:layout_height="fill_parent">
+        android:orientation="vertical">
 
-        <com.beardedhen.androidbootstrap.AwesomeTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/feedback_title"
-            android:textSize="@dimen/bootstrap_h1_text_size"
-            app:bootstrapBrand="success" />
-
-        <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_width="0px"
-            android:layout_height="0px" />
         <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/feedback_hide"
-            android:lines="5"
+            android:hint="@string/feedback_contact"
+            android:lines="1"
+            android:paddingTop="30dp"
             app:bootstrapBrand="info"
             app:bootstrapSize="md" />
 
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <com.beardedhen.androidbootstrap.BootstrapEditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:hint="@string/feedback_hide"
+            android:lines="8"
+            app:bootstrapBrand="info"
+            app:bootstrapSize="md" />
 
             <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/feedbacakbutton"
+                android:id="@+id/feedBackButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/feedback_send"
                 app:bootstrapBrand="success"
-                app:buttonMode="regular"
-                app:roundedCorners="true" />
-        </LinearLayout>
+                app:buttonMode="regular"/>
 
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

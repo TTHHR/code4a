@@ -10,26 +10,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.hitomi.refresh.view.FunGameRefreshView;
+import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
+import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
+import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.adapter.ArticleAdapter;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.presenter.ArticleFragmentPresenter;
 import cn.atd3.code4a.view.inter.ArticleFragmentInterface;
-import es.dmoral.toasty.Toasty;
+import cn.atd3.code4a.view.inter.HeadRefreshView;
 
 import static cn.atd3.code4a.Constant.ERROR;
 import static cn.atd3.code4a.Constant.INFO;
 import static cn.atd3.code4a.Constant.NORMAL;
-import static cn.atd3.code4a.Constant.SUCESS;
+import static cn.atd3.code4a.Constant.SUCCESS;
 import static cn.atd3.code4a.Constant.WARNING;
 
 /**
@@ -44,66 +48,104 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     private View view;
     private ListView listView;
     private ArticleFragmentPresenter afp;
+    private PullToRefreshLayout pullToRefreshLayout;
+    private LinearLayout touchView;
 
-    public ArticleFragment(int kind) {
+    public void init(int kind) {
         this.kind = kind;
-        afp = new ArticleFragmentPresenter(this);
-
     }
+
+    public static ArticleDatabase articleDatabase;
+    private int requestId = -1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (view == null) {
+            if (articleDatabase == null) {
+                articleDatabase = new ArticleDatabase(getContext());
+            }
+            afp = new ArticleFragmentPresenter(this, articleDatabase);
             view = inflater.inflate(R.layout.fragment_article, null, false);//实例化
             Log.e("kind", "" + kind);
 
-            FunGameRefreshView refreshView = view.findViewById(R.id.refresh);
-            refreshView.setLoadingText(getString(R.string.info_loadingtext));
-            refreshView.setGameOverText(getString(R.string.info_gaveover));
-            refreshView.setLoadingFinishedText(getString(R.string.info_loadingfinish));
-            refreshView.setTopMaskText(getString(R.string.info_pulltorefresh));
-            refreshView.setBottomMaskText(getString(R.string.info_howtogame));
-            listView = view.findViewById(R.id.list_view);
-            afp.setAdapterData();//设置适配器
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            pullToRefreshLayout = view.findViewById(R.id.pulltorefresh_layout);
+            touchView = view.findViewById(R.id.itemShow);
+            pullToRefreshLayout.setHeaderView(new HeadRefreshView(getContext()));////加载的视图
 
+            listView = view.findViewById(R.id.list_view);
+            afp.setAdapterData(kind);//设置适配器
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), ViewArticleActivity.class);
                     afp.setIntentData(intent, i);
-                    startActivity(intent);
+                    requestId = i;
+                    startActivityForResult(intent, requestId);
                 }
             });
 
-            refreshView.setOnRefreshListener(new FunGameRefreshView.FunGameRefreshListener() {
+            touchView.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d("touchView", "onTouch");
+                            view.findViewById(R.id.showCircle).setVisibility(View.VISIBLE);
+                            view.findViewById(R.id.showText).setVisibility(View.GONE);
+                            afp.refreshData(kind);
+                        }
+                    }
+            );
+
+            pullToRefreshLayout.setRefreshListener(new BaseRefreshListener() {
                 @Override
-                public void onPullRefreshing() {
-                    afp.requestData(kind);
+                public void refresh() {
+
+                    Log.e("refresh", "...");
+                    afp.refreshData(kind);
+
                 }
 
                 @Override
-                public void onRefreshComplete() {
-                    afp.update();
-                }
+                public void loadMore() {
+                    Log.e("load more", "...");
+                    afp.loadMoreData(kind);
 
+                }
             });
+
 
         }
+
+        ViewGroup parent = (ViewGroup) view.getParent();
+
+        if (parent != null) {
+            parent.removeView(view);
+        }
+
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == requestId) {
+            if (resultCode == 1) {
+                afp.removeItem(requestId);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
-    public void upDate(ArrayList<ArticleModel> al) {
-
+    public void upDate() {
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
                         aad.notifyDataSetChanged();
-                        Toasty.success(getContext(), getString(R.string.info_loadingfinish), Toast.LENGTH_SHORT).show();
+                        showList();
                     }
                 }
         );
@@ -111,35 +153,137 @@ public class ArticleFragment extends Fragment implements ArticleFragmentInterfac
     }
 
     @Override
-    public void setAdapter(@NotNull ArrayList<ArticleModel> al) {
-        aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
-        listView.setAdapter(aad);
-    }
-
-    @Override
-    public void showToast(final int infotype, final String info) {
+    public void setAdapter(@NotNull final ArrayList<ArticleModel> al) {
         getActivity().runOnUiThread(
                 new Runnable() {
                     @Override
                     public void run() {
+                        aad = new ArticleAdapter(getContext(), R.layout.articlelist_item, al);
+                        aad.setShowCategory(kind == 0);
+                        listView.setAdapter(aad);
+                    }
+                }
+        );
+
+    }
+
+    @Override
+    public void showToast(final int infotype, final String info) {
+
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        final  QMUITipDialog tipDialog ;
                         switch (infotype) {
-                            case SUCESS:
-                                Toasty.success(getContext(), info, Toast.LENGTH_SHORT).show();
+                            case SUCCESS:
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case INFO:
-                                Toasty.info(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_INFO)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case NORMAL:
-                                Toasty.normal(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case WARNING:
-                                Toasty.warning(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(info)
+                                        .create();
                                 break;
                             case ERROR:
-                                Toasty.error(getContext(), info, Toast.LENGTH_SHORT).show();
+                                tipDialog =  new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                        .setTipWord(Constant.debugmodeinfo?info:getString(R.string.remote_error))
+                                        .create();
                                 break;
                             default:
+                                tipDialog = new QMUITipDialog.Builder(getActivity())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_NOTHING)
+                                        .setTipWord(info)
+                                        .create();
+                        }
+                        tipDialog.show();
+                        new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        finally {
+                                            tipDialog.dismiss();
+                                        }
 
+                                    }
+                                }
+                        ).start();
+                    }
+                }
+        );
+
+    }
+
+    @Override
+    public void onfinishRefresh() {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        // 结束刷新
+                        pullToRefreshLayout.finishRefresh();
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onfinishLoadmore() {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        // 结束
+                        pullToRefreshLayout.finishLoadMore();
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void showTouch() {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefreshLayout.setVisibility(View.GONE);
+                        touchView.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
+
+    }
+
+    @Override
+    public void showList() {
+        getActivity().runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (pullToRefreshLayout != null && touchView != null) {
+                            pullToRefreshLayout.setVisibility(View.VISIBLE);
+                            touchView.setVisibility(View.GONE);
                         }
                     }
                 }

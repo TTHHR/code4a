@@ -7,9 +7,9 @@ code4a
 code4a使用了以下开源库
 
 富文本编辑：https://github.com/huzhenjie/RichTextEditor 
-文件浏览：https://github.com/WeiMei-Tian/FileBrowser 
-弹窗：https://github.com/Carbs0126/MDDialog 
-下拉刷新： https://github.com/Hitomis/FunGameRefresh
+文件浏览：https://github.com/WeiMei-Tian/FileBrowser
+上拉下拉刷新 https://github.com/823546371/PullToRefresh
+ UI框架：https://github.com/QMUI
 
 以上代码以后若侵权，立删
 
