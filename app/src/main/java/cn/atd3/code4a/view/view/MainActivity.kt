@@ -188,19 +188,19 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 //                        }
 //                    }.start()
 
-            QMUIDialog.MessageDialogBuilder(this)
-                    .setTitle(getString(R.string.title_waring))
-                    .setMessage(getString(R.string.version_waring))
-                    .addAction(getString(R.string.button_ok), {
-                        dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    )
-                    .show()
+//            QMUIDialog.MessageDialogBuilder(this)
+//                    .setTitle(getString(R.string.title_waring))
+//                    .setMessage(getString(R.string.version_waring))
+//                    .addAction(getString(R.string.button_ok), {
+//                        dialog, _ ->
+//                        dialog.dismiss()
+//                    }
+//                    )
+//                    .show()
 
 
-//            val i = Intent(this, SigninActivity::class.java)
-//            startActivity(i)
+            val i = Intent(this, SigninActivity::class.java)
+            startActivity(i)
         })
 
 

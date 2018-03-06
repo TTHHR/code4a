@@ -3,17 +3,19 @@ package cn.atd3.code4a.view.view;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.atd3.code4a.R;
-import cn.atd3.code4a.model.model.SignModel;
+import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.mvpbase.BaseActivity;
 import cn.atd3.code4a.mvpbase.BaseView;
 import cn.atd3.code4a.presenter.SigninPresenter;
@@ -30,7 +32,6 @@ import cn.atd3.code4a.presenter.interfaces.SigninContract;
  * 创建时间：2018/01/10   20:18
  **/
 public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> implements SigninContract.View {
-    private static final String TAG = "SigninActivity";
     @BindView(R.id.account)
     BootstrapEditText account;
     @BindView(R.id.password)
@@ -39,27 +40,40 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     BootstrapButton signinButton;
     @BindView(R.id.signup_button)
     BootstrapButton signupButton;
+    @BindView(R.id.code)
+    BootstrapEditText code;
+    @BindView(R.id.code_image)
+    ImageView codeImage;
+    @BindView(R.id.code_layout)
+    LinearLayout codeLayout;
     private ProgressDialog progressDialog;
+    private ImageLoader imageLoader;
+    private static final String codeUrl="http://code4a.atd3.cn/user/verify";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
-        signinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showProgressDialog();
-                mPresenter.signinButtonClick(account.getText().toString(), password.getText().toString());
-            }
-        });
+        //QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
 
-        final Intent i = new Intent(this, SignupActivity.class);
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(i);
-            }
-        });
+        imageLoader=ImageLoader.getInstance();
+        refreshCodeImg();
+    }
+
+    @OnClick(R.id.code_image)
+    public void refreshCodeImg(){
+        imageLoader.displayImage(codeUrl,codeImage);
+    }
+
+    @OnClick(R.id.signin_button)
+    public void signin(){
+        showProgressDialog();
+        mPresenter.signinButtonClick(account.getText().toString(), password.getText().toString(),code.getText().toString());
+    }
+
+    @OnClick(R.id.signup_button)
+    public void signup(){
+        Intent i = new Intent(this, SignupActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -81,18 +95,15 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
 
     @Override
     public void codeError(String message) {
-    }
-
-    @Override
-    public void remoteError(String message) {
         closeProgressDialog();
-
+        code.setError(getString(R.string.code_invalid));
+        refreshCodeImg();
     }
 
     @Override
     public void signinSuccessful() {
         closeProgressDialog();
-
+        Toast.makeText(this, getString(R.string.signin_successful), Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -103,7 +114,8 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
 
     @Override
     public void showErrorWithStatus(String msg) {
-
+        closeProgressDialog();
+        Toast.makeText(this, getString(R.string.error)+msg, Toast.LENGTH_SHORT).show();
     }
     /**   * 显示进度对话框   */
     @Override

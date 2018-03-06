@@ -94,18 +94,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/code_layout"
-        android:visibility="gone">
-        <EditText
-            android:id="@+id/code"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+        android:id="@+id/code_layout">
+
         <ImageView
             android:id="@+id/code_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:scaleType="fitXY" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:layout_weight="1">
+
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/code"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <com.beardedhen.androidbootstrap.BootstrapButton

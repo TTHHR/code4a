@@ -8,6 +8,8 @@ import cn.dxkite.debug.Config
 import cn.dxkite.debug.DebugManager
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -30,6 +32,8 @@ class CodeApplication : Application() {
         initSetting()
         // 初始化图片加载
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this))
+        //初始化Logger
+        Logger.addLogAdapter(AndroidLogAdapter())
     }
 
     private fun initProxyManager() {

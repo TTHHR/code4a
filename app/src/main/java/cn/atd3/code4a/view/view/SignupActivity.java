@@ -10,12 +10,13 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
+import butterknife.OnClick;
 import cn.atd3.code4a.R;
 import butterknife.BindView;
-import cn.atd3.code4a.model.model.SignModel;
+import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.mvpbase.BaseActivity;
 import cn.atd3.code4a.mvpbase.BaseView;
 import cn.atd3.code4a.presenter.SignupPresenter;
@@ -43,30 +44,43 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @BindView(R.id.signup_button)
     BootstrapButton signupButton;
     @BindView(R.id.code)
-    EditText code;
+    BootstrapEditText code;
     @BindView(R.id.code_image)
     ImageView codeImage;
     @BindView(R.id.code_layout)
     LinearLayout codeLayout;
     private ProgressDialog progressDialog;
+    private ImageLoader imageLoader;
+    private static final String codeUrl="http://code4a.atd3.cn/user/verify";
 
     @Override
     public void onCreate(Bundle s) {
         super.onCreate(s);
-        mPresenter.checkCode();
-        QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showProgressDialog();
-                mPresenter.signupButtonClick(userName.getText().toString(), email.getText().toString(), password.getText().toString());
-            }
-        });
+        //QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
+
+        imageLoader= ImageLoader.getInstance();
+        refreshCodeImg();
+    }
+
+    @OnClick(R.id.code_image)
+    public void refreshCodeImg(){
+        imageLoader.displayImage(codeUrl,codeImage);
+    }
+
+    @OnClick(R.id.signup_button)
+    public void onSignup(){
+        showProgressDialog();
+        mPresenter.signupButtonClick(userName.getText().toString(),
+                email.getText().toString(),
+                password.getText().toString(),
+                passwordConfirm.getText().toString(),
+                code.getText().toString());
     }
 
     @Override
     public void showErrorWithStatus(String msg) {
-
+        closeProgressDialog();
+        Toast.makeText(this,getString(R.string.error)+msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -88,28 +102,16 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     }
 
     @Override
-    public void passwordDifferent(String message) {
+    public void codeError(String message) {
         closeProgressDialog();
-        password.setError("密码错误不一样");
-    }
-
-    @Override
-    public void remoteError(String message) {
-        closeProgressDialog();
-
-    }
-
-    @Override
-    public void showCode() {
-        closeProgressDialog();
-        codeLayout.setVisibility(View.VISIBLE);
+        code.setError(getString(R.string.code_invalid));
+        refreshCodeImg();
     }
 
     @Override
     public void signupSuccessful() {
         closeProgressDialog();
-//        Toasty.success(this, "注册成功", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, getString(R.string.signup_successful), Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -122,6 +124,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     protected BaseView getViewImp() {
         return this;
     }
+
     /**   * 显示进度对话框   */
     @Override
     public void showProgressDialog() {

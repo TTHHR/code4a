@@ -1,6 +1,6 @@
 package cn.atd3.code4a.presenter.interfaces;
 
-import cn.atd3.code4a.model.model.SignModel;
+import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.mvpbase.BasePresenter;
 import cn.atd3.code4a.mvpbase.BaseView;
 
@@ -18,13 +18,12 @@ public interface SigninContract {
         void accountError(String message);
         void passwordError(String message);
         void codeError(String message);
-        void remoteError(String message);
         void signinSuccessful();
         void showProgressDialog();
         void closeProgressDialog();
     }
 
     abstract class Presenter extends BasePresenter<View,SignModel> {
-        public abstract void signinButtonClick(String account,String password);
+        public abstract void signinButtonClick(String account,String password,String code);
     }
 }
