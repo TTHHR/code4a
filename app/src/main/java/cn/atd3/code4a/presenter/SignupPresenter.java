@@ -3,7 +3,10 @@ package cn.atd3.code4a.presenter;
 import android.text.TextUtils;
 import android.util.Log;
 
-import cn.atd3.code4a.model.model.SignModel;
+import com.orhanobut.logger.Logger;
+
+import cn.atd3.code4a.R;
+import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.presenter.interfaces.SignupContract;
 import rx.Observer;
 import rx.Subscriber;
@@ -17,62 +20,63 @@ import rx.Subscriber;
  * 备注消息：
  * 创建时间：2018/01/12   10:19
  **/
+//todo 处理错误
 public class SignupPresenter extends SignupContract.Presenter {
-    private static final String TAG = "SignupPresenter";
     private String user;
     private String email;
     private String password;
+    private String passwordConfirm;
+    private String code;
     @Override
-    public void signupButtonClick(String user,String email, String password) {
+    public void signupButtonClick(String user,String email, String password,String passwordConfirm,String code) {
         this.user=user;
         this.email=email;
         this.password=password;
-        if (checkUser()&&checkEmail()&&checkPassword()){
-            //提交数据
-            mModel.signup(user,email,password,null).subscribe(new Subscriber<Integer>() {
-                @Override
-                public void onCompleted() {
-                    Log.i(TAG,"onCompleted()");
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.i(TAG,"onError(Throwable e) e:"+e);
-                }
-
-                @Override
-                public void onNext(Integer i) {
-                    Log.i("xxxxx","i:"+i);
-                    if(i>=0){
-                        //注册成功
-                        mView.signupSuccessful();
+        this.passwordConfirm=passwordConfirm;
+        this.code=code;
+        if (checkUser()){
+            if(checkEmail()){
+                if(checkPassword()){
+                    if(checkPasswordDiff()){
+                        if(checkCode()){
+                            commit();
+                        }else {
+                            mView.codeError(mContext.getString(R.string.code_empty));
+                        }
                     }else {
-                        //失败
-                        mView.remoteError(String.valueOf(i));
+                        mView.passwordError(mContext.getString(R.string.password_diff));
                     }
+                }else {
+                    mView.passwordError(mContext.getString(R.string.password_empty));
                 }
-            });
+            }else {
+                mView.emailError(mContext.getString(R.string.email_empty));
+            }
         }else {
-            mView.userNameError("Error!");
+            mView.userNameError(mContext.getString(R.string.account_empty));
         }
     }
 
-    @Override
-    public void checkCode() {
-        mView.showProgressDialog();
-        mModel.getNeedSignCode(SignModel.SIGNUP).subscribe(new Observer<Boolean>() {
+    public void commit(){
+        //提交数据
+        mModel.signup(user,email,password,code).subscribe(new Subscriber<Integer>() {
             @Override
             public void onCompleted() {
             }
 
             @Override
             public void onError(Throwable e) {
+                mView.showErrorWithStatus(e.getMessage());
             }
 
             @Override
-            public void onNext(Boolean aBoolean) {
-                if(aBoolean){
-                    mView.showCode();
+            public void onNext(Integer i) {
+                if(i>=0){
+                    //注册成功
+                    mView.signupSuccessful();
+                }else {
+                    //失败
+                    mView.showErrorWithStatus(String.valueOf(i));
                 }
             }
         });
@@ -86,5 +90,15 @@ public class SignupPresenter extends SignupContract.Presenter {
     }
     private Boolean checkPassword(){
         return !TextUtils.isEmpty(password);
+    }
+    private Boolean checkPasswordDiff(){
+        if(password.equals(passwordConfirm)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+    private Boolean checkCode(){
+        return !TextUtils.isEmpty(code);
     }
 }

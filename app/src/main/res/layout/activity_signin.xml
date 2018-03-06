@@ -18,20 +18,20 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.design.widget.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp">
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp">
+        android:hint="@string/prompt_account"
+        android:maxLines="1"
 
-        <com.beardedhen.androidbootstrap.BootstrapEditText
-            android:id="@+id/account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_account"
-            android:maxLines="1"
+        android:singleLine="true" />
 
-            android:singleLine="true" />
-
-    </android.support.design.widget.TextInputLayout>
+</android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +51,35 @@
             android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/code_layout">
+
+        <ImageView
+            android:id="@+id/code_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitXY" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:layout_weight="1">
+
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/code"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/signin_button"
