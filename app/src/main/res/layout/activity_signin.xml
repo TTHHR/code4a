@@ -56,7 +56,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/code_layout">
+        android:id="@+id/code_layout"
+        android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/code_image"

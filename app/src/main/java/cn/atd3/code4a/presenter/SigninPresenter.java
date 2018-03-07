@@ -18,11 +18,15 @@ import rx.Subscriber;
  * 备注消息：
  * 创建时间：2018/01/10   22:15
  **/
-//todo 处理错误
 public class SigninPresenter extends SigninContract.Presenter {
-    private static final int INVALID_CODE=-1;
-    private static final int INVALID_ACCOUNT=-2;
-    private static final int INVALID_PASSWORD=-3;
+    private static final int NAME_FORMAT_ERROR=-1;
+    private static final int EMAIL_FORMAT_ERROR=-2;
+    private static final int NAME_EXISTS_ERROR=-3;
+    private static final int EMAIL_EXISTS_ERROR=-4;
+    private static final int ACCOUNT_OR_PASSWORD_ERROR=-5;
+    private static final int USER_FREEZED=-6;
+    private static final int HUMAN_CODE_ERROR=-7;
+    private static final int INVITE_CODE_ERROR=-8;
 
     private String account;
     private String password;
@@ -39,13 +43,13 @@ public class SigninPresenter extends SigninContract.Presenter {
                 if(checkCode()){
                     commit();
                 }else {
-                    mView.codeError("");
+                    mView.codeError(mContext.getString(R.string.code_empty));
                 }
             }else {
-                mView.passwordError(mContext.getResources().getString(R.string.password_empty));
+                mView.passwordError(mContext.getString(R.string.password_empty));
             }
         }else {
-            mView.accountError(mContext.getResources().getString(R.string.account_empty));
+            mView.accountError(mContext.getString(R.string.account_empty));
         }
     }
 
@@ -73,20 +77,35 @@ public class SigninPresenter extends SigninContract.Presenter {
         if(i<0){
             //失败
             switch (i){
-                case INVALID_ACCOUNT:
-                    mView.accountError(mContext.getString(R.string.account_invalid));
+                case NAME_FORMAT_ERROR:
+                    mView.accountError(mContext.getString(R.string.name_format_error));
                     break;
-                case INVALID_PASSWORD:
-                    mView.passwordError(mContext.getString(R.string.password_invalid));
+                case EMAIL_FORMAT_ERROR:
+                    mView.accountError(mContext.getString(R.string.email_format_error));
                     break;
-                case INVALID_CODE:
-                    mView.codeError(mContext.getResources().getString(R.string.code_invalid));
+                case NAME_EXISTS_ERROR:
+                    mView.showErrorWithStatus(mContext.getString(R.string.name_exists_error));
+                    break;
+                case EMAIL_EXISTS_ERROR:
+                    mView.showErrorWithStatus(mContext.getString(R.string.email_exists_error));
+                    break;
+                case ACCOUNT_OR_PASSWORD_ERROR:
+                    mView.showErrorWithStatus(mContext.getString(R.string.account_or_password_error));
+                    break;
+                case USER_FREEZED:
+                    mView.showErrorWithStatus(mContext.getString(R.string.user_freezed));
+                    break;
+                case HUMAN_CODE_ERROR:
+                    mView.codeError(mContext.getString(R.string.human_code_error));
+                    break;
+                case INVITE_CODE_ERROR:
+                    mView.showErrorWithStatus(mContext.getString(R.string.invite_code_error));
                     break;
                 default:
-                    mView.showErrorWithStatus(mContext.getString(R.string.error)+String.valueOf(i));
+                    mView.showErrorWithStatus(mContext.getString(R.string.unknown_error)+i);
             }
         }else {
-            //登陆成功
+            //注册成功
             mView.signinSuccessful();
         }
     }

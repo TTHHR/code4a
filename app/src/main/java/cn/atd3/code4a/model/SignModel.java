@@ -23,8 +23,6 @@ import rx.schedulers.Schedulers;
  * 创建时间：2018/01/10   22:17
  **/
 public class SignModel implements Sign {
-    public static final int SIGNIN=1;
-    public static final int SIGNUP=2;
     @Override
     public Observable<Integer> signin(final String account, final String password, final Boolean remember, final String code) {
         //这里使用了Rxjava

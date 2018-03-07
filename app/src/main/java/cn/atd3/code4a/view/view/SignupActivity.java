@@ -104,7 +104,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @Override
     public void codeError(String message) {
         closeProgressDialog();
-        code.setError(getString(R.string.code_invalid));
+        code.setError(message);
         refreshCodeImg();
     }
 
