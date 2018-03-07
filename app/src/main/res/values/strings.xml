@@ -78,7 +78,7 @@
     <string name="signing">登陆中</string>
     <string name="signin_successful">登陆成功</string>
     <string name="code">验证码</string>
-    
+
     <!--SignupActivity-->
     <string name="please_wait">请稍等</string>
     <string name="email_empty">邮箱不能为空</string>
@@ -95,4 +95,7 @@
     <string name="human_code_error">验证码错误</string>
     <string name="invite_code_error">邀请码错误</string>
     <string name="unknown_error">未知错误</string>
+
+    <!--SigninUserAvtivity-->
+    <string name="signin_user_activity">用户中心</string>
 </resources>

@@ -104,6 +104,7 @@ public class SigninPresenter extends SigninContract.Presenter {
                 default:
                     mView.showErrorWithStatus(mContext.getString(R.string.unknown_error)+i);
             }
+            mView.refreshCodeImg();
         }else {
             //注册成功
             mView.signinSuccessful();

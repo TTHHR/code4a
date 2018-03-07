@@ -21,6 +21,7 @@ public interface SigninContract {
         void signinSuccessful();
         void showProgressDialog();
         void closeProgressDialog();
+        void refreshCodeImg();
     }
 
     abstract class Presenter extends BasePresenter<View,SignModel> {

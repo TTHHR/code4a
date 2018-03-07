@@ -21,7 +21,6 @@ import java.util.*
  * App应用控制器
  * Created by Administrator on 2017\8\6 0006.
  */
-//todo 用户登陆判断
 class CodeApplication : Application() {
 
     override fun onCreate() {
