@@ -8,30 +8,56 @@ package cn.atd3.code4a.model.model;
  * 创建时间：2018/03/07   15:10
  **/
 public class User {
-    private String account;
-    private Boolean signin;
+//    {"email":"2369015621@qq.com",
+//     "id":"4",
+//     "name":"yglll",
+//     "signupTime":"1520356893"
+//    }
 
-    public String getAccount() {
-        return account;
+    private String email;
+    private String id;
+    private String name;
+    private String signupTime;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Boolean getSignin() {
-        return signin;
+    public String getId() {
+        return id;
     }
 
-    public void setSignin(Boolean signin) {
-        this.signin = signin;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSignupTime() {
+        return signupTime;
+    }
+
+    public void setSignupTime(String signupTime) {
+        this.signupTime = signupTime;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "account='" + account + '\'' +
-                ", signin=" + signin +
+                "email='" + email + '\'' +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", signupTime='" + signupTime + '\'' +
                 '}';
     }
 }

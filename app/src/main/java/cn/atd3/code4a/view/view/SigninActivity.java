@@ -116,11 +116,6 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     public void signinSuccessful() {
         closeProgressDialog();
         Toast.makeText(this, getString(R.string.signin_successful), Toast.LENGTH_SHORT).show();
-        //保存登陆用户信息
-        User user=new User();
-        user.setAccount(account.getText().toString());
-        user.setSignin(true);
-        SigninUserManager.setUser(this,user);
         finish();
     }
 
