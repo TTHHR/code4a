@@ -18,4 +18,5 @@ import rx.Observable;
 public interface Sign extends BaseModel {
     Observable<Integer> signin(String account, String password, Boolean remember, String code);
     Observable<Integer> signup(String user, String email, String password, String code);
+    Observable<String> getUserInfo();
 }

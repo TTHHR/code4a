@@ -67,4 +67,25 @@ public class SignModel implements Sign {
         }).subscribeOn(Schedulers.io())//在其他线程执行
           .observeOn(AndroidSchedulers.mainThread());//在主线程触发
     }
+
+    @Override
+    public Observable<String> getUserInfo() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                Object o=null;
+                try {
+                    o= Remote.user.method("info").call();
+                }catch (ServerException e){
+                    Logger.i("ServerException:"+e);
+                }catch (PermissionException e){
+                    Logger.i("ServerException:"+e);
+                }catch (IOException e){
+                    Logger.i("ServerException:"+e);
+                }
+                subscriber.onNext(o.toString());
+            }
+        }).subscribeOn(Schedulers.io())//在其他线程执行
+          .observeOn(AndroidSchedulers.mainThread());//在主线程触发
+    }
 }

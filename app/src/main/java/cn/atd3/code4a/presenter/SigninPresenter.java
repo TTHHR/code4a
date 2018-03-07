@@ -3,9 +3,12 @@ package cn.atd3.code4a.presenter;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import cn.atd3.code4a.R;
+import cn.atd3.code4a.SigninUserManager;
+import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.presenter.interfaces.SigninContract;
 import rx.Subscriber;
 
@@ -106,8 +109,9 @@ public class SigninPresenter extends SigninContract.Presenter {
             }
             mView.refreshCodeImg();
         }else {
-            //注册成功
-            mView.signinSuccessful();
+            //登陆成功
+            //获取用户信息
+            setUserInfo();
         }
     }
 
@@ -119,5 +123,31 @@ public class SigninPresenter extends SigninContract.Presenter {
     }
     private Boolean checkCode(){
         return !TextUtils.isEmpty(code);
+    }
+
+    private void setUserInfo(){
+        mModel.getUserInfo().subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mView.showErrorWithStatus(e.getMessage());
+            }
+
+            @Override
+            public void onNext(String s) {
+                if(s!=null){
+                    Gson gson=new Gson();
+                    User user=gson.fromJson(s,User.class);
+                    SigninUserManager.setUser(mContext,user);
+                    mView.signinSuccessful();
+                }else {
+                    mView.showErrorWithStatus("无法获取用户信息");
+                }
+            }
+        });
     }
 }

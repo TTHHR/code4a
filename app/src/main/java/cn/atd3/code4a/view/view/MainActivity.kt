@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         //写新文章按钮
         newArticleButton.setOnClickListener({ _ ->
             //添加用户判断
-            if(SigninUserManager.getUser(this).signin){
+            if(SigninUserManager.isSignin(this)){
                 val i = Intent(this, EditArticleActivity::class.java)
                 startActivity(i)
             }else{
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 //                    }
 //                    )
 //                    .show()
-            if(SigninUserManager.getUser(this).signin){
+            if(SigninUserManager.isSignin(this)){
                 val i = Intent(this, SigninUserActivity::class.java)
                 startActivity(i)
             }else{
