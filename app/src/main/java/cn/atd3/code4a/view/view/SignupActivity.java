@@ -62,6 +62,13 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
         refreshCodeImg();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        refreshCodeImg();
+    }
+
+    @Override
     @OnClick(R.id.code_image)
     public void refreshCodeImg(){
         imageLoader.displayImage(codeUrl,codeImage);
@@ -86,26 +93,25 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @Override
     public void userNameError(String message) {
         closeProgressDialog();
-        userName.setError("用户名错误:" + message);
+        userName.setError(message);
     }
 
     @Override
     public void emailError(String message) {
         closeProgressDialog();
-        email.setError("邮箱错误:" + message);
+        email.setError(message);
     }
 
     @Override
     public void passwordError(String message) {
         closeProgressDialog();
-        password.setError("密码错误:" + message);
+        password.setError(message);
     }
 
     @Override
     public void codeError(String message) {
         closeProgressDialog();
         code.setError(message);
-        refreshCodeImg();
     }
 
     @Override

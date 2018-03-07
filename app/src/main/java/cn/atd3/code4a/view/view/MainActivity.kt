@@ -15,8 +15,10 @@ import android.widget.*
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
 import cn.atd3.code4a.R.color.bootstrap_gray_lighter
+import cn.atd3.code4a.SigninUserManager
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.model.CategoryModel
+import cn.atd3.code4a.model.model.User
 import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
@@ -155,17 +157,20 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         //写新文章按钮
         newArticleButton.setOnClickListener({ _ ->
             //添加用户判断
-            QMUIDialog.MessageDialogBuilder(this)
-                    .setTitle(getString(R.string.title_waring))
-                    .setMessage(getString(R.string.account_not_login))
-                    .addAction(getString(R.string.button_ok), {
-                        dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    )
-                    .show()
-//            val i = Intent(this, EditArticleActivity::class.java)
-//            startActivity(i)
+            if(SigninUserManager.getUser(this).signin){
+                val i = Intent(this, EditArticleActivity::class.java)
+                startActivity(i)
+            }else{
+                QMUIDialog.MessageDialogBuilder(this)
+                        .setTitle(getString(R.string.title_waring))
+                        .setMessage(getString(R.string.account_not_login))
+                        .addAction(getString(R.string.button_ok), {
+                            dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        )
+                        .show()
+            }
         })
 
         val navHeadMain=nav_view.inflateHeaderView(R.layout.nav_header_main)
@@ -197,10 +202,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 //                    }
 //                    )
 //                    .show()
-
-
-            val i = Intent(this, SigninActivity::class.java)
-            startActivity(i)
+            if(SigninUserManager.getUser(this).signin){
+                val i = Intent(this, SigninUserActivity::class.java)
+                startActivity(i)
+            }else{
+                val i = Intent(this, SigninActivity::class.java)
+                startActivity(i)
+            }
         })
 
 
