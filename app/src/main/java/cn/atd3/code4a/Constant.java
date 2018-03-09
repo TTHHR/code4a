@@ -21,6 +21,9 @@ public final class Constant {
     public final static String softwareInfoUrl = "https://github.com/TTHHR/code4a/blob/master/README.md";
     public final static String tiebaUrl = "http://tieba.baidu.com/f?kw=c4droid";
     public final static String categoryListFile = "categories";
+    //用户
+    public final static String avatar="http://code4a.atd3.cn/user/avatar/";
+    public final static String codeImage="http://code4a.atd3.cn/user/verify";
 
     public final static int SUCCESS = 0;
     public final static int INFO = 1;

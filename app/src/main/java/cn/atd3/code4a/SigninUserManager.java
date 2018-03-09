@@ -39,6 +39,7 @@ public class SigninUserManager {
     }
 
     public static void setUser(Context context,User user) {
+        SigninUserManager.user = user;
         SharedPreferences sharedPreferences=context.getSharedPreferences(SigninUserManager.class.toString(),Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("email",user.getEmail());
@@ -46,10 +47,10 @@ public class SigninUserManager {
         editor.putString("name",user.getName());
         editor.putString("signupTime",user.getSignupTime());
         editor.apply();
-        SigninUserManager.user = user;
     }
 
     public static void deleteUser(Context context){
+        SigninUserManager.user = null;
         SharedPreferences sharedPreferences=context.getSharedPreferences(SigninUserManager.class.toString(),Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.clear();
