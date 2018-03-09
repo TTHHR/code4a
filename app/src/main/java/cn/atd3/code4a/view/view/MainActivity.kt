@@ -32,6 +32,7 @@ import cn.dxkite.debug.DebugManager
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.orhanobut.logger.Logger
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import java.io.File
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     private val TAG = "MainActivity"
 
     private val imageLoader=ImageLoader.getInstance()
-    private lateinit var headImage:ImageView
+    private lateinit var headImage: QMUIRadiusImageView
     private lateinit var uname:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
     }
 
+    //添加SharedPreferences改变监听
     override fun onResume() {
         super.onResume()
         val sp=getSharedPreferences(SigninUserManager::class.java.toString(), Context.MODE_PRIVATE)
@@ -198,7 +200,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
         uname=navHeadMain.findViewById<TextView>(R.id.uname)
-        headImage=navHeadMain.findViewById<ImageView>(R.id.headImage)
+        headImage=navHeadMain.findViewById<QMUIRadiusImageView>(R.id.headImage)
         //测试登陆
         headImage.setOnClickListener({
             //超级用户登陆
@@ -232,6 +234,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             uname.setText(SigninUserManager.getUser(this).name)
         }else{
             headImage.setImageResource(R.mipmap.logo)
+            uname.setText("")
         }
 
 
@@ -331,11 +334,16 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
                 .show()
     }
 
+    //当SharedPreferences改变后
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-        Logger.i("onSharedPreferenceChanged:"+p1)
         if(p1.equals("id")){
-            imageLoader.displayImage(Constant.avatar+SigninUserManager.getUser(this).id,headImage)
-            uname.setText(SigninUserManager.getUser(this).name)
+            if(SigninUserManager.isSignin(this)){
+                imageLoader.displayImage(Constant.avatar+SigninUserManager.getUser(this).id,headImage)
+                uname.setText(SigninUserManager.getUser(this).name)
+            }else{
+                headImage.setImageResource(R.mipmap.logo)
+                uname.setText("")
+            }
         }
     }
 }

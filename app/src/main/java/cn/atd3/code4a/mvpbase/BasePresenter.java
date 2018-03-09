@@ -11,7 +11,7 @@ import android.content.Context;
  * 备注消息：
  * 创建时间：2018/01/10   21:46
  **/
-public class BasePresenter<V extends BaseView,M extends BaseModel> implements Presenter<V,M> {
+public class BasePresenter<M extends BaseModel,V extends BaseView> implements Presenter<V,M> {
     protected Context mContext;
     protected V mView;
     protected M mModel;

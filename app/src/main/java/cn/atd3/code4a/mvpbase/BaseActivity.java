@@ -38,7 +38,11 @@ public abstract class BaseActivity<M extends BaseModel,P extends BasePresenter> 
             unbinder = ButterKnife.bind(this);
             bindMVP();
         }
+
+        initView(s);
     }
+
+    public abstract void initView(Bundle s);
 
     //在销毁时解除绑定
     @Override

@@ -54,8 +54,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     private ImageLoader imageLoader;
 
     @Override
-    public void onCreate(Bundle s) {
-        super.onCreate(s);
+    public void initView(Bundle s) {
         //QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
 
         imageLoader= ImageLoader.getInstance();

@@ -98,4 +98,10 @@
 
     <!--SigninUserAvtivity-->
     <string name="signin_user_activity">用户中心</string>
+    <string name="user_name">用户名:</string>
+    <string name="user_id">用户ID:</string>
+    <string name="user_email">用户邮箱:</string>
+    <string name="change_password">修改密码</string>
+    <string name="logout">退出登录</string>
+    <string name="affirm_logout">确认退出登录？</string>
 </resources>

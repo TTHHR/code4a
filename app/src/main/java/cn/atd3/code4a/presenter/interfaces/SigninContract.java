@@ -1,6 +1,7 @@
 package cn.atd3.code4a.presenter.interfaces;
 
 import cn.atd3.code4a.model.SignModel;
+import cn.atd3.code4a.model.inter.Sign;
 import cn.atd3.code4a.mvpbase.BasePresenter;
 import cn.atd3.code4a.mvpbase.BaseView;
 
@@ -24,7 +25,7 @@ public interface SigninContract {
         void refreshCodeImg();
     }
 
-    abstract class Presenter extends BasePresenter<View,SignModel> {
+    abstract class Presenter extends BasePresenter<Sign,View> {
         public abstract void signinButtonClick(String account,String password,String code);
     }
 }
