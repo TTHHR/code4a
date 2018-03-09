@@ -204,7 +204,7 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
                 .addItem(getString(R.string.button_edit))
                 .addItem(getString(R.string.download_file))
                 .addItem(getString(R.string.button_del))
-                .setOnSheetItemClickListener { dialog, itemView, position, tag ->
+                .setOnSheetItemClickListener { dialog, _, position, _ ->
                     dialog.dismiss()
                     when (position) {
                         0 -> {
@@ -224,9 +224,9 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
                         }
                         2 -> {
                             val builder = QMUIDialog.MultiCheckableDialogBuilder(this@ViewArticleActivity)
-                                    .addItems(vap!!.downFileList) { dialog, which -> }
-                            builder.addAction(getString(R.string.button_cancel)) { dialog, index -> dialog.dismiss() }
-                            builder.addAction(getString(R.string.button_ok)) { dialog, index ->
+                                    .addItems(vap!!.downFileList) { _, _ -> }
+                            builder.addAction(getString(R.string.button_cancel)) { dialog, _ -> dialog.dismiss() }
+                            builder.addAction(getString(R.string.button_ok)) { dialog, _ ->
                                 for (i in 0 until builder.checkedItemIndexes.size) {
                                     //创建下载任务,downloadUrl就是下载链接
                                     val request = DownloadManager.Request(Uri.parse(vap!!.getFileUrl(i)))
