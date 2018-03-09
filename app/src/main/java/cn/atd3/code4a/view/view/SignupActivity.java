@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import butterknife.OnClick;
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import butterknife.BindView;
 import cn.atd3.code4a.model.SignModel;
@@ -51,7 +52,6 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     LinearLayout codeLayout;
     private ProgressDialog progressDialog;
     private ImageLoader imageLoader;
-    private static final String codeUrl="http://code4a.atd3.cn/user/verify";
 
     @Override
     public void onCreate(Bundle s) {
@@ -71,7 +71,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @Override
     @OnClick(R.id.code_image)
     public void refreshCodeImg(){
-        imageLoader.displayImage(codeUrl,codeImage);
+        imageLoader.displayImage(Constant.codeImage,codeImage);
     }
 
     @OnClick(R.id.signup_button)

@@ -66,6 +66,7 @@ public class SigninPresenter extends SigninContract.Presenter {
             @Override
             public void onError(Throwable e) {
                 mView.showErrorWithStatus(e.getMessage());
+                mView.refreshCodeImg();
             }
 
             //在Model中的subscriber.onNext(o);就是调用的这个方法

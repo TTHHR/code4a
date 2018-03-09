@@ -75,6 +75,7 @@ public class SignupPresenter extends SignupContract.Presenter {
             @Override
             public void onError(Throwable e) {
                 mView.showErrorWithStatus(e.getMessage());
+                mView.refreshCodeImg();
             }
 
             @Override

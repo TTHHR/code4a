@@ -1,9 +1,12 @@
 package cn.atd3.code4a.view.view
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
@@ -26,6 +29,8 @@ import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.orhanobut.logger.Logger
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
@@ -33,8 +38,9 @@ import java.io.File
 import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
-class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var tagList: List<Button> = ArrayList()
     private var exitTime = 0L
@@ -43,6 +49,11 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     var fragmentList: List<ArticleFragment> = ArrayList()
     private lateinit var mp: MainPresenter
     private val TAG = "MainActivity"
+
+    private val imageLoader=ImageLoader.getInstance()
+    private lateinit var headImage:ImageView
+    private lateinit var uname:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -85,6 +96,12 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         {
             mp.showMessageBanner()//拉取通知
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sp=getSharedPreferences(SigninUserManager::class.java.toString(), Context.MODE_PRIVATE)
+        sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStart() {
@@ -144,7 +161,6 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
 
         nav_view.setNavigationItemSelectedListener ( this )
-
     }
 
 
@@ -181,7 +197,8 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         {
             navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
-        val headImage=navHeadMain.findViewById<ImageView>(R.id.headImage)
+        uname=navHeadMain.findViewById<TextView>(R.id.uname)
+        headImage=navHeadMain.findViewById<ImageView>(R.id.headImage)
         //测试登陆
         headImage.setOnClickListener({
             //超级用户登陆
@@ -210,6 +227,12 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
                 startActivity(i)
             }
         })
+        if(SigninUserManager.isSignin(this)){
+            imageLoader.displayImage(Constant.avatar+SigninUserManager.getUser(this).id,headImage)
+            uname.setText(SigninUserManager.getUser(this).name)
+        }else{
+            headImage.setImageResource(R.mipmap.logo)
+        }
 
 
         class PageChange : ViewPager.OnPageChangeListener {
@@ -306,5 +329,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
                 }
                 .build()
                 .show()
+    }
+
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
+        Logger.i("onSharedPreferenceChanged:"+p1)
+        if(p1.equals("id")){
+            imageLoader.displayImage(Constant.avatar+SigninUserManager.getUser(this).id,headImage)
+            uname.setText(SigninUserManager.getUser(this).name)
+        }
     }
 }

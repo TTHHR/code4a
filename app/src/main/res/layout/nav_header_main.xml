@@ -18,8 +18,7 @@
         android:layout_height="@android:dimen/notification_large_icon_height"
         android:clickable="true"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:scaleType="centerCrop"
-        app:srcCompat="@mipmap/logo" />
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/uname"
