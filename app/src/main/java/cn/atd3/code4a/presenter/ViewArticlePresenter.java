@@ -98,7 +98,7 @@ public class ViewArticlePresenter {
             databasePresenter = new ArticleDatabase(c);
         if (deleteArticle) {
             databasePresenter.deleteArticle(article.getId());
-        } else
+        } else if(article!=null)
             databasePresenter.saveArticle(article);
         Log.e("save base", "" + article);
     }

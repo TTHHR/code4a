@@ -15,7 +15,6 @@
     <dimen name="twenty_dp">20dp</dimen>
     <dimen name="forty_eight_dp">48dp</dimen>
     <dimen name="article_item_padding">2dp</dimen>
-
     <!--SigninUserAvtivity-->
     <dimen name="avatar_size">100dp</dimen>
 </resources>

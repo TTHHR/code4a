@@ -43,7 +43,6 @@ public abstract class BaseActivity<M extends BaseModel,P extends BasePresenter> 
     }
 
     public abstract void initView(Bundle s);
-
     //在销毁时解除绑定
     @Override
     protected void onDestroy() {

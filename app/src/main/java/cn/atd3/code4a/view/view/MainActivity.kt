@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     private val TAG = "MainActivity"
 
     private val imageLoader=ImageLoader.getInstance()
+
     private lateinit var headImage: QMUIRadiusImageView
     private lateinit var uname:TextView
 
@@ -206,7 +207,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             //超级用户登陆
 //            Thread {
 //                        try {
-//                             Remote.superUser.method("su").call("", 3)
+//                             Remote.superUser.method("su").call("", 2)
 //                        } catch (e: Exception) {
 //                            Log.e("login", e.toString())
 //                        }
