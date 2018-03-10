@@ -3,9 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\AndroidStudioProjects\code4a\app\app.iml" filepath="E:\AndroidStudioProjects\code4a\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/code4a.iml" filepath="$PROJECT_DIR$/code4a.iml" />
+      <module fileurl="file://E:\AndroidStudioProjects\code4a\code4a.iml" filepath="E:\AndroidStudioProjects\code4a\code4a.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://E:\AndroidStudioProjects\code4a\common\common.iml" filepath="E:\AndroidStudioProjects\code4a\common\common.iml" />
       <module fileurl="file://$PROJECT_DIR$/feelback/feelback.iml" filepath="$PROJECT_DIR$/feelback/feelback.iml" />
+      <module fileurl="file://E:\AndroidStudioProjects\code4a\feelback\feelback.iml" filepath="E:\AndroidStudioProjects\code4a\feelback\feelback.iml" />
     </modules>
   </component>
 </project>
