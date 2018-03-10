@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@drawable/user_background">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
         android:layout_margin="8dp"
         app:qmui_is_circle="true"
@@ -21,68 +26,84 @@
         <android.widget.Space
             app:layout_columnWeight="1"/>
         <android.widget.Space
-            app:layout_columnWeight="1"/>
+            app:layout_columnWeight="2"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_name"
             app:layout_gravity="end"
             app:layout_row="0"
-            app:layout_column="0"/>
+            app:layout_column="0"
+            android:layout_margin="2dp"/>
         <TextView
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_gravity="start"
             app:layout_row="0"
-            app:layout_column="1"/>
+            app:layout_column="1"
+            android:layout_margin="2dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_id"
             app:layout_gravity="end"
             app:layout_row="1"
-            app:layout_column="0"/>
+            app:layout_column="0"
+            android:layout_margin="2dp"/>
         <TextView
             android:id="@+id/user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_gravity="start"
             app:layout_row="1"
-            app:layout_column="1"/>
+            app:layout_column="1"
+            android:layout_margin="2dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_email"
             app:layout_gravity="end"
             app:layout_row="2"
-            app:layout_column="0"/>
+            app:layout_column="0"
+            android:layout_margin="2dp"/>
         <TextView
             android:id="@+id/user_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_gravity="start"
             app:layout_row="2"
-            app:layout_column="1" />
+            app:layout_column="1"
+            android:layout_margin="2dp"/>
     </android.support.v7.widget.GridLayout>
     <TextView
+        android:id="@+id/change_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_email"
+        android:gravity="center"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:textColor="@color/blue"
+        android:background="@color/tgray"/>
+    <TextView
         android:id="@+id/change_password"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_password"
         android:gravity="center"
         android:padding="8dp"
         android:layout_margin="8dp"
-        android:textColor="@color/gray_light"
-        android:background="@color/gray_drak"/>
+        android:textColor="@color/blue"
+        android:background="@color/tgray"/>
     <TextView
         android:id="@+id/logout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/logout"
         android:gravity="center"
         android:padding="8dp"
         android:layout_margin="8dp"
-        android:textColor="@color/gray_light"
-        android:background="@color/colorAccent"/>
+        android:textColor="@color/colorAccent"
+        android:background="@color/tgray"/>
 </LinearLayout>

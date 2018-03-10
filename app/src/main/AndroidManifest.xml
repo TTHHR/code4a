@@ -63,7 +63,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.view.SigninUserActivity"
             android:label="@string/signin_user_activity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

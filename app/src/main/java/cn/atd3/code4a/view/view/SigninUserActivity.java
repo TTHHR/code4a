@@ -1,7 +1,10 @@
 package cn.atd3.code4a.view.view;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ import cn.atd3.code4a.presenter.interfaces.SigninUserContract;
 
 public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserPresenter> implements SigninUserContract.View {
 
+    @BindView(R.id.tool_bar)
+    Toolbar toolBar;
     @BindView(R.id.avatar)
     QMUIRadiusImageView qmuiRadiusImageView;
     @BindView(R.id.user_name)
@@ -31,6 +36,8 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
     TextView userId;
     @BindView(R.id.user_email)
     TextView userEmail;
+    @BindView(R.id.change_email)
+    TextView changeEmail;
     @BindView(R.id.change_password)
     TextView changePassword;
     @BindView(R.id.logout)
@@ -40,12 +47,23 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
 
     @Override
     public void initView(Bundle s) {
+        setSupportActionBar(toolBar);
+        ActionBar actionBar=getSupportActionBar();
+        if (actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         imageLoader=ImageLoader.getInstance();
 
         imageLoader.displayImage(Constant.avatar+ SigninUserManager.getUser(this).getId(),qmuiRadiusImageView);
         userName.setText(SigninUserManager.getUser(this).getName());
         userId.setText(SigninUserManager.getUser(this).getId());
         userEmail.setText(SigninUserManager.getUser(this).getEmail());
+    }
+
+    @OnClick(R.id.change_email)
+    public void changeEmail(){
+        Toast.makeText(this,"敬请期待",Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.change_password)
@@ -102,5 +120,13 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
     @Override
     protected BaseView getViewImp() {
         return this;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        if(menuItem.getItemId()==android.R.id.home){
+            finish();
+        }
+        return true;
     }
 }
