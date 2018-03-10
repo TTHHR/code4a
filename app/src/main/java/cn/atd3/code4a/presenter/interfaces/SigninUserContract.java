@@ -20,9 +20,11 @@ public interface SigninUserContract {
     }
 
     interface View extends BaseView{
-        void setEmailSuccessful(String message);
+        void setEmailSuccessful();
         void setAvatarSuccessful(String message);
         void setPasswordSuccessful(String message);
+        void showProgressDialog();
+        void closeProgressDialog();
     }
 
     abstract class Presenter extends BasePresenter<Model,View> {

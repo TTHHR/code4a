@@ -1,6 +1,8 @@
 package cn.atd3.code4a.presenter;
 
+import cn.atd3.code4a.R;
 import cn.atd3.code4a.presenter.interfaces.SigninUserContract;
+import rx.Subscriber;
 
 /**
  * 作者：YGL
@@ -12,7 +14,26 @@ import cn.atd3.code4a.presenter.interfaces.SigninUserContract;
 public class SigninUserPresenter extends SigninUserContract.Presenter {
     @Override
     public void changeEmail(String email) {
+        mModel.setEmail(email).subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mView.showErrorWithStatus(e.getMessage());
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                if (aBoolean){
+                    mView.showErrorWithStatus(mContext.getString(R.string.change_failure));
+                }else {
+                    mView.setEmailSuccessful();
+                }
+            }
+        });
     }
 
     @Override

@@ -1,9 +1,11 @@
 package cn.atd3.code4a.view.view;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
     TextView logout;
 
     private ImageLoader imageLoader;
+    private ProgressDialog progressDialog;
 
     @Override
     public void initView(Bundle s) {
@@ -63,7 +66,29 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
 
     @OnClick(R.id.change_email)
     public void changeEmail(){
-        Toast.makeText(this,"敬请期待",Toast.LENGTH_SHORT).show();
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+        builder.setPlaceholder(getString(R.string.edit_email))
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction(getString(R.string.button_change), new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        CharSequence text = builder.getEditText().getText();
+                        if (text != null && text.length() > 0) {
+                            showProgressDialog();
+                            mPresenter.changeEmail(text.toString());
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "邮箱格式错误", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.change_password)
@@ -94,22 +119,26 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
 
     @Override
     public void showErrorWithStatus(String msg) {
-
+        closeProgressDialog();
+        Toast.makeText(this, getString(R.string.error)+msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void setEmailSuccessful(String message) {
-
+    public void setEmailSuccessful() {
+        closeProgressDialog();
+        Toast.makeText(this, getString(R.string.change_email_successful), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void setAvatarSuccessful(String message) {
-
+        closeProgressDialog();
+        Toast.makeText(this, getString(R.string.change_avatar_successful), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void setPasswordSuccessful(String message) {
-
+        closeProgressDialog();
+        Toast.makeText(this, getString(R.string.change_password_successful), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -128,5 +157,23 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
             finish();
         }
         return true;
+    }
+
+    /**   * 显示进度对话框   */
+    @Override
+    public void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getResources().getString(R.string.please_wait));
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+    /**   * 关闭进度对话框   */
+    @Override
+    public void closeProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }
