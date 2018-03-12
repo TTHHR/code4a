@@ -31,6 +31,9 @@ class AboutActivity : Activity(), AboutInterface {
         QMUIGroupListView.newSection(this)
                 .addItemView(aboutList.createItemView(getString(R.string.setting_update))){ abp.onCheakUpdate() }
                 .addItemView(aboutList.createItemView(getString(R.string.setting_software_info))) { openWebActivity(Constant.softwareInfoUrl) }
+                // TODO 添加如下选项
+//                .addItemView(aboutList.createItemView(getString(R.string.setting_authors))){}
+//                .addItemView(aboutList.createItemView(getString(R.string.setting_open_source))){}
                 .addItemView(aboutList.createItemView(getString(R.string.setting_tieba_summary))) { openWebActivity(Constant.tiebaUrl) }
                 .addItemView(aboutList.createItemView(getString(R.string.setting_auth_donation))) { openWebActivity(Constant.donationUrl) }
                 .addTo(aboutList)

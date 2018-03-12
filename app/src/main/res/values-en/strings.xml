@@ -78,4 +78,10 @@
     <string name="signing">signing</string>
     <string name="info_down"> downloading </string>
     <string name="error_network_use_local">Network error, using local cache</string>
+
+
+    <!-- About -->
+    <string name="setting_authors">Authors</string>
+    <string name="setting_open_source">Open Sources</string>
+
 </resources>

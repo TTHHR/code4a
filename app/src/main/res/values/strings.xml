@@ -1,11 +1,16 @@
 <resources>
     <string name="app_name">Code4A</string>
-    <string name="version_name">V1.0</string>
+    <string name="version_name">v1.0.0-beta</string>
     <string name="setting">设置</string>
     <string name="setting_theme_color">主题颜色</string>
     <string name="setting_theme_summary">更改主题颜色</string>
     <string name="dialog_theme_summary">输入颜色代码，如：#1d97f5</string>
     <string name="waring_error_color">颜色代码不正确，请重新设置</string>
+
+    <!-- About -->
+    <string name="setting_authors">作者信息</string>
+    <string name="setting_open_source">开源信息</string>
+
     <string name="setting_about">关于</string>
     <string name="setting_tieba_summary">访问贴吧</string>
     <string name="setting_language">语言</string>
