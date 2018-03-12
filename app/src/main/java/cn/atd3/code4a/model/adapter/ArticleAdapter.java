@@ -10,9 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.model.model.CategoryModel;
@@ -25,6 +29,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
     private int resourceId;
     private boolean showCategory = false;
+    private ImageLoader imageLoader;
 
     public void setShowCategory(boolean showCategory) {
         this.showCategory = showCategory;
@@ -33,6 +38,7 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
     public ArticleAdapter(@NonNull Context context, @LayoutRes int textViewResourceId, List<ArticleModel> objects) {
         super(context, textViewResourceId, objects);
         resourceId = textViewResourceId;
+        imageLoader=ImageLoader.getInstance();
     }
 
 
@@ -42,12 +48,13 @@ public class ArticleAdapter extends ArrayAdapter<ArticleModel> {
 
         TextView user = view.findViewById(R.id.itemUser);
         TextView modify = view.findViewById(R.id.itemModify);
-        ImageView avatar = view.findViewById(R.id.itemAvatar);
+        QMUIRadiusImageView avatar = view.findViewById(R.id.itemAvatar);
 
         // 用户名
         if (a.getUser() != null)
             user.setText(a.getUser().getName());
         modify.setText(ArticleModel.time(a.getModify()));
+        imageLoader.displayImage(Constant.avatar+a.getUser().getId(),avatar);
 
         TextView itemTitle = view.findViewById(R.id.itemTitle);
         TextView itemAbstract = view.findViewById(R.id.itemAbstract);
