@@ -1,12 +1,19 @@
 package cn.atd3.code4a.view.view;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +28,7 @@ import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.SigninUserManager;
 import cn.atd3.code4a.model.SigninUserModel;
+import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.mvpbase.BaseActivity;
 import cn.atd3.code4a.mvpbase.BaseView;
 import cn.atd3.code4a.presenter.SigninUserPresenter;
@@ -58,6 +66,10 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
 
         imageLoader=ImageLoader.getInstance();
 
+        refreshUI();
+    }
+
+    private void refreshUI(){
         imageLoader.displayImage(Constant.avatar+ SigninUserManager.getUser(this).getId(),qmuiRadiusImageView);
         userName.setText(SigninUserManager.getUser(this).getName());
         userId.setText(SigninUserManager.getUser(this).getId());
@@ -69,6 +81,12 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
         final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
         builder.setPlaceholder(getString(R.string.edit_email))
                 .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
                 .addAction(getString(R.string.button_change), new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
@@ -82,36 +100,51 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
                         }
                     }
                 })
-                .addAction("取消", new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
-                    }
-                })
                 .show();
     }
 
     @OnClick(R.id.change_password)
     public void changePwd(){
-        Toast.makeText(this,"敬请期待",Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+        LinearLayout loginDialog= (LinearLayout) getLayoutInflater().inflate(R.layout.alertdialog_change_pwd,null);
+        final EditText oldPwd=loginDialog.findViewById(R.id.old_pwd);
+        final EditText newPwd=loginDialog.findViewById(R.id.new_pwd);
+        final EditText pwdConfirm=loginDialog.findViewById(R.id.pwd_confirm);
+        //设置内容区域为自定义View
+        builder.setView(loginDialog);
+        DialogInterface.OnClickListener onClick=new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showProgressDialog();
+                mPresenter.changePassword(oldPwd.getText().toString(),newPwd.getText().toString(),pwdConfirm.getText().toString());
+            }
+        };
+        builder.setPositiveButton(R.string.button_change,onClick);
+        builder.setNegativeButton(R.string.button_cancel,null);
+
+        builder.setCancelable(false);
+        AlertDialog dialog=builder.create();
+        dialog.setTitle(getString(R.string.change_password));
+        dialog.show();
     }
 
     @OnClick(R.id.logout)
     public void logout(){
         new QMUIDialog.MessageDialogBuilder(this)
                 .setMessage(getString(R.string.affirm_logout))
+                .addAction(getString(R.string.button_cancel),new QMUIDialogAction.ActionListener(){
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
                 .addAction(getString(R.string.button_ok),new QMUIDialogAction.ActionListener(){
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
                         dialog.dismiss();
                         SigninUserManager.deleteUser(getApplicationContext());
                         finish();
-                    }
-                })
-                .addAction(getString(R.string.button_cancel),new QMUIDialogAction.ActionListener(){
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
                     }
                 })
                 .show();
@@ -127,12 +160,14 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
     public void setEmailSuccessful() {
         closeProgressDialog();
         Toast.makeText(this, getString(R.string.change_email_successful), Toast.LENGTH_SHORT).show();
+        mPresenter.setUserInfo();
     }
 
     @Override
     public void setAvatarSuccessful(String message) {
         closeProgressDialog();
         Toast.makeText(this, getString(R.string.change_avatar_successful), Toast.LENGTH_SHORT).show();
+        mPresenter.setUserInfo();
     }
 
     @Override
@@ -157,6 +192,12 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
             finish();
         }
         return true;
+    }
+
+    @Override
+    public void onUserInfoRefresh(User user) {
+        SigninUserManager.setUser(this,user);
+        refreshUI();
     }
 
     /**   * 显示进度对话框   */

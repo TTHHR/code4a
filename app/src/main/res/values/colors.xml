@@ -17,4 +17,5 @@
     <color name="gray_drak2">#333333</color>
     <color name="black">#000000</color>
     <color name="tgray">#55999999</color>
+    <color name="transparency">#00000000</color>
 </resources>

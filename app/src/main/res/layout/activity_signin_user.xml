@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:columnCount="2"
-        app:rowCount="3">
+        app:rowCount="3"
+        android:background="@color/tgray">
         <android.widget.Space
             app:layout_columnWeight="1"/>
         <android.widget.Space
@@ -34,7 +35,9 @@
             app:layout_gravity="end"
             app:layout_row="0"
             app:layout_column="0"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
         <TextView
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
@@ -42,7 +45,9 @@
             app:layout_gravity="start"
             app:layout_row="0"
             app:layout_column="1"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +55,9 @@
             app:layout_gravity="end"
             app:layout_row="1"
             app:layout_column="0"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
         <TextView
             android:id="@+id/user_id"
             android:layout_width="wrap_content"
@@ -58,7 +65,9 @@
             app:layout_gravity="start"
             app:layout_row="1"
             app:layout_column="1"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +75,9 @@
             app:layout_gravity="end"
             app:layout_row="2"
             app:layout_column="0"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
         <TextView
             android:id="@+id/user_email"
             android:layout_width="wrap_content"
@@ -74,7 +85,9 @@
             app:layout_gravity="start"
             app:layout_row="2"
             app:layout_column="1"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
     </android.support.v7.widget.GridLayout>
     <TextView
         android:id="@+id/change_email"
@@ -85,7 +98,8 @@
         android:padding="8dp"
         android:layout_margin="8dp"
         android:textColor="@color/blue"
-        android:background="@color/tgray"/>
+        android:background="@color/tgray"
+        android:textSize="16sp"/>
     <TextView
         android:id="@+id/change_password"
         android:layout_width="wrap_content"
@@ -95,7 +109,8 @@
         android:padding="8dp"
         android:layout_margin="8dp"
         android:textColor="@color/blue"
-        android:background="@color/tgray"/>
+        android:background="@color/tgray"
+        android:textSize="16sp"/>
     <TextView
         android:id="@+id/logout"
         android:layout_width="wrap_content"
@@ -105,5 +120,6 @@
         android:padding="8dp"
         android:layout_margin="8dp"
         android:textColor="@color/colorAccent"
-        android:background="@color/tgray"/>
+        android:background="@color/tgray"
+        android:textSize="16sp"/>
 </LinearLayout>

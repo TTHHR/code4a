@@ -1,10 +1,12 @@
 package cn.atd3.code4a.model;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 
 import cn.atd3.code4a.model.inter.Sign;
+import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
@@ -69,10 +71,10 @@ public class SignModel implements Sign {
     }
 
     @Override
-    public Observable<String> getUserInfo() {
-        return Observable.create(new Observable.OnSubscribe<String>() {
+    public Observable<User> getUserInfo() {
+        return Observable.create(new Observable.OnSubscribe<User>() {
             @Override
-            public void call(Subscriber<? super String> subscriber) {
+            public void call(Subscriber<? super User> subscriber) {
                 Object o=null;
                 try {
                     o= Remote.user.method("info").call();
@@ -83,7 +85,9 @@ public class SignModel implements Sign {
                 }catch (IOException e){
                     Logger.i("ServerException:"+e);
                 }
-                subscriber.onNext(o.toString());
+                Gson gson=new Gson();
+                User user=gson.fromJson(o.toString(),User.class);
+                subscriber.onNext(user);
             }
         }).subscribeOn(Schedulers.io())//在其他线程执行
           .observeOn(AndroidSchedulers.mainThread());//在主线程触发

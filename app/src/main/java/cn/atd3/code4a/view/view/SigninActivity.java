@@ -60,8 +60,6 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
 
         imageLoader=ImageLoader.getInstance();
         refreshCodeImg();
-        account.setText("yglll");
-        password.setText("aaa12345");
     }
 
     @Override
@@ -112,8 +110,9 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     }
 
     @Override
-    public void signinSuccessful() {
+    public void signinSuccessful(User user) {
         closeProgressDialog();
+        SigninUserManager.setUser(this,user);
         Toast.makeText(this, getString(R.string.signin_successful), Toast.LENGTH_SHORT).show();
         finish();
     }

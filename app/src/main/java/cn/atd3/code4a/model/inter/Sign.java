@@ -3,6 +3,7 @@ package cn.atd3.code4a.model.inter;
 
 import android.graphics.Bitmap;
 
+import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.mvpbase.BaseModel;
 import rx.Observable;
 
@@ -18,5 +19,5 @@ import rx.Observable;
 public interface Sign extends BaseModel {
     Observable<Integer> signin(String account, String password, Boolean remember, String code);
     Observable<Integer> signup(String user, String email, String password, String code);
-    Observable<String> getUserInfo();
+    Observable<User> getUserInfo();
 }

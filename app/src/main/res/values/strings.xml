@@ -111,4 +111,6 @@
     <string name="change_password_successful">更改密码成功</string>
     <string name="change_avatar_successful">更改头像成功</string>
     <string name="change_failure">更改失败</string>
+    <string name="old_pwd">原密码</string>
+    <string name="new_pwd">新密码</string>
 </resources>

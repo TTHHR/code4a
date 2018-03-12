@@ -127,7 +127,7 @@ public class SigninPresenter extends SigninContract.Presenter {
     }
 
     private void setUserInfo(){
-        mModel.getUserInfo().subscribe(new Subscriber<String>() {
+        mModel.getUserInfo().subscribe(new Subscriber<User>() {
             @Override
             public void onCompleted() {
 
@@ -139,15 +139,8 @@ public class SigninPresenter extends SigninContract.Presenter {
             }
 
             @Override
-            public void onNext(String s) {
-                if(s!=null){
-                    Gson gson=new Gson();
-                    User user=gson.fromJson(s,User.class);
-                    SigninUserManager.setUser(mContext,user);
-                    mView.signinSuccessful();
-                }else {
-                    mView.showErrorWithStatus("无法获取用户信息");
-                }
+            public void onNext(User user) {
+                mView.signinSuccessful(user);
             }
         });
     }
