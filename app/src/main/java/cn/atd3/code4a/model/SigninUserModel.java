@@ -3,11 +3,13 @@ package cn.atd3.code4a.model;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.net.Remote;
 import cn.atd3.code4a.presenter.interfaces.SigninUserContract;
+import cn.atd3.proxy.Param;
 import cn.atd3.proxy.exception.PermissionException;
 import cn.atd3.proxy.exception.ServerException;
 import rx.Observable;
@@ -45,8 +47,24 @@ public class SigninUserModel implements SigninUserContract.Model{
     }
 
     @Override
-    public Observable<Boolean> setAvatar(String avatar) {
-        return null;
+    public Observable<Boolean> setAvatar(final File avatar) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                Object o=null;
+                try {
+                    o= Remote.user.method("setAvatar").call(new Param("file",avatar));
+                }catch (ServerException e){
+                    Logger.i("ServerException:"+e);
+                }catch (PermissionException e){
+                    Logger.i("ServerException:"+e);
+                }catch (IOException e){
+                    Logger.i("ServerException:"+e);
+                }
+                subscriber.onNext(Boolean.valueOf(o.toString()));
+            }
+        }).subscribeOn(Schedulers.io())//在其他线程执行
+                .observeOn(AndroidSchedulers.mainThread());//在主线程触发
     }
 
     @Override

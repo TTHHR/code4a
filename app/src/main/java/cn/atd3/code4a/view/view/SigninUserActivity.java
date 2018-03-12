@@ -3,6 +3,10 @@ package cn.atd3.code4a.view.view;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,9 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.orhanobut.logger.Logger;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,6 +62,7 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
 
     private ImageLoader imageLoader;
     private ProgressDialog progressDialog;
+    private final static int REQUEST_IMAGE_SELECT = 2;
 
     @Override
     public void initView(Bundle s) {
@@ -74,6 +82,51 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
         userName.setText(SigninUserManager.getUser(this).getName());
         userId.setText(SigninUserManager.getUser(this).getId());
         userEmail.setText(SigninUserManager.getUser(this).getEmail());
+    }
+
+    @OnClick(R.id.avatar)
+    public void changeAvatar(){
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,REQUEST_IMAGE_SELECT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (resultCode != RESULT_OK) {
+            Logger.i("canceled or other exception!");
+            return;
+        }
+
+        if (requestCode == REQUEST_IMAGE_SELECT) {
+            Logger.i("REQUEST_IMAGE_SELECT");
+            Uri uri=data.getData();
+            File file=uri2File(uri);
+
+            showProgressDialog();
+            mPresenter.changeAvatar(file);
+        }
+    }
+
+    //此代码引用自http://blog.csdn.net/wangjintao1988/article/details/9233027
+    private File uri2File(Uri uri) {
+        String img_path;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor actualimagecursor = managedQuery(uri, proj, null,
+                null, null);
+        if (actualimagecursor == null) {
+            img_path = uri.getPath();
+        } else {
+            int actual_image_column_index = actualimagecursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            actualimagecursor.moveToFirst();
+            img_path = actualimagecursor
+                    .getString(actual_image_column_index);
+        }
+        File file = new File(img_path);
+        return file;
     }
 
     @OnClick(R.id.change_email)
@@ -123,7 +176,7 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
         builder.setPositiveButton(R.string.button_change,onClick);
         builder.setNegativeButton(R.string.button_cancel,null);
 
-        builder.setCancelable(false);
+        //builder.setCancelable(false);
         AlertDialog dialog=builder.create();
         dialog.setTitle(getString(R.string.change_password));
         dialog.show();

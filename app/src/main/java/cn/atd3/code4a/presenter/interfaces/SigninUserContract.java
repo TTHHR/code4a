@@ -1,5 +1,7 @@
 package cn.atd3.code4a.presenter.interfaces;
 
+import java.io.File;
+
 import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.mvpbase.BaseModel;
 import cn.atd3.code4a.mvpbase.BasePresenter;
@@ -16,7 +18,7 @@ import rx.Observable;
 public interface SigninUserContract {
     interface Model extends BaseModel{
         Observable<Boolean> setEmail(String email);
-        Observable<Boolean> setAvatar(String avatar);
+        Observable<Boolean> setAvatar(File avatar);
         Observable<Boolean> setPassword(String oldPwd,String newPwd);
         Observable<User> getUserInfo();
     }
@@ -32,7 +34,7 @@ public interface SigninUserContract {
 
     abstract class Presenter extends BasePresenter<Model,View> {
         public abstract void changeEmail(String email);
-        public abstract void changeAvatar(String avatar);
+        public abstract void changeAvatar(File avatar);
         public abstract void changePassword(String oldPwd,String newPwd,String pwdConfirm);
         public abstract void setUserInfo();
     }

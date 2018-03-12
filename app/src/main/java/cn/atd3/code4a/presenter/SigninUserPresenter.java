@@ -2,6 +2,8 @@ package cn.atd3.code4a.presenter;
 
 import android.text.TextUtils;
 
+import java.io.File;
+
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.SigninUserManager;
 import cn.atd3.code4a.model.model.User;
@@ -45,8 +47,27 @@ public class SigninUserPresenter extends SigninUserContract.Presenter {
     }
 
     @Override
-    public void changeAvatar(String avatar) {
+    public void changeAvatar(File avatar) {
+        mModel.setAvatar(avatar).subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mView.showErrorWithStatus(e.getMessage());
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                if (aBoolean){
+                    mView.showErrorWithStatus(mContext.getString(R.string.change_failure));
+                }else {
+                    mView.setAvatarSuccessful("");
+                }
+            }
+        });
     }
 
     @Override
