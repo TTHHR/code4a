@@ -6,38 +6,38 @@
 
 a code share platform
 
-## 相关开源依赖
+## 开源依赖
 
 - 富文本编辑：https://github.com/huzhenjie/RichTextEditor
 - 文件浏览：https://github.com/WeiMei-Tian/FileBrowser
 - 上拉下拉刷新： https://github.com/823546371/PullToRefresh
 - 图片压缩： https://github.com/Curzibn/Luban
 - UI框架：https://github.com/QMUI
-
-## 服务器程序
-Code4A Server: https://github.com/DXkite/DxSite
+- Suda框架：https://github.com/DXkite/suda
+- 远程调用客户端：https://github.com/DXkite/APIProxyCall-JavaClient
+- Code4A服务器程序：https://github.com/DXkite/code4a_server
 
 ## TODO
 ### v1.0.0
 
-- [ ] 文章功能
+- [x] 文章功能
     - [x] 分类浏览
     - [x] 浏览文章
     - [x] 上传文章
     - [x] 更新文章
     - [x] 附件上传下载
-- [ ] 消息功能
+- [x] 消息功能
     - [x] 开屏图片
     - [x] 系统广播
     - [x] 通知推送
-    - [x] 更新检查
+    - [ ] 更新检查
     - [x] 错误反馈
-- [ ] 用户功能
-    - [ ] 用户登陆
-    - [ ] 用户注册
-    - [ ] 修改信息
+- [x] 用户功能
+    - [x] 用户登陆
+    - [x] 用户注册
+    - [x] 修改信息
     - [ ] 百度登陆
-- [ ] 应用功能
+- [x] 应用功能
     - [x] 应用设置
  
 ## 参与贡献

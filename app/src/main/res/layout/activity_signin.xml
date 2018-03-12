@@ -51,6 +51,15 @@
             android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:id="@+id/reset_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_password"
+        android:background="@color/transparency"
+        android:textColor="@color/blue"
+        android:layout_gravity="right"
+        android:layout_margin="4dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

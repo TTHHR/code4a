@@ -120,4 +120,10 @@
     <string name="change_failure">Change failure</string>
     <string name="old_pwd">The original password</string>
     <string name="new_pwd">The new password</string>
+
+
+    <!-- About -->
+    <string name="setting_authors">Authors</string>
+    <string name="setting_open_source">Open Sources</string>
+
 </resources>

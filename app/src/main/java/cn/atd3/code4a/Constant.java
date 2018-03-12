@@ -24,6 +24,7 @@ public final class Constant {
     //用户
     public final static String avatar="http://code4a.atd3.cn/user/avatar/";
     public final static String codeImage="http://code4a.atd3.cn/user/verify";
+    public final static String resetPassword="http://code4a.atd3.cn/user/reset_password";
 
     public final static int SUCCESS = 0;
     public final static int INFO = 1;

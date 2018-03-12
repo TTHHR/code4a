@@ -110,7 +110,7 @@ public class SigninUserActivity extends BaseActivity<SigninUserModel,SigninUserP
         }
     }
 
-    //此代码引用自http://blog.csdn.net/wangjintao1988/article/details/9233027
+    //此函数代码引用自http://blog.csdn.net/wangjintao1988/article/details/9233027
     private File uri2File(Uri uri) {
         String img_path;
         String[] proj = {MediaStore.Images.Media.DATA};
