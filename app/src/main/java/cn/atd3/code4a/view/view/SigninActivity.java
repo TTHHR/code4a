@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -83,6 +85,13 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     @OnClick(R.id.signup_button)
     public void signup(){
         Intent i = new Intent(this, SignupActivity.class);
+        startActivity(i);
+    }
+
+    @OnClick(R.id.reset_password)
+    public void resetPassword(){
+        Intent i = new Intent(this, WebActivity.class);
+        i.putExtra("url",Constant.resetPassword);
         startActivity(i);
     }
 
