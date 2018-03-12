@@ -200,8 +200,8 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         {
             navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
-        uname=navHeadMain.findViewById<TextView>(R.id.uname)
-        headImage=navHeadMain.findViewById<QMUIRadiusImageView>(R.id.headImage)
+        uname=navHeadMain.findViewById(R.id.uname)
+        headImage=navHeadMain.findViewById(R.id.headImage)
         //测试登陆
         headImage.setOnClickListener({
             //超级用户登陆

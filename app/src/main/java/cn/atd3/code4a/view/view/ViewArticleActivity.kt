@@ -26,6 +26,7 @@ import cn.atd3.code4a.Constant.INFO
 import cn.atd3.code4a.Constant.NORMAL
 import cn.atd3.code4a.Constant.SUCCESS
 import cn.atd3.code4a.Constant.WARNING
+import cn.atd3.code4a.SigninUserManager
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import kotlinx.android.synthetic.main.activity_view_article.*
@@ -217,10 +218,11 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
                         }
                         1 -> {
                             //编辑文章
-                            //需添加权限判断
-                            val i = Intent(this@ViewArticleActivity, EditArticleActivity::class.java)
-                            i.putExtra("article", vap!!.article)
-                            startActivity(i)
+                            if(vap!!.checkUser(this)) {
+                                val i = Intent(this@ViewArticleActivity, EditArticleActivity::class.java)
+                                i.putExtra("article", vap!!.article)
+                                startActivity(i)
+                            }
                         }
                         2 -> {
                             val builder = QMUIDialog.MultiCheckableDialogBuilder(this@ViewArticleActivity)
@@ -255,6 +257,7 @@ class ViewArticleActivity : AppCompatActivity(), ArticleViewInterface {
 
                         3 ->
                             //删除文章
+                            if(vap!!.checkUser(this))
                             vap!!.deleteArticle()
                     }
                 }

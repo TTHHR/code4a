@@ -13,19 +13,21 @@ import cn.atd3.code4a.view.inter.SettingActivityInterface
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import kotlinx.android.synthetic.main.activity_setting.*
-import cn.atd3.code4a.Constant.INFO
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
 
 
+
 class SettingActivity : AppCompatActivity(), SettingActivityInterface {
     private lateinit var sfp: SettingPresenter
+    private var restart=false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_setting)
-        topBar.addLeftBackImageButton().setOnClickListener( {
+        topBar.addLeftBackImageButton().setOnClickListener({
             finish()
         })
         topBar.setTitle(getString(R.string.setting))
@@ -46,22 +48,31 @@ class SettingActivity : AppCompatActivity(), SettingActivityInterface {
     override fun onStop() {
         super.onStop()
         sfp.saveSetting()//保存设置
+        if(restart)
+            android.os.Process.killProcess(android.os.Process.myPid())
     }
     private fun initListView() {
         val languageView = groupListView.createItemView(getString(R.string.setting_language))
-        languageView.detailText = sfp.language
+        val items=resources.getStringArray(R.array.language_list_key)
+        if(sfp.language=="zh")
+        languageView.detailText = items[0]
+        else
+            languageView.detailText = items[1]
         languageView.setOnClickListener {
-            showToast(INFO,getString(R.string.info_changelanguage))
-            val items=resources.getStringArray(R.array.language_list_key)
             val builder = QMUIDialog.CheckableDialogBuilder(this)
-                    .setCheckedIndex(0)
                     .addItems(items, {
                         dialog, which ->
                         val values=resources.getStringArray(R.array.language_list_value)
                         sfp.language=values[which]
-                        languageView.detailText=values[which]
+                        languageView.detailText=items[which]
+                        if(items[which]!=sfp.language)//语言改变
+                            restart=true
                         dialog!!.dismiss()
                     })
+            if(sfp.language=="zh")
+                builder.checkedIndex = 0
+            else
+                builder.checkedIndex = 1
             builder.show()
 
         }
