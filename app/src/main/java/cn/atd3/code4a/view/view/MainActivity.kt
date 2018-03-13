@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
@@ -14,15 +13,15 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.*
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import cn.atd3.code4a.Constant
 import cn.atd3.code4a.R
 import cn.atd3.code4a.R.color.bootstrap_gray_lighter
 import cn.atd3.code4a.SigninUserManager
 import cn.atd3.code4a.model.adapter.TabFragmentAdapter
 import cn.atd3.code4a.model.model.CategoryModel
-import cn.atd3.code4a.model.model.User
-import cn.atd3.code4a.net.Remote
 import cn.atd3.code4a.presenter.MainPresenter
 import cn.atd3.code4a.view.inter.MainViewInterface
 import cn.dxkite.common.StorageData
@@ -30,16 +29,14 @@ import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
 import com.nostra13.universalimageloader.core.ImageLoader
-import com.orhanobut.logger.Logger
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
-import java.io.File
-import java.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import java.io.File
+import java.util.*
 
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -51,10 +48,10 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     private lateinit var mp: MainPresenter
     private val TAG = "MainActivity"
 
-    private val imageLoader=ImageLoader.getInstance()
+    private val imageLoader = ImageLoader.getInstance()
 
     private lateinit var headImage: QMUIRadiusImageView
-    private lateinit var uname:TextView
+    private lateinit var uname: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -64,12 +61,10 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         QMUIStatusBarHelper.translucent(this)
         setContentView(R.layout.activity_main)
 
-        topBar!!.addLeftImageButton(R.mipmap.top_more,1).setOnClickListener {
+        topBar!!.addLeftImageButton(R.mipmap.top_more, 1).setOnClickListener {
             if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
                 drawer_layout.closeDrawer(GravityCompat.START)
-            }
-            else
-            {
+            } else {
                 drawer_layout.openDrawer(GravityCompat.START)
             }
         }
@@ -93,9 +88,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             val intent = Intent(this, WebActivity::class.java)
             intent.putExtra("url", i.getStringExtra("url"))
             startActivity(intent)
-        }
-        else
-        {
+        } else {
             mp.showMessageBanner()//拉取通知
         }
     }
@@ -103,21 +96,20 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     //添加SharedPreferences改变监听
     override fun onResume() {
         super.onResume()
-        val sp=getSharedPreferences(SigninUserManager::class.java.toString(), Context.MODE_PRIVATE)
+        val sp = getSharedPreferences(SigninUserManager::class.java.toString(), Context.MODE_PRIVATE)
         sp.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStart() {
         try {
             topBar!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
-        }
-        catch (e:Exception)
-        {
-            Toast.makeText(this,getString(R.string.waring_error_color),Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, getString(R.string.waring_error_color), Toast.LENGTH_SHORT).show()
             topBar!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
         super.onStart()
     }
+
     private fun initView() {
 
         val cateListFile = File(Constant.getCategoryListFilePath())
@@ -163,10 +155,8 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
 
 
-        nav_view.setNavigationItemSelectedListener ( this )
+        nav_view.setNavigationItemSelectedListener(this)
     }
-
-
 
 
     private fun bindListener() {
@@ -176,15 +166,14 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         //写新文章按钮
         newArticleButton.setOnClickListener({ _ ->
             //添加用户判断
-            if(SigninUserManager.isSignin(this)){
+            if (SigninUserManager.isSignin(this)) {
                 val i = Intent(this, EditArticleActivity::class.java)
                 startActivity(i)
-            }else{
+            } else {
                 QMUIDialog.MessageDialogBuilder(this)
                         .setTitle(getString(R.string.title_waring))
                         .setMessage(getString(R.string.account_not_login))
-                        .addAction(getString(R.string.button_ok), {
-                            dialog, _ ->
+                        .addAction(getString(R.string.button_ok), { dialog, _ ->
                             dialog.dismiss()
                         }
                         )
@@ -192,16 +181,14 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             }
         })
 
-        val navHeadMain=nav_view.inflateHeaderView(R.layout.nav_header_main)
+        val navHeadMain = nav_view.inflateHeaderView(R.layout.nav_header_main)
         try {
             navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.themeColor))
-        }
-        catch (e:Exception)
-        {
+        } catch (e: Exception) {
             navHeadMain!!.setBackgroundColor(Color.parseColor(Constant.defaultThemeColor))
         }
-        uname=navHeadMain.findViewById(R.id.uname)
-        headImage=navHeadMain.findViewById(R.id.headImage)
+        uname = navHeadMain.findViewById(R.id.uname)
+        headImage = navHeadMain.findViewById(R.id.headImage)
         //测试登陆
         headImage.setOnClickListener({
             //超级用户登陆
@@ -222,18 +209,18 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 //                    }
 //                    )
 //                    .show()
-            if(SigninUserManager.isSignin(this)){
+            if (SigninUserManager.isSignin(this)) {
                 val i = Intent(this, SigninUserActivity::class.java)
                 startActivity(i)
-            }else{
+            } else {
                 val i = Intent(this, SigninActivity::class.java)
                 startActivity(i)
             }
         })
-        if(SigninUserManager.isSignin(this)){
-            imageLoader.displayImage(Constant.avatar+SigninUserManager.getUser(this).id,headImage)
+        if (SigninUserManager.isSignin(this)) {
+            imageLoader.displayImage(Constant.avatar + SigninUserManager.getUser(this).id, headImage)
             uname.setText(SigninUserManager.getUser(this).name)
-        }else{
+        } else {
             headImage.setImageResource(R.mipmap.logo)
             uname.setText("")
         }
@@ -276,13 +263,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             drawer_layout.closeDrawer(GravityCompat.START)
             return
         }
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-               Toast.makeText(this,getString(R.string.double_click_exit),Toast.LENGTH_SHORT).show()
-                exitTime = System.currentTimeMillis()
-            } else {
-                mp.updateAd()
-                super.onBackPressed()
-            }
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, getString(R.string.double_click_exit), Toast.LENGTH_SHORT).show()
+            exitTime = System.currentTimeMillis()
+        } else {
+            mp.updateAd()
+            super.onBackPressed()
+        }
     }
 
     //创建菜单
@@ -304,7 +291,7 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     //右侧列表点击事件
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        Log.e("item select",""+item.itemId)
+        Log.e("item select", "" + item.itemId)
         when (item.itemId) {
             R.id.nav_share -> {
                 val intent = Intent(Intent.ACTION_SEND)
@@ -323,12 +310,13 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
         }
         return true
     }
+
     private fun showBottomSheetList() {
         QMUIBottomSheet.BottomListSheetBuilder(this)
                 .addItem(getString(R.string.setting))
                 .setOnSheetItemClickListener { dialog, _, _, _ ->
                     dialog.dismiss()
-                    val i=Intent(this,SettingActivity::class.java)
+                    val i = Intent(this, SettingActivity::class.java)
                     startActivity(i)
                 }
                 .build()
@@ -337,11 +325,11 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
 
     //当SharedPreferences改变后
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-        if(p1.equals("id")){
-            if(SigninUserManager.isSignin(this)){
-                imageLoader.displayImage(Constant.avatar+SigninUserManager.getUser(this).id,headImage)
+        if (p1.equals("id")) {
+            if (SigninUserManager.isSignin(this)) {
+                imageLoader.displayImage(Constant.avatar + SigninUserManager.getUser(this).id, headImage)
                 uname.setText(SigninUserManager.getUser(this).name)
-            }else{
+            } else {
                 headImage.setImageResource(R.mipmap.logo)
                 uname.setText("")
             }

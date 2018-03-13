@@ -289,12 +289,16 @@ public boolean checkUser(Context c)
 
 
     }
+
+
     class ImageDownloader extends AsyncTask<String ,Void,Drawable>
     {
         @Override
         protected void onPostExecute(Drawable drawable) {
-            if(drawable!=null)//再次执行一遍
-                avi.loadArticle(article.getContent(),urlImageParser);
+            //再次执行一遍
+            if(drawable!=null && article!=null) {
+                avi.loadArticle(article.getContent(), urlImageParser);
+            }
             super.onPostExecute(drawable);
         }
 

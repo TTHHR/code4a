@@ -1,5 +1,7 @@
 package cn.atd3.code4a.model.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -164,7 +166,7 @@ public class ArticleModel implements Serializable {
     }
 
     public static String time(int unix) {
-        long time = unix * 1000;
+        long time = ((long)unix) * 1000;
         String showTime;
         String hTime = new SimpleDateFormat("H:mm", Locale.getDefault()).format(time);
         String rTime = new SimpleDateFormat("M-d H:mm", Locale.getDefault()).format(time);
@@ -185,6 +187,7 @@ public class ArticleModel implements Serializable {
         } else {
             showTime = rTime;
         }
+//        Log.i("TimeShow",unix +" -> "+(unix*10)+" -> "+time + " -> " +showTime);
         return showTime;
     }
 
