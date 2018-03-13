@@ -223,7 +223,7 @@ public class ArticleDatabase {
      */
     public void fetchFirst() {
         try {
-            Object articleList = Remote.article.method("getList", ArticleModel.class).call(1, 10);
+            Object articleList = Remote.article.method("getPublicList", ArticleModel.class).call(1, 10);
             if (articleList instanceof ArrayList){
                 for(int i=0;i<((ArrayList) articleList).size();i++)
                 {
