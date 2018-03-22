@@ -1,5 +1,7 @@
 package cn.atd3.code4a.presenter;
 
+import android.content.Intent;
+
 import cn.atd3.code4a.view.inter.AboutInterface;
 
 public class AboutPresenter {

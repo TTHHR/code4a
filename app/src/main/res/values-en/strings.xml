@@ -125,5 +125,8 @@
     <!-- About -->
     <string name="setting_authors">Authors</string>
     <string name="setting_open_source">Open Sources</string>
+    <!-- Update -->
+    <string name="download_update">Download Update</string>
+    <string name="version_info">Version Info</string>
 
 </resources>

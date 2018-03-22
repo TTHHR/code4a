@@ -30,7 +30,11 @@ class AboutActivity : Activity(), AboutInterface {
 
 
         QMUIGroupListView.newSection(this)
-                .addItemView(aboutList.createItemView(getString(R.string.setting_update))){ abp.onCheakUpdate() }
+                .addItemView(aboutList.createItemView(getString(R.string.setting_update))) {
+//        abp.onCheakUpdate()
+                    val i = Intent(this, UpdateCheckActivity::class.java)
+                    startActivity(i)
+                }
                 .addItemView(aboutList.createItemView(getString(R.string.setting_software_info))) { openWebActivity(Constant.softwareInfoUrl) }
                 // TODO 添加如下选项
 //                .addItemView(aboutList.createItemView(getString(R.string.setting_authors))){}
