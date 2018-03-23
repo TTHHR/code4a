@@ -10,6 +10,7 @@ import cn.atd3.code4a.R;
 import cn.atd3.code4a.SigninUserManager;
 import cn.atd3.code4a.model.model.User;
 import cn.atd3.code4a.presenter.interfaces.SigninContract;
+import cn.atd3.proxy.exception.ProxyException;
 import rx.Subscriber;
 
 /**
@@ -66,6 +67,42 @@ public class SigninPresenter extends SigninContract.Presenter {
             @Override
             public void onError(Throwable e) {
                 mView.showErrorWithStatus(e.getMessage());
+                /*
+                if(e instanceof ProxyException){
+                    ProxyException p=(ProxyException)e;
+                    int i=
+                    //失败
+                    switch (i){
+                        case NAME_FORMAT_ERROR:
+                            mView.accountError(mContext.getString(R.string.name_format_error));
+                            break;
+                        case EMAIL_FORMAT_ERROR:
+                            mView.accountError(mContext.getString(R.string.email_format_error));
+                            break;
+                        case NAME_EXISTS_ERROR:
+                            mView.showErrorWithStatus(mContext.getString(R.string.name_exists_error));
+                            break;
+                        case EMAIL_EXISTS_ERROR:
+                            mView.showErrorWithStatus(mContext.getString(R.string.email_exists_error));
+                            break;
+                        case ACCOUNT_OR_PASSWORD_ERROR:
+                            mView.showErrorWithStatus(mContext.getString(R.string.account_or_password_error));
+                            break;
+                        case USER_FREEZED:
+                            mView.showErrorWithStatus(mContext.getString(R.string.user_freezed));
+                            break;
+                        case HUMAN_CODE_ERROR:
+                            mView.codeError(mContext.getString(R.string.human_code_error));
+                            break;
+                        case INVITE_CODE_ERROR:
+                            mView.showErrorWithStatus(mContext.getString(R.string.invite_code_error));
+                            break;
+                        default:
+                            mView.showErrorWithStatus(mContext.getString(R.string.unknown_error)+i);
+                    }
+                    mView.refreshCodeImg();
+                }
+                */
                 mView.refreshCodeImg();
             }
 
