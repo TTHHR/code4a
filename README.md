@@ -45,6 +45,8 @@ a code share platform
 - [开发必看](docs/before-develop.md)
 - [程序模块列表](docs/module.md)
 
+## 贡献者
+田浩然，冯世昌，杨国亮
 
 ## 协议
 
