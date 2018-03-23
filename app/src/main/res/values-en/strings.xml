@@ -7,6 +7,7 @@
     <string name="setting_theme_summary">change theme color</string>
     <string name="dialog_theme_summary">Input the color code, such as：#1d97f5</string>
     <string name="waring_error_color">The color code is incorrect, please reset it</string>
+    <string name="waring_permission">no permission to do</string>
     <string name="setting_tieba_summary">goto  Tieba</string>
     <string name="setting_language">Language</string>
     <string name="setting_language_select">Select A Language</string>
@@ -70,14 +71,55 @@
     <string name="password_empty">password empty</string>
 
     <!--Signin-->
-    <string name="account_empty">account empty</string>
-    <string name="account_invalid">account error</string>
-    <string name="password_invalid">password error</string>
-    <string name="code_invalid">code error</string>
+
+
+
     <string name="remote_error">Some Error:</string>
-    <string name="signing">signing</string>
     <string name="info_down"> downloading </string>
     <string name="error_network_use_local">Network error, using local cache</string>
+
+    <!--SigninActivity-->
+    <string name="account_empty">The account cannot be empty.</string>
+    <string name="code_empty">Verify that the code cannot be empty.</string>
+    <string name="error">There is an error:</string>
+    <string name="signing">in the login</string>
+    <string name="signin_successful">Login successfully</string>
+    <string name="code">Verification code</string>
+
+    <!--SignupActivity-->
+    <string name="please_wait">Please wait a moment</string>
+    <string name="email_empty">Mailbox cannot be empty.</string>
+    <string name="signup_successful">Registered successfully</string>
+    <string name="password_diff">Password mismatch</string>
+
+    <!--服务器返回错误-->
+    <string name="name_format_error">User name format error.</string>
+    <string name="email_format_error">Mail format error</string>
+    <string name="name_exists_error">The user name already exists.</string>
+    <string name="email_exists_error">Email registered</string>
+    <string name="account_or_password_error">Account or password error.</string>
+    <string name="user_freezed">User freeze</string>
+    <string name="human_code_error">Verification code error</string>
+    <string name="invite_code_error">Invitation code error</string>
+    <string name="unknown_error">An unknown error</string>
+
+    <!--SigninUserAvtivity-->
+    <string name="signin_user_activity">The user center</string>
+    <string name="user_name">user name:</string>
+    <string name="user_id">user ID:</string>
+    <string name="user_email">user email:</string>
+    <string name="change_password">Change the password</string>
+    <string name="change_email">change the email</string>
+    <string name="logout">Log out</string>
+    <string name="affirm_logout">Confirm log out？</string>
+    <string name="edit_email">Enter your new mailbox.</string>
+    <string name="button_change">change</string>
+    <string name="change_email_successful">change email success</string>
+    <string name="change_password_successful">change password success</string>
+    <string name="change_avatar_successful">Change avatar success</string>
+    <string name="change_failure">Change failure</string>
+    <string name="old_pwd">The original password</string>
+    <string name="new_pwd">The new password</string>
 
 
     <!-- About -->

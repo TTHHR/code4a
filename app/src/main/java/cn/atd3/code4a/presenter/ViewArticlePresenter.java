@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
+import cn.atd3.code4a.SigninUserManager;
 import cn.atd3.code4a.database.ArticleDatabase;
 import cn.atd3.code4a.model.model.ArticleModel;
 import cn.atd3.code4a.model.model.AttachmentFileModel;
@@ -92,7 +93,26 @@ public class ViewArticlePresenter {
         }
 
     }
-
+public boolean checkUser(Context c)
+{
+    if(SigninUserManager.isSignin(c))
+    {
+        if(SigninUserManager.getUser(c).getName().equals(article.getUser().getName()))
+        {
+            return true;
+        }
+        else
+        {
+            avi.showToast(ERROR,avi.getXmlString(R.string.waring_permission));
+            return false;
+        }
+    }
+    else
+    {
+        avi.showToast(WARNING,avi.getXmlString(R.string.account_not_login));
+        return false;
+    }
+}
     private void saveToDatabase(Context c) {
         if (databasePresenter == null)
             databasePresenter = new ArticleDatabase(c);
@@ -104,12 +124,6 @@ public class ViewArticlePresenter {
     }
 
     public void deleteArticle() {
-        /*
-
-        为了减轻服务器压力，之后这里需要对作者进行本地检查
-        现在的方法有服务器进行验证，不会误删的
-
-         */
 
         new Thread(new Runnable() {
             @Override
@@ -275,12 +289,16 @@ public class ViewArticlePresenter {
 
 
     }
+
+
     class ImageDownloader extends AsyncTask<String ,Void,Drawable>
     {
         @Override
         protected void onPostExecute(Drawable drawable) {
-            if(drawable!=null)//再次执行一遍
-                avi.loadArticle(article.getContent(),urlImageParser);
+            //再次执行一遍
+            if(drawable!=null && article!=null) {
+                avi.loadArticle(article.getContent(), urlImageParser);
+            }
             super.onPostExecute(drawable);
         }
 

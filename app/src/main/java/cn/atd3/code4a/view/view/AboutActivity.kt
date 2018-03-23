@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_about.*
 
 class AboutActivity : Activity(), AboutInterface {
     private lateinit var abp: AboutPresenter
+    private var i=0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         QMUIStatusBarHelper.translucent(this)
@@ -37,7 +38,13 @@ class AboutActivity : Activity(), AboutInterface {
                 .addItemView(aboutList.createItemView(getString(R.string.setting_tieba_summary))) { openWebActivity(Constant.tiebaUrl) }
                 .addItemView(aboutList.createItemView(getString(R.string.setting_auth_donation))) { openWebActivity(Constant.donationUrl) }
                 .addTo(aboutList)
-
+        logoImg.setOnClickListener {
+            if (i >= 5) {
+                startActivity(Intent(this, EggActivity::class.java))
+                i = 0
+            } else
+                i++
+        }
     }
 
     override fun onStart() {

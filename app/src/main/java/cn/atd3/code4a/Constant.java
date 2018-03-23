@@ -61,7 +61,7 @@ public final class Constant {
         if (debug) {
             Constant.privateFilePath = Constant.publicFilePath + privateString;
         }
-        Log.e("privateFilePath", privateFilePath);
+//        Log.e("privateFilePath", privateFilePath);
         adImg = privateFilePath + File.separator + "adImg.png";
         adUrl = privateFilePath + File.separator + "adUrl.txt";
         userData = privateFilePath + File.separator + "user.data";

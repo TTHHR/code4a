@@ -6,6 +6,7 @@
     <string name="setting_theme_summary">更改主题颜色</string>
     <string name="dialog_theme_summary">输入颜色代码，如：#1d97f5</string>
     <string name="waring_error_color">颜色代码不正确，请重新设置</string>
+    <string name="waring_permission">权限不足</string>
 
     <!-- About -->
     <string name="setting_authors">作者信息</string>
@@ -85,6 +86,8 @@
     <string name="code">验证码</string>
     <string name="reset_password">忘记密码?</string>
 
+    <string name="remote_error">出现错误:</string>
+    <string name="info_down"> 下载中 </string>
     <!--SignupActivity-->
     <string name="please_wait">请稍等</string>
     <string name="email_empty">邮箱不能为空</string>
