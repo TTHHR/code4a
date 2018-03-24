@@ -46,7 +46,7 @@ a code share platform
 - [程序模块列表](docs/module.md)
 
 ## 贡献者
-田浩然，冯世昌，杨国亮
+[田浩然](https://github.com/TTHHR)，[冯世昌](https://github.com/DXkite)，[杨国亮](https://github.com/YGLLL)
 
 ## 协议
 
