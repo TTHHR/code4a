@@ -65,9 +65,6 @@
             android:name=".view.view.SigninUserActivity"
             android:label="@string/signin_user_activity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.view.UpdateCheckActivity"
-            android:label="@string/title_activity_update_check"></activity>
     </application>
 
 </manifest>
