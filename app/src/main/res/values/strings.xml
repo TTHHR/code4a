@@ -122,4 +122,8 @@
     <string name="change_failure">更改失败</string>
     <string name="old_pwd">原密码</string>
     <string name="new_pwd">新密码</string>
+    <string name="title_activity_update_check">检查更新</string>
+    <!-- 更新检查 -->
+    <string name="download_update">下载更新</string>
+    <string name="version_info">版本信息</string>
 </resources>

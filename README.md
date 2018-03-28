@@ -45,8 +45,15 @@ a code share platform
 - [开发必看](docs/before-develop.md)
 - [程序模块列表](docs/module.md)
 
-## 贡献者
-[田浩然](https://github.com/TTHHR)，[冯世昌](https://github.com/DXkite)，[杨国亮](https://github.com/YGLLL)
+### [贡献者|Contributors](https://github.com/TTHHR/code4a/graphs/contributors)
+
+- [田浩然](https://github.com/TTHHR)
+    - Android 文章部分
+- [冯世昌](https://github.com/DXkite)
+    - Android 与服务器接口部分
+    - 服务器部分
+- [杨国亮](https://github.com/YGLLL)
+    - Android 用户部分
 
 ## 协议
 
