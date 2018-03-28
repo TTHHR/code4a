@@ -7,6 +7,7 @@ import java.io.File;
 import cn.atd3.code4a.R;
 import cn.atd3.code4a.SigninUserManager;
 import cn.atd3.code4a.model.model.User;
+import cn.atd3.code4a.net.DisposeErrorSubscriber;
 import cn.atd3.code4a.presenter.interfaces.SigninUserContract;
 import rx.Subscriber;
 
@@ -24,15 +25,11 @@ public class SigninUserPresenter extends SigninUserContract.Presenter {
 
     @Override
     public void changeEmail(String email) {
-        mModel.setEmail(email).subscribe(new Subscriber<Boolean>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        mModel.setEmail(email).subscribe(new DisposeErrorSubscriber<Boolean>(mContext) {
 
             @Override
-            public void onError(Throwable e) {
-                mView.showErrorWithStatus(e.getMessage());
+            public void onThrowableError(Throwable e) {
+                mView.closeProgressDialog();
             }
 
             @Override
@@ -48,15 +45,11 @@ public class SigninUserPresenter extends SigninUserContract.Presenter {
 
     @Override
     public void changeAvatar(File avatar) {
-        mModel.setAvatar(avatar).subscribe(new Subscriber<Boolean>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        mModel.setAvatar(avatar).subscribe(new DisposeErrorSubscriber<Boolean>(mContext) {
 
             @Override
-            public void onError(Throwable e) {
-                mView.showErrorWithStatus(e.getMessage());
+            public void onThrowableError(Throwable e) {
+                mView.closeProgressDialog();
             }
 
             @Override
@@ -87,15 +80,11 @@ public class SigninUserPresenter extends SigninUserContract.Presenter {
             mView.showErrorWithStatus(mContext.getString(R.string.password_diff));
             return;
         }
-        mModel.setPassword(oldPwd,newPwd).subscribe(new Subscriber<Boolean>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        mModel.setPassword(oldPwd,newPwd).subscribe(new DisposeErrorSubscriber<Boolean>(mContext) {
 
             @Override
-            public void onError(Throwable e) {
-                mView.showErrorWithStatus(e.getMessage());
+            public void onThrowableError(Throwable e) {
+                mView.closeProgressDialog();
             }
 
             @Override
@@ -111,15 +100,11 @@ public class SigninUserPresenter extends SigninUserContract.Presenter {
 
     @Override
     public void setUserInfo() {
-        mModel.getUserInfo().subscribe(new Subscriber<User>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        mModel.getUserInfo().subscribe(new DisposeErrorSubscriber<User>(mContext) {
 
             @Override
-            public void onError(Throwable e) {
-                mView.showErrorWithStatus(e.getMessage());
+            public void onThrowableError(Throwable e) {
+                mView.closeProgressDialog();
             }
 
             @Override

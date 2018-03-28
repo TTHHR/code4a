@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +19,9 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.orhanobut.logger.Logger;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -70,10 +77,9 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
         refreshCodeImg();
     }
 
-    @Override
     @OnClick(R.id.code_image)
     public void refreshCodeImg(){
-        imageLoader.displayImage(Constant.codeImage,codeImage);
+        mPresenter.updateCode();
     }
 
     @OnClick(R.id.signin_button)
@@ -136,6 +142,13 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
         closeProgressDialog();
         Toast.makeText(this, getString(R.string.error)+msg, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void showCodeImg(File file) {
+        Uri i=Uri.fromFile(file);
+        codeImage.setImageURI(i);
+    }
+
     /**   * 显示进度对话框   */
     @Override
     public void showProgressDialog() {

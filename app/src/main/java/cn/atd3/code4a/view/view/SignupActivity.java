@@ -1,6 +1,7 @@
 package cn.atd3.code4a.view.view;
 
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,8 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+
+import java.io.File;
 
 import butterknife.OnClick;
 import cn.atd3.code4a.Constant;
@@ -67,7 +70,6 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
         refreshCodeImg();
     }
 
-    @Override
     @OnClick(R.id.code_image)
     public void refreshCodeImg(){
         imageLoader.displayImage(Constant.codeImage,codeImage);
@@ -118,6 +120,12 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
         closeProgressDialog();
         Toast.makeText(this, getString(R.string.signup_successful), Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    public void showCodeImg(File file) {
+        Uri i=Uri.fromFile(file);
+        codeImage.setImageURI(i);
     }
 
     @Override

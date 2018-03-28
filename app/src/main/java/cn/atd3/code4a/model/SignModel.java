@@ -3,6 +3,7 @@ package cn.atd3.code4a.model;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
 import java.io.IOException;
 
 import cn.atd3.code4a.model.inter.Sign;
@@ -91,5 +92,27 @@ public class SignModel implements Sign {
             }
         }).subscribeOn(Schedulers.io())//在其他线程执行
           .observeOn(AndroidSchedulers.mainThread());//在主线程触发
+    }
+
+    @Override
+    public Observable<File> getCode() {
+        return Observable.create(new Observable.OnSubscribe<File>() {
+            @Override
+            public void call(Subscriber<? super File> subscriber) {
+                Object o=null;
+                try {
+                    o= Remote.user.method("getCodeImage",File.class).call();
+                }catch (ServerException e){
+                    Logger.i("ServerException:"+e);
+                }catch (PermissionException e){
+                    Logger.i("ServerException:"+e);
+                }catch (IOException e){
+                    Logger.i("ServerException:"+e);
+                }
+                File f=(File)o;
+                subscriber.onNext(f);
+            }
+        }).subscribeOn(Schedulers.io())//在其他线程执行
+                .observeOn(AndroidSchedulers.mainThread());//在主线程触发
     }
 }

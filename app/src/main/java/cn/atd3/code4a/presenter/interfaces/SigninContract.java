@@ -1,5 +1,7 @@
 package cn.atd3.code4a.presenter.interfaces;
 
+import java.io.File;
+
 import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.model.inter.Sign;
 
@@ -24,10 +26,11 @@ public interface SigninContract {
         void signinSuccessful(User user);
         void showProgressDialog();
         void closeProgressDialog();
-        void refreshCodeImg();
+        void showCodeImg(File file);
     }
 
     abstract class Presenter extends BasePresenter<Sign,View> {
         public abstract void signinButtonClick(String account,String password,String code);
+        public abstract void updateCode();
     }
 }

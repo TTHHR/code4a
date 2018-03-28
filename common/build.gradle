@@ -32,7 +32,7 @@ dependencies {
     // fast json
     api files('libs/fastjson-1.2.2.jar')
     // proxy
-    api files('libs/atd-proxy-1.2.6.jar')
+    api files('libs/atd-proxy-1.2.7.jar')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     api files('libs/BASE64.jar')

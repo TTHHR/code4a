@@ -1,5 +1,7 @@
 package cn.atd3.code4a.presenter.interfaces;
 
+import java.io.File;
+
 import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.model.inter.Sign;
 import cn.atd3.code4a.mvpbase.BasePresenter;
@@ -23,10 +25,11 @@ public interface SignupContract {
         void signupSuccessful();
         void showProgressDialog();
         void closeProgressDialog();
-        void refreshCodeImg();
+        void showCodeImg(File file);
     }
 
     abstract class Presenter extends BasePresenter<Sign,View> {
         public abstract void signupButtonClick(String user,String email,String password,String passwordConfirm,String code);
+        public abstract void updateCode();
     }
 }
