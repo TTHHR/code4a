@@ -129,4 +129,10 @@
     <string name="download_update">Download Update</string>
     <string name="version_info">Version Info</string>
 
+    <!-- time  -->
+    <string name="time_just_now">just now</string>
+    <string name="time_x_minute_ago">%1$d minute ago</string>
+    <string name="time_x_hour_ago">%1$d hour ago %2$s</string>
+    <string name="time_yesterday_time">yesterday %1$s</string>
+    <string name="time_before_yesterday">before yesterday %1$s</string>
 </resources>

@@ -1,11 +1,13 @@
 package cn.atd3.code4a.model.model;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import cn.atd3.code4a.R;
 import cn.atd3.code4a.model.inter.ArticleModelInterface;
 
 /**
@@ -165,29 +167,28 @@ public class ArticleModel implements Serializable {
                 '}';
     }
 
-    public static String time(int unix) {
+    public static String time(Context context, int unix) {
         long time = ((long)unix) * 1000;
         String showTime;
         String hTime = new SimpleDateFormat("H:mm", Locale.getDefault()).format(time);
         String rTime = new SimpleDateFormat("M-d H:mm", Locale.getDefault()).format(time);
         long passTime = (System.currentTimeMillis() - time) / 1000;
         if (passTime < 60) {
-            showTime = "刚刚";
+            showTime =context.getResources().getString(R.string.time_just_now);
         } else if (passTime < 60 * 60) {
-            showTime = ((int) Math.floor(passTime / 60)) + "分钟前";
+            showTime = String.format(context.getResources().getString(R.string.time_x_minute_ago),(int) Math.floor(passTime / 60));
         } else if (passTime < 60 * 60 * 24) {
-            showTime = ((int) Math.floor(passTime / (60 * 60))) + "小时前 " + hTime;
+            showTime =  String.format(context.getResources().getString(R.string.time_x_hour_ago),(int) Math.floor(passTime / (60 * 60)),hTime);
         } else if (passTime < 60 * 60 * 24 * 3) {
             double day = Math.floor(passTime / (60 * 60 * 24));
             if (day == 1) {
-                showTime = "昨天 " + hTime;
+                showTime =  String.format(context.getResources().getString(R.string.time_yesterday_time),hTime);
             } else {
-                showTime = "前天 " + hTime;
+                showTime =  String.format(context.getResources().getString(R.string.time_before_yesterday),hTime);
             }
         } else {
             showTime = rTime;
         }
-//        Log.i("TimeShow",unix +" -> "+(unix*10)+" -> "+time + " -> " +showTime);
         return showTime;
     }
 

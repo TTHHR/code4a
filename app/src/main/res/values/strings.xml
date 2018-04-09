@@ -126,4 +126,11 @@
     <!-- 更新检查 -->
     <string name="download_update">下载更新</string>
     <string name="version_info">版本信息</string>
+
+    <!-- 时间 -->
+    <string name="time_just_now">刚刚</string>
+    <string name="time_x_minute_ago">%1$d分钟前</string>
+    <string name="time_x_hour_ago">%1$d小时前 %2$s</string>
+    <string name="time_yesterday_time">昨天 %1$s</string>
+    <string name="time_before_yesterday">前天 %1$s</string>
 </resources>

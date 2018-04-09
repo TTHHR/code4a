@@ -1,8 +1,10 @@
 *.iml
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/caches
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 /app/release
+/.gradle

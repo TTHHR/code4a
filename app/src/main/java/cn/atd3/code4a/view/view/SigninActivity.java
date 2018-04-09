@@ -1,25 +1,15 @@
 package cn.atd3.code4a.view.view;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.orhanobut.logger.Logger;
 
 import java.io.File;
 
@@ -61,43 +51,42 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     @BindView(R.id.code_layout)
     LinearLayout codeLayout;
     private ProgressDialog progressDialog;
-    private ImageLoader imageLoader;
+
 
     @Override
     public void initView(Bundle s) {
         //QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
 
-        imageLoader=ImageLoader.getInstance();
         refreshCodeImg();
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         refreshCodeImg();
     }
 
     @OnClick(R.id.code_image)
-    public void refreshCodeImg(){
+    public void refreshCodeImg() {
         mPresenter.updateCode();
     }
 
     @OnClick(R.id.signin_button)
-    public void signin(){
+    public void signin() {
         showProgressDialog();
-        mPresenter.signinButtonClick(account.getText().toString(), password.getText().toString(),code.getText().toString());
+        mPresenter.signinButtonClick(account.getText().toString(), password.getText().toString(), code.getText().toString());
     }
 
     @OnClick(R.id.signup_button)
-    public void signup(){
+    public void signup() {
         Intent i = new Intent(this, SignupActivity.class);
         startActivity(i);
     }
 
     @OnClick(R.id.reset_password)
-    public void resetPassword(){
+    public void resetPassword() {
         Intent i = new Intent(this, WebActivity.class);
-        i.putExtra("url",Constant.resetPassword);
+        i.putExtra("url", Constant.resetPassword);
         startActivity(i);
     }
 
@@ -127,7 +116,7 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     @Override
     public void signinSuccessful(User user) {
         closeProgressDialog();
-        SigninUserManager.setUser(this,user);
+        SigninUserManager.setUser(this, user);
         Toast.makeText(this, getString(R.string.signin_successful), Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -140,16 +129,18 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
     @Override
     public void showErrorWithStatus(String msg) {
         closeProgressDialog();
-        Toast.makeText(this, getString(R.string.error)+msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.error) + msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showCodeImg(File file) {
-        Uri i=Uri.fromFile(file);
+        Uri i = Uri.fromFile(file);
         codeImage.setImageURI(i);
     }
 
-    /**   * 显示进度对话框   */
+    /**
+     * 显示进度对话框
+     */
     @Override
     public void showProgressDialog() {
         if (progressDialog == null) {
@@ -159,7 +150,10 @@ public class SigninActivity extends BaseActivity<SignModel, SigninPresenter> imp
         }
         progressDialog.show();
     }
-    /**   * 关闭进度对话框   */
+
+    /**
+     * 关闭进度对话框
+     */
     @Override
     public void closeProgressDialog() {
         if (progressDialog != null) {

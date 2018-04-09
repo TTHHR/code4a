@@ -28,14 +28,17 @@ import cn.dxkite.common.StorageData
 import cn.dxkite.common.ui.notification.PopBanner
 import cn.dxkite.common.ui.notification.popbanner.Adapter
 import cn.dxkite.debug.DebugManager
-import com.nostra13.universalimageloader.core.ImageLoader
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
+import com.scrat.app.richtext.glide.GlideApp
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.io.File
+
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -48,7 +51,6 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     private lateinit var mp: MainPresenter
     private val TAG = "MainActivity"
 
-    private val imageLoader = ImageLoader.getInstance()
 
     private lateinit var headImage: QMUIRadiusImageView
     private lateinit var uname: TextView
@@ -218,11 +220,17 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
             }
         })
         if (SigninUserManager.isSignin(this)) {
-            imageLoader.displayImage(Constant.avatar + SigninUserManager.getUser(this).id, headImage)
+            GlideApp.with(this)
+                    .load(Constant.avatar + SigninUserManager.getUser(this).id)
+                    .placeholder(R.drawable.ic_launcher)
+                    .error(R.drawable.ic_launcher)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(headImage)
+//            imageLoader.displayImage(Constant.avatar + SigninUserManager.getUser(this).id, headImage)
             uname.setText(SigninUserManager.getUser(this).name)
         } else {
             headImage.setImageResource(R.mipmap.logo)
-            uname.setText("")
+            uname.setText("未登录")
         }
 
 
@@ -327,7 +335,12 @@ class MainActivity : AppCompatActivity(), MainViewInterface, NavigationView.OnNa
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
         if (p1.equals("id")) {
             if (SigninUserManager.isSignin(this)) {
-                imageLoader.displayImage(Constant.avatar + SigninUserManager.getUser(this).id, headImage)
+                GlideApp.with(this)
+                        .load(Constant.avatar + SigninUserManager.getUser(this).id)
+                        .placeholder(R.drawable.ic_launcher)
+                        .error(R.drawable.ic_launcher)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(headImage)
                 uname.setText(SigninUserManager.getUser(this).name)
             } else {
                 headImage.setImageResource(R.mipmap.logo)

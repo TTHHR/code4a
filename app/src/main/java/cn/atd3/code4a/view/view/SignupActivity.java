@@ -3,23 +3,21 @@ package cn.atd3.code4a.view.view;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.scrat.app.richtext.glide.GlideApp;
 
 import java.io.File;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.atd3.code4a.Constant;
 import cn.atd3.code4a.R;
-import butterknife.BindView;
 import cn.atd3.code4a.model.SignModel;
 import cn.atd3.code4a.mvpbase.BaseActivity;
 import cn.atd3.code4a.mvpbase.BaseView;
@@ -54,29 +52,31 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @BindView(R.id.code_layout)
     LinearLayout codeLayout;
     private ProgressDialog progressDialog;
-    private ImageLoader imageLoader;
+
 
     @Override
     public void initView(Bundle s) {
         //QMUIStatusBarHelper.translucent(this);//沉浸式状态栏
 
-        imageLoader= ImageLoader.getInstance();
         refreshCodeImg();
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         refreshCodeImg();
     }
 
     @OnClick(R.id.code_image)
-    public void refreshCodeImg(){
-        imageLoader.displayImage(Constant.codeImage,codeImage);
+    public void refreshCodeImg() {
+        GlideApp.with(this)
+                .load(Constant.codeImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(codeImage);
     }
 
     @OnClick(R.id.signup_button)
-    public void onSignup(){
+    public void onSignup() {
         showProgressDialog();
         mPresenter.signupButtonClick(userName.getText().toString(),
                 email.getText().toString(),
@@ -88,7 +88,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
     @Override
     public void showErrorWithStatus(String msg) {
         closeProgressDialog();
-        Toast.makeText(this,getString(R.string.error)+msg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.error) + msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -124,7 +124,7 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
 
     @Override
     public void showCodeImg(File file) {
-        Uri i=Uri.fromFile(file);
+        Uri i = Uri.fromFile(file);
         codeImage.setImageURI(i);
     }
 
@@ -138,7 +138,9 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
         return this;
     }
 
-    /**   * 显示进度对话框   */
+    /**
+     * 显示进度对话框
+     */
     @Override
     public void showProgressDialog() {
         if (progressDialog == null) {
@@ -148,7 +150,10 @@ public class SignupActivity extends BaseActivity<SignModel, SignupPresenter> imp
         }
         progressDialog.show();
     }
-    /**   * 关闭进度对话框   */
+
+    /**
+     * 关闭进度对话框
+     */
     @Override
     public void closeProgressDialog() {
         if (progressDialog != null) {

@@ -154,7 +154,7 @@ class AboutActivity : AppCompatActivity(), AboutInterface {
                                           request.setTitle(ui.version)
                                       // 设置描述
                                           request.setDescription(getString(R.string.info_down) + ui.version)
-                                    //默认只显示下载中通知
+                        //默认只显示下载中通知
                                       request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                                       //指定下载路径和下载文件名
 

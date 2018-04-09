@@ -2,12 +2,10 @@ package cn.atd3.code4a
 
 import android.app.Application
 import cn.atd3.code4a.model.model.SettingModel
-import cn.code4a.ProxyController
 import cn.atd3.proxy.ProxyConfig
+import cn.code4a.ProxyController
 import cn.dxkite.debug.Config
 import cn.dxkite.debug.DebugManager
-import com.nostra13.universalimageloader.core.ImageLoader
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import java.io.File
@@ -30,8 +28,6 @@ class CodeApplication : Application() {
         initCrashManager()
         initProxyManager()
         initSetting()
-        // 初始化图片加载
-        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this))
         //初始化Logger
         Logger.addLogAdapter(AndroidLogAdapter())
     }
